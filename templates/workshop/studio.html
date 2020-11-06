@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+{% load humanize %}
+
+<h1>This is your new studio</h1>
+<a href="{% url 'create_new_subject' %}">Begin new subject</a>
+ 
+
+<div class="container">
+    <div class="row">
+        {% for my_subject in my_subjects %}
+        <div class="col-sm-3">
+            <div class="card mb-3" style="border-color: transparent;">
+                <div class="p-4">
+                  
+                    <a href="{% url 'edit_subject' my_subject.id %}">
+                    <figure class="image is-4by3">
+                        <img src="{{my_subject.thumbnail_file.url}}" alt="Placeholder image">
+                    </figure>
+                    </a>
+                        <!-- </div> -->
+                    <!-- <div class="card-content"> -->
+                        <div class="media">
+                            <!-- <div class="media-content"> -->
+                            <p class="title is-6">{{my_subject.title}}</p>
+                            <!-- </div> -->
+                        </div>
+                        <div class="content">
+                        {{my_subject.date_posted}}
+                        </div>
+                    <!-- </div> -->
+                <!-- </div> -->
+            </div>
+        </div>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+
+{% endblock %}

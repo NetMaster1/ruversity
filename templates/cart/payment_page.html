@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="container">
+    <div class="row">
+
+<div class="columns">
+
+    <div class="column">
+        <h1 class="title has-text-centered">Курс, который вы собираетесь купить:</h1>
+        <div class="card">
+            <div class="card-content">
+                <p class="title has-text-centered"><span>Название курса: </span>
+                    {{ subject.title }}
+                </p>
+                <p class="subtitle has-text-centered"><span>Автор: </span>
+                    {{ subject.author }}
+                </p>
+            </div>
+            <footer class="card-footer">
+                <form class="buy-form" action="{{ url }}" method="post">
+                    <input name="pid" value="{{ pid }}" type="hidden" />
+                    <input name="sid" value="{{ sid }}" type="hidden">
+                    <input name="amount" value="{{ amount }}" type="hidden">
+                    <input name="success_url" value="{{ success }}" type="hidden">
+                    <input name="cancel_url" value="{{ cancel }}" type="hidden">
+                    <input name="error_url" value="{{ error }}" type="hidden">
+                    <input name="checksum" value="{{ checksum }}" type="hidden">
+                    <button class="button" type="submit">Buy</button>
+                </form>
+            </footer>
+
+        </div>
+    </div>
+    <div class="column is-one-fifth">
+
+    </div>
+</div>
+
+
+    </div>
+</div>
+{% endblock %}

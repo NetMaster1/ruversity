@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block content %}
+
+<section class="section">
+    <div class="container">
+        <div class="row">
+            {% for course in my_courses %}
+            <div class="col-sm-3">
+                <div class="card mb-3" style="border-color: transparent;">
+                    <div class="p-4">
+                        <!-- <div class="card"> -->
+                        <!-- <div class="card-image"> -->
+                        <a href="{% url 'subject' course.id %}">
+                            <figure class="image is-4by3">
+                                <img src="{{course.thumbnail_file.url}}" alt="Placeholder image">
+                            </figure>
+                        </a>
+                      
+                        <!-- </div> -->
+                        <!-- <div class="card-content"> -->
+                        <div class="media">
+                            <!-- <div class="media-content"> -->
+                            <p class="title is-6">{{course.title}}</p>
+                            <!-- </div> -->
+                        </div>
+                        <!-- </div> -->
+                        <!-- </div> -->
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

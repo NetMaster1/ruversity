@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block content %}
+
+    <section class="section">
+        <div class="container">
+            <div class="row">
+                {% for subject in subject_list %}
+                <div class="col-sm-3">
+                    <div class="card mb-3" style="border-color: transparent;">
+                        <div class="p-4">
+                            <!-- <div class="card"> -->
+                                <!-- <div class="card-image"> -->
+                            <a href="{% url 'subject' subject.id %}">
+                            <figure class="image is-4by3">
+                                <img src="{{subject.thumbnail_file.url}}" alt="Placeholder image">
+                            </figure>
+                            </a>
+                            <a href="{% url 'pay_pal' subject.id %}">
+                                <button type="button" name="button">
+                                    Purchase
+                                </button>
+                            </a>
+                                <!-- </div> -->
+                            <!-- <div class="card-content"> -->
+                                <div class="media">
+                                    <!-- <div class="media-content"> -->
+                                    <p class="title is-6">{{video.title}}</p>
+                                    <!-- </div> -->
+                                </div>
+                                <div class="content">
+                                {{video.date_posted}}
+                                </div>
+                            <!-- </div> -->
+                        <!-- </div> -->
+                    </div>
+                </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock %}

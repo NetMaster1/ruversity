@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block content %}
+    <section class="section">
+        <div class="container">
+                <video controls>
+                    <!-- <source src="earth_video.mp4" type="video/mp4"> -->
+                    <source src="{{the_video.video_file.url}}" type="video/mp4">
+                </video>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <!-- Main container -->
+            <nav class="level">
+                <!-- Left side -->
+                <div class="level-left">
+                    <div class="level-item">
+                        <h1 class="title">{{the_video.title}}</h1>
+                    </div>
+                </div>
+
+                <!-- Right side -->
+                <div class="level-right">
+                    <p class="level-item">
+                        <strong>{{the_video.date_posted|naturaltime}}</strong>
+                    </p>
+                </div>
+            </nav>
+
+        </div>
+    </section>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <label for="content">Enter your comment</label>
+                    <input type="text" id="content" name="content">
+                    <button type="submit">Publish</button>
+                </form>
+            </div>
+        </div>
+        {% for comment in comments %}
+        <div class="row">
+            <div class="col-sm-3">
+                {{comment.author}}
+            </div>
+            <div class="col-sm-9">
+                {{comment.content}}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}
