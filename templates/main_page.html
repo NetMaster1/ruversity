@@ -6,7 +6,7 @@
     <div class="row">
 
         {% for subject in subjects %}
-        <div class="col-sm-3">
+         <div class="col-sm-3">
             <div class="card mb-3" style="border-color: transparent;">
                 <div class="p-4">
                     <a href="{% url 'subject' subject.id %}">
@@ -28,7 +28,12 @@
                     <div class="content">
                         {{subject.date_posted}}
                     </div>
-                    Rating: {{subject.entry_set.all}}
+                    <div class="div">
+                        {% for average in subject.averagerating_set.all %}
+                        Rating: {{average.average}}
+                        {% endfor %}
+                    </div>
+                
                 </div>
 
                     <div class="table table-striped">
