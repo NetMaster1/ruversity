@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from app_content.models import MainSubject, Lecture
+from app_content.models import MainSubject, Lecture, Price, Category, Language, Transaction
 from django.http import HttpResponseRedirect
 
 # Create your views here.
@@ -18,22 +18,37 @@ def studio(request):
 
 def create_new_subject(request):
     if request.user.is_authenticated:
+        languages = Language.objects.all()
+        categories = Category.objects.all()
+        context = {
+            'languages': languages,
+            'categories': categories
+        }
         if request.method == 'POST':
             title = request.POST['title']
+            category_id = request.POST['category']
+            language_id = request.POST['language']
             thumbnail_file = request.FILES['thumbnail_file']
+            lang_fkey = Language.objects.get(id=language_id)
+            categ_fkey=Category.objects.get(id=category_id)
             author = request.user
+            price = Price.objects.get(id=1)
+
             new_subject = MainSubject.objects.create(
                 title=title,
                 thumbnail_file=thumbnail_file,
                 author=author,
+                price=price,
+                category=categ_fkey,
+                language=lang_fkey
             )
             my_subjects = MainSubject.objects.filter(author=request.user)
             context = {
                 'my_subjects': my_subjects
             }
-            return redirect('studio')
+            return render(request, 'workshop/studio.html', context)
         else:
-            return render(request, 'workshop/create_new_subject.html')
+            return render(request, 'workshop/create_new_subject.html', context)
     else:
         return redirect('login')
 

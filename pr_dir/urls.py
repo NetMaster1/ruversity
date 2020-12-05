@@ -26,5 +26,4 @@ urlpatterns = [
     path('mycourses/', include('app_mycourses.urls')),
     path('cart/', include('app_cart.urls')),
     # path('stripe/', include('app_stripe.urls')),
-
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

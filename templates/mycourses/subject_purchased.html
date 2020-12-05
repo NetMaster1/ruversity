@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block content %}
+
+<div class="container">
+ <div class="row">
+{{subject.title}}
+</div>
+<div class="row">
+    <div class="col-md-3">
+    <img src="{{subject.thumbnail_file.url}}" alt="Placeholder image">
+    </div>
+</div>
+<div class="row">
+    Please rate the course
+</div>
+<div class="row m-3">
+    <div class="col-3">
+    <form action="{% url 'subject_purchased' subject.id %}">
+        {% csrf_token %}
+        <div class='rating'>
+            <input type="radio" name="rating" value=5 id="rating1">
+            <label for='rating1'></label>
+            <input type="radio" name="rating" value=4 id="rating2">
+            <label for='rating2'></label>
+            <input type="radio" name="rating" value=3 id="rating3">
+            <label for='rating3'></label>
+            <input type="radio" name="rating" value=2 id="rating4">
+            <label for='rating4'></label>
+            <input type="radio" name="rating" value=1 id="rating5">
+            <label for='rating5'></label>
+        </div>
+        </div>
+        <input type="submit" value="Применить" class="btn btn-danger">
+    </form>
+</div>
+</div>
+</div>
+{% endblock %}

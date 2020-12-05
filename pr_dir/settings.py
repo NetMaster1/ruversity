@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     'app_ratings',
     'app_reviews',
     'app_workshop',
-]
+    'paypal.standard.ipn',
+    ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -127,3 +128,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'pr_dir/static')
+]
+# Media Folder Settings
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
+PAYPAL_RECEIVER_EMAIL = '79200711112@yandex.ru'
+PAYPAL_TEST = True

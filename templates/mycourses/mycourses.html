@@ -12,12 +12,12 @@
                     <div class="p-4">
                         <!-- <div class="card"> -->
                         <!-- <div class="card-image"> -->
-                        <a href="{% url 'subject' course.id %}">
+                        <a href="{% url 'subject_purchased' course.course.id %}">
                             <figure class="image is-4by3">
-                                <img src="{{course.thumbnail_file.url}}" alt="Placeholder image">
+                                <img src="{{course.course.thumbnail_file.url}}" alt="Placeholder image">
                             </figure>
                         </a>
-                      
+
                         <!-- </div> -->
                         <!-- <div class="card-content"> -->
                         <div class="media">

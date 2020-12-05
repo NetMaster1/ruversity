@@ -1,0 +1,24 @@
+{% extends 'base.html'%}
+{% load static %}
+{%block content%}
+This is a general search page
+
+{% for subject in query %}
+<div class="col-sm-3">
+    <div class="card mb-3" style="border-color: transparent;">
+        <div class="p-4">
+
+<a href="{% url 'subject' subject.id %}">
+    <figure class="image is-4by3">
+        <img src="{{subject.thumbnail_file.url}}" alt="Placeholder image">
+    </figure>
+</a>
+
+{{subject.title}}
+
+</div>
+</div>
+</div>
+{% endfor %}
+
+{% endblock %}

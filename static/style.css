@@ -1,0 +1,56 @@
+.rating {
+    /* overflow: hidden; */
+    transform: translate(-50%, -50%) rotateY(180deg) ;
+    /* display: flex; */
+    /* vertical-align: bottom;
+    display: inline-block; */
+    /* width: 155px;
+    height: 30px; */
+}
+
+.rating > input {
+    display: none;
+    /* opacity: 1; */
+}
+
+.rating label {
+    /* display: inline; */
+    cursor: pointer;
+    width: 30px;
+    padding-left: 1px;
+    /* background: #ccc; */
+}
+
+.rating label:before {
+    content: '\f005';
+    font-family: 'Font Awesome 5 free';
+    /* font-weight: 900; */
+    position: relative;
+    /* position: absolute; */
+
+    /* display: block; */
+    font-size: 20px;
+    color: grey;
+}
+
+.rating label:after {
+    content: '\f005';
+    font-family: 'Font Awesome 5 free';
+    font-weight: 900;
+    position: absolute;
+    /* position: relative; */
+    display: block;
+    font-size: 20px;
+    color: yellow;
+    top: 0;
+    opacity: 0;
+    transition: .5s;
+    text-shadow: 0 2px 5px rgba(0,0,0,.5);
+}
+
+.rating label:hover:after,
+.rating input:hover ~ label:after,
+.rating input:checked ~ label:after
+{
+    opacity: 1;
+}

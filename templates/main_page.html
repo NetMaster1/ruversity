@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+
+        {% for subject in subjects %}
+        <div class="col-sm-3">
+            <div class="card mb-3" style="border-color: transparent;">
+                <div class="p-4">
+                    <a href="{% url 'subject' subject.id %}">
+                        <figure class="image is-4by3">
+                            <img src="{{subject.thumbnail_file.url}}" alt="Placeholder image">
+                        </figure>
+                    </a>
+
+                    <a href="{% url 'pay_pal' subject.id %}">
+                        <button type="button" name="button">
+                            Purchase
+                        </button>
+                    </a><br><br>
+        
+                    
+                    <div class="media">
+                        <p class="title is-6">{{subject.title}}</p>
+                    </div>
+                    <div class="content">
+                        {{subject.date_posted}}
+                    </div>
+                    Rating: {{subject.entry_set.all}}
+                </div>
+
+                    <div class="table table-striped">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class='stars-outer'>
+                                        <div class="stars-inner"></div>
+                                    </div>
+                                    <span class="number-rating"></span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </div>
+            </div>
+        
+
+        <script>
+            //initial rating
+            var total = '{{subject.price.discount}}'
+            const rating={{rating.rating}}
+            //total stars
+            const starsTotal=5;
+
+            //run getRatings when DOM loads
+            document.addEventListener('DOMContentLoadede, getRatings');
+
+            //get ratings
+            function getRatings(){
+                for(let rating in ratings){
+                //get percentage value
+                const starPercentage=(ratings[rating]/starTotal)*100
+                //round to nearest 10
+                const starPercentageRounded='${Math.round(starPercentage / 10)*10}%';
+                //set width of star-inner to percentage
+                document.querySelector('.${rating} .stars-inner').style.width=starPercentageRounded;
+
+                }
+            }
+        </script>
+
+
+
+            <div class="row pt-3 pl-3 ml-3">
+                <div class="col-10">
+                   
+                    {{rating}}
+                </div>
+            </div>
+        
+        </div>
+        {% endfor %}
+
+    </div>
+</div>
+{% endblock %}
