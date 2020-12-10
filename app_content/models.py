@@ -78,19 +78,17 @@ class AverageRating(models.Model):
     subject = models.ForeignKey(MainSubject, on_delete=models.DO_NOTHING)
     total = models.IntegerField() #Общее число баллов
     quantity = models.IntegerField()  #Кол-во оценок
+    av_rating=models.DecimalField(max_digits=3, decimal_places=1, default=0)
 
     def __int__(self):
         return self.id
 
     def average(self):
-            average_1 = float(self.total / self.quantity)
+            average_1 = round(float(self.total / self.quantity), 2)
             average_2 = average_1/5*100
             average_3 = str(average_2)
             percent = '%'
             average = average_3 + percent
             print(average)
             return average
-    def rating_average(self, default=0):
-        rating_average_1= float(self.total / self.quantity)
-        rating_average = round(rating_average_1, 2)
-        return rating_average
+   

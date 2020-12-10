@@ -33,13 +33,15 @@ def subject_purchased(request, subject_id):
                 counter = object.total + rating_given
                 object.total = counter
                 counter_1 = object.quantity + 1
-                object.quantity=counter_1
+                object.quantity = counter_1
+                object.av_rating=object.total/object.quantity
                 object.save()
             else:
                 object=AverageRating.objects.create(
                     subject=subject,
                     quantity=1,
                     total=rating_given,
+                    av_rating=rating_given / 1,
                 )
                 
             my_courses = Transaction.objects.filter(buyer=request.user)

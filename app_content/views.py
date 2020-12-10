@@ -1,5 +1,5 @@
 from django.shortcuts import render, HttpResponseRedirect, reverse, redirect
-from .models import MainSubject, Lecture, Transaction, Bestseller, AverageRating, Rating
+from .models import MainSubject, Lecture, Transaction, Bestseller, AverageRating
 from django.core.paginator import Paginator
 from app_reviews.models import Review
 
@@ -9,11 +9,15 @@ from app_reviews.models import Review
 def index(request):
     # videos=Paginator (videos, 3)
     #Выводит последине три объекта отсортированные по дате размещения
+    averages = AverageRating.objects.all()
     bestsellers=Bestseller.objects.all().order_by('-transactions')[:4]
-    latest_subjects=MainSubject.objects.all().order_by('-date_posted')[:4]
+    latest_subjects = MainSubject.objects.all().order_by('-date_posted')[:4]
+    highest_ranks = AverageRating.objects.all().order_by('-av_rating')[:4]
     context = {
         'latest_subjects': latest_subjects,
-        'bestsellers': bestsellers
+        'bestsellers': bestsellers,
+        'averages': averages,
+        'highest_ranks': highest_ranks
         }
     return render(request, 'index.html', context)
 
@@ -50,10 +54,10 @@ def gen_search(request):
 def main_page(request):
     subjects = MainSubject.objects.all()
     averages = AverageRating.objects.all()
-    ratings = Rating.objects.all()
+    # ratings = Rating.objects.all()
     context = {
         'subjects': subjects,
         'averages': averages,
-        'ratings': ratings,
+        # 'ratings': ratings,
         }
     return render(request, 'main_page.html', context)

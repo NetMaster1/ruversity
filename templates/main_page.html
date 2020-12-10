@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row">
 
-        {% for subject in subjects %}
+{% for subject in subjects %}
 
          <div class="col-sm-3">
             <div class="card mb-3" style="border-color: transparent;">
@@ -34,7 +34,7 @@
                         <div class="col-3">
                         <div class="stars-outer">
                         {% for average in subject.averagerating_set.all %}
-                            Rating: {{average.rating_average}}
+                            Rating: {{average.av_rating}}
                             <div class="stars-inner" style="width: {{average.average}}"></div>   
                         {% endfor %}
                         </div>  
@@ -44,9 +44,6 @@
             </div>
         
         </div>
-
-
-
 {% endfor %}
 
 

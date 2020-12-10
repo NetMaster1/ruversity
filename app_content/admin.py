@@ -24,7 +24,7 @@ class BestsellerAdmin(admin.ModelAdmin):
     list_display = ('id', 'subject', 'transactions')
 
 class AverageRatingAdmin(admin.ModelAdmin):
-    list_display = ('id', 'subject', 'average')
+    list_display = ('id', 'subject', 'average', 'av_rating')
 
 class RatingAdmin(admin.ModelAdmin):
     list_display = ('id', 'subject', 'rating')

@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-
 {% block content %}
 <section class="section">
 <div class="container">
@@ -28,6 +27,19 @@
             <div class="content">
                 {{subject.subject.date_posted}}
             </div>
+
+    <div class="row m-3">
+        <div class="col-3">
+            <div class="stars-outer">
+                {% for average in subject.subject.averagerating_set.all %}
+                Rating: {{average.av_rating}}
+                <div class="stars-inner" style="width: {{average.average}}"></div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+
             <div class="div">
                 Purchased {{subject.transactions}} times
             </div>
@@ -61,11 +73,66 @@
             <div class="content">
                 {{subject.date_posted}}
             </div>
+    <div class="row m-3">
+        <div class="col-3">
+            <div class="stars-outer">
+                {% for average in subject.averagerating_set.all %}
+                Rating: {{average.av_rating}}
+                <div class="stars-inner" style="width: {{average.average}}"></div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
         </div>
     </div>
 
 </div>
 {% endfor %}
+</div>
+
+<h1>Products with highest ranks</h1>
+<div class="row">
+    {% for subject in highest_ranks %}
+    <div class="col-sm-3">
+        <div class="card mb-3" style="border-color: transparent;">
+            <div class="p-4">
+                <a href="{% url 'subject' subject.subject.id %}">
+                    <figure class="image is-4by3">
+                        <img src="{{subject.subject.thumbnail_file.url}}" alt="Placeholder image">
+                    </figure>
+                </a>
+
+                <a href="{% url 'pay_pal' subject.subject.id %}">
+                    <button type="button" name="button">
+                        Purchase
+                    </button>
+                </a><br><br>
+                <div class="media">
+                    <p class="title is-6">{{subject.subject.title}}</p>
+                </div>
+                <div class="content">
+                    {{subject.subject.date_posted}}
+                </div>
+
+
+                <div class="row m-3">
+                    <div class="col-3">
+                        <div class="stars-outer">
+                            {% for average in subject.subject.averagerating_set.all %}
+                            Rating: {{average.av_rating}}
+                            <div class="stars-inner" style="width: {{average.average}}"></div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+    {% endfor %}
+</div>
 </div>
 
 </div>
