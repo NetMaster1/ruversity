@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
-
 {% block content %}
 
 <div class="container">
     <div class="row">
 
         {% for subject in subjects %}
+
          <div class="col-sm-3">
             <div class="card mb-3" style="border-color: transparent;">
                 <div class="p-4">
@@ -28,65 +28,29 @@
                     <div class="content">
                         {{subject.date_posted}}
                     </div>
-                    <div class="div">
-                        {% for average in subject.averagerating_set.all %}
-                        Rating: {{average.average}}
-                        {% endfor %}
-                    </div>
-                
-                </div>
-
-                    <div class="table table-striped">
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <div class='stars-outer'>
-                                        <div class="stars-inner"></div>
-                                    </div>
-                                    <span class="number-rating"></span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </div>
-            </div>
-        
-
-        <script>
-            //initial rating
-            var total = '{{subject.price.discount}}'
-            const rating={{rating.rating}}
-            //total stars
-            const starsTotal=5;
-
-            //run getRatings when DOM loads
-            document.addEventListener('DOMContentLoadede, getRatings');
-
-            //get ratings
-            function getRatings(){
-                for(let rating in ratings){
-                //get percentage value
-                const starPercentage=(ratings[rating]/starTotal)*100
-                //round to nearest 10
-                const starPercentageRounded='${Math.round(starPercentage / 10)*10}%';
-                //set width of star-inner to percentage
-                document.querySelector('.${rating} .stars-inner').style.width=starPercentageRounded;
-
-                }
-            }
-        </script>
-
-
-
-            <div class="row pt-3 pl-3 ml-3">
-                <div class="col-10">
                    
-                    {{rating}}
+                      
+                    <div class="row m-3">
+                        <div class="col-3">
+                        <div class="stars-outer">
+                        {% for average in subject.averagerating_set.all %}
+                            Rating: {{average.rating_average}}
+                            <div class="stars-inner" style="width: {{average.average}}"></div>   
+                        {% endfor %}
+                        </div>  
+                        </div>
+                        </div>
                 </div>
             </div>
         
         </div>
-        {% endfor %}
+
+
+
+{% endfor %}
+
 
     </div>
 </div>
+
 {% endblock %}

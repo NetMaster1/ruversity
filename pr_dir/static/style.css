@@ -1,3 +1,7 @@
+:root {
+    --max-width: 56%;
+}
+
 .rating {
     /* overflow: hidden; */
     transform: translate(-50%, -50%) rotateY(180deg) ;
@@ -21,7 +25,7 @@
     /* background: #ccc; */
 }
 
-.rating label:before {
+.rating label::before {
     content: '\f005';
     font-family: 'Font Awesome 5 free';
     /* font-weight: 900; */
@@ -33,7 +37,7 @@
     color: grey;
 }
 
-.rating label:after {
+.rating label::after {
     content: '\f005';
     font-family: 'Font Awesome 5 free';
     font-weight: 900;
@@ -55,19 +59,21 @@
     opacity: 1;
 }
 
+/*=========================================*/
+
 .stars-outer {
     position: relative;
     display: inline-block;
-
 }
 
-.star-inner {
+.stars-inner {
     position: absolute;
     top: 0;
-    left: 0;
+    /* left: 0; */
     white-space: nowrap;
     overflow: hidden;
-    width: 0;
+    /*color: yellow;*/
+   /* width: var(--max-width);*/
 }
 
 .stars-outer::before {
@@ -75,7 +81,7 @@
     font-family: 'Font Awesome 5 Free';
     font-weight: 200;
     color:grey;
-    font-size: 20px;
+    font-size: 30px;
 }
 
 .stars-inner::before {
@@ -83,5 +89,5 @@
     font-family: 'Font Awesome 5 Free';
     font-weight: 900;
     color: yellow;
-    font-size: 20px;
+    font-size: 30px;
 }

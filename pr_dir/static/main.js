@@ -1,5 +1,3 @@
-console.log('hello world')
-
 //get all the stars
 const one = document.getElementById('first')
 const two = document.getElementById('second')
@@ -88,3 +86,39 @@ if (one) {
     })) 
 
 }
+
+//================================
+//let starsTotal = 5;
+//let rating = 4;
+//let subjects = '{{ subjects }}';
+//run getRatings when DOM loads
+//document.addEventListener('DOMContentLoaded', getRatings)
+
+//function getRatings() {
+    //for (let subject in subjects) {
+    //get percentage value
+    //const starPercentage=(ratings[rating]/starTotal)*100;
+    //round to nearest 10
+    //const starPercentageRounded='${Math.round(starPercentage / 10)*10}%';
+    //set width of star-inner to percentage
+    //document.querySelector('.${rating} .stars-inner').style.width=starPercentageRounded;}
+    //let starPercentage = (rating / starsTotal) * 100;
+    // console.log(starPercentage)
+    //const starPercentageRounded = '${Math.round(starPercentage / 10) * 10 } %';
+    //console.log(starPercentageRounded)
+    //const starPercentageRounded = '${Math.round(starPercentage / 10) * 10 } %';
+    //console.log(starPercentageRounded);
+    //let colorVar = 'blue'
+    //document.querySelector('.sample').style.color = colorVar;
+   // let value = '80%';
+    //var width = document.querySelector(' .stars-inner').style.width = value;
+    // console.log(width)
+    //document.querySelector('.sample').style.color = red;
+    //}
+//}
+
+
+
+
+
+

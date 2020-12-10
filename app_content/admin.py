@@ -1,10 +1,9 @@
 from django.contrib import admin
-from . models import MainSubject, Transaction, Price, Category, Language, Bestseller, AverageRating
+from . models import MainSubject, Transaction, Price, Category, Language, Bestseller, AverageRating, Rating
 
 
 class MainSubjectAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'date_posted', 'author')
-
+    list_display = ('id', 'title', 'percent', 'date_posted', 'author')
 
 class TransactionAdmin(admin.ModelAdmin):
     list_display = ('id', 'course', 'buyer', 'paid_amount')
@@ -27,9 +26,12 @@ class BestsellerAdmin(admin.ModelAdmin):
 class AverageRatingAdmin(admin.ModelAdmin):
     list_display = ('id', 'subject', 'average')
 
+class RatingAdmin(admin.ModelAdmin):
+    list_display = ('id', 'subject', 'rating')
+
 admin.site.register(MainSubject, MainSubjectAdmin)
 admin.site.register(Transaction, TransactionAdmin)
-# admin.site.register(Rating, RatingAdmin)
+admin.site.register(Rating, RatingAdmin)
 admin.site.register(Price, PriceAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Language, LanguageAdmin)

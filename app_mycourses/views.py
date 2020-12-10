@@ -20,28 +20,28 @@ def subject_purchased(request, subject_id):
     if request.user.is_authenticated:
         subject = MainSubject.objects.get(id=subject_id)
         if 'rating' in request.GET:
-            rating = request.GET['rating']
+            rating_given = request.GET['rating']
             # rating = Rating.objects.create(
-            #     user=request.user,
-            #     rating=rating,
-            #     subject=subject
+            # user=request.user,
+            # rating=rating_given,
+            # subject=subject
             # )
             # rating.save()
-            rating=int(rating)
+            rating_given=int(rating_given)
             if AverageRating.objects.filter(subject=subject).exists():
                 object = AverageRating.objects.get(subject=subject)
-                counter = object.total + rating
+                counter = object.total + rating_given
                 object.total = counter
                 counter_1 = object.quantity + 1
                 object.quantity=counter_1
                 object.save()
             else:
-                AverageRating.objects.create(
+                object=AverageRating.objects.create(
                     subject=subject,
                     quantity=1,
-                    total=rating
+                    total=rating_given,
                 )
-
+                
             my_courses = Transaction.objects.filter(buyer=request.user)
             context = {
                 'my_courses': my_courses

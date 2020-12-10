@@ -1,5 +1,5 @@
 from django.shortcuts import render, HttpResponseRedirect, reverse, redirect
-from .models import MainSubject, Lecture, Transaction, Bestseller, AverageRating
+from .models import MainSubject, Lecture, Transaction, Bestseller, AverageRating, Rating
 from django.core.paginator import Paginator
 from app_reviews.models import Review
 
@@ -49,17 +49,11 @@ def gen_search(request):
 
 def main_page(request):
     subjects = MainSubject.objects.all()
-    averages=AverageRating.objects.all()
-    # for subject in subjects:
-    #     averages=subject.averagerating_set.all()
+    averages = AverageRating.objects.all()
+    ratings = Rating.objects.all()
     context = {
         'subjects': subjects,
-        'averages': averages
+        'averages': averages,
+        'ratings': ratings,
         }
     return render(request, 'main_page.html', context)
-
-    context = {
-        # 'videos':videos,
-        'subjects': subjects,   
-    }
-    return render (request, 'main_page.html', context)

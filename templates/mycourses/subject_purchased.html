@@ -12,10 +12,12 @@
     </div>
 </div>
 <div class="row">
-    Please rate the course
+   <div class="col"> 
+    <h5>Please rate the course</h5>
+    </div>
 </div>
 <div class="row m-3">
-    <div class="col-3">
+    <div class="col-3 p-2 text-left">
     <form action="{% url 'subject_purchased' subject.id %}">
         {% csrf_token %}
         <div class='rating'>
