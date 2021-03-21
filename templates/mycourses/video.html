@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+    <section class="section">
+        <div class="container">
+            <video controls>
+                <!-- <source src="earth_video.mp4" type="video/mp4"> -->
+                <source src="{{the_video.video_file.url}}" type="video/mp4">
+            </video>
+        </div>
+    </section>
+
+</div>
+
+{% endblock%}
+

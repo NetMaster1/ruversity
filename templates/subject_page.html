@@ -1,14 +1,162 @@
 {% extends 'base.html' %}
+{% load humanize %}
 {% block content %}
 
 <div class="container">
-    <div class="row">
+  
+<div class="row mt-1" >
+    <div class="col-4 m-1">
+        <div class="card">
+
+                <div class="card-header" style='min-height:5rem' >
+                 <h4>{{subject.title}}</h4>
+                </div>
+
+                <figure>
+                    <img src="{{subject.thumbnail_file.url}}" alt="Placeholder image" class='card-image-top'>
+                </figure>
+               
+
+    <div class="card-body">
+
+        <div class="row">
         <div class="col">
-            {% for lecture in lectures %}
-            {{lecture.title}}<br>
-            {% endfor %}
+        <strong>Rating: </strong>
+         {{subject.av_rating}}
+        <div class="stars-outer">
+            <div class="stars-inner" style="width: {{subject.percent}}"></div>
         </div>
+        </div>
+        </div>
+        <div class="row">
+            <div class="col">
+        <strong>Transactions:</strong> ({{subject.transactions}})
+        </div>
+        </div>
+        <div class="row"><div class="col"><strong>Created by: </strong>{{subject.author}}</div></div>
+        <div class="row"><div class="col"><strong>Date posted: </strong>{{subject.date_posted}}</div></div>
+
+        <div class="row">
+            <div class="col">
+                <strong>Description: </strong>
+                <!-- <a ref='#collapse-p' data-toggle="collapse" data-target="#collapse-p">
+                Read More
+                </a> -->
+                </div>
+            </div>
+
+            <!-- <div class="collapse show" id='collapse-p'> -->
+            <!-- <div class="collapse" id='collapse-p'> -->
+            <div class="row" style='height:6rem'>
+                <div class="col">
+                {{subject.description}}
+            </div>
+            </div>
+
+            <div class="row">
+            <div class="col">
+                <strong>Prerequisites: </strong>
+            </div>
+            </div>
+            <div class="row" style='height:6rem'>
+                <div class="col">
+                    {{subject.prerequisite}}
+                </div>
+            </div>
+           <!-- <div class="row" style='height: 4rem; overflow: hidden'> -->
+           <!-- <div class="row" style='height: 4rem; overflow: scroll'> -->
+           <!-- <div class="row" style='height:6rem'>
+               <div class="col" data-toggle="collapse" data-target='#collapse-p1'><strong>Prerequisites:</strong> </div>
+                <div class="collapse show" id='collapse-p1'>{{subject.prerequisite}}</div> -->
+
+
+        
+        <div class="row"><div class="col"><strong>Timing: </strong>Count</div></div>
+        
     </div>
+
+    <!-- ================================================================= -->
+    {% if transaction.buyer != request.user and transaction.course != subject %}
+      
+    <div class="card-footer">  
+                <div class="col">
+                    <div class="row mb-2">
+        <a href="{% url 'pay_pal' subject.id %}">
+            <!-- <button type="button" name="button" class='btn btn-info btn-block'> -->
+            <button type="button" name="button" class='btn btn-sm btn-block btn-outline-dark'>
+                Purchase
+            </button>
+        </a>
+                </div>
+
+            {% if cart.user != request.user and cart.subject != subject %}
+                    <div class="row">
+                <a href="{% url 'create_cart_item' subject.id %}">
+                    <!-- <button type="button" name="button" class='btn btn-info btn-block'> -->
+                    <button type="button" name="button" class='btn btn-sm btn-block btn-outline-dark'>
+                        Add to cart
+                    </button>
+                </a>
+                </div>
+            {% endif %}
+
+            </div>
+
+    </div>
+           
+      
+    {% else %}
+        <div class="card-footer">
+            <h5 class=”text-left”>You have already bought this course. Look for it in 'My courses' section <h5>
+        </div>
+    {% endif %}
+   
+
+    <!-- ===================================================================== -->
 </div>
+</div>
+
+<div class="col-7 m-1">
+    <div class="card">
+        <div class="card-header"><h4>Content</h4></div>
+        <div class="card-body">
+            <ul class="list-group list-group-flush">
+            {% for lecture in lectures %}
+                <li class="list-group-item">{{lecture.title}}</li>
+            {% endfor %}
+            </ul>
+        </div>
+   
+</div>
+</div>
+</div>
+
+<div class="row mt-2 pl-2"> .
+    <h3>Reviews</h3>
+</div>
+
+    <div class="row mt-1">
+        <div class="col-11">
+        {% for review in reviews %}
+           <div class="row" style=" height: 6rem;">
+                <div class="col-2 m-2 border-top">
+                    <strong>{{review.author}}</strong>
+                </div>
+
+                <div class="col-7 m-2 border-top">
+                {{review.content}}
+                </div>
+                <div class="col-2 m-2 border-top">
+                    {{review.date_posted}}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    </div>
+
+
+
+</div>
+
 
 {% endblock %}

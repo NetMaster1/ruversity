@@ -1,12 +1,52 @@
+{% load static %}
 
-<!-- Footer -->
-<br>
-<footer class="py-4 bg-info">
-    <div class="container">
-      <p class="m-0 text-center text-white">Copyright &copy; Your Website 2020</p>
+<!-- <footer class="py-4 bg-navy sticky-bottom"> -->
+<!-- <footer class="py-4 bg-white fixed-bottom border-top"> -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white border-top sticky-bottom">
+
+<div class="container">
+  <div class="row m-auto">   
+    <div class="col-2">
+        <a class='nav-link' href="{% url 'contacts' %}">
+        <div class="text-dark text-center"><b>Contacts</b></div>
+        </a>
     </div>
-    <!-- /.container -->
-  </footer>
+       <div class="col-2">
+        <a class='nav-link' href="{% url 'help' %}">
+          <div class="text-dark text-center"><b>Help</b></div>
+          </a>
+        </div>
+          <div class="col-2">
+        <a class='nav-link' href="{% url 'termsofuse' %}">
+          <div class="text-dark text-center"><b>Terms of use</b></div>
+          </a>
+        </div>
+          <div class="col-2">
+        <a class='nav-link' href="{% url 'partnership' %}">
+        <div class="text-dark text-center "><b>Partnership</b></div>
+        </a>
+      </div>
+        <div class="col-2">
+        <a class='nav-link' href="{% url 'socialmedia' %}">
+        <div class="text-dark text-center"><b>We are in social medial</b></div>
+        </a>
+        </div>
+          <div class="col-2">
+          <a class='nav-link' href="{% url 'career' %}">
+          <div class="text-dark text-center "><b>Career opportunities</b></div>
+          </a>
+          </div>
+        
+      </div>
+</div>
+  </nav>
 
+  <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-bottom">
+    <div class="container">
+      <div class="row m-auto">
 
-  
+      <!-- <p class="m-0 text-center text-white">Copyright &copy; ruversity.com 2020</p> -->
+      <div class="m-0 text-center text-black"><i>Copyright &copy; ruversity.com 2021</i></div>
+  </div>
+  </div>
+</nav>

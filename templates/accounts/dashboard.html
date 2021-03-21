@@ -1,7 +1,143 @@
 {% extends 'base.html' %}
 {%block content%}
+<div class="container">
 
+    <div class="row m-2">
+        <div class="col-6">
+    <div class="card">
+        <div class="card-header">
+            <strong>
+            Welcome to Ruversity, {{request.user.first_name}} {{request.user.last_name}}
+            </strong>
+        </div>
+        <div class="card-body">
 
+            <div class="row m-2">
+                <div class="col-4">Your full name:</div>
+                <div class="col">{{request.user.first_name}} {{request.user.last_name}}</div>
+                <div class="col-3">
+                    <!-- ===========================Modal======================= -->
+                    <button type="button" class="btn btn-outline-dark btn-block" data-toggle='modal'
+                        data-target='#nameModal'>Change</button>
+            
+                    <div class="modal" id='nameModal'>
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class='modal-title'>Change your name:</h5>
+                                    <button class='close' data-dismiss='modal'>&times;</button>
+                                </div>
+                                <div class="modal-body">
+            
+                                    <form action="{% url 'change_name' %}" method="POST">
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            <label for="first_name">Enter your first name:</label>
+                                            <input class='form-control' type="text" id="first_name" name="first_name" maxlength='50' required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="last_name">Enter your last name:</label>
+                                            <input class='form-control' type="text" id="last_name" name="last_name" maxlength='50' required>
+                                        </div>
+                                </div>
+            
+                                <div class="modal-footer">
+                                    <button class="btn btn-outline-dark btn-block">Submit</button>
+                                </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ==============================End of Modal======================== -->
+                </div>
+            </div>
 
-<h1>This is your dashboard page</h1>
+            <div class="row m-2">
+                <div class="col-4">Your current email:</div>
+                <div class="col">{{request.user.email}}</div>
+                <div class="col-3">
+<!-- ===========================Modal======================= -->
+                    <button type="button" class="btn btn-outline-dark btn-block" data-toggle='modal' data-target='#emailModal'>Change</button>
+
+                    <div class="modal" id='emailModal'>
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class='modal-title'>Change your email address:</h5>
+                                    <button class='close' data-dismiss='modal'>&times;</button>
+                                </div>
+                                <div class="modal-body">
+
+                            <form action="{% url 'change_email' %}" method="POST">
+                                {% csrf_token %}
+                                       <div class="form-group">
+                                           <label for="email">Enter your new email address:</label>
+                                            <input class='form-control' type="text" id="email" name="email" maxlength='50' required>
+                                        </div>
+
+                                       </div>
+                               
+                                <div class="modal-footer">
+                                    <button class="btn btn-outline-dark btn-block" >Submit</button>
+                                </div>
+                            </form>
+                            </div>
+                        </div>
+                    </div>
+<!-- ==============================End of Modal======================== -->
+                </div>
+            </div>
+            <div class="row m-2">
+            <div class="col-4">Your current password:</div>
+            <div class="col">***********</div>
+            <div class="col-3">
+                <!-- ===========================Modal======================= -->
+                <button type="button" class="btn btn-outline-dark btn-block" data-toggle='modal'
+                    data-target='#passwordModal'>Change</button>
+                
+                <div class="modal" id='passwordModal'>
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class='modal-title'>Change your current password:</h5>
+                                <button class='close' data-dismiss='modal'>&times;</button>
+                            </div>
+                            <div class="modal-body">
+                
+                                <form action="{% url 'change_password' %}" method="POST">
+                                    {% csrf_token %}
+                                    <!-- <div class="form-group">
+                                        <label for="password">Enter your current password:</label>
+                                        <input class='form-control' type="password" id="password" name="password" maxlength='50' required>
+                                    </div> -->
+                                    <div class="form-group">
+                                        <label for="password">Enter your new password:</label>
+                                        <input class='form-control' type="password" id="password" name="new_password_1" maxlength='50' required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="password">Confirm your new password:</label>
+                                        <input class='form-control' type="password" id="password" name="new_password_2" maxlength='50' required>
+                                    </div>
+                
+                            </div>
+                
+                            <div class="modal-footer">
+                                <button class="btn btn-outline-dark btn-block">Submit</button>
+                            </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- ==============================End of Modal======================== -->
+            </div>
+            </div>
+
+        </div>
+
+    </div>
+    </div>
+    </div>
+
+</div>
+
 {%endblock%}

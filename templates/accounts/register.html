@@ -1,16 +1,62 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<form action="{% url 'register' %}" method="POST">
-    {% csrf_token %}
-    {% if form.errors %}
-        <p>Your form has errors</p>
-    {% endif %}
+<div class="container mt-3 p-2">
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            <div class="card">
+                <!-- <div class="card-header bg-info text-white"> -->
+                <div class="card-header">
+                    <h4>
+                        <i class="fas fa-user-plus"></i> Signup
+                    </h4>
+                </div>
+                <div class="card-body">
 
-    {{ form.as_p}}
+                    <!-- Alerts -->
+                    {% include 'partials/_alerts.html' %}
+                    <!-- ========================================== -->
 
-    <input type="submit" value="Register" class="btn btn-info">
+                    <form action="{% url 'register_user' %}" method='POST'>
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="first_name" class="text-black">First name</label>
+                            <input type="text" name="first_name" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="last_name" class="text-black">Last name</label>
+                            <input type="text" name="last_name" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="username" class="text-black">User name</label>
+                            <input type="text" name="username" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password" class="text-black">Password</label>
+                            <input type="password" name="password" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password2" class="text-black">Confirm password</label>
+                            <input type="password" name="password2" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email" class="text-black">Email</label>
+                            <input type="email" name="email" class="form-control" required>
+                        </div>
 
-</form>
+                            <input type="checkbox" id='custormer_type' name='customer_type' value='customer_type'> Check if your singing up as an entity <br><br>
+
+                        <div>
+                            <!-- <input type="submit" value="Submit" class="btn btn-info btn-block"> -->
+                            <input type="submit" value="Submit" class="btn btn-sm btn-outline-dark btn-block">
+                        </div>
+
+                    </form>
+                    <!-- ======================================================== -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock%}

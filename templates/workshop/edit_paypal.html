@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="container">
+
+    <div class="row mt-2">Please, update your paypal info </div>
+    <div class="row">
+        <form action="{% url 'edit_paypal' paypal.id %}" method="POST">
+            {% csrf_token %}
+
+            <div class="row p-2">
+                <div class="col-4">
+                    <label for="name">Enter your paypal id</label>
+                </div>
+                <div class="col-3">
+                    <input type="text" id="name" name="name" required><br>
+                </div>
+            </div>
+
+            <div class="row p-2">
+                <input type="submit" value="Update" class="btn btn-info btn-block">
+                <!-- <button type='submit'>Load</button><br> -->
+            </div>
+        </form>
+    </div>
+
+
+</div>
+</div>
+{% endblock %}

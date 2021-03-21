@@ -8,8 +8,8 @@ from app_content.models import MainSubject
 class Review (models.Model):
     content = models.TextField()
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    date_posted = models.DateTimeField(auto_now_add=True)
-    video = models.ForeignKey(MainSubject, on_delete=models.CASCADE)
+    date_posted = models.DateField(auto_now_add=True)
+    subject = models.ForeignKey(MainSubject, on_delete=models.CASCADE)
 
     def __int__(self):
         return self.id

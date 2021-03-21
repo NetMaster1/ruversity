@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container">
+<div class="row p-2">
+    
+    <form action="{% url 'review' subject.id %}" method="POST">
+        {% csrf_token %}
+        <label for="content">Please, make a review of the course</label>
+</div>
+
+<div class="row p-2">  
+    <!-- <input type="textarea" id="contetnt" name="content" style="width:700px; height:100px;"><br>   -->
+    <!-- <input type="textarea" id="contetnt" name="content" rows="10" cols="30"> -->
+    <textarea name="content" rows="10" cols="100"></textarea>
+</div>
+
+<div class="row p-2">
+<div class="col-2">
+    <input type="submit" value="Post the Review" class="btn btn-info">
+                <!-- <button type='submit'>Load</button><br> -->
+    </div>
+</div>
+</form>
+
+</div>
+{% endblock %}

@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'app_reviews',
     'app_workshop',
     'paypal.standard.ipn',
+    'app_contacts',
     ]
 
 MIDDLEWARE = [

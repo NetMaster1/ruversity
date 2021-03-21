@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="container">
+    <div class="row">
+    <form action="#" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+    
+        <div class="row p-2">
+            <label for="title">Please, provide your bank account details:</label>
+        </div>
+        <div class="row">
+            <input type="text" id="title" name="title" required><br>
+        </div>
+        <div class="row p-2">
+            <input type="submit" value="Save" class="btn btn-info btn-block">
+            <!-- <button type='submit'>Load</button><br> -->
+        </div>
+    </form>
+
+    </div>
+</div>
+{% endblock %}

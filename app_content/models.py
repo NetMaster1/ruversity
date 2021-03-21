@@ -1,10 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
-from datetime import datetime
+from datetime import datetime, date
+
 
 
 # Create your models here.
-
 class Language(models.Model):
     name = models.CharField(max_length=50)
 
@@ -26,24 +26,44 @@ class Category(models.Model):
 
 class MainSubject(models.Model):
     category = models.ForeignKey(Category, on_delete=models.DO_NOTHING)
-    title = models.CharField(max_length=50)
-    date_posted = models.DateTimeField(auto_now_add=True)
+    title = models.CharField(max_length=100)
+    description=models.TextField(null=True)
+    prerequisite=models.TextField(null=True)
+    # date_posted = models.DateField(default=date.today)
+    # date_posted = models.DateTimeField(auto_now_add=True)
+    date_posted = models.DateField(auto_now_add=True)
     thumbnail_file = models.FileField(upload_to='uploads')
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     price = models.ForeignKey(Price, on_delete=models.DO_NOTHING)
     language = models.ForeignKey(Language, on_delete=models.DO_NOTHING)
-    percent = models.CharField(max_length=50, default ='50%')
+    percent = models.CharField(max_length=50, default='0%')
+    total = models.IntegerField(default=0)  # Общее число баллов
+    quantity = models.IntegerField(default=0)  # Кол-во оценок
+    av_rating = models.DecimalField(max_digits=3, decimal_places=1, default=0)  #average rating
+    transactions=models.IntegerField(default=0)
+    ready = models.BooleanField(default=False)
+    checked = models.BooleanField(default=False)
+    blocked = models.BooleanField(default=False)
+    
 
     def __int__(self):
         return self.id
 
 
 class Lecture(models.Model):
-    title = models.CharField(max_length=50)
+    title = models.CharField(max_length=100)
     date_posted = models.DateTimeField(auto_now_add=True)
     course = models.ForeignKey(MainSubject, on_delete=models.CASCADE)
     video_file = models.FileField(upload_to='uploads', null=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
+    blocked = models.BooleanField(default=False)
+    length = models.DecimalField(max_digits=5, decimal_places=2, default=0)
+    size_mb = models.DecimalField(max_digits=5, decimal_places=2, default=0)
+
+    
+ 
+    # def get_absolute_file_upload_url(self):
+    #     return MEDIA_URL + self.file_upload.url
 
     def __int__(self):
         return self.id
@@ -54,16 +74,17 @@ class Transaction(models.Model):
     buyer = models.ForeignKey(User, on_delete=models.CASCADE)
     date_bought = models.DateField(auto_now_add=True)
     paid_amount = models.FloatField(null=True)
+   
 
     def __int__(self):
         return self.id
 
-class Bestseller (models.Model):
-    subject = models.ForeignKey(MainSubject, on_delete=models.CASCADE)
-    transactions = models.IntegerField()
+# class Bestseller (models.Model):
+#     subject = models.ForeignKey(MainSubject, on_delete=models.CASCADE)
+#     transactions = models.IntegerField()
 
-    def __int__(self):
-        return self.id
+#     def __int__(self):
+#         return self.id
 
 
 class Rating (models.Model):
@@ -74,21 +95,93 @@ class Rating (models.Model):
     def __int__(self):
         return self.id
 
-class AverageRating(models.Model):
-    subject = models.ForeignKey(MainSubject, on_delete=models.DO_NOTHING)
-    total = models.IntegerField() #Общее число баллов
-    quantity = models.IntegerField()  #Кол-во оценок
-    av_rating=models.DecimalField(max_digits=3, decimal_places=1, default=0)
+
+class Badword (models.Model):
+    badword = models.CharField(max_length=50)
 
     def __int__(self):
         return self.id
 
-    def average(self):
-            average_1 = round(float(self.total / self.quantity), 2)
-            average_2 = average_1/5*100
-            average_3 = str(average_2)
-            percent = '%'
-            average = average_3 + percent
-            print(average)
-            return average
-   
+
+class Keyword (models.Model):
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
+    keyword = models.CharField(max_length=50)
+
+    def __int__(self):
+        return self.id
+
+
+class Paypal (models.Model):
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
+    name = models.CharField(max_length=50)
+
+    def __int__(self):
+        return self.id
+
+
+class Credit_card_type(models.Model):
+    type = models.CharField(max_length=50)
+
+    def __int__(self):
+        return self.id
+
+
+class Credit_card (models.Model):
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
+    card_number = models.CharField(max_length=50)
+    card_type = models.CharField(max_length=50, null=True)
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+
+    def __int__(self):
+        return self.id
+
+
+class Bank_account (models.Model):
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
+    country = models.CharField(max_length=50)
+    entity_name = models.CharField(max_length=50, blank=True)
+    itin = models.CharField(max_length=50,blank=True )
+    bin = models.CharField(max_length=50, blank=True)
+    bank_account = models.CharField(max_length=50, blank=True)
+    account = models.CharField(max_length=50)
+    ready = models.BooleanField(default=False)
+
+    def __int__(self):
+        return self.id
+
+
+class Main_method (models.Model):
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
+    method = models.CharField(max_length=50)
+
+    def __int__(self):
+        return self.id
+
+
+class Cart(models.Model):
+    subject = models.ForeignKey(MainSubject, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    created = models.DateField(auto_now_add=True)
+
+    def __int__(self):
+        return self.id
+
+# class AverageRating(models.Model):
+#     subject = models.ForeignKey(MainSubject, on_delete=models.DO_NOTHING)
+#     total = models.IntegerField() #Общее число баллов
+#     quantity = models.IntegerField()  #Кол-во оценок
+#     av_rating=models.DecimalField(max_digits=3, decimal_places=1, default=0)
+
+#     def __int__(self):
+#         return self.id
+
+#     def average(self):
+#             average_1 = round(float(self.total / self.quantity), 2)
+#             average_2 = average_1/5*100
+#             average_3 = str(average_2)
+#             percent = '%'
+#             average = average_3 + percent
+#             print(average)
+#             return average
+

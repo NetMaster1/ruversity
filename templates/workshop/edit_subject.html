@@ -1,70 +1,253 @@
 {% extends "base.html" %}
+{% load static %}
 {% block content %}
 <body oncontextmenu="return false;">
  
 
 <div class="container">
-    <div class="row p-3 m-2 border">
-        <div class="col-2">
-            {{subject.title}}
-        </div >
-        <div class="col-3">
-            <img src="{{subject.thumbnail_file.url}}" width=200 alt="Placeholder image" >
+
+    
+    {% if subject.ready == True %}
+    <div class="row p-3 mt-3">
+        <div class="col-12">
+        Your course has been uploaded to ruversisty.com & is ready for sale. Since ruversity.com provides life-time access for the buyers, you are no longer able neither to delete it nor edit. In order to make changes in the course you have to apply to us via email.
         </div>
     </div>
-    <!-- ====================================================================== -->
-    <div class="row p-2 m-2 border">
-        <div class="col-12">
-            {% for lecture in lectures %}
+    {% else %}
+        
+    <div class="row p-3">
+        <div class="col-8">
+    <h5>After your course is completed & ready to be uploaded, push the button</h5>
+            </div>
+            
+        <div class="col-2">
+    <a href="{% url 'agreement' subject.id%}">
+    <input type="submit" value="Upload" class="btn btn-outline-dark btn-block">
+    </a>
+        </div>
+
+    </div>
+   
+
+<!-- ====================================================== -->
+<div class="row border rounded bg-light text-center">
+    <h5>Edit the subject</h5>
+</div>
+
+<div class="row mt-2">
+    <div class="col-4">
+        <div class="card">
+            <div class="card-header" style='height:5rem' >
+                <h4>{{subject.title}}</h4>
+            </div>
+            <figure class="image is-16by9">
+                <img src="{{subject.thumbnail_file.url}}" alt="Placeholder image" class='card-image-top'>
+            </figure>
+            <div class="card-body">
             <div class="row">
-                <div class="col-1">
-                    Название лекции:
+                <div class="col">
+                    <strong>Description: </strong>
+                    <!-- <a ref='#collapse-p' data-toggle="collapse" data-target="#collapse-p">
+                            Read More
+                            </a> -->
                 </div>
-                <div class="col-2">
-                    {{lecture.id}}{{lecture.title}}
+            </div>
+            <div class="row" style='height:6rem'>
+                <div class="col">
+                    {{subject.description}}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <strong>Prerequisites: </strong>
+                </div>
+            </div>
+            <div class="row" style='height:6rem'>
+                <div class="col">
+                    {{subject.prerequisite}}
+                </div>
+            </div>
+
+             
+            <div class="row">
+                <div class="col"><strong>Language: </strong>{{subject.language}}</div>
+            </div>
+            <div class="row">
+                <div class="col"><strong>Category: </strong>{{subject.category}}</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <div class="col-7 p-3 m-1">
+       
+    <form action="{% url 'edit_subject' subject.id %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <input class='form-control' type="text" id="title" name="title" maxlength='50'placeholder="Edit subject title" required>
+            </div>
+            <div class="form-group">
+                <select name="language" class='form-select' id="language" required>
+                    {% for item in languages %}
+                    <option value="{{item.id}}">{{item.name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                    <select name="category" class='form-select' id="category" required>
+                        {% for item in categories %}
+                        <option value="{{item.id}}">{{item.name}}</option>
+                        {% endfor %}
+                    </select>
+            </div>
+            <div class="form-group">
+                <label for="description">Edit short description for the subject:</label>
+                <textarea class='form-control mb-3' name="description" rows='2' id='description'maxlength='70' required>
+                </textarea>
+            <div class="form-group">
+                <label for="prerequisites">Edit prerequisites for the subject:</label>
+                <textarea class='form-control mb-3' name="prerequisites" rows='2' id='prerequisites' maxlength='70' required>
+                </textarea>
+            <div>
+            <div class="form-group">
+                <label for="thumbnail">Load new thumbnail for the subject:</label>
+                <input type="file" class="form-control" id="thumbnail" name='thumbnail' required>
+            </div>
+            </div>
+
+   
+        <div class="row mb-2">
+            <!-- <div class="col"><input type="submit" value="Edit" class="btn btn-info btn-block"></div> -->
+            <div class="col"><input type="submit" value="Edit" class='btn btn-sm btn-block btn-outline-dark'></div>     
+        </div>
+</form>
+
+        <div class="row mt-3">
+            <div class="col">
+                <a href="{% url 'delete_subject' subject.id%}">
+                    <!-- <input type="submit" value="Delete" class="btn btn-info btn-block"> -->
+                    <input type="button" value="Delete" class='btn btn-sm btn-block btn-outline-dark'>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+  
+<!-- ============================================================= -->
+
+    
+
+
+
+<div class="row mt-3 border rounded bg-light text-center">
+    <h5>Create new lecture</h5>
+</div>
+    <div class="row mt-2 border rounded">
+       
+                    <form action="{% url 'create_new_lecture' subject.id %}" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <div class="form-row"> 
+                            <div class="col">
+                        <label for="title"><strong>Add new lecture:</strong></label>
+                        <input class='form-control' type="text" id="title" name="title" placeholder="Lecture Title" required>
+                        </div>
+                            <div class="col">
+                                    <label for="video_file">Load new mp4 file:</label>
+                                    <input type="file" class="form-control" id="video_file" name="video_file" required>
+                                </div>
+                            </div>
+
+
+
+                        <div class="form-group">
+                        <label for="description">Add short description for the lecture:</label>
+                        <textarea class='form-control mb-3' name="description"  id='description' rows='2' required>
+                        </textarea>
+
+                       
+
+                        <div class="form-row">
+                        <!-- <button type='submit' value="Create" class="btn btn-info btn-block"> -->
+                        <!-- <input type="submit" value="Create" class="btn btn-info btn-block "> -->
+                        <input type="submit" value="Create" class='btn btn-sm btn-block btn-outline-dark'>
+                        </div>
+                    </form>
+        
+    </div>
+</div>
+                    
+
+    <!-- ====================================================================== -->
+
+
+    <div class="row mt-3 border rounded bg-light text-center">
+        <h5>Edit lectures</h5>
+    </div>
+
+    
+    {% for lecture in lectures %}
+    <div class="row m-2">
+        <div class="col-3 border rounded m-1">
+            <div class="row">
+            <div class="col p-2">
+                    {{lecture.title}}<br>
+                    {{lecture.length}} min<br>
+                    {{lecture.size_mb}} mb
+            </div>
+            <div class="col p-2">
                     <!-- <a class="nav-link" href="{{ lecture.video_file.url }}" target='_blank'> -->
                     <a>
-                    <video oncontextmenu="return false;" width="320" height="240" controls controlsList="nodownload">
+                    <video oncontextmenu="return false;" width="160" height="120" controls controlsList="nodownload">
                     <!-- video width="320" height="240" controls controlsList="nodownload"> -->
                         <source src="{{lecture.video_file.url}}" type="video/mp4">
                     </video>
                     </a>
-                </div>
-                <div class="col-8">
-                    <form action="{% url 'edit_lecture' lecture.id %}" method="POST" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        <label for="title">Title</label>
-                        <input type="text" id="title" name="title">
-                        <label for="video_file">Video</label>
-                        <input type="file" id="video_file" name="video_file">
-                        <button type='submit'>Edit</button><br>
-                    </form>
-                </div>
-                <div class="col-1">
-                    <a href="{% url 'delete_lecture' lecture.id %}">
-                        <button type="button" name="button">
-                            Удалить
-                        </button>
-                    </a>
+            </div>
+            </div>
+        </div>
 
+        <div class="col-6 p-3 border rounded m-1">
+            <form action="{% url 'edit_lecture' lecture.id %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-row">
+                <input class='form-control' type="text" id="title" name="title" placeholder="Lecture Title" required>
+                </div>
+                <div class="form-row">
+                <label for="description">Add short description for the lecture:</label>
+                <textarea class='form-control mb-3' name="description" rows='2' id='description' required>
+                </textarea>
+                <input type="file" class="form-control" id="video_file" name="video_file" required>
+                </div>
+                
+        </div>
+        <div class="col-2 p-3 border rounded m-1">
+            <div class="row m-1">
+                <!-- <div class="col"><input type="submit" value="Edit" class="btn btn-info btn-block"></div> -->
+                <div class="col"><input type="submit" value="Edit" class='btn btn-sm btn-block btn-outline-dark'></div>
+                </form>
+            </div>
+            <div class="row m-1">
+                <div class="col">
+                    <a href="{% url 'delete_lecture' lecture.id %}">
+                        <!-- <input type="submit" value="Delete" class="btn btn-info btn-block"> -->
+                        <input type="submit" value="Delete" class='btn btn-sm btn-block btn-outline-dark'>
+                    </a>
                 </div>
             </div>
-            {% endfor %}
+        </div>
+       
+        </div>
+      
+{% endfor %}
         </div>
     </div>
-    
-    <div class="row p-2 m-2 border">
-        <form action="{% url 'create_new_lecture' subject.id %}" method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            <label for="title">Title</label>
-            <input type="text" id="title" name="title">
-
-            <label for="video_file">Video</label>
-            <input type="file" id="video_file" name="video_file">
-
-            <button type='submit'>Create</button><br>
-        </form>
-    </div>
+</div>
+    {% endif %}
 </div>
 
 {% endblock %}

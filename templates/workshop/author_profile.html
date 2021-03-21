@@ -1,0 +1,235 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="container">
+
+    {% if main_method.user != request.user%}
+
+    <div class="row pt-3">
+        <div class="col">
+            <div class="row p-2 mt-2 mb-2 border rounded bg-light">
+            <h5 class='text-center'>Choose your recompense method</h5>
+            </div>
+     
+
+       <div class="row">
+
+        <div class="col-3 mr-2 p-2 border rounded">
+
+            <form action="{% url 'main_method' %}" method="POST">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label for="first_name"><strong>Please, enter your paypal account:</strong></label>
+                    <input type="text" id="method" name="method" value='paypal' hidden>
+                <div class="form-group">
+                <input class='form-control' type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                <input type="submit" value="Submit" class='btn btn-sm btn-block btn-outline-dark'>
+                <!-- <input type="submit" value="Submit" class="btn btn-info btn-block"> -->
+                <!-- <button type='submit'>Load</button><br> -->
+                </div>
+                
+            </div>
+            </form>       
+        </div>
+        
+
+
+        <div class="col-4 p-2 border rounded mr-2">
+            <form action="{% url 'main_method' %}" method="POST">
+                    {% csrf_token %}
+                
+                    <div class="form-group">
+                        <label for="first_name"><strong>Please, enter your credit card info:</strong></label>
+                        <input type="text" id="method" name="method" value='credit_card' required hidden><br>
+                     
+                    </div>
+
+                    <div class="form-group">
+                            <label for="first_name">First Name</label>
+                            <input class='form-control' type="text" id="first_name" name="first_name" required>
+                    </div>
+                     
+
+                    <div class="form-group">
+                            <label for="last_name">Last Name</label>
+                            <input class='form-control' type="text" id="last_name" name="last_name" required>
+                    </div>
+                   
+                    <div class="form-group">
+                            <label for="credit_card_type">Credit card type</label>
+                            <select class="form-select" name="credit_card_type" id="credit_card_type" required>
+                                {% for item in credit_card_types %}
+                                <option value="{{item.type}}">{{item.type}}</option>
+                                {% endfor %}
+                            </select>    
+                    </div>
+            
+
+                <div class="form-group">
+                    <label for="card_number">Credit Card Number</label>
+                    <input class='form-control' type="text" id="card_number" name="card_number" required>
+                </div>
+            
+            <div class="form-group">
+                <input type="submit" value="Submit" class='btn btn-sm btn-block btn-outline-dark'>
+                <!-- <input type="submit" value="Submit" class="btn btn-info btn-block"> -->
+                <!-- <button type='submit'>Load</button><br> -->
+            </div>       
+            </form>
+        </div>
+
+        <div class="col-4 p-2 border rounded">
+            <form action="{% url 'main_method' %}" method="POST">
+                {% csrf_token %}
+            
+                <div class="form-group">
+                <label for="bank_account"><strong>Please, enter your bank account info:</strong></label>
+                <input type="text" id="bank_account" name="method" value='bank_account' required hidden>
+                </div>
+
+            <div class="form-group">
+                <label for="country">Country of Registration</label>
+                <select class="form-select" name="country" id="country" required>
+                    {% for item in countries %}
+                    <option value="{{item.country}}">{{item.country}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+                <div class="form-group">
+                <label for="entity_name">Entity Name</label>
+                <input type="text" class='form-control' id="entity_name" name="entity_name" required>
+                </div>
+            
+                <div class="form-group">
+                <label for="itin">ITIN</label>
+                <input type="text" id="itin" class='form-control' name="itin" required>
+                </div>
+
+                <div class="form-group">
+                <label for="bic">BIC</label>
+                <input type="text" id="bic" name="bic" class='form-control' required>
+                </div>
+            
+                <div class="form-group">
+                <label for="bank_account">Bank Account</label>
+                <input type="text" id="bank_account" class='form-control'  name="bank_account" required>
+                </div>
+
+                <div class="form-group">
+                <label for="account">Your Account</label>
+                <input type="text" id="account" class='form-control' name="account" required>
+             
+                </div>
+            
+                <div class="form-group">
+                <input type="submit" value="Submit" class="btn btn-outline-dark btn-block">
+                        <!-- <button type='submit'>Load</button><br> -->
+                </div>
+            </form>            
+        </div>
+
+
+        </div>
+        </div>
+        </div>
+    
+    {% endif %}
+
+
+
+    {% if main_method.user == request.user %}
+    <div class="row mt-3">
+        <div class="col-6 border rounded">
+    Your primary recompense method is <strong>{{main_method.method}}</strong><br>
+        </div>
+    </div>
+
+    <div class="row mt-2">
+        <div class="col-6 p-2 border rounded">
+        {% if main_method.method == 'paypal' %}
+    Your paypal account login: p{{method.name}}
+        {% endif %}
+
+        {% if main_method.method == 'credit_card' %}
+        <div class="row">
+            <div class="col">
+    Your current card info <br>
+            </div>
+        </div>
+        <div class="row">
+    <div class="col">Cardholder First Name</div>
+    <div class="col">{{method.first_name}}</div>
+        </div>
+    <div class="row">
+    <div class="col">Cardholder Last Name</div>
+    <div class="col">{{method.last_name}}</div>
+    </div>
+    <div class="row">
+        <div class="col">Card Number</div>
+        <div class="col">{{method.card_number}}</div>
+    </div>
+    
+        {% endif %}
+
+        {% if main_method.method == 'bank_account' %}
+            <div class="row">
+                <div class="col">
+                    Your current bank account <br>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">Country of Registration</div>
+                <div class="col">{{method.country}}</div>
+            </div>
+            <div class="row">
+                <div class="col">Entity Name</div>
+                <div class="col">{{method.entity_name}}</div>
+            </div>
+            <div class="row">
+                <div class="col">ITIN</div>
+                <div class="col">{{method.itin}}</div>
+            </div>
+            <div class="row">
+                <div class="col">BIC</div>
+                <div class="col">{{method.bic}}</div>
+            </div>
+            <div class="row">
+                <div class="col">Bank account</div>
+                <div class="col">{{method.bank_account}}</div>
+            </div>
+            <div class="row">
+                <div class="col">Account</div>
+                <div class="col">{{method.account}}</div>
+            </div>
+        {% endif %}
+
+    </div>
+    </div>
+
+    <div class="row mt-2">
+        <div class="col-6 p-2 border rounded">
+            <div class="row">
+        <div class="col-6">Change your recompense method</div>
+        <div class="col-3">
+    <a href="{% url 'edit_main_method' %}">
+        <input type="submit" value="Edit or Delete" class="btn btn-outline-dark btn-block">
+    </a>
+        </div>
+        </div>
+    </div>
+    </div>
+    {% endif %}
+
+    {% if main_method.user == request.user and method.user != request.user%}
+    <p>You have already chosen your primary method. To change it for another you'll have to finish paypal registration &
+        then you'll be able to change it.</p>
+    {% endif %}
+    <br><br>
+
+</div>
+</div>
+{% endblock %}

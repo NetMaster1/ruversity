@@ -1,20 +1,28 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from app_content.models import MainSubject, Transaction, Bestseller
+from app_content.models import MainSubject, Transaction, Cart
 from hashlib import md5
 from django.http import HttpResponse
 import json
 from django.http import JsonResponse
+from ipstack import GeoLookup
+
+from app_workshop.utils import render_to_pdf
+from django.views.generic import View
+from io import BytesIO
 
 # Create your views here.
 
 
 def pay_pal(request, subject_id):
-    subject = MainSubject.objects.get(id=subject_id)
+    if request.user.is_authenticated:
+        subject = MainSubject.objects.get(id=subject_id)
 
-    context = {
-        'subject': subject
-    }
-    return render(request, 'cart/pay_pal_page_ver1.html', context)
+        context = {
+            'subject': subject
+        }
+        return render(request, 'cart/pay_pal_page_ver1.html', context)
+    else:
+        return redirect ('login')
 
 
 def payment_complete(request):
@@ -25,23 +33,25 @@ def payment_complete(request):
         course=subject,
         buyer=request.user
     )
+    counter = subject.transactions + 1
+    subject.transactions = counter
+    subject.save()
 
-    if Bestseller.objects.filter(subject=subject).exists():
-        object=Bestseller.objects.get(subject=subject)
-        counter = object.transactions + 1
-        object.transactions=counter
-        object.save()
+    if Cart.objects.filter(subject=subject, user=request.user).exists():
+        cart_item = Cart.objects.get(subject=subject, user=request.user)
+        cart_item.delete()
+    
+        context = {
+            'body': body
+        }
+        return JsonResponse('Payment completed!', safe=False)
+        # return redirect('mycourses')
     else:
-        Bestseller.objects.create(
-            subject=subject,
-            transactions=1
-        )
-
-    # context = {
-    #     'body': body
-    # }
-    return JsonResponse('Payment completed!', safe=False)
-    # return render(request, 'cart/payment_complete.html', context)
+        context = {
+            'body': body
+        }
+        return JsonResponse('Payment completed!', safe=False)
+        # return redirect ('mycourses')
 
 
 def payment_cancel(request):
@@ -51,6 +61,21 @@ def payment_cancel(request):
 def payment_error(request):
     pass
 
+
+class GeneratePDF_invoice(View):
+    # def get(self, request, *args, **kwargs):
+    def get(self, request, subject_id):
+        data = {
+            # 'today': datetime.date.today(),
+            'amount': 39.99,
+            'customer_name': 'Cooper Mann',
+            'order_id': 1233434,
+        }
+        pdf = render_to_pdf('cart/invoice_pdf.html', data)
+        response = HttpResponse(pdf, content_type='application/pdf')
+        return response
+        # return HttpResponse(result.getvalue(), content_type='application/pdf')
+        # return None
 
 # def payment_page(request, subject_id):
 #     if request.method == 'GET':

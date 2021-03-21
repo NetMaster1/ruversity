@@ -2,39 +2,112 @@
 {% block content %}
 {% load humanize %}
 
-<h1>This is your new studio</h1>
-<a href="{% url 'create_new_subject' %}">Begin new subject</a>
- 
 
 <div class="container">
+
+<div class="row mt-3">
+    <div class="col-3">
+        <a href="{% url 'create_new_subject'  %}">
+            <!-- <input type="submit" value="Create New Subject" class="btn btn-info btn-block"> -->
+            <input type="submit" value="Create New Subject" class='btn btn-sm btn-block btn-outline-dark'>
+        </a>
+    </div>
+</div>
+       
+
+    <p><h3>My subjects created</h3></p>
+    
+    
     <div class="row">
-        {% for my_subject in my_subjects %}
+        {% for subject in subjects %}
+        
         <div class="col-sm-3">
             <div class="card mb-3" style="border-color: transparent;">
-                <div class="p-4">
-                  
-                    <a href="{% url 'edit_subject' my_subject.id %}">
-                    <figure class="image is-4by3">
-                        <img src="{{my_subject.thumbnail_file.url}}" alt="Placeholder image">
+                <div class="card-header"  style='height:4rem'>
+                    <h5>{{subject.title}}</h5>
+                </div>
+                <a href="{% url 'edit_subject' subject.id %}">
+                    <!-- <figure class="image is-4by3"> -->
+                    <figure class="image is-16by9">
+                        <img src="{{subject.thumbnail_file.url}}" alt="Placeholder image" class='rounded-2 img-fluid'>
+                        <!-- <img src="{{subject.thumbnail_file.url}}" alt="Placeholder image"  class='card-image-top' style='width:18rem; height: 10rem;'> -->
                     </figure>
-                    </a>
-                        <!-- </div> -->
-                    <!-- <div class="card-content"> -->
-                        <div class="media">
-                            <!-- <div class="media-content"> -->
-                            <p class="title is-6">{{my_subject.title}}</p>
-                            <!-- </div> -->
+                </a>
+                    <div class="card-body">
+                        <!-- <div class="media ml-1">
+                                            <p class="title is-6" style="height:10px">{{subject.title}}</p>
+                                        </div> -->
+                        <div class="row">
+                            <div class="col"><strong>Created by: </strong>{{subject.author}}</div>
                         </div>
-                        <div class="content">
-                        {{my_subject.date_posted}}
+                        <div class="row">
+                            <div class="col"><strong>Date posted: </strong>{{subject.date_posted}}</div>
                         </div>
-                    <!-- </div> -->
-                <!-- </div> -->
+                    <div class="row">
+                        <div class="col">
+                            <strong>
+                                Rating:
+                            </strong> {{subject.av_rating}}
+                            <div class="stars-outer">
+                                <div class="stars-inner" style="width: {{subject.percent}}"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <strong>Transactions:</strong> {{subject.transactions}}
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </div>
+
+    {% endfor %}
+
+</div>
+
+    <!-- ===================================Pagination====================================== -->
+    <div class="row m-5">
+        <div class="col">
+            {% if subjects.has_other_pages %}
+            <ul class="pagination justify-content-center">
+                {% if subjects.has_previous %}
+                <li class="page-item">
+                    <a href="?page={{subjects.previous_page_number}}" class="page-link">&laquo;</a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link">&laquo;</a>
+                </li>
+                {% endif %}
+                {% for i in subjects.paginator.page_range%}
+                {% if subjects.number == i %}
+                <li class="page-item active">
+                    <a class="page-link">{{i}}</a>
+                </li>
+                {% else %}
+                <li class="page-item">
+                    <a href="?page={{i}}" class="page-link">{{i}}</a>
+                </li>
+                {% endif %}
+                {% endfor %}
+    
+                {% if subjects.has_next %}
+                <li class="page-item">
+                    <a href="?page={{subjects.next_page_number}}" class="page-link">&raquo;</a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link">&raquo;</a>
+                </li>
+                {% endif %}
+            </ul>
+            {%endif %}
         </div>
-        {% endfor %}
     </div>
+    <!-- ==========================End of Pagination========================================== -->
 
 </div>
 

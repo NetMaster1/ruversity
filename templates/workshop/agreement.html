@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="container">
+<div class="row">
+Lorem ipsum dolor sit amet consectetur, adipisicing elit. Perspiciatis atque itaque, nihil natus sequi, excepturi veritatis ipsa veniam quia quaerat aspernatur quos voluptatibus libero, a nam necessitatibus dolores reiciendis voluptate quae? Sunt qui optio iusto molestias fuga tenetur eligendi at dignissimos aspernatur obcaecati fugiat, quod minima, corporis corrupti voluptatem voluptates veritatis accusantium natus. Temporibus eligendi sapiente atque asperiores, eius blanditiis tempore vero quod adipisci consequuntur dolore quidem voluptates praesentium expedita? Provident consectetur nobis officiis at placeat, id exercitationem ea minus, natus explicabo debitis iusto quidem fuga. Veniam quia sed, debitis aliquid expedita impedit soluta pariatur nobis quam voluptatum dolore minima?
+</div>
+
+<div class="row p-3 center">
+    <div class="col-3">
+<a href="{% url 'disagree' subject.id%}">
+    <!-- <input type="submit" value="I Disagree" class="btn btn-info btn-block"> -->
+    <input type="submit" value="I Disagree" class='btn btn-sm btn-block btn-outline-dark'>
+</a>
+    </div>
+<div class="col-3">
+<a href="{% url 'agree' subject.id%}">
+    <!-- <input type="submit" value=" I Agree" class="btn btn-info btn-block"> -->
+    <input type="submit" value=" I Agree" class='btn btn-sm btn-block btn-outline-dark'>
+</a>
+</div>
+
+</div>
+</div>
+{% endblock %}

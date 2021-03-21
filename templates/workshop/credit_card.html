@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="container">
+   
+    {% if label == True %}
+        <div class="row">
+            <p>Actual Credit Card Info</p>
+        </div>
+        <div class="row">
+            <div class="col">First Name:</div>
+            <div class="col">{{credit_card.first_name}}</div>
+        </div>
+        <div class="row">
+            <div class="col">Last Name:</div>
+            <div class="col">{{credit_card.last_name}}</div>
+        </div>
+
+        <div class="row">
+            <div class="col">Credit Card Number:</div>
+            <div class="col">{{credit_card.card_number}}</div>
+        </div>
+
+        <a href="{% url 'edit_credit_card' credit_card.id %}">
+            <input type="submit" value="Edit" class="btn btn-info">
+        </a>
+
+        <a href="{% url 'delete_credit_card' credit_card.id %}">
+            <input type="submit" value="Delete" class="btn btn-info">
+        </a>
+
+
+    {% endif %}
+
+{% if label != True %}
+    <div class="row mt-2">Please, provide your credit card details</div>
+    <div class="row">
+    <form action="{% url 'credit_card' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+    
+        <div class="row p-2">
+            <div class="col-4">
+            <label for="first_name">First Name</label>
+            </div>
+            <div class="col-3">
+            <input type="text" id="first_name" name="first_name" required><br>
+            </div>
+        </div>
+
+        <div class="row p-2">
+            <div class="col-4">
+                <label for="last_name">Last Name</label>
+            </div>
+            <div class="col-3">
+                <input type="text" id="last_name" name="last_name" required><br>
+            </div>
+        </div>
+
+        <div class="row p-2">
+            <div class="col-4">
+                <label for="credit_card_type">Credit card type</label>
+            </div>
+            <div class="col-3">
+                <select name="credit_card_type" id="credit_card_type" required>
+                    {% for item in credit_card_types %}
+                    <option value="{{item.type}}">{{item.type}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+
+        <div class="row p-2">
+            <div class="col-4">
+                <label for="card_number">Credit Card Number</label>
+            </div>
+            <div class="col-3">
+                <input type="text" id="card_number" name="card_number" required><br>
+            </div>
+        </div>
+
+        <div class="row p-2">
+            <input type="submit" value="Submit" class="btn btn-outline-dark btn-block">
+            <!-- <button type='submit'>Load</button><br> -->
+        </div>
+    </form>
+    </div>
+    {% endif %}
+
+ 
+
+    
+    </div>
+</div>
+{% endblock %}

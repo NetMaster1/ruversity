@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="section">
+<div class="container">
+<div class="row">
+    <div class="col">
+   
+<h1>Bestselling products</h1>
+<div class="row">
+{% for subject in bestsellers %}
+<div class="col-sm-3">
+    <div class="card mb-3" style="border-color: transparent;">
+        <div class="p-4">
+            <a href="{% url 'subject' subject.id %}">
+                <figure class="image is-4by3">
+                    <img src="{{subject.thumbnail_file.url}}" alt="Placeholder image">
+                </figure>
+            </a>
+            <a href="{% url 'pay_pal' subject.id %}">
+                <button type="button" name="button" class='btn btn-info'>
+                    Purchase
+                </button>
+            </a><br><br>
+            <div class="media">
+                <p class="title is-6" style="height:20px">{{subject.title}}</p>
+            </div>
+            <div class="media">
+                <p class="title is-6">Created by: {{subject.author}}</p>
+            </div>
+           
+            {{subject.date_posted}}
+            Rating: {{subject.av_rating}}
+           
+
+    <div class="row m-3">
+            <div class="stars-outer">
+                <!-- {% for average in subject.subject.averagerating_set.all %}
+                Rating: {{average.av_rating}}
+                <div class="stars-inner" style="width: {{average.average}}"></div>
+                {% endfor %} -->
+             <div class="stars-inner" style="width: {{subject.percent}}"></div>
+            </div>({{subject.transactions}})
+    </div>
+           
+        </div>
+    </div>
+
+</div>
+{% endfor %}
+</div>
+<h1>Latest products</h1>
+
+<div class="row">
+{% for subject in latest_subjects %}
+<div class="col-sm-3">
+    <div class="card mb-3" style="border-color: transparent;">
+        <div class="p-4">
+            <a href="{% url 'subject' subject.id %}">
+                <figure class="image is-4by3">
+                    <img src="{{subject.thumbnail_file.url}}" alt="Placeholder image">
+                </figure>
+            </a>
+            <a href="{% url 'pay_pal' subject.id %}">
+                <button type="button" name="button" class='btn btn-info'>
+                    Purchase
+                </button>
+            </a><br><br>
+            <div class="media">
+                <p class="title is-6" style="height:20px">{{subject.title}}</p>
+            </div>
+            <div class="media">
+                <p class="title is-6">Created by: {{subject.author}}</p>
+            </div>
+
+            {{subject.date_posted}}
+            Rating: {{subject.av_rating}}
+
+
+            <div class="row m-3">
+                <div class="stars-outer">
+                    <!-- {% for average in subject.subject.averagerating_set.all %}
+                Rating: {{average.av_rating}}
+                <div class="stars-inner" style="width: {{average.average}}"></div>
+                {% endfor %} -->
+                    <div class="stars-inner" style="width: {{subject.percent}}"></div>
+                </div>({{subject.transactions}})
+            </div>
+
+        </div>
+    </div>
+
+</div>
+{% endfor %}
+</div>
+
+<h1>Products with highest ranks</h1>
+<div class="row">
+    {% for subject in highest_ranks %}
+<div class="col-sm-3">
+    <div class="card mb-3" style="border-color: transparent;">
+        <div class="p-4">
+            <a href="{% url 'subject' subject.id %}">
+                <figure class="image is-4by3">
+                    <img src="{{subject.thumbnail_file.url}}" alt="Placeholder image">
+                </figure>
+            </a>
+            <a href="{% url 'pay_pal' subject.id %}">
+                <button type="button" name="button" class='btn btn-info'>
+                    Purchase
+                </button></a><br><br>
+
+                <!-- <style>
+                    @import url("//portal.fondy.eu/mportal/static/css/button.css");
+                </style>
+                <a href="https://pay.fondy.eu/s/qcxa7jasZroYq" data-button="" class="f-p-b"
+                    style="--fpb-background:#04f7fb; --fpb-color:#ffffff; --fpb-border-color:#000000; --fpb-border-width:0px; --fpb-font-weight:700; --fpb-font-size:17px; --fpb-border-radius:9px;">
+                    <i data-text="name">Pay</i>
+                    <i data-text="amount">1 USD</i>
+                    <i data-brand="visa"></i><i data-brand="mastercard"></i></a>
+
+            </a><br><br> -->
+
+            <div class="media">
+                <p class="title is-6" style="height:20px">{{subject.title}}</p>
+            </div>
+            <div class="media">
+                <p class="title is-6">Created by: {{subject.author}}</p>
+            </div>
+
+            {{subject.date_posted}}
+            Rating: {{subject.av_rating}}
+
+
+            <div class="row m-3">
+                <div class="stars-outer">
+                    <!-- {% for average in subject.subject.averagerating_set.all %}
+                Rating: {{average.av_rating}}
+                <div class="stars-inner" style="width: {{average.average}}"></div>
+                {% endfor %} -->
+                    <div class="stars-inner" style="width: {{subject.percent}}"></div>
+                </div>({{subject.transactions}})
+            </div>
+
+        </div>
+    </div>
+
+</div>
+    {% endfor %}
+</div>
+</div>
+
+</div>
+    </div>
+</div>
+</section>
+{% endblock %}

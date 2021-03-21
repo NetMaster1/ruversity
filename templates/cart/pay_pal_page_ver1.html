@@ -11,7 +11,12 @@
 
 
 <div class="container">
-    <div class="row mt-3">
+    <div class="row">
+        <div class="col">
+        <p class="fs-3 fst-italic">Pay by Paypal</p>
+        </div>
+    </div>
+    <div class="row mb-3">
         <div class="col-md-3">
 
             <!-- Set up a container element for the button -->
@@ -20,6 +25,7 @@
             <!-- Include the PayPal JavaScript SDK -->
             <script
                 src="https://www.paypal.com/sdk/js?client-id=Afpfpjo8eAitx2Sa1ygGi1xa6eFClKCveFsU35a0HQ8EA56IUP4uRNMVoVAbsI0NUGzJ9u15ZOQq_kaz&currency=USD"></script>
+                <!-- src="https://www.paypal.com/sdk/js?client-id=AalZlLWHFFfwAbTU806sZP5hed-9Ytwpcbux8lWX9vaI87kNlgJ5DminocvsKgFL3Ypvz45M5tzhyDoK&currency=USD"> -->
 
             <script>
                 function getCookie(name) {
@@ -41,6 +47,7 @@
 
                 var total = '{{subject.price.discount}}'
                 var subject_id = '{{subject.id}}'
+                
                 function completeOrder() {
                     var url = "{% url 'payment_complete' %}"
                     fetch(url, {
@@ -75,16 +82,28 @@
                             alert('Transaction completed by ' + details.payer.name.given_name + '!');
                         });
                     }
-
-
                 }).render('#paypal-button-container');
             </script>
         </div>
+        
         <div class="col-md-3">
-            <h5>Title: {{subject.title}}</h5>
-            <h5>Price: {{subject.price}} руб. </h5>
+            <h5>Course Title: {{subject.title}}</h5>
+            <h5>Course Price: {{subject.price.discount}} $. </h5>
         </div>
 
+    </div>
+    <div class="row">
+        <div class="col">
+            <p class="fs-3 fst-italic">Or</p>     
+        </div>
+    </div>
+    <div class="row mb-5">
+        <div class="col-3">
+            <a href="{% url 'GeneratePDF_invoice' subject.id %}" target='_blank'>
+                <input type="submit" value="Receive an invoice"  class="btn btn-outline-dark btn-block fs-5">
+            </a>
+
+        </div>
     </div>
 </div>
 

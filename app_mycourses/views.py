@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from app_content.models import MainSubject, Transaction, Lecture, Rating, AverageRating
+from app_content.models import MainSubject, Transaction, Lecture, Rating
+from app_reviews.models import Review
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 
 # Create your views here.
 
@@ -9,8 +11,13 @@ from django.contrib.auth.models import User
 def mycourses(request):
     if request.user.is_authenticated:
         my_courses = Transaction.objects.filter(buyer=request.user)
+
+        paginator = Paginator(my_courses, 8)
+        page = request.GET.get('page')
+        paged_my_courses = paginator.get_page(page)
+
         context = {
-            'my_courses': my_courses
+            'my_courses': paged_my_courses
         }
         return render(request, 'mycourses/mycourses.html', context)
     else:
@@ -19,40 +26,41 @@ def mycourses(request):
 def subject_purchased(request, subject_id):
     if request.user.is_authenticated:
         subject = MainSubject.objects.get(id=subject_id)
-        if 'rating' in request.GET:
-            rating_given = request.GET['rating']
-            # rating = Rating.objects.create(
-            # user=request.user,
-            # rating=rating_given,
-            # subject=subject
-            # )
-            # rating.save()
-            rating_given=int(rating_given)
-            if AverageRating.objects.filter(subject=subject).exists():
-                object = AverageRating.objects.get(subject=subject)
-                counter = object.total + rating_given
-                object.total = counter
-                counter_1 = object.quantity + 1
-                object.quantity = counter_1
-                object.av_rating=object.total/object.quantity
-                object.save()
+        lectures = Lecture.objects.filter(course=subject)
+        if Review.objects.filter(subject=subject_id, author=request.user).exists():
+            review = Review.objects.get(subject=subject_id, author=request.user)
+            if Rating.objects.filter(subject=subject, user=request.user).exists():
+                rating = Rating.objects.get(subject=subject, user=request.user)
+                context = {
+                        'subject': subject,
+                        'rating': rating,
+                        'lectures': lectures,
+                        'review': review
+                    }
+                # return render(request, 'mycourses/subject_purchased_no_stars.html', context)
+                return render(request, 'mycourses/subject_purchased.html', context)
             else:
-                object=AverageRating.objects.create(
-                    subject=subject,
-                    quantity=1,
-                    total=rating_given,
-                    av_rating=rating_given / 1,
-                )
-                
-            my_courses = Transaction.objects.filter(buyer=request.user)
-            context = {
-                'my_courses': my_courses
-            }
-            return render(request, 'mycourses/mycourses.html', context)
+                context = {
+                    'subject': subject,
+                    'lectures': lectures,
+                    'review': review
+                }
+                return render(request, 'mycourses/subject_purchased.html', context)
         else:
-            context = {
-                'subject': subject,
-            }
-            return render(request, 'mycourses/subject_purchased.html', context)
+            if Rating.objects.filter(subject=subject, user=request.user).exists():
+                rating = Rating.objects.get(subject=subject, user=request.user)
+                context = {
+                    'subject': subject,
+                    'rating': rating,
+                    'lectures': lectures,
+                }
+                # return render(request, 'mycourses/subject_purchased_no_stars.html', context)
+                return render(request, 'mycourses/subject_purchased.html', context)
+            else:
+                context = {
+                    'subject': subject,
+                    'lectures': lectures,
+                }
+                return render(request, 'mycourses/subject_purchased.html', context)
     else:
         return redirect ('login')

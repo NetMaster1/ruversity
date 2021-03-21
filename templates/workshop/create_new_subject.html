@@ -1,33 +1,89 @@
 {% extends "base.html" %}
 {% block content %}
 
+<div class="container mt-2">
+<div class="row">
+<div class="col-6 border rounded p-3">
+    
+            <form action="{% url 'create_new_subject' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
 
-<form action="{% url 'create_new_subject' %}" method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
+            <div class="form-row">
+                    <div class="col-3">
+                <label for="title">Title</label>
+                    </div>
+                    <div class="col">
+                <input type="text" class='form-control' id="title" name="title" maxlength='50'required><br>
+                    </div>
+            </div>
 
-    <label for="title">Title</label>
-    <input type="text" id="title" name="title"><br>
+            <div class="form-row">
+                <div class="col-3">
+                    <label for="description" >Description</label>
+                </div>
+                <div class="col">
+                    <textarea class='form-control' id="description" rows='3' maxlength='150' name="description" required></textarea>
+                </div>
+               
+            </div>
 
-    <label for="thumbnail_file">Thumbnail</label>
-    <input type="file" id="thumbnail_file" name="thumbnail_file"><br>
+        <div class="form-row mt-4">
+            <div class="col-3">
+                    <label for="prerequisite">Prerequisites</label>
+                </div>
+                <div class="col">
+                    <textarea class='form-control' rows='3' id="prerequisite" maxlength='150' name="prerequisite" required></textarea>
+                </div>
+        </div>
 
-    <label for="category">Category</label>
-    <select name="category" id="category">
-        {% for item in categories %}
-        <option value="{{item.id}}">{{item.name}}</option>
-        {% endfor %}
-    </select><br>
+            <div class="form-row mt-4">
+                <div class="col-3">
+                <label for="thumbnail_file">Thumbnail</label>
+            </div>
+            <div class="col">
+                <input type="file" id="thumbnail_file" class='form-control' name="thumbnail_file" required><br>
+            </div>
+            </div>
 
-    <label for="language">Language</label>
-    <select name="language" id="language">
-        {% for item in languages %}
-            <option value="{{item.id}}">{{item.name}}</option>
-        {% endfor %}
-    </select>
+            <div class="form-row">
+                <div class="col-3">
+                <label for="category">Category</label>
+            </div>
+            <div class="col">
+                <select name="category" id="category" class='form-control' required>
+                {% for item in categories %}
+                <option value="{{item.id}}">{{item.name}}</option>
+                {% endfor %}
+            </select>
+            </div>
+            </div>
 
-    <button type='submit'>Load</button><br>
+            <div class="form-row mt-4">
+                <div class="col-3">
+                <label for="language">Language</label>
+                </div>
+            <div class="col">
+                <select name="language" id="language" class='form-control' required >
+                    {% for item in languages %}
+                    <option value="{{item.id}}">{{item.name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            </div> 
+              
+            <div class="row mt-4">
+                <div class="col-3"></div>
+            <div class="col">
+                <!-- <input type="submit" value="Create" class="btn btn-info btn-block"> -->
+                <!-- <button type='submit'>Load</button><br> -->
+                <input type="submit" value="Create" class="btn btn-sm btn-block btn-outline-dark">
+            </div>
+            </div>
+            </form>
+        </div>
+    </div>
 
-</form>
-
-
+</div>
+</div>
+</div>
 {% endblock %}

@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="container">
+    <div class="row">
+      
+{% if label == True%}
+
+<div class="row mg-5">
+  <div class="col">Current Paypal Account</div>
+  <div class="col">{{paypal.name}}</div>
+
+
+<a href="{% url 'edit_paypal' paypal.id %}">
+  <input type="submit" value="Edit" class="btn btn-info">
+</a><br>
+
+<a href="{% url 'delete_paypal' paypal.id %}">
+  <input type="submit" value="Delete" class="btn btn-info">
+</a>
+{% endif %}
+
+{% if label != True %}
+      <form action="{% url 'paypal' %}" method="POST">
+        {% csrf_token %}
+      
+        <div class="row p-2">
+          <label for="name">Please, provide your paypal registered name or email address:</label>
+        </div>
+        <div class="row">
+          <input type="text" id="name" name="name" required><br>
+        </div>
+        <div class="row p-2">
+          <input type="submit" value="Save" class="btn btn-info btn-block">
+          <!-- <button type='submit'>Load</button><br> -->
+        </div>
+      </form>
+
+{% endif %}
+
+
+      
+
+
+    </div>
+</div>
+{% endblock %}

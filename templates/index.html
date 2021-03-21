@@ -1,142 +1,54 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
-<section class="section">
 <div class="container">
-<div class="row">
-    <div class="col">
-   
-<h1>Bestselling products</h1>
-<div class="row">
-{% for subject in bestsellers %}
-<div class="col-sm-3">
-    <div class="card mb-3" style="border-color: transparent;">
-        <div class="p-4">
-            <a href="{% url 'subject' subject.subject.id %}">
-                <figure class="image is-4by3">
-                    <img src="{{subject.subject.thumbnail_file.url}}" alt="Placeholder image">
-                </figure>
-            </a>
-            <a href="{% url 'pay_pal' subject.subject.id %}">
-                <button type="button" name="button">
-                    Purchase
-                </button>
-            </a><br>
-            <div class="media">
-                <p class="title is-6">{{subject.subject.title}}</p>
-            </div>
-            <div class="content">
-                {{subject.subject.date_posted}}
-            </div>
+    <div class="row p-2">
+        <div class="col">
+            <p>
+            <h3>
+                Welcome to Remote University, a place where you can acquire new skills & share your knowledge with others.
 
-    <div class="row m-3">
-        <div class="col-3">
-            <div class="stars-outer">
-                {% for average in subject.subject.averagerating_set.all %}
-                Rating: {{average.av_rating}}
-                <div class="stars-inner" style="width: {{average.average}}"></div>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
+            </h3>
+            </p>
 
+            <p>
+            <h3>
+                Be among our first instructors to post your lectures at Ruversity.
+            </h3>
+            </p>
 
-            <div class="div">
-                Purchased {{subject.transactions}} times
-            </div>
-        </div>
-    </div>
-
-</div>
-{% endfor %}
-</div>
-<h1>Latest products</h1>
-
-<div class="row">
-{% for subject in latest_subjects %}
-<div class="col-sm-3">
-    <div class="card mb-3" style="border-color: transparent;">
-        <div class="p-4">
-            <a href="{% url 'subject' subject.id %}">
-                <figure class="image is-4by3">
-                    <img src="{{subject.thumbnail_file.url}}" alt="Placeholder image">
-                </figure>
-            </a>
-
-            <a href="{% url 'pay_pal' subject.id %}">
-                <button type="button" name="button">
-                    Purchase
-                </button>
-            </a><br><br>
-            <div class="media">
-                <p class="title is-6">{{subject.title}}</p>
-            </div>
-            <div class="content">
-                {{subject.date_posted}}
-            </div>
-    <div class="row m-3">
-        <div class="col-3">
-            <div class="stars-outer">
-                {% for average in subject.averagerating_set.all %}
-                Rating: {{average.av_rating}}
-                <div class="stars-inner" style="width: {{average.average}}"></div>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
+            <p>
+            <h3>
+                Your files are stored at AWS which means they are available 99% of time & protected from downloading.
+            </h3>
+            </p>
 
         </div>
     </div>
+    <div class="row">
+        <!-- <img src={% static 'images/woman.jpg' %} alt="Image" width="350">
+        <img src={% static 'images/handson.jpg' %} alt="Image" width="350">
+        <img src={% static 'images/computer.jpg' %} alt="Image" width="350">
+        <img src={% static 'images/shop.jpg' %} alt="Image" width="350">
+        <img src={% static 'images/sports.jpg' %} alt="Image" width="350">
+        <img src={% static 'images/painting.jpg' %} alt="Image" width="350"> -->
 
-</div>
-{% endfor %}
-</div>
 
-<h1>Products with highest ranks</h1>
-<div class="row">
-    {% for subject in highest_ranks %}
-    <div class="col-sm-3">
-        <div class="card mb-3" style="border-color: transparent;">
-            <div class="p-4">
-                <a href="{% url 'subject' subject.subject.id %}">
-                    <figure class="image is-4by3">
-                        <img src="{{subject.subject.thumbnail_file.url}}" alt="Placeholder image">
-                    </figure>
-                </a>
-
-                <a href="{% url 'pay_pal' subject.subject.id %}">
-                    <button type="button" name="button">
-                        Purchase
-                    </button>
-                </a><br><br>
-                <div class="media">
-                    <p class="title is-6">{{subject.subject.title}}</p>
+        <!-- <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                <img src={% static 'images/woman.jpg' %} alt="Image" width="350">
                 </div>
-                <div class="content">
-                    {{subject.subject.date_posted}}
+                <div class="carousel-item">
+                    <img src={% static 'images/handson.jpg' %} alt="Image" width="350">
                 </div>
-
-
-                <div class="row m-3">
-                    <div class="col-3">
-                        <div class="stars-outer">
-                            {% for average in subject.subject.averagerating_set.all %}
-                            Rating: {{average.av_rating}}
-                            <div class="stars-inner" style="width: {{average.average}}"></div>
-                            {% endfor %}
-                        </div>
-                    </div>
+                <div class="carousel-item">
+                <img src={% static 'images/computer.jpg' %} alt="Image" width="350">
                 </div>
-
             </div>
-        </div>
-
-    </div>
-    {% endfor %}
-</div>
-</div>
-
-</div>
+        </div> -->
+      
+       
     </div>
 </div>
-</section>
 {% endblock %}
