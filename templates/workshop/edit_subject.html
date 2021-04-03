@@ -86,7 +86,7 @@
     <form action="{% url 'edit_subject' subject.id %}" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="form-group">
-                <input class='form-control' type="text" id="title" name="title" maxlength='50'placeholder="Edit subject title" required>
+                <input type="text" class='form-control' id="title" name="title" maxlength='50' required placeholder='Edit title of the subject'>
             </div>
             <div class="form-group">
                 <select name="language" class='form-select' id="language" required>
@@ -104,12 +104,10 @@
             </div>
             <div class="form-group">
                 <label for="description">Edit short description for the subject:</label>
-                <textarea class='form-control mb-3' name="description" rows='2' id='description'maxlength='70' required>
-                </textarea>
+                <textarea class='form-control' id="description" rows='3' minlength='120' maxlength='180' name="description" required placeholder='Please, enter short description from 120 to 180 symbols'></textarea>
             <div class="form-group">
                 <label for="prerequisites">Edit prerequisites for the subject:</label>
-                <textarea class='form-control mb-3' name="prerequisites" rows='2' id='prerequisites' maxlength='70' required>
-                </textarea>
+                <textarea class='form-control' rows='3' id="prerequisite" minlength='120' maxlength='180' minlength='150'name="prerequisite" required></textarea>
             <div>
             <div class="form-group">
                 <label for="thumbnail">Load new thumbnail for the subject:</label>
@@ -126,7 +124,7 @@
 
         <div class="row mt-3">
             <div class="col">
-                <a href="{% url 'delete_subject' subject.id%}">
+                <a href="{% url 'delete_subject' subject.id %}">
                     <!-- <input type="submit" value="Delete" class="btn btn-info btn-block"> -->
                     <input type="button" value="Delete" class='btn btn-sm btn-block btn-outline-dark'>
                 </a>
@@ -146,35 +144,37 @@
 <div class="row mt-3 border rounded bg-light text-center">
     <h5>Create new lecture</h5>
 </div>
-    <div class="row mt-2 border rounded">
+    <div class="row mt-2 pb-3 border rounded">
        
                     <form action="{% url 'create_new_lecture' subject.id %}" method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
 
                         <div class="form-row"> 
-                            <div class="col">
-                        <label for="title"><strong>Add new lecture:</strong></label>
+                            <div class="col-3">
+                        <label for="title"><h5>Add new lecture:</h5></label>
                         <input class='form-control' type="text" id="title" name="title" placeholder="Lecture Title" required>
                         </div>
-                            <div class="col">
-                                    <label for="video_file">Load new mp4 file:</label>
+                            <div class="col-3">
+                                    <label for="video_file"><h5>Load new mp4 file:</h5></label>
                                     <input type="file" class="form-control" id="video_file" name="video_file" required>
                                 </div>
-                            </div>
-
-
-
-                        <div class="form-group">
-                        <label for="description">Add short description for the lecture:</label>
-                        <textarea class='form-control mb-3' name="description"  id='description' rows='2' required>
-                        </textarea>
-
-                       
-
-                        <div class="form-row">
+                           
+                     
+                           <div class="col-3 align-self-end ml-5">
+                        <input type="checkbox" id='free_access' class='form-check-input' name='free_access' value='free_access'>
+                        <label for="free_access" class='form-check-label'>
+                            <h5>Check to grant free access</h5>
+                        </label>
+                        </div>
+                            
+                     
+                        <div class="col-2 align-self-end">
                         <!-- <button type='submit' value="Create" class="btn btn-info btn-block"> -->
                         <!-- <input type="submit" value="Create" class="btn btn-info btn-block "> -->
                         <input type="submit" value="Create" class='btn btn-sm btn-block btn-outline-dark'>
+                        <input type="reset" value="Clear" class="btn btn-sm btn-block btn-outline-dark">
+                        </div>
+                        </div>
                         </div>
                     </form>
         
@@ -248,6 +248,7 @@
     </div>
 </div>
     {% endif %}
+
 </div>
 
 {% endblock %}

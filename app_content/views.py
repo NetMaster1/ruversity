@@ -1,5 +1,5 @@
 from django.shortcuts import render, HttpResponseRedirect, reverse, redirect
-from .models import MainSubject, Lecture, Transaction, Category, Language, Keyword, Badword, Cart
+from .models import MainSubject, Lecture, Transaction, Category, Language, Keyword, Badword, Cart, DiscountOn
 from django.core.paginator import Paginator
 from app_reviews.models import Review
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
@@ -168,6 +168,7 @@ def gen_search(request):
 
 def main_page(request):
     subjects = MainSubject.objects.filter(ready='True').exclude(blocked='True').order_by('-date_posted')
+    discount_time = DiscountOn.objects.get(id=1)
 
     paginator = Paginator(subjects, 8)
     page = request.GET.get('page')
@@ -176,6 +177,7 @@ def main_page(request):
     # ratings = Rating.objects.all()
     context = {
         'subjects': paged_subjects,
+        'discount_time': discount_time
         # 'ratings': ratings,
         }
     return render(request, 'main_page.html', context)

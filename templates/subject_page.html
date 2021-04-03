@@ -33,7 +33,7 @@
         <strong>Transactions:</strong> ({{subject.transactions}})
         </div>
         </div>
-        <div class="row"><div class="col"><strong>Created by: </strong>{{subject.author}}</div></div>
+        <div class="row"><div class="col"><strong>Created by: </strong><a href="{% url 'author_page' subject.author.id %}">{{subject.author}}</a></div></div>
         <div class="row"><div class="col"><strong>Date posted: </strong>{{subject.date_posted}}</div></div>
 
         <div class="row">
@@ -72,7 +72,9 @@
 
         
         <div class="row"><div class="col"><strong>Timing: </strong>Count</div></div>
-        
+        <div class="row">
+            <div class="col"><strong>Price: </strong> {{subject.price.discount}} USD</div>
+        </div>
     </div>
 
     <!-- ================================================================= -->
@@ -122,7 +124,14 @@
         <div class="card-body">
             <ul class="list-group list-group-flush">
             {% for lecture in lectures %}
+                {% if lecture.free == False %}
                 <li class="list-group-item">{{lecture.title}}</li>
+                {% else %}
+                <li class="list-group-item">
+                    <a href="{% url 'video' lecture.id %}" target="_blank">{{lecture.title}}</a>
+                    <!-- <input type="submit" value="{{lecture.title}}" class="btn btn-info btn-block"> -->
+                </li>
+                {% endif %}
             {% endfor %}
             </ul>
         </div>

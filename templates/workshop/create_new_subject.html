@@ -12,8 +12,8 @@
                     <div class="col-3">
                 <label for="title">Title</label>
                     </div>
-                    <div class="col">
-                <input type="text" class='form-control' id="title" name="title" maxlength='50'required><br>
+                    <div class="col ">
+                <input type="text" class='form-control' id="title" name="title" maxlength='50' required><br>
                     </div>
             </div>
 
@@ -22,7 +22,7 @@
                     <label for="description" >Description</label>
                 </div>
                 <div class="col">
-                    <textarea class='form-control' id="description" rows='3' maxlength='150' name="description" required></textarea>
+                    <textarea class='form-control' id="description" rows='3' minlength='120' maxlength='180' name="description" required placeholder='Please, enter short description from 120 to 180 symbols'></textarea>
                 </div>
                
             </div>
@@ -32,7 +32,7 @@
                     <label for="prerequisite">Prerequisites</label>
                 </div>
                 <div class="col">
-                    <textarea class='form-control' rows='3' id="prerequisite" maxlength='150' name="prerequisite" required></textarea>
+                    <textarea class='form-control' rows='3' id="prerequisite" minlength='120'  maxlength='180' minlength='150'name="prerequisite" required></textarea>
                 </div>
         </div>
 
@@ -41,6 +41,9 @@
                 <label for="thumbnail_file">Thumbnail</label>
             </div>
             <div class="col">
+                <p>
+                Load a thumbnail file in jpg, jpeg, png or bmp format. Minimum required dimensions: 750 x 422 pixels. Always keep aspect ratio of 16 by 9. You may use stock images but we recommend you hire a professional web designer to create an image for your thumbnail.
+                </p>
                 <input type="file" id="thumbnail_file" class='form-control' name="thumbnail_file" required><br>
             </div>
             </div>

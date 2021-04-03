@@ -34,7 +34,9 @@
                         <p class="title is-6" style="height:10px">{{subject.title}}</p>
                     </div> -->
                     <div class="row">
-                        <div class="col"><strong>Created by: </strong>{{subject.author}}</div>
+                        <div class="col"><strong>Created by:</strong>
+                            <a href="{% url 'author_page' subject.author.id %}">{{subject.author}}</a>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col"><strong>Date posted: </strong>{{subject.date_posted}}</div>
@@ -56,6 +58,19 @@
                         <strong>Transactions:</strong> {{subject.transactions}}
                         </div>
                     </div>
+                    {% if subject.discount_programs == True and discount_time.discount_on == True %}
+                        <div class="row">
+                            <div class="col">
+                                <strong>Price:</strong> {{subject.price.discount}} USD
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="row">
+                            <div class="col">
+                                <strong>Price:</strong> {{subject.price.regular}} USD
+                            </div>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>

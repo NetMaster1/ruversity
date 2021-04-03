@@ -3,13 +3,13 @@ from django.contrib.auth.models import User
 from datetime import datetime, date
 
 
-
 # Create your models here.
 class Language(models.Model):
     name = models.CharField(max_length=50)
 
     def __str__(self):
         return self.name
+
 
 class Price(models.Model):
     regular = models.DecimalField(max_digits=5, decimal_places=2)
@@ -18,50 +18,75 @@ class Price(models.Model):
     def __float__(self):
         return self.regular
 
+class DiscountOn(models.Model):
+    discount_on = models.BooleanField(default=True)
+
+    def __int__(self):
+        return self.id
+
+
 class Category(models.Model):
     name = models.CharField(max_length=50)
 
     def __str__(self):
         return self.name
 
+
+class TempImage(models.Model):
+    temp_thumbnail_file = models.FileField(upload_to='uploads')
+
+    def __it__(self):
+        return self.id
+
 class MainSubject(models.Model):
     category = models.ForeignKey(Category, on_delete=models.DO_NOTHING)
     title = models.CharField(max_length=100)
-    description=models.TextField(null=True)
-    prerequisite=models.TextField(null=True)
+    description = models.TextField(null=True)
+    prerequisite = models.TextField(null=True)
     # date_posted = models.DateField(default=date.today)
     # date_posted = models.DateTimeField(auto_now_add=True)
     date_posted = models.DateField(auto_now_add=True)
     thumbnail_file = models.FileField(upload_to='uploads')
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    # thumbnail_file = models.ImageField(upload_to='uploads', width_field='width_field', height_field='height_field')
+    # width_field=models.IntegerField(default=750)
+    # height_field=models.IntegerField(default=422)
+    author = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     price = models.ForeignKey(Price, on_delete=models.DO_NOTHING)
     language = models.ForeignKey(Language, on_delete=models.DO_NOTHING)
     percent = models.CharField(max_length=50, default='0%')
     total = models.IntegerField(default=0)  # Общее число баллов
     quantity = models.IntegerField(default=0)  # Кол-во оценок
-    av_rating = models.DecimalField(max_digits=3, decimal_places=1, default=0)  #average rating
-    transactions=models.IntegerField(default=0)
+    av_rating = models.DecimalField(
+        max_digits=3, decimal_places=1, default=0)  # average rating
+    transactions = models.IntegerField(default=0)
     ready = models.BooleanField(default=False)
     checked = models.BooleanField(default=False)
     blocked = models.BooleanField(default=False)
-    
+    discount_programs = models.BooleanField(default=True)
 
     def __int__(self):
         return self.id
 
 
+class Section(models.Model):
+    subject = models.ForeignKey(MainSubject, on_delete=models.DO_NOTHING)
+    title = models.CharField(max_length=100)
+
+    def __int__(self):
+        return self.id
+
 class Lecture(models.Model):
     title = models.CharField(max_length=100)
     date_posted = models.DateTimeField(auto_now_add=True)
-    course = models.ForeignKey(MainSubject, on_delete=models.CASCADE)
+    section = models.ForeignKey(Section, on_delete=models.DO_NOTHING)
+    # course = models.ForeignKey(MainSubject, on_delete=models.DO_NOTHING)
     video_file = models.FileField(upload_to='uploads', null=True)
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     blocked = models.BooleanField(default=False)
+    free = models.BooleanField(default=False)
     length = models.DecimalField(max_digits=5, decimal_places=2, default=0)
     size_mb = models.DecimalField(max_digits=5, decimal_places=2, default=0)
 
-    
- 
     # def get_absolute_file_upload_url(self):
     #     return MEDIA_URL + self.file_upload.url
 
@@ -74,7 +99,6 @@ class Transaction(models.Model):
     buyer = models.ForeignKey(User, on_delete=models.CASCADE)
     date_bought = models.DateField(auto_now_add=True)
     paid_amount = models.FloatField(null=True)
-   
 
     def __int__(self):
         return self.id
@@ -141,7 +165,7 @@ class Bank_account (models.Model):
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
     country = models.CharField(max_length=50)
     entity_name = models.CharField(max_length=50, blank=True)
-    itin = models.CharField(max_length=50,blank=True )
+    itin = models.CharField(max_length=50, blank=True)
     bin = models.CharField(max_length=50, blank=True)
     bank_account = models.CharField(max_length=50, blank=True)
     account = models.CharField(max_length=50)
@@ -167,6 +191,7 @@ class Cart(models.Model):
     def __int__(self):
         return self.id
 
+
 # class AverageRating(models.Model):
 #     subject = models.ForeignKey(MainSubject, on_delete=models.DO_NOTHING)
 #     total = models.IntegerField() #Общее число баллов
@@ -184,4 +209,3 @@ class Cart(models.Model):
 #             average = average_3 + percent
 #             print(average)
 #             return average
-

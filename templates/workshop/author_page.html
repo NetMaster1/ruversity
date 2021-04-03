@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container">
+<div class="row mt-3">
+
+    <div class="col-6">
+      <div class="row m-auto">
+        <div class="col">
+      Instructor:
+      </div>
+      </div>
+      <div class="row m-auto"><div class="col">
+        <h2>{{author.first_name}} {{author.last_name}}</h2>
+      </div></div>
+      
+      <div class="row m-auto"><div class="col">About me</div></div>
+      <p>
+      <div class="row m-auto"><div class="col"><strong>
+        {{author.background}}
+      </strong></div></div>
+      </p>
+      <!-- Author info change button -->
+<!-- ==================================================== -->
+    {% if author.user == request.user %}
+
+    <!-- ================= Modal =========================== -->
+      <button class="btn btn-sm btn-block btn-outline-dark" data-toggle='modal' data-target='#edit_author_modal'>Edit author info</button>
+
+      <div class="modal" id='edit_author_modal'>
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h3 class='modal-title'>Edit your info</h3>
+              <button class="close" data-dismiss='modal'>&times;</button>
+            </div>
+              <div class="modal-body">
+
+          <div class="row">
+            <div class="col-12 m-auto">
+                <form action="{% url 'edit_author_page' request.user.id %}" method="POST" enctype="multipart/form-data">
+                  {% csrf_token %}
+                
+                  <div class="form-row">
+                    <div class="col-3">
+                      <label for="description">Edit your background</label>
+                    </div>
+                    <div class="col">
+                      <textarea class='form-control' id="background" rows='3' minlength='120' maxlength='180' name="background" required
+                        placeholder='Please, tell us a few words about yourself & your professional background'></textarea>
+                    </div>
+                  </div>
+                
+                
+                  <div class="form-row mt-2">
+                    <div class="col-3">
+                      <label for="photo">Change your photo</label>
+                    </div>
+                    <div class="col">
+                      <p>
+                        Load your photo. The image must be square with aspect ratio of 1. The file must be of 'jpg', 'jpeg', 'png' or 'bmp' format.
+                      </p>
+                      <input type="file" id="photo" class='form-control' name="photo" required>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              </div>
+
+              <div class="modal-footer">
+                        <!-- <div class="form-row justify-content-start "> -->
+                          <div class="col-9">
+                            <input type="submit" value="Submit" class="btn btn-md btn-block btn-outline-dark">
+                          </div>
+                <!-- <button class='btn btn-outline-dark' data-dismiss="modal">Close</button> -->
+              </div>
+              
+              </form>
+          </div>
+          </div>
+      </div>
+ 
+    {% endif %}
+    </div>
+<!-- =========================================================        -->
+    <div class="col-6">
+    
+        <figure class="image is-1by1">
+          <img src="{{author.photo.url}}" alt="Placeholder image" class='rounded-circle mx-auto d-block' style='width:20rem; height: 20rem;' >
+          <!-- <img src="{{subject.thumbnail_file.url}}" alt="Placeholder image"  class='card-image-top' style='width:18rem; height: 10rem;'> -->
+        </figure>
+
+    </div>
+      
+    </div>
+
+    <div class="row">
+      
+    </div>
+</div>
+
+{% endblock %}

@@ -72,6 +72,7 @@
       </button>
       {% endif %}
           <div class="dropdown-menu">
+            <a href="{% url 'author_page' request.user.id %}" class="dropdown-item">Author Page</a>
             <a href="{% url 'author_profile' %}" class="dropdown-item">Reimbursement</a>
             <a href="{% url 'transactions' %}" class="dropdown-item">My Transactions</a>
             <a href="{% url 'studio' %}" class="dropdown-item">Creation Studio</a>

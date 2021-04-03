@@ -4,6 +4,49 @@
 
 
 <div class="container">
+{% if author.user != request.user %}
+
+<div class="row mt-5">
+    <div class="col-6">
+    <form action="{% url 'create_author_page' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+            <div class="form-row">
+                <div class="col-3">
+                    <label for="description" >You background</label>
+                </div>
+                <div class="col">
+                    <textarea class='form-control' id="background" rows='3' minlength='120' maxlength='180' name="background" required placeholder='Please, tell us a few words about yourself & your professional background'></textarea>
+                </div> 
+            </div>
+
+
+            <div class="form-row mt-4">
+                <div class="col-3">
+                <label for="photo">Your photo</label>
+            </div>
+            <div class="col">
+                <p>
+                Load a thumbnail file in jpg, jpeg, png or bmp format. Minimum required dimensions: 750 x 422 pixels. Always keep aspect ratio of 16 by 9. You may use stock images but we recommend you hire a professional web designer to create an image for your thumbnail.
+                </p>
+                <input type="file" id="photo" class='form-control' name="photo" required>
+            </div>
+            </div>
+              
+            <div class="row mt-4">
+                <div class="col-3"></div>
+            <div class="col">
+                <!-- <input type="submit" value="Create" class="btn btn-info btn-block"> -->
+                <!-- <button type='submit'>Load</button><br> -->
+                <input type="submit" value="Submit" class="btn btn-sm btn-block btn-outline-dark">
+            </div>
+            </div>
+            </form>
+</div>
+</div>
+<!-- ======================================================================== -->
+
+{% else %}
 
 <div class="row mt-3">
     <div class="col-3">
@@ -68,6 +111,7 @@
 
 </div>
 
+{% endif %}
     <!-- ===================================Pagination====================================== -->
     <div class="row m-5">
         <div class="col">

@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
-from app_content.models import MainSubject, Lecture, Price, Category, Language, Transaction, Badword, Credit_card, Credit_card_type, Paypal, Main_method, Bank_account
+from app_content.models import MainSubject, Lecture, Price, Category, Language, Transaction, Badword, Credit_card, Credit_card_type, Paypal, Main_method, Bank_account, TempImage
 from .models import Country
+from app_accounts.models import Author
 
 from django.http import HttpResponseRedirect, HttpResponse
 from django.views.generic import View
@@ -10,9 +11,13 @@ from io import BytesIO
 from django.contrib import messages
 from moviepy.editor import VideoFileClip
 import os
+import cv2
+# import PIL
+# from PIL import Image
 from pathlib import Path
 from django.contrib.auth.models import User, Group
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.contrib.auth import authenticate, login, logout
 
 
 # Create your views here.
@@ -20,18 +25,114 @@ from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 
 def studio(request):
     if request.user.is_authenticated:
-        subjects = MainSubject.objects.filter(author=request.user.id)
+        if Author.objects.filter(user=request.user).exists():
+            author = Author.objects.get(user=request.user)
+            subjects = MainSubject.objects.filter(author=request.user.id)
 
-        paginator = Paginator(subjects, 8)
-        page = request.GET.get('page')
-        subjects_paged = paginator.get_page(page)
+            paginator = Paginator(subjects, 8)
+            page = request.GET.get('page')
+            subjects_paged = paginator.get_page(page)
 
-        context = {
-            'subjects': subjects_paged
-        }
-        return render(request, 'workshop/studio.html', context)
+            context = {
+                'subjects': subjects_paged,
+                'author': author
+            }
+            return render(request, 'workshop/studio.html', context)
+        else:
+            return render(request, 'workshop/studio.html')
     else:
         return redirect('login')
+
+
+def create_author_page(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            background = request.POST['background']
+            photo = request.FILES['photo']
+            if photo.name.endswith('.jpg') or photo.name.endswith('.png') or photo.name.endswith('.gif') or photo.name.endswith('.bmp') or photo.name.endswith('.jpeg'):
+                author = Author.objects.create(
+                    background=background,
+                    photo=photo,
+                    user=request.user,
+                    first_name=request.user.first_name,
+                    last_name=request.user.last_name
+                )
+                img = cv2.imread(author.photo.path, 0)
+                wid = img.shape[1]
+                hgt = img.shape[0]
+                ratio = wid / hgt
+                if ratio < 0.9 or ratio > 1.1:
+                    author.delete()
+                    messages.error(
+                        request, 'Image has inproper ratio. Use a square photo with aspect ratio of 1.')
+                    return redirect('studio')
+
+                else:
+                    author = Author.objects.get(user=request.user)
+                    context = {
+                    'author': author
+                    }
+                    return redirect('studio')
+            else:
+                messages.error(
+                    request, 'File has inproper format. Load jpg, jpeg, png or bmp file')
+                return redirect('studio')
+        else:
+            return redirect('studio')   
+    else:
+        return redirect('login')
+
+
+def author_page(request, user_id):
+        if Author.objects.filter(user=user_id).exists():
+            author = Author.objects.get(user=user_id)
+            context = {
+                'author': author
+            }
+            return render(request, 'workshop/author_page.html', context)
+        else:
+            messages.error(
+                request, 'The author has no profile yet')
+            return redirect('studio')
+
+def edit_author_page(request, user_id):
+    if request.user.is_authenticated:
+        author = Author.objects.get(user=user_id)
+        if author.user == request.user:
+            if request.method == 'POST':
+                background = request.POST['background']
+                photo = request.FILES['photo']
+                if photo.name.endswith('.jpg') or photo.name.endswith('.png') or photo.name.endswith('.gif') or photo.name.endswith('.bmp') or photo.name.endswith('.jpeg'):
+                    temp_image = TempImage.objects.create(
+                        temp_thumbnail_file=photo
+                    )
+
+                    img = cv2.imread(temp_image.temp_thumbnail_file.path, 0)
+                    wid = img.shape[1]
+                    hgt = img.shape[0]
+                    ratio = wid / hgt
+                    if ratio < 0.9 or ratio > 1.1:
+                        temp_image.delete()
+                        messages.error(request, 'Image has inproper ratio. Use a square photo with aspect ratio of 1.')
+                        return redirect('author_page', user_id)
+                    else:
+                        author.background = background
+                        author.photo = photo
+                        author.save()
+                        return redirect('author_page', user_id)
+                else:
+                    messages.error(
+                        request, 'File has inproper format. Load jpg, jpeg, png or bmp file')
+                    return redirect('author_page', user_id)
+
+            return redirect('author_page', user_id)
+        else:
+            logout(request)
+            return redirect('login')
+    else:
+        logout(request)
+        return redirect('login')
+
 
 
 def create_new_subject(request):
@@ -53,7 +154,7 @@ def create_new_subject(request):
             categ_fkey=Category.objects.get(id=category_id)
             author = request.user
             price = Price.objects.get(id=1)
-            if thumbnail.name.endswith('.jpg') or thumbnail.name.endswith('.png') or thumbnail.name.endswith('.jfif'):
+            if thumbnail.name.endswith('.jpg') or thumbnail.name.endswith('.png') or thumbnail.name.endswith('.gif') or thumbnail.name.endswith('.bmp') or thumbnail.name.endswith('.jpeg'):
                 new_subject = MainSubject.objects.create(
                     title=title,
                     thumbnail_file=thumbnail,
@@ -64,39 +165,82 @@ def create_new_subject(request):
                     category=categ_fkey,
                     language=lang_fkey
                 )
-                my_subjects = MainSubject.objects.filter(author=request.user)
-                context = {
+            
+                img = cv2.imread(new_subject.thumbnail_file.path, 0)
+                wid = img.shape[1]
+                hgt = img.shape[0]
+                ratio = wid / hgt
+                if ratio < 1.5 or ratio > 1.8:
+                    new_subject.delete()
+                    messages.error(request, 'Image has inproper ratio. Use ration of 1.7 .')
+                    return redirect('create_new_subject')
+
+                else:
+                    my_subjects = MainSubject.objects.filter(author=request.user)
+                    context = {
                     'my_subjects': my_subjects
-                }
-                return redirect('studio')
+                    }
+                    return redirect('studio')
             else:
-                messages.error(request, 'File has inproper format. Load jpg or png file')
+                messages.error(request, 'File has inproper format. Load jpg, jpeg, png or bmp file')
                 return redirect('create_new_subject') 
             
         else:
             return render(request, 'workshop/create_new_subject.html', context)
     else:
+        logout(request)
         return redirect('login')
 
 
 def edit_subject(request, subject_id):
     if request.user.is_authenticated:
         subject = MainSubject.objects.get(id=subject_id)
-        if request.method == "POST":
-            subject.title = request.POST['title']
-            language_id = request.POST['language']
-            language = Language.objects.get(id=language_id)
-            subject.language=language
-            category_id = request.POST['category']
-            category = Category.objects.get(id=category_id)
-            subject.category=category
-            subject.description = request.POST['description']
-            subject.prerequisite = request.POST['prerequisites']
-            thumbnail = request.FILES['thumbnail']
-            if thumbnail.name.endswith('.jpg') or thumbnail.name.endswith('.png') or thumbnail.name.endswith('.jfif'):
-                subject.thumbnail_file = thumbnail
-                subject.save()
-                lectures = Lecture.objects.filter(course=subject)
+        if request.user == subject.author:
+            if request.method == "POST":
+                subject.title = request.POST['title']
+                language_id = request.POST['language']
+                language = Language.objects.get(id=language_id)
+                subject.language=language
+                category_id = request.POST['category']
+                category = Category.objects.get(id=category_id)
+                subject.category=category
+                subject.description = request.POST['description']
+                subject.prerequisite = request.POST['prerequisites']
+                thumbnail = request.FILES['thumbnail']
+                if thumbnail.name.endswith('.jpg') or thumbnail.name.endswith('.png') or thumbnail.name.endswith('.gif') or thumbnail.name.endswith('.bmp') or thumbnail.name.endswith('.jpeg'):
+
+                    temp_image=TempImage.objects.create(temp_thumbnail_file=thumbnail)
+                
+                    img = cv2.imread(temp_image.temp_thumbnail_file.path, 0)
+                    wid = img.shape[1]
+                    hgt = img.shape[0]
+                    ratio = wid / hgt
+                    if ratio < 1.5 or ratio > 1.8:
+                        
+                        # new_subject.delete()
+                        messages.error(request, 'Image has inproper ratio. Use ration of 1.7 .')
+                        temp_image.delete()
+                        return redirect('edit_subject', subject_id)
+
+                    else:
+                        subject.thumbnail_file = thumbnail
+                        subject.save()
+
+                        lectures = Lecture.objects.filter(course=subject)
+                        languages = Language.objects.all()
+                        categories = Category.objects.all()
+                        context = {
+                            'subject': subject,
+                            'lectures': lectures,
+                            'languages': languages,
+                            'categories': categories
+                        }
+                        return render(request, 'workshop/edit_subject.html', context)
+                else:
+                    messages.error(request, 'File has inproper format. Load jpg, jpeg, png or bmp file')
+                    return redirect('edit_subject', subject_id)
+            else:
+                lectures = Lecture.objects.filter(course=subject) 
                 languages = Language.objects.all()
                 categories = Category.objects.all()
                 context = {
@@ -104,23 +248,13 @@ def edit_subject(request, subject_id):
                     'lectures': lectures,
                     'languages': languages,
                     'categories': categories
-                }
+                    }
                 return render(request, 'workshop/edit_subject.html', context)
-            else:
-                messages.error(request, 'File has inproper format. Load jpg or png file')
-                return redirect('edit_subject', subject_id)
         else:
-            lectures = Lecture.objects.filter(course=subject) 
-            languages = Language.objects.all()
-            categories = Category.objects.all()
-            context = {
-                'subject': subject,
-                'lectures': lectures,
-                'languages': languages,
-                'categories': categories
-                }
-            return render(request, 'workshop/edit_subject.html', context)
+            logout(request)
+            return redirect('login')
     else:
+        logout(request)
         return redirect('login')
 
 
@@ -128,100 +262,139 @@ def edit_subject(request, subject_id):
 def delete_subject(request, subject_id):
     if request.user.is_authenticated:
         subject = MainSubject.objects.get(id=subject_id)
-        subject.delete()
-
-        return redirect ('studio')
+        if request.user == subject.author:
+            if subject.ready == True:
+                messages.error(request, 'Sorry, you can not delete a loaded subject.')
+                return redirect('edit_subject', subject_id)
+            else:
+                subject.delete()
+                return redirect('studio')
+        else:
+            logout(request)
+            return redirect('login')
     else:
+        logout(request)
         return redirect('login')
+
+def create_new_chapter(request, subject_id):
+    if request.user.is_authenticated:
+        subject = MainSubject.objects.get(id=subject_id)
+        if request.user == subject.author:
+            pass
+            return redirect('edit_subject', subject_id)
+    return redirect('login')
 
 
 def create_new_lecture(request, subject_id):
     if request.user.is_authenticated:
-        if request.method == 'POST':
-            subject = MainSubject.objects.get(id=subject_id)
-            title = request.POST['title']
-            video_file = request.FILES['video_file']
-            author = request.user
-            # filesize = os.path.getsize(video_file.name)
-            if video_file.name.endswith('.mp4'):
-                lecture = Lecture.objects.create(
-                    title=title,
-                    video_file=video_file,
-                    author=author,
-                    course=subject,
-                )
-                path = lecture.video_file.path
-                clip = VideoFileClip(path)
-                size_bytes = os.path.getsize(path)
-                size_mbytes=size_bytes/1024/1024
-                duration = clip.duration
-                # size=clip.size
-                duration=duration/60
-                lecture.length = duration
-                lecture.size_mb=size_mbytes
-                lecture.save()
-                if lecture.size_mb > 100:
-                    lecture.delete()
-                    messages.error(request, 'Your file is too large.')
-                    return redirect('edit_subject', subject_id)
+        subject = MainSubject.objects.get(id=subject_id)
+        if request.user == subject.author:
+            if request.method == 'POST':
+                title = request.POST['title']
+                video_file = request.FILES['video_file']
+                author = request.user
+
+                free_access = False
+                try:
+                    if request.POST['free_access']:
+                        # if 'entity' in request.GET:
+                        free_access = True
+                except KeyError:
+                    free_access = False
+                        
+                # filesize = os.path.getsize(video_file.name)
+                if video_file.name.endswith('.mp4'):
+                    lecture = Lecture.objects.create(
+                        title=title,
+                        video_file=video_file,
+                        author=author,
+                        section=subject,
+                        free=free_access
+                    )
+                    path = lecture.video_file.path
+                    clip = VideoFileClip(path)
+                    size_bytes = os.path.getsize(path)
+                    size_mbytes=size_bytes/1024/1024
+                    duration = clip.duration
+                    # size=clip.size
+                    duration=duration/60
+                    lecture.length = duration
+                    lecture.size_mb=size_mbytes
+                    lecture.save()
+                    if lecture.size_mb > 100:
+                        lecture.delete()
+                        messages.error(request, 'Your file is too large.')
+                        return redirect('edit_subject', subject_id)
+                    else:
+                        lectures = Lecture.objects.filter(course=subject)
+                        context = {
+                            'subject': subject,
+                            'lectures': lectures,
+                        }
+                        return redirect('edit_subject', subject_id)
                 else:
-                    lectures = Lecture.objects.filter(course=subject)
-                    context = {
-                        'subject': subject,
-                        'lectures': lectures,
-                    }
+                    messages.error(request, 'File has inproper format. Load mp4 file')
                     return redirect('edit_subject', subject_id)
             else:
-                messages.error(request, 'File has inproper format. Load mp4 file')
+                # subject = MainSubject.objects.get(id=subject_id)
+                # lectures = Lecture.objects.filter(course=subject)
+                # context = {
+                #     'subject': subject,
+                #     'lectures': lectures
+                # }
+                # return render(request, 'workshop/edit_subject.html', context)
                 return redirect('edit_subject', subject_id)
         else:
-            # subject = MainSubject.objects.get(id=subject_id)
-            # lectures = Lecture.objects.filter(course=subject)
-            # context = {
-            #     'subject': subject,
-            #     'lectures': lectures
-            # }
-            # return render(request, 'workshop/edit_subject.html', context)
-            return redirect('edit_subject')
-
+            logout(request)
+            return redirect('login')
     else:
+        logout(request)
         return redirect('login')
 
 
 def edit_lecture(request, lecture_id):
     if request.user.is_authenticated:
-        if request.method == "POST":
-            lecture = Lecture.objects.get(id=lecture_id)
-            subject = lecture.course
-            subject_id = subject.id
-            title = request.POST['title']
-            video_file = request.FILES['video_file']
-            if video_file.name.endswith('.mp4'):
-                lecture.video_file=video_file
-                lecture.title = request.POST['title']
-                lecture.save()
-                path = lecture.video_file.path
-                size_bytes = os.path.getsize(path)
-                size_mbytes = size_bytes / 1024 / 1024
-                lecture.size_mbytes = size_mbytes
-                lecture.save()
-                if lecture.size_mb > 100:
-                    lecture.delete()
-                    messages.error(request, 'Your file is too large.')
-                    return redirect('edit_subject', subject_id)
-                else:
-                    lectures = Lecture.objects.filter(course=subject)
-                    context = {
-                        'lectures': lectures,
-                        'subject': subject
-                    }
-                    return redirect ('edit_subject', subject_id)
-            else:
-                messages.error(request, 'File has inproper format. Load mp4 file')
+        lecture = Lecture.objects.get(id=lecture_id)
+        subject = lecture.course
+        subject_id = subject.id
+        if request.user == subject.author:
+            if subject.ready == True:
+                messages.error(request, 'Sorry, you can not edit a loaded lecture.')
                 return redirect('edit_subject', subject_id)
+            else:
+                if request.method == "POST":
+                    title = request.POST['title']
+                    video_file = request.FILES['video_file']
+                    if video_file.name.endswith('.mp4'):
+                        lecture.video_file=video_file
+                        lecture.title = request.POST['title']
+                        lecture.save()
+                        path = lecture.video_file.path
+                        size_bytes = os.path.getsize(path)
+                        size_mbytes = size_bytes / 1024 / 1024
+                        lecture.size_mbytes = size_mbytes
+                        lecture.save()
+                        if lecture.size_mb > 100:
+                            lecture.delete()
+                            messages.error(request, 'Your file is too large.')
+                            return redirect('edit_subject', subject_id)
+                        else:
+                            lectures = Lecture.objects.filter(course=subject)
+                            context = {
+                                'lectures': lectures,
+                                'subject': subject
+                            }
+                            return redirect ('edit_subject', subject_id)
+                    else:
+                        messages.error(request, 'File has inproper format. Load mp4 file')
+                        return redirect('edit_subject', subject_id)
+                else:
+                    return redirect('edit_subject', subject_id)
         else:
-            return redirect('edit_subject', subject_id)
+            logout(request)
+            return redirect('login')
     else:
+        logout(request)
         return redirect('login')
 
 
@@ -229,12 +402,20 @@ def delete_lecture(request, lecture_id):
     if request.user.is_authenticated:
         lecture = Lecture.objects.get(id=lecture_id)
         subject = lecture.course
-        lecture.delete()
-        lectures = Lecture.objects.filter(course=subject)
-        subject_id=subject.id
-        # return render(request, 'workshop/edit_subject.html', context)
-        return redirect ('edit_subject',subject_id)
+        if request.user == subject.author:  
+            if subject.ready == True:
+                messages.error(request, 'Sorry, you can not delete a loaded lecture.')
+                return redirect('edit_subject', subject.id)
+            else:
+                lecture.delete()
+                lectures = Lecture.objects.filter(course=subject)
+                # return render(request, 'workshop/edit_subject.html', context)
+                return redirect('edit_subject', subject.id)
+        else:
+            logout(request)
+            return redirect('login')   
     else:
+        logout(request)
         return redirect('login')
 
 
@@ -564,3 +745,5 @@ class GeneratePDF(View):
         # return None
 
 
+
+    
