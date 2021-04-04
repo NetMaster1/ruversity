@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from app_content.models import MainSubject, Lecture, Price, Category, Language, Transaction, Badword, Credit_card, Credit_card_type, Paypal, Main_method, Bank_account, TempImage
+from app_content.models import MainSubject, Section, Lecture, Price, Category, Language, Transaction, Badword, Credit_card, Credit_card_type, Paypal, Main_method, Bank_account, TempImage
 from .models import Country
 from app_accounts.models import Author
 
@@ -133,8 +133,6 @@ def edit_author_page(request, user_id):
         logout(request)
         return redirect('login')
 
-
-
 def create_new_subject(request):
     if request.user.is_authenticated:
         languages = Language.objects.all()
@@ -195,6 +193,8 @@ def create_new_subject(request):
 def edit_subject(request, subject_id):
     if request.user.is_authenticated:
         subject = MainSubject.objects.get(id=subject_id)
+        sections = Section.objects.filter(subject=subject)
+        lectures=Lecture.objects.filter(subject=subject)
         if request.user == subject.author:
             if request.method == "POST":
                 subject.title = request.POST['title']
@@ -208,16 +208,12 @@ def edit_subject(request, subject_id):
                 subject.prerequisite = request.POST['prerequisites']
                 thumbnail = request.FILES['thumbnail']
                 if thumbnail.name.endswith('.jpg') or thumbnail.name.endswith('.png') or thumbnail.name.endswith('.gif') or thumbnail.name.endswith('.bmp') or thumbnail.name.endswith('.jpeg'):
-
                     temp_image=TempImage.objects.create(temp_thumbnail_file=thumbnail)
-                
                     img = cv2.imread(temp_image.temp_thumbnail_file.path, 0)
                     wid = img.shape[1]
                     hgt = img.shape[0]
                     ratio = wid / hgt
                     if ratio < 1.5 or ratio > 1.8:
-                        
-                        # new_subject.delete()
                         messages.error(request, 'Image has inproper ratio. Use ration of 1.7 .')
                         temp_image.delete()
                         return redirect('edit_subject', subject_id)
@@ -225,12 +221,11 @@ def edit_subject(request, subject_id):
                     else:
                         subject.thumbnail_file = thumbnail
                         subject.save()
-
-                        lectures = Lecture.objects.filter(course=subject)
                         languages = Language.objects.all()
                         categories = Category.objects.all()
                         context = {
                             'subject': subject,
+                            'sections': sections,
                             'lectures': lectures,
                             'languages': languages,
                             'categories': categories
@@ -240,15 +235,16 @@ def edit_subject(request, subject_id):
                     messages.error(request, 'File has inproper format. Load jpg, jpeg, png or bmp file')
                     return redirect('edit_subject', subject_id)
             else:
-                lectures = Lecture.objects.filter(course=subject) 
                 languages = Language.objects.all()
                 categories = Category.objects.all()
                 context = {
                     'subject': subject,
+                    'sections': sections,
                     'lectures': lectures,
                     'languages': languages,
                     'categories': categories
                     }
+                # return redirect('studio')
                 return render(request, 'workshop/edit_subject.html', context)
         else:
             logout(request)
@@ -256,7 +252,6 @@ def edit_subject(request, subject_id):
     else:
         logout(request)
         return redirect('login')
-
 
 
 def delete_subject(request, subject_id):
@@ -276,20 +271,28 @@ def delete_subject(request, subject_id):
         logout(request)
         return redirect('login')
 
-def create_new_chapter(request, subject_id):
+
+def create_new_section(request, subject_id):
     if request.user.is_authenticated:
         subject = MainSubject.objects.get(id=subject_id)
         if request.user == subject.author:
-            pass
-            return redirect('edit_subject', subject_id)
+            if request.method == 'POST':
+                title = request.POST['title']
+                section = Section.objects.create(
+                    title=title,
+                    subject=subject
+                )
+                return redirect('edit_subject', section.id)
     return redirect('login')
 
 
 def create_new_lecture(request, subject_id):
     if request.user.is_authenticated:
-        subject = MainSubject.objects.get(id=subject_id)
+        subject=MainSubject.objects.get(id=subject_id)
+        section = Section.objects.get(section=subject_id)
         if request.user == subject.author:
             if request.method == 'POST':
+                section=request.POST[section]
                 title = request.POST['title']
                 video_file = request.FILES['video_file']
                 author = request.user
@@ -308,7 +311,8 @@ def create_new_lecture(request, subject_id):
                         title=title,
                         video_file=video_file,
                         author=author,
-                        section=subject,
+                        section=section,
+                        subject=subject,
                         free=free_access
                     )
                     path = lecture.video_file.path
@@ -379,7 +383,7 @@ def edit_lecture(request, lecture_id):
                             messages.error(request, 'Your file is too large.')
                             return redirect('edit_subject', subject_id)
                         else:
-                            lectures = Lecture.objects.filter(course=subject)
+                            lectures = Lecture.objects.filter(subject=subject)
                             context = {
                                 'lectures': lectures,
                                 'subject': subject

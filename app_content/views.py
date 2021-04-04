@@ -1,5 +1,5 @@
 from django.shortcuts import render, HttpResponseRedirect, reverse, redirect
-from .models import MainSubject, Lecture, Transaction, Category, Language, Keyword, Badword, Cart, DiscountOn
+from .models import MainSubject, Lecture, Section, Transaction, Category, Language, Keyword, Badword, Cart, DiscountOn
 from django.core.paginator import Paginator
 from app_reviews.models import Review
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
