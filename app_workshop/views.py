@@ -193,8 +193,6 @@ def create_new_subject(request):
 def edit_subject(request, subject_id):
     if request.user.is_authenticated:
         subject = MainSubject.objects.get(id=subject_id)
-        sections = Section.objects.filter(subject=subject)
-        lectures=Lecture.objects.filter(subject=subject)
         if request.user == subject.author:
             if request.method == "POST":
                 subject.title = request.POST['title']
@@ -223,6 +221,7 @@ def edit_subject(request, subject_id):
                         subject.save()
                         languages = Language.objects.all()
                         categories = Category.objects.all()
+                                
                         context = {
                             'subject': subject,
                             'sections': sections,
@@ -235,22 +234,43 @@ def edit_subject(request, subject_id):
                     messages.error(request, 'File has inproper format. Load jpg, jpeg, png or bmp file')
                     return redirect('edit_subject', subject_id)
             else:
-                languages = Language.objects.all()
-                categories = Category.objects.all()
-                context = {
-                    'subject': subject,
-                    'sections': sections,
-                    'lectures': lectures,
-                    'languages': languages,
-                    'categories': categories
+                if Section.objects.filter(course=subject).exists():
+                    sections = Section.objects.filter(course=subject)
+                    if Lecture.objects.filter(subject=subject).exists:
+                        lectures=Lecture.objects.filter(subjec=subject)
+                        languages = Language.objects.all()
+                        categories = Category.objects.all()
+                        context = {
+                            'subject': subject,
+                            'sections': sections,
+                            'lectures': lectures,
+                            'languages': languages,
+                            'categories': categories
+                            }
+                        # return redirect('studio')
+                        return render(request, 'workshop/edit_subject.html', context)
+                    else:
+                        languages = Language.objects.all()
+                        categories = Category.objects.all()
+                        context = {
+                        'subject': subject,
+                        'languages': languages,
+                        'categories': categories
                     }
-                # return redirect('studio')
-                return render(request, 'workshop/edit_subject.html', context)
+                    return render(request, 'workshop/edit_subject.html', context)
+                else:
+                    languages = Language.objects.all()
+                    categories = Category.objects.all()
+                    context = {
+                        'subject': subject,
+                        'languages': languages,
+                        'categories': categories
+                    }
+                    return render(request, 'workshop/edit_subject.html', context)
         else:
             logout(request)
             return redirect('login')
     else:
-        logout(request)
         return redirect('login')
 
 
@@ -280,9 +300,13 @@ def create_new_section(request, subject_id):
                 title = request.POST['title']
                 section = Section.objects.create(
                     title=title,
-                    subject=subject
+                    course=subject
                 )
-                return redirect('edit_subject', section.id)
+                return redirect ('edit_subject', subject_id)
+            else:
+                return redirect('edit_subject', subject_id)
+        logout(request)
+        return redirect('login')
     return redirect('login')
 
 
