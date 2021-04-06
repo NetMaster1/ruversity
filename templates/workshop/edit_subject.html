@@ -135,7 +135,7 @@
 </div>
 </div>
   
-<!-- ============================================================= -->
+<!-- ===================Create New Section Box============================== -->
 
     <div class="row mt-3 border rounded bg-light text-center">
         <h5>Create new section</h5>
@@ -163,124 +163,28 @@
     </div>
     </form>
     
+  
+    <!-- =====================Sections============================================== -->
+    {% for section in sections %}
+    <div class="row mt-3 border rounded bg-light text-center">
+        <a href="{% url 'edit_section' subject.id section.id%}"><h3>{{section.title}}</h3></a>
+      
     </div>
-    </div>
-
-
-<!-- =================================================================== -->
-    
-
-
-
-<div class="row mt-3 border rounded bg-light text-center">
-    <h5>Create new lecture</h5>
-</div>
-    <div class="row mt-2 pb-3 border rounded">
-       
-                    <form action="{% url 'create_new_lecture' subject.id %}" method="POST" enctype="multipart/form-data">
-                        {% csrf_token %}
-
-                        <div class="form-row"> 
-                            <div class="col-3">
-                        <label for="title"><h5>Add new lecture:</h5></label>
-                        <input class='form-control' type="text" id="title" name="title" placeholder="Lecture Title" required>
-                        </div>
-                            <div class="col-3">
-                                    <label for="video_file"><h5>Load new mp4 file:</h5></label>
-                                    <input type="file" class="form-control" id="video_file" name="video_file" required>
-                                </div>
-                           
-                     
-                           <div class="col-3 align-self-end ml-5">
-                        <input type="checkbox" id='free_access' class='form-check-input' name='free_access' value='free_access'>
-                        <label for="free_access" class='form-check-label'>
-                            <h5>Check to grant free access</h5>
-                        </label>
-                        </div>
-                            
-                     
-                        <div class="col-2 align-self-end">
-                        <!-- <button type='submit' value="Create" class="btn btn-info btn-block"> -->
-                        <!-- <input type="submit" value="Create" class="btn btn-info btn-block "> -->
-                        <input type="submit" value="Create" class='btn btn-sm btn-block btn-outline-dark'>
-                        <input type="reset" value="Clear" class="btn btn-sm btn-block btn-outline-dark">
-                        </div>
-                        </div>
-                        </div>
-                    </form>
-        
-    </div>
-</div>
-        <!-- =====================Sections============================================== -->
-        {% for section in sections %}
-
-
-
-
+        <div class="row mt-3 border rounded text-center">
 
         {% endfor %}
-    <!-- ====================================================================== -->
+    <!-- ======================End of Section Box=========================== -->
 
 
-    <div class="row mt-3 border rounded bg-light text-center">
-        <h5>Edit lectures</h5>
+
     </div>
+</div>
 
-    
-    {% for lecture in lectures %}
-    <div class="row m-2">
-        <div class="col-3 border rounded m-1">
-            <div class="row">
-            <div class="col p-2">
-                    {{lecture.title}}<br>
-                    {{lecture.length}} min<br>
-                    {{lecture.size_mb}} mb
-            </div>
-            <div class="col p-2">
-                    <!-- <a class="nav-link" href="{{ lecture.video_file.url }}" target='_blank'> -->
-                    <a>
-                    <video oncontextmenu="return false;" width="160" height="120" controls controlsList="nodownload">
-                    <!-- video width="320" height="240" controls controlsList="nodownload"> -->
-                        <source src="{{lecture.video_file.url}}" type="video/mp4">
-                    </video>
-                    </a>
-            </div>
-            </div>
-        </div>
 
-        <div class="col-6 p-3 border rounded m-1">
-            <form action="{% url 'edit_lecture' lecture.id %}" method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
-                <div class="form-row">
-                <input class='form-control' type="text" id="title" name="title" placeholder="Lecture Title" required>
-                </div>
-                <div class="form-row">
-                <label for="description">Add short description for the lecture:</label>
-                <textarea class='form-control mb-3' name="description" rows='2' id='description' required>
-                </textarea>
-                <input type="file" class="form-control" id="video_file" name="video_file" required>
-                </div>
-                
-        </div>
-        <div class="col-2 p-3 border rounded m-1">
-            <div class="row m-1">
-                <!-- <div class="col"><input type="submit" value="Edit" class="btn btn-info btn-block"></div> -->
-                <div class="col"><input type="submit" value="Edit" class='btn btn-sm btn-block btn-outline-dark'></div>
-                </form>
-            </div>
-            <div class="row m-1">
-                <div class="col">
-                    <a href="{% url 'delete_lecture' lecture.id %}">
-                        <!-- <input type="submit" value="Delete" class="btn btn-info btn-block"> -->
-                        <input type="submit" value="Delete" class='btn btn-sm btn-block btn-outline-dark'>
-                    </a>
-                </div>
-            </div>
-        </div>
-       
-        </div>
-      
-{% endfor %}
+
+  
+</div>
+</div>
         </div>
     </div>
 </div>

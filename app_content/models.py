@@ -78,8 +78,8 @@ class Section(models.Model):
 class Lecture(models.Model):
     title = models.CharField(max_length=100)
     date_posted = models.DateTimeField(auto_now_add=True)
-    subject = models.ForeignKey(MainSubject, on_delete=models.DO_NOTHING)
-    section = models.ForeignKey(Section, on_delete=models.DO_NOTHING)
+    subject = models.ForeignKey(MainSubject, on_delete=models.CASCADE)
+    section = models.ForeignKey(Section, on_delete=models.CASCADE)
     video_file = models.FileField(upload_to='uploads', null=True)
     author = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     blocked = models.BooleanField(default=False)
@@ -95,8 +95,8 @@ class Lecture(models.Model):
 
 
 class Transaction(models.Model):
-    course = models.ForeignKey(MainSubject, on_delete=models.CASCADE)
-    buyer = models.ForeignKey(User, on_delete=models.CASCADE)
+    course = models.ForeignKey(MainSubject, on_delete=models.DO_NOTHING)
+    buyer = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     date_bought = models.DateField(auto_now_add=True)
     paid_amount = models.FloatField(null=True)
 

@@ -123,16 +123,29 @@
         <div class="card-header"><h4>Content</h4></div>
         <div class="card-body">
             <ul class="list-group list-group-flush">
-            {% for lecture in lectures %}
-                {% if lecture.free == False %}
-                <li class="list-group-item">{{lecture.title}}</li>
-                {% else %}
-                <li class="list-group-item">
-                    <a href="{% url 'video' lecture.id %}" target="_blank">{{lecture.title}}</a>
-                    <!-- <input type="submit" value="{{lecture.title}}" class="btn btn-info btn-block"> -->
-                </li>
-                {% endif %}
-            {% endfor %}
+                
+
+{% for section in sections %}
+        <h5 data-toggle="collapse" data-target='#section'>{{section.title}}</h5>
+                <div id="section" class='collapse'>
+                {% for lecture in lectures %}
+                
+                    {% if lecture.section == section %}
+                    
+                    {% if lecture.free == False %}
+                    <li class="list-group-item">{{lecture.title}}</li>
+                    {% else %}
+                    <li class="list-group-item">
+                        <a href="{% url 'video' lecture.id %}" target="_blank">{{lecture.title}}</a>
+                    </li>
+                    {% endif %}
+                    
+                    {% endif %}
+                
+                {% endfor%}<br>   
+                </div>
+{% endfor %}
+         
             </ul>
         </div>
    

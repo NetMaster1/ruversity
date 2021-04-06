@@ -237,7 +237,7 @@ def edit_subject(request, subject_id):
                 if Section.objects.filter(course=subject).exists():
                     sections = Section.objects.filter(course=subject)
                     if Lecture.objects.filter(subject=subject).exists:
-                        lectures=Lecture.objects.filter(subjec=subject)
+                        lectures=Lecture.objects.filter(subject=subject)
                         languages = Language.objects.all()
                         categories = Category.objects.all()
                         context = {
@@ -309,14 +309,49 @@ def create_new_section(request, subject_id):
         return redirect('login')
     return redirect('login')
 
-
-def create_new_lecture(request, subject_id):
+def edit_section (request, subject_id, section_id):
     if request.user.is_authenticated:
-        subject=MainSubject.objects.get(id=subject_id)
-        section = Section.objects.get(section=subject_id)
+        subject = MainSubject.objects.get(id=subject_id)
+        section=Section.objects.get(id=section_id)
         if request.user == subject.author:
             if request.method == 'POST':
-                section=request.POST[section]
+                title = request.POST['title']
+                section.title = title
+                section.save()
+                return redirect('edit_section', subject_id, section_id)
+            else:
+                section = Section.objects.get(id=section_id)
+                lectures=Lecture.objects.filter(section=section)
+                context = {
+                    'subject': subject,
+                    'section': section,
+                    'lectures': lectures,
+                }
+                return render(request, 'workshop/edit_section.html', context)
+        else:
+            logout(request)
+            return redirect('login')
+    return redirect('login')
+
+def delete_section (request, subject_id, section_id):
+    if request.user.is_authenticated:
+        subject=MainSubject.objects.get(id=subject_id)
+        if request.user == subject.author:
+            section = Section.objects.get(id=section_id)
+            section.delete()
+            return redirect ('edit_subject', subject_id)
+        else:
+            logout(request)
+            return redirect('login')
+    else:
+        return redirect('login')
+    
+def create_new_lecture(request, subject_id, section_id):
+    if request.user.is_authenticated:
+        subject=MainSubject.objects.get(id=subject_id)
+        section = Section.objects.get(id=section_id)
+        if request.user == subject.author:
+            if request.method == 'POST':
                 title = request.POST['title']
                 video_file = request.FILES['video_file']
                 author = request.user
@@ -352,43 +387,38 @@ def create_new_lecture(request, subject_id):
                     if lecture.size_mb > 100:
                         lecture.delete()
                         messages.error(request, 'Your file is too large.')
-                        return redirect('edit_subject', subject_id)
+                        return redirect('edit_section', subject_id, section_id)
                     else:
-                        lectures = Lecture.objects.filter(course=subject)
+                        lectures = Lecture.objects.filter(subject=subject)
+                        lectures=lectures.filter(section=section)
                         context = {
                             'subject': subject,
+                            'section': section,
                             'lectures': lectures,
                         }
-                        return redirect('edit_subject', subject_id)
+                        return redirect('edit_section', subject_id, section_id)
                 else:
                     messages.error(request, 'File has inproper format. Load mp4 file')
-                    return redirect('edit_subject', subject_id)
+                    return redirect('edit_section', subject_id, section_id)
             else:
-                # subject = MainSubject.objects.get(id=subject_id)
-                # lectures = Lecture.objects.filter(course=subject)
-                # context = {
-                #     'subject': subject,
-                #     'lectures': lectures
-                # }
-                # return render(request, 'workshop/edit_subject.html', context)
-                return redirect('edit_subject', subject_id)
+               
+                return redirect('edit_section', subject_id, section_id)
         else:
             logout(request)
             return redirect('login')
     else:
-        logout(request)
         return redirect('login')
 
 
 def edit_lecture(request, lecture_id):
     if request.user.is_authenticated:
         lecture = Lecture.objects.get(id=lecture_id)
-        subject = lecture.course
-        subject_id = subject.id
+        subject = lecture.subject
+        section = lecture.section
         if request.user == subject.author:
             if subject.ready == True:
                 messages.error(request, 'Sorry, you can not edit a loaded lecture.')
-                return redirect('edit_subject', subject_id)
+                return redirect('edit_section', subject.id, section.id)
             else:
                 if request.method == "POST":
                     title = request.POST['title']
@@ -405,19 +435,20 @@ def edit_lecture(request, lecture_id):
                         if lecture.size_mb > 100:
                             lecture.delete()
                             messages.error(request, 'Your file is too large.')
-                            return redirect('edit_subject', subject_id)
+                            return redirect('edit_section', subject.id, section.id)
                         else:
                             lectures = Lecture.objects.filter(subject=subject)
                             context = {
                                 'lectures': lectures,
+                                'section': section,
                                 'subject': subject
                             }
-                            return redirect ('edit_subject', subject_id)
+                            return redirect('edit_section', subject.id, section.id)
                     else:
                         messages.error(request, 'File has inproper format. Load mp4 file')
-                        return redirect('edit_subject', subject_id)
+                        return redirect('edit_section', subject.id, section.id)
                 else:
-                    return redirect('edit_subject', subject_id)
+                     return redirect('edit_section', subject.id, section.id)
         else:
             logout(request)
             return redirect('login')
@@ -429,16 +460,16 @@ def edit_lecture(request, lecture_id):
 def delete_lecture(request, lecture_id):
     if request.user.is_authenticated:
         lecture = Lecture.objects.get(id=lecture_id)
-        subject = lecture.course
+        subject = lecture.subject
+        section=lecture.section
         if request.user == subject.author:  
             if subject.ready == True:
                 messages.error(request, 'Sorry, you can not delete a loaded lecture.')
-                return redirect('edit_subject', subject.id)
+                return redirect('edit_section', subject_id, section_id)
             else:
                 lecture.delete()
-                lectures = Lecture.objects.filter(course=subject)
-                # return render(request, 'workshop/edit_subject.html', context)
-                return redirect('edit_subject', subject.id)
+                lectures = Lecture.objects.filter(subject=subject)
+                return redirect('edit_section', subject.id, section.id)
         else:
             logout(request)
             return redirect('login')   
@@ -474,7 +505,7 @@ def agreement(request, subject_id):
 def disagree(request, subject_id):
     if request.user.is_authenticated:
         subject = MainSubject.objects.get(id=subject_id)
-        lectures = Lecture.objects.filter(course=subject)
+        lectures = Lecture.objects.filter(subject=subject)
         context = {
             'subject': subject,
             'lectures': lectures
@@ -487,9 +518,9 @@ def disagree(request, subject_id):
 def agree(request, subject_id):
     if request.user.is_authenticated:
         subject = MainSubject.objects.get(id=subject_id)
-        if Lecture.objects.filter(course=subject.id).exists():
+        if Lecture.objects.filter(subject=subject.id).exists():
             badwords=Badword.objects.all()
-            lectures = Lecture.objects.filter(course=subject)
+            lectures = Lecture.objects.filter(subject=subject)
             for word in badwords:
                 if word.badword in subject.title:
                     subject.blocked = True
@@ -505,7 +536,7 @@ def agree(request, subject_id):
                         lecture.save()
             lectures = lectures.filter(blocked=True)
             for lecture in lectures:
-                subject = MainSubject.objects.get(id=lecture.course)
+                subject = MainSubject.objects.get(id=lecture.subject)
                 subject.blocked = True
                 subject.save()
             subject_id=subject.id

@@ -37,7 +37,8 @@ def index(request):
 
 def subject(request, subject_id):
     subject = MainSubject.objects.get(id=subject_id)
-    lectures = Lecture.objects.filter(course=subject)
+    lectures = Lecture.objects.filter(subject=subject)
+    sections = Section.objects.filter (course = subject)
     reviews = Review.objects.filter(subject=subject_id)
     if request.user.is_authenticated:
         if Transaction.objects.filter(course=subject, buyer=request.user).exists():
@@ -54,6 +55,7 @@ def subject(request, subject_id):
                 cart = Cart.objects.get(subject=subject, user=request.user)
                 context = {
                     'subject': subject,
+                    'sections': sections,
                     'lectures': lectures,
                     'reviews': reviews,
                     'cart': cart
@@ -62,6 +64,7 @@ def subject(request, subject_id):
             else:
                 context = {
                       'subject': subject,
+                      'sections': sections,
                       'lectures': lectures,
                       'reviews': reviews,
                   }
@@ -69,6 +72,7 @@ def subject(request, subject_id):
     else:
         context = {
             'subject': subject,
+            'sections': sections,
             'lectures': lectures,
             'reviews': reviews,
         }
