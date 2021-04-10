@@ -3,6 +3,7 @@ from .models import MainSubject, Lecture, Section, Transaction, Category, Langua
 from django.core.paginator import Paginator
 from app_reviews.models import Review
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.contrib.auth import authenticate, login, logout
 
 # Create your views here.
 
@@ -606,8 +607,13 @@ def cart(request):
 
 def delete_from_cart(request, subject_id):
     if request.user.is_authenticated:
-        cart_item = Cart.objects.get(id=subject_id)
-        cart_item.delete()
-        return redirect('cart')
+        subject=MainSubject.objects.get(id=subject_id)
+        if Cart.objects.filter(user=request.user, subject=subject).exists():
+            cart_item = Cart.objects.filter(user=request.user, subject=subject)
+            cart_item.delete()
+            return redirect('cart')
+        else:
+            logout(request)
+            return redirect('login')
     else:
         return redirect('login')

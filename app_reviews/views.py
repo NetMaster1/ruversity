@@ -29,7 +29,7 @@ def rating(request, subject_id):
                 rating=rating_given
             )
             subject = MainSubject.objects.get(id=subject_id)
-            lectures = Lecture.objects.filter(course=subject)
+            lectures = Lecture.objects.filter(subject=subject)
             # my_courses = Transaction.objects.filter(buyer=request.user)
             context = {
                 'subject': subject,
@@ -51,7 +51,7 @@ def review(request, subject_id):
                 content=content
             )
             review = Review.objects.get(subject=subject, author=request.user)
-            lectures = Lecture.objects.filter(course=subject)
+            lectures = Lecture.objects.filter(subject=subject)
             context = {
                 'subject': subject,
                 'lectures': lectures,

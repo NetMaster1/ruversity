@@ -78,7 +78,7 @@
     </div>
 
     <!-- ================================================================= -->
-    {% if transaction.buyer != request.user and transaction.course != subject %}
+    {% if transaction.buyer != request.user and transaction.course != subject and  subject.author != request.user %}
       
     <div class="card-footer">  
                 <div class="col">
@@ -100,6 +100,15 @@
                     </button>
                 </a>
                 </div>
+            {% else %}
+                    <div class="row">
+                        <a href="{% url 'cart' %}">
+                            <!-- <button type="button" name="button" class='btn btn-info btn-block'> -->
+                            <button type="button" name="button" class='btn btn-sm btn-block btn-outline-dark'>
+                                Go to cart
+                            </button>
+                        </a>
+                    </div>
             {% endif %}
 
             </div>
@@ -109,7 +118,7 @@
       
     {% else %}
         <div class="card-footer">
-            <h5 class=”text-left”>You have already bought this course. Look for it in 'My courses' section <h5>
+            <h5 class=”text-left”>You are either the author of this course or have already bought it.<h5>
         </div>
     {% endif %}
    
@@ -126,12 +135,11 @@
                 
 
 {% for section in sections %}
-        <h5 data-toggle="collapse" data-target='#section'>{{section.title}}</h5>
-                <div id="section" class='collapse'>
+        <h5 data-toggle="collapse" data-target='#section{{section.id}}'>{{section.title}}</h5>
+
                 {% for lecture in lectures %}
-                
                     {% if lecture.section == section %}
-                    
+                    <div id="section{{section.id}}" class='collapse'>
                     {% if lecture.free == False %}
                     <li class="list-group-item">{{lecture.title}}</li>
                     {% else %}
@@ -139,11 +147,10 @@
                         <a href="{% url 'video' lecture.id %}" target="_blank">{{lecture.title}}</a>
                     </li>
                     {% endif %}
-                    
+                    </div>
                     {% endif %}
-                
-                {% endfor%}<br>   
-                </div>
+                {% endfor%}
+               
 {% endfor %}
          
             </ul>
@@ -154,7 +161,7 @@
 </div>
 
 <div class="row mt-2 pl-2"> .
-    <h3>Reviews</h3>
+    <h3>Feedback</h3>
 </div>
 
     <div class="row mt-1">

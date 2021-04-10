@@ -86,8 +86,10 @@ def create_author_page(request):
 def author_page(request, user_id):
         if Author.objects.filter(user=user_id).exists():
             author = Author.objects.get(user=user_id)
+            subjects =MainSubject.objects.filter(author=author.user)
             context = {
-                'author': author
+                'author': author,
+                'subjects': subjects
             }
             return render(request, 'workshop/author_page.html', context)
         else:
@@ -130,7 +132,6 @@ def edit_author_page(request, user_id):
             logout(request)
             return redirect('login')
     else:
-        logout(request)
         return redirect('login')
 
 def create_new_subject(request):

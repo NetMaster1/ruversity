@@ -14,6 +14,7 @@
 
 
 <div class="row mt-1">
+
 <div class="col-4 m-1">
 <div class="card">
             <div class="card-header">
@@ -135,19 +136,33 @@
 
         <div class="card-body">
             <ul class="list-group list-group-flush">
-                {% for lecture in lectures %}
-                <li class="list-group-item">
-                    <a href="{% url 'video' lecture.id %}" target="_blank">{{lecture.title}}</a>
-                    <!-- <input type="submit" value="{{lecture.title}}" class="btn btn-info btn-block"> -->
-                </li>
-                {% endfor %}
-            </ul>
+
+    {% for section in sections %}
+ 
+
+            <h5 data-toggle="collapse" data-target='#section{{section.id}}'>{{section.title}}</h5>
+                
+            {% for lecture in lectures %}
+                {% if lecture.section == section %}
+                    <div id="section{{section.id}}" class='collapse'>
+                        <li class="list-group-item">
+                            <a href="{% url 'video' lecture.id %}" target="_blank">{{lecture.title}}</a>
+                        </li>
+                    </div>
+                {% endif %}
+            {% endfor%}
+                
+    {% endfor %}
+
+        </ul>
         </div>
+
     </div>
 </div>
-
 </div>
-  
+
+
+
 
 {% if review.author != request.user and review.subject != subject %}
 <div class="row mt-3">
@@ -173,7 +188,6 @@
 </div>
 </div>
 {% endif %}
-
 
 </div>
 {% endblock %}
