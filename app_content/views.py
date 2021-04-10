@@ -44,31 +44,44 @@ def subject(request, subject_id):
     if request.user.is_authenticated:
         if Transaction.objects.filter(course=subject, buyer=request.user).exists():
             transaction = Transaction.objects.get(course=subject, buyer=request.user)
-            context = {
-                'subject': subject,
-                'lectures': lectures,
-                'reviews': reviews,
-                'transaction': transaction,
-            }
-            return render(request, 'subject_page.html', context)
-        else:
-            if Cart.objects.filter(subject=subject, user=request.user).exists():
-                cart = Cart.objects.get(subject=subject, user=request.user)
+            if Cart.objects.filter(subject=subject, user=request.user):
+                cart=Cart.objects.get(subject=subject, user=request.user)
                 context = {
                     'subject': subject,
                     'sections': sections,
                     'lectures': lectures,
                     'reviews': reviews,
-                    'cart': cart
+                    'cart': cart,
+                    'transaction': transaction,
                 }
                 return render(request, 'subject_page.html', context)
             else:
                 context = {
-                      'subject': subject,
-                      'sections': sections,
-                      'lectures': lectures,
-                      'reviews': reviews,
-                  }
+                    'subject': subject,
+                    'sections': sections,
+                    'lectures': lectures,
+                    'reviews': reviews,
+                    'transaction': transaction,
+                }
+                return render(request, 'subject_page.html', context)
+        else:
+            if Cart.objects.filter(subject=subject, user=request.user):
+                cart=Cart.objects.get(subject=subject, user=request.user)
+                context = {
+                    'subject': subject,
+                    'sections': sections,
+                    'lectures': lectures,
+                    'reviews': reviews,
+                    'cart': cart,
+                }
+                return render(request, 'subject_page.html', context)
+            else:
+                context = {
+                    'subject': subject,
+                    'sections': sections,
+                    'lectures': lectures,
+                    'reviews': reviews,
+                }
                 return render(request, 'subject_page.html', context)
     else:
         context = {
@@ -588,12 +601,15 @@ def search_by_author(request, subject_author):
 
 def create_cart_item(request, subject_id):
     if request.user.is_authenticated:
-        subject=MainSubject.objects.get(id=subject_id)
-        entry = Cart.objects.create(
-            subject=subject,
-            user=request.user
-        )
-        return redirect ('cart')
+        subject = MainSubject.objects.get(id=subject_id)
+        if Cart.objects.filter(user=request.user, subject=subject).exists():
+            return redirect('cart')
+        else:
+            entry = Cart.objects.create(
+                subject=subject,
+                user=request.user
+            )
+            return redirect ('cart')
     else:
         return redirect('login')
 

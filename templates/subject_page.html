@@ -77,8 +77,18 @@
         </div>
     </div>
 
+   
     <!-- ================================================================= -->
-    {% if transaction.buyer != request.user and transaction.course != subject and  subject.author != request.user %}
+{% if request.user == subject.author  %}
+    <div class="card-footer">
+        <h5 class=”text-left”>You are the author of the course. You can't buy it.<h5>
+    </div>
+{% elif transaction.buyer == request.user and transaction.course == subject %}
+    <div class="card-footer">
+        <h5 class=”text-left”>You have already bought the course. Get to MyCourses.<h5>
+    </div>
+{% else %}
+
       
     <div class="card-footer">  
                 <div class="col">
@@ -110,17 +120,10 @@
                         </a>
                     </div>
             {% endif %}
-
             </div>
-
     </div>
-           
-      
-    {% else %}
-        <div class="card-footer">
-            <h5 class=”text-left”>You are either the author of this course or have already bought it.<h5>
-        </div>
-    {% endif %}
+    
+{% endif %}
    
 
     <!-- ===================================================================== -->
@@ -156,6 +159,7 @@
             </ul>
         </div>
    
+
 </div>
 </div>
 </div>
