@@ -81,6 +81,8 @@ class Lecture(models.Model):
     subject = models.ForeignKey(MainSubject, on_delete=models.CASCADE)
     section = models.ForeignKey(Section, on_delete=models.CASCADE)
     video_file = models.FileField(upload_to='uploads', null=True)
+    subtitle_file = models.FileField(upload_to='uploads', null=True)
+    translation_file = models.FileField(upload_to='uploads', null=True)
     author = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     blocked = models.BooleanField(default=False)
     free = models.BooleanField(default=False)
