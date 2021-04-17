@@ -69,7 +69,7 @@ class MainSubject(models.Model):
 
 
 class Section(models.Model):
-    course = models.ForeignKey(MainSubject, on_delete=models.DO_NOTHING)
+    course = models.ForeignKey(MainSubject, on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
 
     def __int__(self):

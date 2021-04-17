@@ -356,7 +356,7 @@ def create_new_lecture(request, subject_id, section_id):
                 title = request.POST['title']
                 video_file = request.FILES['video_file']
                 subtitle_file = request.FILES['subtitle_file']
-                translation_file = request.FILES['translation_file']
+                # translation_file = request.FILES['translation_file']
                 author = request.user
 
                 free_access = False
@@ -373,7 +373,7 @@ def create_new_lecture(request, subject_id, section_id):
                         title=title,
                         video_file=video_file,
                         subtitle_file=subtitle_file,
-                        translation_file=translation_file,
+                        # translation_file=translation_file,
                         author=author,
                         section=section,
                         subject=subject,
@@ -429,7 +429,7 @@ def edit_lecture(request, lecture_id):
                     title = request.POST['title']
                     video_file = request.FILES['video_file']
                     subtitle_file = request.FILES['subtitle_file']
-                    translation_file = request.FILES['translation_file']
+                    # translation_file = request.FILES['translation_file']
                     if video_file.name.endswith('.mp4'):
                         lecture.video_file=video_file
                         lecture.title = request.POST['title']

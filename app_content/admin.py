@@ -1,9 +1,13 @@
 from django.contrib import admin
-from . models import MainSubject, Transaction, Price, Category, Language, Rating, Keyword, Lecture, Badword, Credit_card, Credit_card_type, Paypal, Main_method, Cart, Bank_account, DiscountOn
+from . models import MainSubject, Transaction, Price, Category, Language, Rating, Keyword, Lecture, Section, Badword, Credit_card, Credit_card_type, Paypal, Main_method, Cart, Bank_account, DiscountOn
 
 
 class MainSubjectAdmin(admin.ModelAdmin):
     list_display = ('id', 'title', 'percent', 'date_posted', 'author')
+
+class SectionAdmin(admin.ModelAdmin):
+    list_display = ('id', 'title')
+
 
 class LectureAdmin(admin.ModelAdmin):
     list_display = ('id', 'title', 'author', 'date_posted')
@@ -67,6 +71,7 @@ admin.site.register(Category, CategoryAdmin)
 admin.site.register(Language, LanguageAdmin)
 admin.site.register(Keyword, KeywordAdmin)
 admin.site.register(Lecture, LectureAdmin)
+admin.site.register(Section, SectionAdmin)
 admin.site.register(Badword, BadwordAdmin)
 admin.site.register(Credit_card, Credit_cardAdmin)
 admin.site.register(Credit_card_type, Credit_card_typeAdmin)

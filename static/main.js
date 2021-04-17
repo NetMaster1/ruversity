@@ -23,7 +23,6 @@ const handleStarSelect = (size) => {
         }
     }
 }
-
 //longer version to be optimized
 const handleSelect = (selection) => {
     switch(selection) {
@@ -74,7 +73,6 @@ const handleSelect = (selection) => {
 }
     }
 }
-
 if (one) {
     const arr = [one, two, three, four, five]
     arr.forEach(item => item.addEventListener('mouseover', (event) => { handleSelect(event.target.id) })) 
@@ -86,5 +84,5 @@ if (one) {
             const id = e.target.id
         })
     })) 
-
 }
+
