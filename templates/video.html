@@ -40,17 +40,35 @@
 
     <script>
 //================================= Player Controls=================================== -->
-var video, playBtn, progressBar, currentTime, duration;
-function initializePlayer() {
+var video, playBtn, progressBar, timeElapsed, timing, progressRange, volumeRange, volumeBar, volumeIcon, speed, track, language, curTrack, addTrackOpt, tracksOff
 
+//function initializePlayer() {
+function initializePlayer() {
     video = document.getElementById('video');
+    track = document.getElementById('track');
     playBtn = document.getElementById('play-btn');
     progressBar = document.querySelector('.progress-bar');
-    currentTime = document.querySelector('.time-elapsed');
-    duration = document.querySelector('.time-duration');
-    //const progressRange = document.querySelector('.progress-range');
-    //const volumeRange = document.querySelector('volume-range');
-    //const volumeBar = document.querySelector('volume-bar');
+    timeElapsed = document.querySelector('.time-elapsed');
+    timing = document.querySelector('.time-duration');
+    progressRange = document.querySelector('.progress-range');
+    volumeRange = document.querySelector('.volume-range');
+    volumeBar = document.querySelector('.volume-bar');
+    volumeIcon = document.getElementById('volume-icon');
+    speed = document.querySelector('.player-speed');
+    //subtitleButton = document.querySelector('.subtitle');
+    language = document.querySelector('.languages');
+    tracksOff = document.createElement('option');
+    //select = document.querySelector('select');
+    tracksOff.setAttribute('value', 'off');
+    tracksOff.textContent = 'Tracks off';
+    for (var i = 0; i < video.textTracks.length; i++) {
+        curTrack = video.textTracks[i];
+        addTrackOpt = document.createElement('option');
+        addTrackOpt.setAttribute('value', curTrack.kind + '-' + curTrack.language);
+        addTrackOpt.textContent = curTrack.label + ' ' + curTrack.kind;
+        //select.appendChild(addTrackOpt);
+        //select.appendChild(tracksOff);
+    }
     //const fullscreenBtn = document.querySelector('.fullscreen');
 
     // Event Listenters====================== -->
@@ -59,9 +77,24 @@ function initializePlayer() {
     video.addEventListener('ended', showPlayIcon, false);
     video.addEventListener('timeupdate', updateProgress, false);
     video.addEventListener('canplay', updateProgress, false);
-    }
-   window.onload = initializePlayer;
+    progressRange.addEventListener('click', setProgress, false);
+    volumeRange.addEventListener('click', changeVolume, false);
+    volumeRange.addEventListener('click', changeVolume, false);
+    speed.addEventListener('change', changeSpeed, false);
+    language.addEventListener('change', trackChange, false);
+    //select.addEventListener('change', trackChange, false);
+    //subtitleButton.addEventListener('click', showSubtitle, false);
 
+    hideTracks();
+   
+    //select.addEventListener('change', function () {
+     //   trackChange(select.value);
+    //});
+
+  }
+  
+  window.onload = initializePlayer;
+ 
 //Play & Pause=============== -->
 function showPlayIcon(){
     playBtn.classList.replace('fa-pause', 'fa-play');
@@ -73,6 +106,9 @@ function togglePlay() {
         video.play();
         playBtn.classList.replace('fa-play', 'fa-pause');
         playBtn.setAttribute('title', 'Pause');
+        //console.log(window.screen.availWidth);
+        //console.log(window.screen.availHeight);
+        //console.log(video.height);
 
         }
     else {
@@ -85,17 +121,81 @@ function displayTime(time) {
     const minutes = Math.floor(time / 60);
     let seconds = Math.floor (time % 60);
     seconds = seconds > 9 ? seconds : `0${seconds}`;
-    console.log (minutes, seconds);
+    //console.log (minutes, seconds);
     return `${minutes}:${seconds}`;
 }
+  
+//Click progress bar to seek within video -->
+function setProgress(e) {
+    let newTime = e.offsetX / progressRange.offsetWidth;
+    progressBar.style.width = `${newTime * 100}%`;
+    video.currentTime = newTime * video.duration;
+    //console.log(e.offsetX);
+    //console.log(progressRange.offsetWidth);
+    //console.log(newTime);
+    console.log(progressBar.style.width);
+    //console.log(video.duration);
+    console.log(video.currentTime);
+}
 
-//Update progress bar as video plays
 function updateProgress(){
-    console.log('currentTime', video.currentTime, 'duration', video.duration);
-    progressBar.style.width = `${(video.currentTime / video.duration) * 100}%`;
-    //displayTime(64);
-    currentTime.textContent =`${displayTime(video.currentTime)} /`;
-    duration.textContent = `${displayTime(video.duration)}`;
+    progressBar.style.width = `${(video.currentTime /video.duration)*100}%`;
+    timeElapsed.textContent = `${displayTime(video.currentTime)}/`;
+    timing.textContent = `${displayTime(video.duration)}`;
+}
+
+function changeVolume(e){
+    let volume = e.offsetX / volumeRange.offsetWidth;
+    if (volume < 0.1) {
+        volume=0;
+    }
+    if (volume > 0.9) {
+        volume=1;
+    }
+    //calculating volume bar width
+    volumeBar.style.width = `${volume * 100}%`;
+    video.volume = volume;
+    //console.log(volume);
+    //changing icons
+    volumeIcon.className = '';
+
+    if (volume > 0.7) {
+        volumeIcon.classList.add ('fas', 'fa-volume-up');
+    }
+    else if (volume <0.7 && volume > 0){
+        volumeIcon.classList.add ('fas', 'fa-volume-down');    
+    }
+    else if (volume === 0){
+        volumeIcon.classList.add ('fas', 'fa-volume-off');
+    }
+}
+
+//Change playback speed
+function changeSpeed(){
+    //console.log('video playback rate:', video.playbackRate)
+    //console.log('selected value:', speed.value);
+    video.playbackRate = speed.value
+}
+
+function hideTracks() {
+    for (var i = 0; i < video.textTracks.length; i++) {
+            video.textTracks[i].mode = 'hidden';
+        }
+    }
+function trackChange() {
+    if (language.value === 'off'){
+        hideTracks();
+    }
+    else {
+    hideTracks();
+    for (var i=0; i < video.textTracks.length; i++)
+        {
+            if (video.textTracks[i].label === language.value)
+            {
+                video.textTracks[i].mode = 'showing'
+            }
+        }
+    }
 }
 
 </script>
@@ -113,16 +213,24 @@ function updateProgress(){
         
 
     <div class="player">
-            <video src="{{the_video.video_file.url}}" id="video" playsinline>
-            <!-- <track kind='subtitles' srclang="ru" src={{the_video.subtitle_file.url}} label='Russian' width='50' height='30'
-                default /> -->
+            <!-- <video src="{{the_video.video_file.url}}" id="video" playsinline> -->
+            <video src="{{the_video.video_file.url}}" id="video" preload='true'>
+            <track label='Russian' kind='subtitles' srclang="ru" src={{the_video.subtitle_file.url}}  width='50' height='30' default>
+            <track label="English" kind="subtitles" srclang="en" src="{{the_video.subtitle_file.url}}">
+           
             </video>
+    
+          
 
-        <div class="show-controls">
-        <div class="controls-container">
             <div class="progress-range" title="Seek">
                 <div class="progress-bar"></div>
             </div>
+       
+
+
+        <div class="show-controls"> 
+        <div class="controls-container">
+
             <div class="control-group">
             <div class="controls-left">
                     <div class="play-controls">
@@ -154,7 +262,25 @@ function updateProgress(){
                 <div class="time">
                     <span class="time-elapsed">00:00 /</span>
                     <span class="time-duration">2:38/</span>
+        
                 </div>
+
+                <!-- <div class="subtitle"> -->
+                <!-- <i class="fas fa-closed-captioning"></i> -->
+                <!-- </div> -->
+            <div class="subtitle" title="subtitle_language"></div>
+                <select name="select" class='languages'>
+                    <option value="off">
+                        Tracks off
+                    <option value="Russian">
+                        Русский
+                    </option>
+                    <option value="English">
+                        English
+                    </option>
+                </select>
+            </div>
+                            
 
                 <div class="fullscreen">
                     <i class="fas fa-expand"></i>
@@ -165,6 +291,10 @@ function updateProgress(){
         </div>
     </div>
     </div>
+
+<div>
+</div>
+
         <!-- <video oncontextmenu="return false;" width="320" height="240" controls controlsList="nodownload"> -->
 
     <!-- =====================working player=========================== -->
