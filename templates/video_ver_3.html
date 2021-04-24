@@ -1,21 +1,19 @@
 {% extends 'base.html' %}
-{% load humanize %}
-{% block content %}
+{% block content%}
 
 <div class="container">
-<body>
-    <video id="my-video" class="video-js vjs-big-play-centered" preload="auto" width="1280" height="640" poster="http:"
-        data-setup="{}">
+   
+    
+    <video id="my-video"  controls width="1280"  height="640" poster="MY_VIDEO_POSTER.jpg">
+
         <source src="{{the_video.video_file.url}}" type="video/mp4" />
-        <track label='Russian' kind='subtitles' srclang="ru" src="{{the_video.subtitle_file.url}}" width='50' height='30' default>
+        <track label='Russian' kind='subtitles' srclang="ru" src="{{the_video.subtitle_file.url}}" default>
         <p class="vjs-no-js">
             To view this video please enable JavaScript, and consider upgrading to a
             web browser that
             <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
         </p>
     </video>
-
-  
-</body>
 </div>
 {% endblock %}
+
