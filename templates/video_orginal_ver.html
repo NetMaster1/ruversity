@@ -1,0 +1,332 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block content %}
+
+<!-- <body oncontextmenu="return false"> -->
+<head>
+  
+        <link href="https://vjs.zencdn.net/7.11.4/video-js.css" rel="stylesheet" />
+    
+        <!-- If you'd like to support IE8 (for Video.js versions prior to v7) -->
+        <!-- <script src="https://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js"></script> -->
+  
+<!-- <script>
+    var vid, playbtn, seekslider;
+    function initializePlayer() {
+    //Set object references
+        vid = document.getElementById("my_video");
+        playbtn = document.getElementById("playpausebtn");
+        seekslider = document.getElementById("seekslider");
+            //Add event listeners
+        playbtn.addEventListener("click", playPause, false);
+        seekslider.addEventListener("change", vidSeek, false);
+        vid.addEventListener("timeupdate", seektimeupdate, false);
+        }
+    window.onload = initializePlayer;
+
+        function playPause() {
+            if (vid.paused) {
+                vid.play();
+                playbtn.innerHTML = 'Pause';
+            }
+            else {
+                vid.pause();
+                playbtn.innerHTML = 'Play';
+            }
+        }
+        function vidSeek() {
+            var seekto = vid.duration*(seekslider.value/100);
+            vid.currentTime = seekto;
+        }
+
+        function seektimeupdate() {
+            var nt = vid.currentTime * (100 / vid.duration);
+            seekslider.value = nt;
+           }
+    </script> -->
+
+    <script>
+//================================= Player Controls=================================== -->
+var video, playBtn, progressBar, timeElapsed, timing, progressRange, volumeRange, volumeBar, volumeIcon, speed, track, language, curTrack, addTrackOpt, tracksOff, cues
+
+//function initializePlayer() {
+function initializePlayer() {
+
+    video = document.getElementById('video');
+    track = document.getElementById('track');
+    playBtn = document.getElementById('play-btn');
+    progressBar = document.querySelector('.progress-bar');
+    timeElapsed = document.querySelector('.time-elapsed');
+    timing = document.querySelector('.time-duration');
+    progressRange = document.querySelector('.progress-range');
+    volumeRange = document.querySelector('.volume-range');
+    volumeBar = document.querySelector('.volume-bar');
+    volumeIcon = document.getElementById('volume-icon');
+    speed = document.querySelector('.player-speed');
+    //subtitleButton = document.querySelector('.subtitle');
+    language = document.querySelector('.languages');
+    tracksOff = document.createElement('option');
+    //select = document.querySelector('select');
+    tracksOff.setAttribute('value', 'off');
+    tracksOff.textContent = 'Tracks off';
+    let s = document.querySelectorAll('video::cue');
+   
+    
+    for (var i = 0; i < video.textTracks.length; i++) {
+        curTrack = video.textTracks[i];
+        addTrackOpt = document.createElement('option');
+        addTrackOpt.setAttribute('value', curTrack.kind + '-' + curTrack.language);
+        addTrackOpt.textContent = curTrack.label + ' ' + curTrack.kind;
+        //select.appendChild(addTrackOpt);
+        //select.appendChild(tracksOff);
+    }
+    //const fullscreenBtn = document.querySelector('.fullscreen');
+
+    // Event Listenters====================== -->
+    playBtn.addEventListener('click', togglePlay, false);
+    video.addEventListener('click', togglePlay, false);
+    video.addEventListener('ended', showPlayIcon, false);
+    video.addEventListener('timeupdate', updateProgress, false);
+    video.addEventListener('canplay', updateProgress, false);
+    progressRange.addEventListener('click', setProgress, false);
+    volumeRange.addEventListener('click', changeVolume, false);
+    volumeRange.addEventListener('click', changeVolume, false);
+    speed.addEventListener('change', changeSpeed, false);
+    language.addEventListener('change', trackChange, false);
+    //select.addEventListener('change', trackChange, false);
+    //subtitleButton.addEventListener('click', showSubtitle, false);
+
+    hideTracks();
+   
+    //select.addEventListener('change', function () {
+     //   trackChange(select.value);
+    //});
+    
+        console.log(s);
+  }
+  
+  window.onload = initializePlayer;
+ 
+//Play & Pause=============== -->
+function showPlayIcon(){
+    playBtn.classList.replace('fa-pause', 'fa-play');
+    playBtn.setAttribute('title', 'Play');
+}
+
+function togglePlay() {
+    if (video.paused) {
+        video.play();
+        playBtn.classList.replace('fa-play', 'fa-pause');
+        playBtn.setAttribute('title', 'Pause');
+        //console.log(window.screen.availWidth);
+        //console.log(window.screen.availHeight);
+        //console.log(video.height);
+
+        }
+    else {
+        video.pause();
+        showPlayIcon();
+        }
+}
+//Calculate display time format
+function displayTime(time) {
+    const minutes = Math.floor(time / 60);
+    let seconds = Math.floor (time % 60);
+    seconds = seconds > 9 ? seconds : `0${seconds}`;
+    //console.log (minutes, seconds);
+    return `${minutes}:${seconds}`;
+}
+  
+//Click progress bar to seek within video -->
+function setProgress(e) {
+    let newTime = e.offsetX / progressRange.offsetWidth;
+    progressBar.style.width = `${newTime * 100}%`;
+    video.currentTime = newTime * video.duration;
+    //console.log(e.offsetX);
+    //console.log(progressRange.offsetWidth);
+    //console.log(newTime);
+    console.log(progressBar.style.width);
+    //console.log(video.duration);
+    console.log(video.currentTime);
+}
+
+function updateProgress(){
+    progressBar.style.width = `${(video.currentTime /video.duration)*100}%`;
+    timeElapsed.textContent = `${displayTime(video.currentTime)}/`;
+    timing.textContent = `${displayTime(video.duration)}`;
+}
+
+function changeVolume(e){
+    let volume = e.offsetX / volumeRange.offsetWidth;
+    if (volume < 0.1) {
+        volume=0;
+    }
+    if (volume > 0.9) {
+        volume=1;
+    }
+    //calculating volume bar width
+    volumeBar.style.width = `${volume * 100}%`;
+    video.volume = volume;
+    //console.log(volume);
+    //changing icons
+    volumeIcon.className = '';
+
+    if (volume > 0.7) {
+        volumeIcon.classList.add ('fas', 'fa-volume-up');
+    }
+    else if (volume <0.7 && volume > 0){
+        volumeIcon.classList.add ('fas', 'fa-volume-down');    
+    }
+    else if (volume === 0){
+        volumeIcon.classList.add ('fas', 'fa-volume-off');
+    }
+}
+
+//Change playback speed
+function changeSpeed(){
+    //console.log('video playback rate:', video.playbackRate)
+    //console.log('selected value:', speed.value);
+    video.playbackRate = speed.value
+}
+
+function hideTracks() {
+    for (var i = 0; i < video.textTracks.length; i++) {
+            video.textTracks[i].mode = 'hidden';
+        }
+    }
+function trackChange() {
+    if (language.value === 'off'){
+        hideTracks();
+    }
+    else {
+    hideTracks();
+    for (var i=0; i < video.textTracks.length; i++)
+        {
+            if (video.textTracks[i].label === language.value)
+            {
+                video.textTracks[i].mode = 'showing'
+            }
+        }
+    }
+}
+
+</script>
+</head>
+
+
+<div class="container">
+  
+    <div class="row">
+        <div class="col-10">
+    <div class="card">
+        <div class="card-header">
+            <h4>{{the_video.title}} {{the_video.date_posted|naturaltime}} </h4>
+
+        </div>
+        
+
+    <div class="player">
+            <!-- <video src="{{the_video.video_file.url}}" id="video" playsinline> -->
+            <video src="{{the_video.video_file.url}}" id="video" preload='true' videoWidth: 700px>
+            <track label='Russian' kind='subtitles' srclang="ru" src={{the_video.subtitle_file.url}}  width='50' height='30' default>
+            <track label="English" kind="subtitles" srclang="en" src="{{the_video.subtitle_file.url}}">
+           
+            </video>
+    
+          
+
+            <div class="progress-range" title="Seek">
+                <div class="progress-bar"></div>
+            </div>
+       
+
+
+        <div class="show-controls"> 
+        <div class="controls-container">
+
+            <div class="control-group">
+            <div class="controls-left">
+                    <div class="play-controls">
+                        <i class="fas fa-play" title="Play" id='play-btn'></i>
+                    </div>
+                
+                <div class="volume">
+                    <div class="volume-icon">
+                        <i class="fas fa-volume-up" title="Mute" id='volume-icon'></i>
+                    </div>
+                    <div class="volume-range" title="Change Volume">
+                        <div class="volume-bar">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="controls-right">
+                <div class="speed" title="Playback Rate">
+                    <select name="playbackRate" class="player-speed">
+                        <option value="0.5">0.5 x</option>
+                        <option value="0.75">0.75 x</option>
+                        <option value="1" selected>1 x</option>
+                        <option value="1.25">1.25 x</option>
+                        <option value="1.5">1.5 x</option>
+                    </select>
+                </div>
+
+                <div class="time">
+                    <span class="time-elapsed">00:00 /</span>
+                    <span class="time-duration">2:38/</span>
+        
+                </div>
+
+                <!-- <div class="subtitle"> -->
+                <!-- <i class="fas fa-closed-captioning"></i> -->
+                <!-- </div> -->
+            <div class="subtitle" title="subtitle_language"></div>
+                <select name="select" class='languages'>
+                    <option value="off">
+                        Tracks off
+                    <option value="Russian">
+                        Русский
+                    </option>
+                    <option value="English">
+                        English
+                    </option>
+                </select>
+            </div>
+                            
+
+                <div class="fullscreen">
+                    <i class="fas fa-expand"></i>
+                </div>
+            </div>
+                
+            </div>
+        </div>
+    </div>
+    </div>
+
+<div>
+</div>
+
+        <!-- <video oncontextmenu="return false;" width="320" height="240" controls controlsList="nodownload"> -->
+
+    <!-- =====================working player=========================== -->
+        <!-- <video id ="my_video" controls controlslist=nodownload>
+            <source src="{{the_video.video_file.url}}" type="video/mp4" >
+            <track kind='subtitles' srclang="ru" src={{the_video.subtitle_file.url}} label='Russian' width='50' height='30' default />
+            
+           
+        
+        <div id='video_controls_bar'>
+            <button id='playpausebtn'>Play</button>
+            <input type="range" id="seekslider" min="0" max="100" value="0" step="1" style="width:500px">
+        </div>
+      
+        </video> -->
+        <!-- =========================end of working player============================= -->
+<script src="https://vjs.zencdn.net/7.11.4/video.min.js"></script>
+    </div>
+    </div>
+  
+
+{% endblock %}

@@ -306,14 +306,14 @@ select > option {
 }
 
 /* Subtitle */
-::cue {
+/*::cue {
   font-size: 20px;
   font-family: Georgia, serif;
-  color: red;
+  color: blue;
   background-position: right;
   opacity: 1;
 
-}
+}*/
 
 /* Media Query: Large Smartphone (Vertical) */
 @media screen and (max-width: 600px) {
