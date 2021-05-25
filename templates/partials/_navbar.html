@@ -22,7 +22,7 @@
 </form>
 
 {% if user.is_authenticated %}
-    
+
   {% if 'main_page' in request.path %}
   <a class="btn btn-outline-dark mr-1 active" href="{% url 'main_page' %}" role=’button’>Catalogue</a>
   {% else %}
@@ -39,17 +39,21 @@
 
     {% if 'mycourses' in request.path or 'cart' in request.path %}
 
+
     <div class="dropdown mr-1">
       <button type="button" class='btn btn-outline-dark btn-md dropdown-toggle active'
-      data-toggle='dropdown'>
+      data-bs-toggle='dropdown'>
         Student
     </button>
+
     {% else %}
     <div class="dropdown mr-1">
-    <button type="button" class='btn btn-outline-dark btn-md dropdown-toggle' data-toggle='dropdown'>
+    <button type="button" class='btn btn-outline-dark btn-md dropdown-toggle' data-bs-toggle='dropdown'>
       Student
     </button>
+
     {% endif %}
+
       <div class="dropdown-menu">
         <a href="{% url 'mycourses' %}" class="dropdown-item">My courses</a>
         <a href="{% url 'cart' %}" class="dropdown-item">My cart</a>
@@ -62,12 +66,12 @@
     
     {% if 'author_profile' in request.path or 'transactions' in request.path%}
     <div class="dropdown mr-1">
-        <button type="button" class='btn btn-outline-dark btn-md dropdown-toggle active' data-toggle='dropdown'>
+        <button type="button" class='btn btn-outline-dark btn-md dropdown-toggle active' data-bs-toggle='dropdown'>
             Instructor
         </button>
       {% else %}
       <div class="dropdown mr-1">
-      <button type="button" class='btn btn-outline-dark btn-md dropdown-toggle' data-toggle='dropdown'>
+      <button type="button" class='btn btn-outline-dark btn-md dropdown-toggle' data-bs-toggle='dropdown'>
         Instructor
       </button>
       {% endif %}
@@ -76,6 +80,7 @@
             <a href="{% url 'author_profile' %}" class="dropdown-item">Reimbursement</a>
             <a href="{% url 'transactions' %}" class="dropdown-item">My Transactions</a>
             <a href="{% url 'studio' %}" class="dropdown-item">Creation Studio</a>
+            <a href="{% url 'question_answer' %}" class="dropdown-item">Q&A</a>
           </div>
     </div>
     

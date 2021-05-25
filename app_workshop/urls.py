@@ -29,5 +29,6 @@ urlpatterns = [
     path('bank_account', views.bank_account, name='bank_account'),
     path('transactions', views.transactions, name='transactions'),
     path('GeneratePDF', views.GeneratePDF.as_view(), name="GeneratePDF"),
- 
+    path('question_answer', views.question_answer, name="question_answer"),
+    path('answer/<int:question_id>/<subject_id>', views.answer, name="answer")
 ]

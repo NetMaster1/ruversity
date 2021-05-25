@@ -104,19 +104,18 @@
 }
 
 
-.player {
-  /* max-width: 80vw; */
-  /* min-width: 800px; */
-  /* border: 5px solid black; */
-  /* border-radius: 10px; */
-  /* background: black; */
-  /* position: relative; */
-  /* cursor: pointer; */
+.player_1 {
+  max-width: 80vw;
+  min-width: 800px;
+  border: 5px solid black;
+  border-radius: 10px;
+  background: black;
+  position: relative;
+  cursor: pointer;
 }
 
-video {
-  /* border-radius: 5px; */
-
+video_1 {
+  border-radius: 5px;
 }
 
 /* Containers */
@@ -364,7 +363,7 @@ select > option {
 }
 
 /* Media Query: Large Smartphone (Horizontal) */
-@media screen and (max-width: 900px) and (max-height: 500px) {
+/* @media screen and (max-width: 900px) and (max-height: 500px) {
   .player {
     max-height: 95vh;
     max-width: auto;
@@ -379,4 +378,115 @@ select > option {
     height: 97.5vh;
     border-radius: 0;
   }
+} */
+
+
+/* .video-js {
+  width: 50%; 
+  height: 50%
+} */
+
+
+/* html, body {
+  height: 100%;
+  overflow: hidden;
+  margin: 0;
+}
+#content {
+  height: 100%;
+} */
+
+/* 
+#left {
+  float: left;
+  width: 70%;
+  /* background: red; */
+  /* height: 100%;
+  overflow: auto;
+  box-sizing: border-box;
+  padding: 0.5em;
+} */
+
+#scroll_col {
+  /* float: left; */
+  width: 100%;
+  /* background-color: blue; */
+  height: 600px;
+  overflow: auto;
+  /* overflow: scroll; */
+  /* overflow: hidden; */
+  /* box-sizing: border-box; */
+}
+
+.section_1 {
+  background-color:rgb(245, 244, 244);
+  padding: 10px;
+  border-style: solid;
+  border-width: 0.1rem;
+  border-color: grey;
+} 
+
+.section_1:hover{
+  background-color: lightgrey;
+  font-size: 1.1rem;
+  
+}
+
+#a_id_section {
+  display: block;
+  color: black;
+}
+
+#a_id_section:hover {
+  text-decoration: none;
+  /* text-decoration: underline; */
+  /* text-decoration: line-through; */
+  color: black;
+  font-weight: 900;
+  
+}
+
+
+#lecture:hover {
+  background-color: lightgrey;
+
+}
+
+#a_id {
+  display: block;
+  color: blue;
+  font-style: italic;
+  
+}
+
+#a_id:hover {
+  text-decoration: none;
+  color: blue;
+  /* font-size: 1.1rem; */
+  font-weight: bold;
+ 
+}
+/* #img_fit{ */
+  /* height: 10rem; */
+  /* object-fit: cover; */
+  /* object-fit: none; */
+  /* object-fit: scale-down; */
+  /* object-fit: contain; */
+  /* object-fit: fill; */
+/* } */
+
+.img_scale:hover{
+  /* opacity: 2; */
+  transform: scale(1.1);
+
+}
+
+.nav-link{
+  padding:0%;
+}
+
+#box {
+  padding: 2rem;
+  border-style: dashed;
+  border-color: grey;
 }

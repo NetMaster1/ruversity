@@ -56,13 +56,13 @@ class MainSubject(models.Model):
     percent = models.CharField(max_length=50, default='0%')
     total = models.IntegerField(default=0)  # Общее число баллов
     quantity = models.IntegerField(default=0)  # Кол-во оценок
-    av_rating = models.DecimalField(
-        max_digits=3, decimal_places=1, default=0)  # average rating
+    av_rating = models.DecimalField(max_digits=3, decimal_places=1, default=0)  # average rating
     transactions = models.IntegerField(default=0)
     ready = models.BooleanField(default=False)
     checked = models.BooleanField(default=False)
     blocked = models.BooleanField(default=False)
     discount_programs = models.BooleanField(default=True)
+    length = models.DecimalField(max_digits=5, decimal_places=2, default=0)
 
     def __int__(self):
         return self.id
@@ -70,6 +70,7 @@ class MainSubject(models.Model):
 
 class Section(models.Model):
     course = models.ForeignKey(MainSubject, on_delete=models.CASCADE)
+    length = models.DecimalField(max_digits=5, decimal_places=2, default=0)
     title = models.CharField(max_length=100)
 
     def __int__(self):
@@ -193,6 +194,27 @@ class Cart(models.Model):
     def __int__(self):
         return self.id
 
+
+class Question(models.Model):
+    subject = models.ForeignKey(MainSubject, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    lecture = models.ForeignKey(Lecture, on_delete=models.CASCADE)
+    content = models.CharField(max_length=100)
+    date_posted = models.DateField(auto_now_add=True)
+
+    def __int__(self):
+        return self.id
+
+
+class Answer(models.Model):
+    subject = models.ForeignKey(MainSubject, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, on_delete=models.DO_NOTHING)
+    content = models.CharField(max_length=100)
+    date_posted = models.DateField(auto_now_add=True)
+    author = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+
+    def __int__(self):
+        return self.id
 
 # class AverageRating(models.Model):
 #     subject = models.ForeignKey(MainSubject, on_delete=models.DO_NOTHING)

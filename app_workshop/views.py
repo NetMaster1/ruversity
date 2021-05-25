@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from app_content.models import MainSubject, Section, Lecture, Price, Category, Language, Transaction, Badword, Credit_card, Credit_card_type, Paypal, Main_method, Bank_account, TempImage
+from app_content.models import MainSubject, Section, Lecture, Price, Category, Language, Transaction, Badword, Credit_card, Credit_card_type, Paypal, Main_method, Bank_account, TempImage, Question, Answer
 from .models import Country
 from app_accounts.models import Author
 
@@ -9,11 +9,13 @@ from .utils import render_to_pdf
 from io import BytesIO
 
 from django.contrib import messages
-from moviepy.editor import VideoFileClip
+# from moviepy.editor import VideoFileClip
+# import moviepy
+from moviepy.editor import *
 import os
 import cv2
-# import PIL
-# from PIL import Image
+import PIL
+from PIL import Image
 from pathlib import Path
 from django.contrib.auth.models import User, Group
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
@@ -194,83 +196,104 @@ def create_new_subject(request):
 def edit_subject(request, subject_id):
     if request.user.is_authenticated:
         subject = MainSubject.objects.get(id=subject_id)
-        if request.user == subject.author:
-            if request.method == "POST":
-                subject.title = request.POST['title']
-                language_id = request.POST['language']
-                language = Language.objects.get(id=language_id)
-                subject.language=language
-                category_id = request.POST['category']
-                category = Category.objects.get(id=category_id)
-                subject.category=category
-                subject.description = request.POST['description']
-                subject.prerequisite = request.POST['prerequisites']
-                thumbnail = request.FILES['thumbnail']
-                if thumbnail.name.endswith('.jpg') or thumbnail.name.endswith('.png') or thumbnail.name.endswith('.gif') or thumbnail.name.endswith('.bmp') or thumbnail.name.endswith('.jpeg'):
-                    temp_image=TempImage.objects.create(temp_thumbnail_file=thumbnail)
-                    img = cv2.imread(temp_image.temp_thumbnail_file.path, 0)
-                    wid = img.shape[1]
-                    hgt = img.shape[0]
-                    ratio = wid / hgt
-                    if ratio < 1.5 or ratio > 1.8:
-                        messages.error(request, 'Image has inproper ratio. Use ration of 1.7 .')
-                        temp_image.delete()
-                        return redirect('edit_subject', subject_id)
+        if subject.ready == False:
+            if request.user == subject.author:
+                if request.method == "POST":
+                    subject.title = request.POST['title']
+                    language_id = request.POST['language']
+                    language = Language.objects.get(id=language_id)
+                    subject.language=language
+                    category_id = request.POST['category']
+                    category = Category.objects.get(id=category_id)
+                    subject.category=category
+                    subject.description = request.POST['description']
+                    subject.prerequisite = request.POST['prerequisites']
+                    thumbnail = request.FILES['thumbnail']
+                    if thumbnail.name.endswith('.jpg') or thumbnail.name.endswith('.png') or thumbnail.name.endswith('.gif') or thumbnail.name.endswith('.bmp') or thumbnail.name.endswith('.jpeg'):
+                        temp_image=TempImage.objects.create(temp_thumbnail_file=thumbnail)
+                        img = cv2.imread(temp_image.temp_thumbnail_file.path, 0)
+                        wid = img.shape[1]
+                        hgt = img.shape[0]
+                        ratio = wid / hgt
+                        if ratio < 1.5 or ratio > 1.8:
+                            messages.error(request, 'Image has inproper ratio. Use ration of 1.7 .')
+                            temp_image.delete()
+                            return redirect('edit_subject', subject_id)
 
+                        else:
+                            subject.thumbnail_file = thumbnail
+                            subject.save()
+                            languages = Language.objects.all()
+                            categories = Category.objects.all()
+                                    
+                            context = {
+                                'subject': subject,
+                                # 'sections': sections,
+                                # 'lectures': lectures,
+                                'languages': languages,
+                                'categories': categories
+                            }
+                            return render(request, 'workshop/edit_subject.html', context)
                     else:
-                        subject.thumbnail_file = thumbnail
-                        subject.save()
-                        languages = Language.objects.all()
-                        categories = Category.objects.all()
-                                
-                        context = {
+                        messages.error(request, 'File has inproper format. Load jpg, jpeg, png or bmp file')
+                        return redirect('edit_subject', subject_id)
+                else:
+                    if Section.objects.filter(course=subject).exists():
+                        sections = Section.objects.filter(course=subject)
+                        if Lecture.objects.filter(subject=subject).exists:
+                            lectures=Lecture.objects.filter(subject=subject)
+                            languages = Language.objects.all()
+                            categories = Category.objects.all()
+                            context = {
+                                'subject': subject,
+                                'sections': sections,
+                                'lectures': lectures,
+                                'languages': languages,
+                                'categories': categories
+                                }
+                            # return redirect('studio')
+                            return render(request, 'workshop/edit_subject.html', context)
+                        else:
+                            languages = Language.objects.all()
+                            categories = Category.objects.all()
+                            context = {
                             'subject': subject,
-                            'sections': sections,
-                            'lectures': lectures,
                             'languages': languages,
                             'categories': categories
                         }
                         return render(request, 'workshop/edit_subject.html', context)
-                else:
-                    messages.error(request, 'File has inproper format. Load jpg, jpeg, png or bmp file')
-                    return redirect('edit_subject', subject_id)
-            else:
-                if Section.objects.filter(course=subject).exists():
-                    sections = Section.objects.filter(course=subject)
-                    if Lecture.objects.filter(subject=subject).exists:
-                        lectures=Lecture.objects.filter(subject=subject)
-                        languages = Language.objects.all()
-                        categories = Category.objects.all()
-                        context = {
-                            'subject': subject,
-                            'sections': sections,
-                            'lectures': lectures,
-                            'languages': languages,
-                            'categories': categories
-                            }
-                        # return redirect('studio')
-                        return render(request, 'workshop/edit_subject.html', context)
                     else:
                         languages = Language.objects.all()
                         categories = Category.objects.all()
                         context = {
-                        'subject': subject,
-                        'languages': languages,
-                        'categories': categories
-                    }
-                    return render(request, 'workshop/edit_subject.html', context)
-                else:
-                    languages = Language.objects.all()
-                    categories = Category.objects.all()
-                    context = {
-                        'subject': subject,
-                        'languages': languages,
-                        'categories': categories
-                    }
-                    return render(request, 'workshop/edit_subject.html', context)
+                            'subject': subject,
+                            'languages': languages,
+                            'categories': categories
+                        }
+                        return render(request, 'workshop/edit_subject.html', context)
+            else:
+                logout(request)
+                return redirect('login')
         else:
-            logout(request)
-            return redirect('login')
+            if request.method == "POST":
+                if Question.objects.filter(subject=subject_id).exists():
+                    questions=Question.objects.filter(subject=subject_id)
+                    context = {
+                            'questions': questions,
+                            'subject': subject
+                        }
+                    return render (request, 'workshop/edit_subject.html', context)
+                else:
+                    return render(request, 'workshop/edit_subject.html')
+            else:
+                questions = Question.objects.filter(subject=subject_id)
+                answers=Answer.objects.filter(subject=subject_id)
+                context = {
+                            'questions': questions,
+                            'answers': answers,
+                            'subject': subject
+                        }
+                return render (request, 'workshop/edit_subject.html', context)
     else:
         return redirect('login')
 
@@ -455,7 +478,7 @@ def edit_lecture(request, lecture_id):
                         messages.error(request, 'File has inproper format. Load mp4 file')
                         return redirect('edit_section', subject.id, section.id)
                 else:
-                     return redirect('edit_section', subject.id, section.id)
+                    return redirect('edit_section', subject.id, section.id)
         else:
             logout(request)
             return redirect('login')
@@ -489,6 +512,20 @@ def video(request, lecture_id):
     if request.user.is_authenticated:
         the_video = Lecture.objects.get(id=lecture_id)
         # comments = Review.objects.filter(video=video_id)
+
+        # path = the_video.video_file.path
+        # clip = VideoFileClip(path)
+        # duration=clip.duration
+        # print(duration)
+        # print(clip.reader.nframes)
+        # max_duration =int(duration) +1
+        # for i in range(0, max_duration, 30):
+        #     print (f'frame at {i} seconds')
+        #     frame = clip.get_frame(int(i))
+        #     print(frame)
+        #     new_image=Image.fromarray(frame)
+        #     print(new_image)
+
         context = {
             'the_video': the_video,
             # 'comments': comments
@@ -521,13 +558,26 @@ def disagree(request, subject_id):
     else:
         return redirect ('login')
 
-
+#saving subject & section length in min & checking for badwords
 def agree(request, subject_id):
     if request.user.is_authenticated:
         subject = MainSubject.objects.get(id=subject_id)
         if Lecture.objects.filter(subject=subject.id).exists():
             badwords=Badword.objects.all()
             lectures = Lecture.objects.filter(subject=subject)
+            subject_duration=0
+            for lecture in lectures:
+                subject_duration += lecture.length
+            subject.length = subject_duration
+            subject.save()
+            sections = Section.objects.filter(course=subject)
+            for section in sections:
+                lectures_sec=lectures.filter(section=section)
+                section_length=0
+                for lecture_sec in lectures_sec:
+                    section_length += lecture_sec.length
+                section.length=section_length
+                section.save()
             for word in badwords:
                 if word.badword in subject.title:
                     subject.blocked = True
@@ -548,8 +598,8 @@ def agree(request, subject_id):
                 subject.save()
             subject_id=subject.id
             context = {
-            'subject': subject,
-            'lecures': lectures,
+                'subject': subject,
+                'lecures': lectures,
             }
             return redirect('edit_subject', subject_id)
         else:
@@ -810,6 +860,23 @@ class GeneratePDF(View):
         # return HttpResponse(result.getvalue(), content_type='application/pdf')
         # return None
 
+def question_answer (request):
+    if request.user.is_authenticated:
+        subjects=MainSubject.objects.filter(author=request.user)
+        return render (request, 'workshop/question_answer.html')
 
 
-    
+def answer(request, question_id, subject_id):
+    if request.user.is_authenticated:
+        subject=Subject.objects.get(id=subject_id)
+        if request.method == "POST":
+            content = request.POST['answer']
+            answer = Answer.objects.create(
+                subject=subject,
+                content=content,
+                author=request.user
+            )
+            return redirect('subject_purchased', subject_id)
+    else:
+        return redirect('login')
+

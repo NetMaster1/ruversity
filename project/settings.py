@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'app_workshop',
     'paypal.standard.ipn',
     'app_contacts',
+
 ]
 
 MIDDLEWARE = [
@@ -130,6 +131,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'project/static')
 ]
