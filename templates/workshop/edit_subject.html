@@ -13,6 +13,52 @@
         Your course has been uploaded to ruversisty.com & is ready for sale. Since ruversity.com provides life-time access for the buyers, you are no longer able neither to delete it nor edit. In order to make changes in the course you have to apply to us via email.
         </div>
     </div>
+
+    {% for question in questions %}
+    <div class="row">
+        <div class="col">{{question.author}}</div>
+        <div class="col">{{question.lecture.title}}</div>
+        <div class="col">{{question.content}}</div>
+        <div class="col">{{question.date_posted}}</div>
+
+        <form action="{% url 'answer' question.id subject.id %}" method="POST">
+            {% csrf_token %}
+            <div class="form-row mt-4">
+                <div class="col-2">
+                    <label for="question">Ask Your Question</label>
+                </div>
+                <div class="col ">
+                    <input type="text" class='form-control' id="question" name="question" maxlength='50' required><br>
+                </div>
+            </div>
+            <div class="form-row mt-2">
+                <div class="col-2">
+                    <label for="lecture">Select lecture</label>
+                </div>
+                <div class="col">
+                    <select name="lecture" id="lecture" class='form-control' required>
+                        {% for lecture in lectures %}
+                        <option value="{{lecture.id}}">{{lecture.title}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-2"></div>
+                <div class="col">
+                    <!-- <input type="submit" value="Create" class="btn btn-info btn-block"> -->
+                    <!-- <button type='submit'>Load</button><br> -->
+                    <input type="submit" value="Ask" class="btn btn-sm btn-block btn-outline-dark">
+                </div>
+            </div>
+        </form>
+
+
+
+
+    </div>
+    {% endfor %}
+
     {% else %}
         
     <div class="row p-3">
@@ -166,13 +212,13 @@
   
     <!-- =====================Sections============================================== -->
     {% for section in sections %}
-    <div class="row mt-3 border rounded bg-light text-center">
+    <div class="row mt-2 mb-2 border rounded bg-light text-center">
         <a href="{% url 'edit_section' subject.id section.id%}"><h3>{{section.title}}</h3></a>
-      
-    </div>
-        <div class="row mt-3 border rounded text-center">
 
-        {% endfor %}
+    </div>
+        <!-- <div class="row mt-3 border rounded text-center"></div> -->
+
+    {% endfor %}
     <!-- ======================End of Section Box=========================== -->
 
 

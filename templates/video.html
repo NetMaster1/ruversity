@@ -2,10 +2,21 @@
 {% load humanize %}
 {% block content %}
 
-<div class="container">
-<body>
-    <video id="my-video" class="video-js vjs-big-play-centered" preload="auto" width="1280" height="640" poster="http:"
-        data-setup="{}">
+    <div class="container">
+       
+
+       
+    <!-- <video id="video" class="video-js vjs-big-play-centered" preload="auto" width="1280" height="640" poster="https://picsum.photos/800/450"data-setup="{}"> -->
+        
+    <!-- <video id="video" class="video-js vjs-theme-fantasy" preload="auto" width="1280" height="640"
+    poster='http://127.0.0.1:8000/static/images/logo.png' data-setup="{}"> -->
+
+    <!-- <video id="video" class="video-js vjs-big-play-centered" preload="auto" width="1280" height="640" poster='http://127.0.0.1:8000/static/images/logo.png' data-setup="{}"> -->
+
+    
+    <video id="video" class="video-js vjs-big-play-centered" preload="auto" controls
+    poster='http://127.0.0.1:8000/static/images/logo.png'data-setup="{}" >
+
         <source src="{{the_video.video_file.url}}" type="video/mp4" />
         <track label='Russian' kind='subtitles' srclang="ru" src="{{the_video.subtitle_file.url}}" width='50' height='30' default>
         <p class="vjs-no-js">
@@ -15,7 +26,6 @@
         </p>
     </video>
 
-  
-</body>
 </div>
+
 {% endblock %}

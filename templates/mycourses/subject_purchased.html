@@ -13,9 +13,9 @@
     {% endif %}
 
 
-<div class="row mt-1">
+<div class="row m-2">
 
-<div class="col-4 m-1">
+<div class="col-4 mt-1 mr-auto">
 <div class="card">
             <div class="card-header">
                 <h4>{{subject.title}}</h4>
@@ -89,64 +89,36 @@
         <div class="row">
             <div class="col"><strong>Date posted: </strong>{{subject.date_posted}}</div>
         </div>
-        <div class="row">
-            <div class="col">
-                <strong>Description: </strong>
-            </div>
-        </div>
-        <div class="row" style='height:6rem'>
-            <div class="col">
-                {{subject.description}}
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <strong>Prerequisite: </strong>
-            </div>
-        </div>
-
-        <div class="row" style='height:6rem'>
-                <div class="col">
-                    {{subject.prerequisite}}
-                </div>
-            </div>
-
-            <!-- <div class="row" style='height:6rem'>
-                <div class="col" data-toggle="collapse" data-target='#collapse-p1'><strong>Prerequisites:</strong> </div>
-                <div class="collapse show" id='collapse-p1'>{{subject.prerequisite}}</div>
-            </div> -->
-
             <div class="row">
-                <div class="col"><strong>Timing: </strong>Count</div>
+                <div class="col"><strong>Timing: </strong>{{subject.length}} min</div>
             </div>
 
             <!-- =============================================================== -->
     </div>
-</div>
-</div>
+
 
 
     
-  
-<div class="col-7 m-1">
-    <div class="card">
-        <div class="card-header">
+</div>
+
+
+</div>
+
+<div class="col-8 mt-1 ml-auto" id='scroll_col'>
+    <div class="card" >
+        <div class="card-header" >
             <h4>Content</h4>
         </div>
 
-        <div class="card-body">
-            <ul class="list-group list-group-flush">
-
     {% for section in sections %}
- 
-
-            <h5 data-toggle="collapse" data-target='#section{{section.id}}'>{{section.title}}</h5>
-                
+            <div class="section_1" >
+            <a id='a_id_section' href='#' <h5 data-bs-toggle="collapse" data-bs-target='#section{{section.id}}'>{{section.title}}. Duration: {{section.length}} min </a></h5></a>
+            </div>
             {% for lecture in lectures %}
                 {% if lecture.section == section %}
                     <div id="section{{section.id}}" class='collapse'>
-                        <li class="list-group-item">
-                            <a href="{% url 'video' lecture.id %}" target="_blank">{{lecture.title}}</a>
+                        <li class="list-group-item" id='lecture'>
+                            <a href="{% url 'video' lecture.id %}" target="_blank" id='a_id'>{{lecture.title}} {{lecture.length}} min</a>
                         </li>
                     </div>
                 {% endif %}
@@ -154,11 +126,133 @@
                 
     {% endfor %}
 
-        </ul>
-        </div>
-
     </div>
 </div>
+</div>
+
+
+
+<div class="row mt-2 ml-auto">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+
+        <li class="nav-item " role="presentation">
+            <button class="nav-link active pl-1 pr-3" id="home-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button" role="tab" aria-controls="home" aria-selected="true">Reviews</button>
+        </li>
+
+        <li class="nav-item " role="presentation">
+            <button class="nav-link pl-1 pr-3" id="profile-tab" data-bs-toggle="tab" data-bs-target="#questions" type="button" role="tab" aria-controls="profile" aria-selected="false">Q&A</button>
+        </li>
+
+        <li class="nav-item " role="presentation">
+            <button class="nav-link pl-1 pr-3" id="contact-tab" data-bs-toggle="tab" data-bs-target="#author" type="button" role="tab" aria-controls="contact" aria-selected="false">Author</button>
+        </li>
+
+        <li class="nav-item" role="presentation">
+            <button class="nav-link pl-1 pr-3" id="contact-tab" data-bs-toggle="tab" data-bs-target="#overview" type="button" role="tab" aria-controls="overview" aria-selected="false">Overview</button>
+        </li>
+
+        <li class="nav-item" role="presentation">
+            <button class="nav-link pl-1 pr-3" id="contact-tab" data-bs-toggle="tab" data-bs-target="#prerequisites" type="button" role="tab" aria-controls="overview" aria-selected="false">Prerequisites</button>
+        </li>
+    </ul>
+    
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="reviews" role="tabpanel"aria-labelledby="home-tab">
+            <div class="row mt-3 mb-3">
+               
+                    {% for item in reviews %}
+                    <div class="row">
+                       <div class="col-1">
+                            {{item.author}}
+                        </div>
+                        <div class="col-2">
+                            {{item.date_posted}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            {{item.content}}
+                        </div>
+
+                        {% for item_1 in ratings %}
+                            {%if item.author == item_1.user %}
+                                {{item_1.rating}}
+                            {% endif %}
+                        {% endfor%}
+
+                    {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="tab-pane fade" id="questions" role="tabpanel" aria-labelledby="profile-tab">
+<div class="row mt-2">
+
+    <div id="box">
+        <form action="{% url 'new_question' subject.id%}" method="POST">
+            {% csrf_token %}
+            <div class="form-row mt-4">
+            <div class="col-2">
+            <label for="question">Ask Your Question</label>
+            </div>
+            <div class="col ">
+            <input type="text" class='form-control' id="question" name="question" maxlength='50' required><br>
+            </div>
+            </div>          
+            <div class="form-row mt-2">
+            <div class="col-2">
+            <label for="lecture">Select lecture</label>
+            </div>
+            <div class="col">
+            <select name="lecture" id="lecture" class='form-control' required>
+                {% for lecture in lectures %}
+                <option value="{{lecture.id}}">{{lecture.title}}</option>
+                {% endfor %}
+            </select>
+            </div>
+            </div>    
+            <div class="row mt-2">
+            <div class="col-2"></div>
+            <div class="col">
+                                    <!-- <input type="submit" value="Create" class="btn btn-info btn-block"> -->
+                                    <!-- <button type='submit'>Load</button><br> -->
+            <input type="submit" value="Ask" class="btn btn-sm btn-block btn-outline-dark">
+            </div>
+            </div>
+            </form>
+</div>
+</div>
+
+<div class="row mt-2 mb-2">
+
+            {% for question in questions %}
+            <div class="row">
+                <div class="col">{{question.date_posted}}</div>
+                <div class="col">{{question.author}}</div>
+                <div class="col">{{question.content}}</div>
+                <div class="col">{{question.lecture.title}}</div>
+            {% endfor %}
+            </div>
+</div>
+        </div>
+
+
+        <div class="tab-pane fade" id="author" role="tabpanel" aria-labelledby="contact-tab">
+            11111111111111111111111
+        </div>
+
+        <div class="tab-pane fade" id="overview" role="tabpanel" aria-labelledby="overview-tab">
+            {{subject.description}}
+        </div>
+
+        <div class="tab-pane fade" id="prerequisites" role="tabpanel" aria-labelledby="overview-tab">
+            <div class="row mt-2">
+                {{subject.prerequisite}}
+            </div>
+
+        </div>
+    </div>
 </div>
 
 

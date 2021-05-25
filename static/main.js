@@ -87,7 +87,4 @@ if (one) {
 }
 
 
-//Player Settings
-var player = document.querySelector('my-video')
-console.log(player);
-player.currentTime;
+
