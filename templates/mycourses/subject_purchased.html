@@ -3,6 +3,7 @@
 {% block content %}
 
 <div class="container">
+    <!-- <iframe src="workshop/video.html" frameborder="0"></iframe> -->
 
     {% if messages %}
     <div class="alert alert-success alert-dismissible">
@@ -118,7 +119,7 @@
                 {% if lecture.section == section %}
                     <div id="section{{section.id}}" class='collapse'>
                         <li class="list-group-item" id='lecture'>
-                            <a href="{% url 'video' lecture.id %}" target="_blank" id='a_id'>{{lecture.title}} {{lecture.length}} min</a>
+                            <a href="{% url 'video' subject.id lecture.id %}" target="_blank" id='a_id'>{{lecture.title}} {{lecture.length}} min</a>
                         </li>
                     </div>
                 {% endif %}

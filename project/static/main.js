@@ -117,56 +117,24 @@ if (one) {
 //}
 //}
 
-//VIDEOJS PLAYER SETTINGS
-console.log('Testing....Ok')
+
+//sending a form without a button
+// const form_select = document.querySelector('#form_select')
+// form_select.addEventListener('click', doSmth)
+
+// function doSmth() {
+//     console.log('Testing..klklklk..Ok');
+//     form_select.submit();
+// }
 
 
-let player = videojs('video', {
-
-    controls: true,
-    currentTimeDisplay: true,
-    playbackRates: [0.5, 0.75, 1, 1.25, 1.5],
-    // fluid: true,
-    userActions: {
-        hotkeys: true
-    }
-   
-}
-)
-// player.aspectRatio('16:9');//default mode
-player.width(720);
-player.height(405);
-player.on('ended', function () {
-        alert('You finished the lecture')
-});
+// console.log('Testing ok')
+// const link = document.querySelector('.card-header');
+// link.addEventListener('click', changeColor)
+// function changeColor() {
+//     link.setAttribute('style', 'color:red')
+//     // link.style.color = 'red';
     
-// player.hlsQualitySelector();
-// player.fill(true);
+//     console.log(link.style.color);
+// }
 
-
- 
-
-
-// player.logo({
-//     image: 'http://127.0.0.1:8000/static/images/logo.png'
-// }); 
-// player.watermark('http://127.0.0.1:8000/static/images/logo.png');
-
-// player.maxQualitySelector({
-//   'displayMode': 1 // Only render out the height name of the video in the quality button and list
-// });
-
-// player.zoomrotate({
-//     rotate: 180,
-//     zoom: 1.5
-// });
-
-
-
-// });
-
-// player.thumbnails();
-
-
-console.log(player);
-console.log('Once Again testing....Ok')

@@ -57,7 +57,8 @@ class MainSubject(models.Model):
     total = models.IntegerField(default=0)  # Общее число баллов
     quantity = models.IntegerField(default=0)  # Кол-во оценок
     av_rating = models.DecimalField(max_digits=3, decimal_places=1, default=0)  # average rating
-    transactions = models.IntegerField(default=0)
+    transactions = models.IntegerField(default=0)#counter
+    reviews = models.IntegerField(default=0)#counter
     ready = models.BooleanField(default=False)
     checked = models.BooleanField(default=False)
     blocked = models.BooleanField(default=False)
@@ -207,14 +208,14 @@ class Question(models.Model):
 
 
 class Answer(models.Model):
-    subject = models.ForeignKey(MainSubject, on_delete=models.CASCADE)
+    subject=models.ForeignKey(MainSubject, on_delete=models.DO_NOTHING)
     question = models.ForeignKey(Question, on_delete=models.DO_NOTHING)
     content = models.CharField(max_length=100)
     date_posted = models.DateField(auto_now_add=True)
     author = models.ForeignKey(User, on_delete=models.DO_NOTHING)
 
-    def __int__(self):
-        return self.id
+    def __str__(self):
+        return self.content
 
 # class AverageRating(models.Model):
 #     subject = models.ForeignKey(MainSubject, on_delete=models.DO_NOTHING)

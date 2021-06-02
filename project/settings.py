@@ -141,3 +141,13 @@ MEDIA_URL = '/media/'
 
 PAYPAL_RECEIVER_EMAIL = '79200711112@yandex.ru'
 PAYPAL_TEST = True
+
+#Email Settings
+EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_POSRT = 537
+EMAIL_POSRT = 587
+EMAIL_HOST_USER = 'ruversity@gmail.com'
+EMAIL_HOST_PASSWORD = 'Ylhio65v_01'
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+

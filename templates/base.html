@@ -39,7 +39,37 @@
     <!-- Navbar -->
     {% include 'partials/_navbar.html' %}
 
+
+
+<!-- ===========================Modal Accessible at every page from navbar======================= -->
+<div class="modal" id='messagelModal'>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class='modal-title'>Change your email address:</h5>
+                <button class='close' data-bs-dismiss='modal'>&times;</button>
+            </div>
+            <div class="modal-body">
+                <form action="{% url 'email' %}" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="email">Enter your new email address:</label>
+                        <input class='form-control' type="text" id="email" name="email" maxlength='50' required>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline-dark btn-block">Submit</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- ==============================End of Modal======================== -->
+
+
     {% block content %}
+        
+
     {% endblock %}
     {% include 'partials/_footer.html' %}
 
@@ -97,6 +127,7 @@
 
 <!-- -----Custom JS file----------- -->
     <script src="{% static 'main.js' %}" defer></script>
+    <script src="{% static 'video.js' %}" defer></script>
 
   
 </body>

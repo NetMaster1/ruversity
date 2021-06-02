@@ -2,7 +2,7 @@
 {% load humanize %}
 {% block content %}
 
-<!-- <body oncontextmenu="return false"> -->
+<body oncontextmenu="return false">
 <head>
   
         <link href="https://vjs.zencdn.net/7.11.4/video-js.css" rel="stylesheet" />
@@ -228,7 +228,7 @@ function trackChange() {
     <div class="player">
             <!-- <video src="{{the_video.video_file.url}}" id="video" playsinline> -->
             <video src="{{the_video.video_file.url}}" id="video" preload='true' videoWidth: 800px>
-            <track label='Russian' kind='subtitles' srclang="ru" src={{the_video.subtitle_file.url}}  width='50' height='30' default>
+            <track label='Russian' kind='subtitles' srclang="ru" src={{the_video.subtitle_file.url}}  width='50' height='30' default controls controlsList="nodownload" >
             <track label="English" kind="subtitles" srclang="en" src="{{the_video.subtitle_file.url}}">
            
             </video>

@@ -7,6 +7,7 @@ from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.contrib.auth import authenticate, login, logout
 from pathlib import Path
 from moviepy.editor import *
+from django.core.mail import send_mail
 
 # Create your views here.
 
@@ -111,6 +112,17 @@ def new_question (request, subject_id):
                 content =content,
                 author=request.user,
                 lecture=lecture,
+            )
+            send_mail(
+                #subject
+                'You have got a new question on ' + lecture.title + ' of ' + subject.title +'',
+                #message
+                'Please sign in your instructor account & answer the question',
+                #sender
+                'ruversity@gmail.com',
+                #receiver
+                [subject.author.email, '79200711112@yandex.ru'],
+                fail_silently=False
             )
             return redirect( 'subject_purchased', subject_id)
     else:

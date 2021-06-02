@@ -4,6 +4,7 @@ from django.core.paginator import Paginator
 from app_reviews.models import Review
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.contrib.auth import authenticate, login, logout
+# from django.http import HttpResponse
 
 # Create your views here.
 
@@ -24,8 +25,7 @@ def index(request):
         #     }
         # return render(request, 'index.html', context)
 
-        subjects = MainSubject.objects.filter(
-            ready='True').exclude(blocked='True')
+        subjects = MainSubject.objects.filter(ready='True').exclude(blocked='True')
         # ratings = Rating.objects.all()
         context = {
             'subjects': subjects,
@@ -99,7 +99,7 @@ def gen_search(request):
             # if MainSubject.objects.filter(title__icontains=keyword).exists():
             query = MainSubject.objects.filter(title__icontains=keyword, ready='True').exclude(blocked='True')
 
-            paginator = Paginator(query, 3)
+            paginator = Paginator(query, 10)
             page = request.GET.get('page')
             query_paged = paginator.get_page(page)
 
@@ -142,14 +142,33 @@ def gen_search(request):
                     rating = request.GET['rating']
                     query = query.filter(av_rating__gte=rating)
 
-                    paginator = Paginator(query, 5)
-                    page = request.GET.get('page')
-                    query_paged = paginator.get_page(page)
+                    if 'sort_criteria' in request.GET:
+                        sort_criteria = request.GET['sort_criteria']
+                        if sort_criteria == 'rating':
+                            query=query.order_by('rating')
+                        elif sort_criteria == 'reviews':
+                            query=query.order_by('reviews')
+                        elif sort_criteria == 'transactions':
+                            query=query.order_by('transactions')
 
-                    context = {
+                            paginator = Paginator(query, 5)
+                            page = request.GET.get('page')
+                            query_paged = paginator.get_page(page)
+
+                            context = {
+                                'query': query_paged
+                            }
+                            return render(request, 'gen_search_results.html', context)
+
+                    else: 
+                        paginator = Paginator(query, 5)
+                        page = request.GET.get('page')
+                        query_paged = paginator.get_page(page)
+
+                        context = {
                             'query': query_paged
                         }
-                    return render(request, 'gen_search_results.html', context)
+                        return render(request, 'gen_search_results.html', context)
                 else:
                     paginator = Paginator(query, 5)
                     page = request.GET.get('page')
@@ -173,14 +192,33 @@ def gen_search(request):
                     }
                     return render(request, 'gen_search_results.html', context)
                 else:
-                    paginator = Paginator(query, 5)
-                    page = request.GET.get('page')
-                    query_paged = paginator.get_page(page)
+                    if 'sort_criteria' in request.GET:
+                        sort_criteria = request.GET['sort_criteria']
+                        if sort_criteria == 'av_rating':
+                            query = query.order_by('-av_rating')[:20]
+                        elif sort_criteria == 'reviews':
+                            query = query.order_by('-reviews')[:20]
+                        elif sort_criteria == 'transactions':
+                            query = query.order_by('-transactions')[:20]
+                        else:
 
-                    context = {
-                        'query': query_paged
-                    }
-                    return render(request, 'gen_search_results.html', context)
+                            paginator = Paginator(query, 10)
+                            page = request.GET.get('page')
+                            query_paged = paginator.get_page(page)
+
+                            context = {
+                                'query': query_paged
+                            }
+                            return render(request, 'gen_search_results.html', context)
+
+                        paginator = Paginator(query, 20)
+                        page = request.GET.get('page')
+                        query_paged = paginator.get_page(page)
+
+                        context = {
+                            'query': query_paged
+                        }
+                        return render(request, 'gen_search_results.html', context)
         else:
             return redirect('login')
 
