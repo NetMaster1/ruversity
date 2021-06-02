@@ -6,7 +6,7 @@
     <div class="row mt-3">
 
         <div class="col-2 rounded mr-2">
-            <form action="{% url 'list_software' %}">
+            <form action="{% url 'list_software' %}" id="form_select">
                 {% csrf_token %}
                 <ul>
                     <li>

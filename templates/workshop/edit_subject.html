@@ -20,27 +20,53 @@
         <div class="col">{{question.lecture.title}}</div>
         <div class="col">{{question.content}}</div>
         <div class="col">{{question.date_posted}}</div>
+        <div class="col">
+            <button class="btn btn-outline-dark btn-block" data-bs-toggle="modal" data-bs-target="#answerModal">
+                Answer
+            </button>
+        </div>
+        </div>
+    <div class="modal" id='answerModal'>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class='modal-title'>Change your name:</h5>
+                    <button class='close' data-bs-dismiss='modal'>&times;</button>
+                </div>
+                <div class="modal-body">
+    
+                    <form action="{% url 'answer' subject.id question.id %}" method="POST">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="answer">Enter your answer:</label>
+                            <input class='form-control' type="text" id="answer" name="answer" maxlength='50'
+                                required>
+                        </div>
+                     
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-outline-dark btn-block">Submit</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
-        <form action="{% url 'answer' question.id subject.id %}" method="POST">
+   
+       
+        {% for item in question.answer_set.all %}
+            {{item.author}} {{item.date_posted}} {{item.content}}<br>
+        {% endfor %}
+
+    <div class="row">
+        <form action="{% url 'answer' subject.id question.id %}" method="POST">
             {% csrf_token %}
             <div class="form-row mt-4">
                 <div class="col-2">
-                    <label for="question">Ask Your Question</label>
+                    <label for="answer">Your answer</label>
                 </div>
                 <div class="col ">
-                    <input type="text" class='form-control' id="question" name="question" maxlength='50' required><br>
-                </div>
-            </div>
-            <div class="form-row mt-2">
-                <div class="col-2">
-                    <label for="lecture">Select lecture</label>
-                </div>
-                <div class="col">
-                    <select name="lecture" id="lecture" class='form-control' required>
-                        {% for lecture in lectures %}
-                        <option value="{{lecture.id}}">{{lecture.title}}</option>
-                        {% endfor %}
-                    </select>
+                    <input type="text" class='form-control' id="answer" name="answer" maxlength='50' required><br>
                 </div>
             </div>
             <div class="row mt-2">
@@ -48,7 +74,7 @@
                 <div class="col">
                     <!-- <input type="submit" value="Create" class="btn btn-info btn-block"> -->
                     <!-- <button type='submit'>Load</button><br> -->
-                    <input type="submit" value="Ask" class="btn btn-sm btn-block btn-outline-dark">
+                    <input type="submit" value="Answer" class="btn btn-sm btn-block btn-outline-dark">
                 </div>
             </div>
         </form>
@@ -213,7 +239,7 @@
     <!-- =====================Sections============================================== -->
     {% for section in sections %}
     <div class="row mt-2 mb-2 border rounded bg-light text-center">
-        <a href="{% url 'edit_section' subject.id section.id%}"><h3>{{section.title}}</h3></a>
+        <a href="{% url 'edit_section' subject.id section.id %}"><h3>{{section.title}}</h3></a>
 
     </div>
         <!-- <div class="row mt-3 border rounded text-center"></div> -->

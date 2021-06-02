@@ -52,6 +52,9 @@ def review(request, subject_id):
             )
             review = Review.objects.get(subject=subject, author=request.user)
             lectures = Lecture.objects.filter(subject=subject)
+            counter = subject.reviews + 1
+            subject.reviews = counter
+            subject.save()
             context = {
                 'subject': subject,
                 'lectures': lectures,
@@ -59,6 +62,6 @@ def review(request, subject_id):
             }
             return redirect ('subject_purchased', subject.id)
         else:
-            return render(request, 'mycourses/subject_purchased.html', context)
+            return render(request, 'mycourses/subject_purchased.html')
     else:
         return redirect ('login')

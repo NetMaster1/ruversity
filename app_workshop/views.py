@@ -3,6 +3,7 @@ from app_content.models import MainSubject, Section, Lecture, Price, Category, L
 from .models import Country
 from app_accounts.models import Author
 
+
 from django.http import HttpResponseRedirect, HttpResponse
 from django.views.generic import View
 from .utils import render_to_pdf
@@ -276,18 +277,20 @@ def edit_subject(request, subject_id):
                 return redirect('login')
         else:
             if request.method == "POST":
-                if Question.objects.filter(subject=subject_id).exists():
-                    questions=Question.objects.filter(subject=subject_id)
+                if Question.objects.filter(subject=subject).exists():
+                    questions=Question.objects.filter(subject=subject)
+                    answers=Answer.objects.filter(subject=subject)
                     context = {
                             'questions': questions,
-                            'subject': subject
+                            'subject': subject,
+                            'answers': answers
                         }
                     return render (request, 'workshop/edit_subject.html', context)
                 else:
                     return render(request, 'workshop/edit_subject.html')
             else:
-                questions = Question.objects.filter(subject=subject_id)
-                answers=Answer.objects.filter(subject=subject_id)
+                questions = Question.objects.filter(subject=subject)
+                answers=Answer.objects.filter(subject=subject)
                 context = {
                             'questions': questions,
                             'answers': answers,
@@ -508,9 +511,29 @@ def delete_lecture(request, lecture_id):
         return redirect('login')
 
 
-def video(request, lecture_id):
+def video(request, subject_id, lecture_id):
     if request.user.is_authenticated:
+        subject=MainSubject.objects.get(id=subject_id)
         the_video = Lecture.objects.get(id=lecture_id)
+        if Transaction.objects.filter(buyer=request.user, course=subject).exists():
+            context = {
+                'the_video': the_video,
+            }
+            return render(request, 'video.html', context)
+        elif request.user == subject.author:
+            context = {
+                'the_video': the_video,
+            }
+            return render(request, 'video.html', context)
+        elif the_video.free == True:
+            context = {
+                'the_video': the_video,
+            }
+            return render(request, 'video.html', context)
+        else:
+            logout(request)
+            messages.error(request, 'Sorry, you have to buy this course.')
+            return redirect('login')
         # comments = Review.objects.filter(video=video_id)
 
         # path = the_video.video_file.path
@@ -526,11 +549,7 @@ def video(request, lecture_id):
         #     new_image=Image.fromarray(frame)
         #     print(new_image)
 
-        context = {
-            'the_video': the_video,
-            # 'comments': comments
-        }
-        return render(request, 'video.html', context)
+        
     else:
         return render('login')
 
@@ -860,23 +879,20 @@ class GeneratePDF(View):
         # return HttpResponse(result.getvalue(), content_type='application/pdf')
         # return None
 
-def question_answer (request):
-    if request.user.is_authenticated:
-        subjects=MainSubject.objects.filter(author=request.user)
-        return render (request, 'workshop/question_answer.html')
 
-
-def answer(request, question_id, subject_id):
+def answer(request, subject_id, question_id):
     if request.user.is_authenticated:
-        subject=Subject.objects.get(id=subject_id)
+        subject= MainSubject.objects.get(id=subject_id)
+        question=Question.objects.get(id=question_id)
         if request.method == "POST":
             content = request.POST['answer']
             answer = Answer.objects.create(
                 subject=subject,
+                question=question,
                 content=content,
                 author=request.user
             )
-            return redirect('subject_purchased', subject_id)
+            return redirect('edit_subject', subject_id)
     else:
         return redirect('login')
 

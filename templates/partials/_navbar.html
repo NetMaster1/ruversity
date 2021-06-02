@@ -31,14 +31,30 @@
 
 
     {% if 'dashboard' in request.path %}
-    <a class="btn btn-outline-dark mr-1 active" href="{% url 'dashboard' %}" role=’button’>{{user.first_name}} {{user.last_name}}</a>
+    <div class="dropdown mr-1">
+    <button type="button" class='btn btn-outline-dark btn-md dropdown-toggle active' data-bs-toggle='dropdown'>
+    {{user.first_name}} {{user.last_name}}
+    </button>
+
     {% else %}
-    <a class="btn btn-outline-dark mr-1" href="{% url 'dashboard' %}" role=’button’>{{user.first_name}}
-      {{user.last_name}}</a>
+    <div class="dropdown mr-1">
+      <button type="button" class='btn btn-outline-dark btn-md dropdown-toggle' data-bs-toggle='dropdown'>
+      {{user.first_name}}{{user.last_name}}
+      </button>
     {% endif %}
 
-    {% if 'mycourses' in request.path or 'cart' in request.path %}
+    <div class="dropdown-menu">
+      <a href="{% url 'dashboard' %}" class="dropdown-item">Dashboard</a>
+      <!-- <a href="{% url 'email' %}" class="dropdown-item">Send us email</a> -->
+      <a href="#" class="dropdown-item" data-bs-toggle='modal'
+        data-bs-target='#messagelModal'>Send us email</a>
+  
+    </div>
+    </div>
 
+
+
+    {% if 'mycourses' in request.path or 'cart' in request.path %}
 
     <div class="dropdown mr-1">
       <button type="button" class='btn btn-outline-dark btn-md dropdown-toggle active'
@@ -80,7 +96,7 @@
             <a href="{% url 'author_profile' %}" class="dropdown-item">Reimbursement</a>
             <a href="{% url 'transactions' %}" class="dropdown-item">My Transactions</a>
             <a href="{% url 'studio' %}" class="dropdown-item">Creation Studio</a>
-            <a href="{% url 'question_answer' %}" class="dropdown-item">Q&A</a>
+           
           </div>
     </div>
     

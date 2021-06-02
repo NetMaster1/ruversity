@@ -148,7 +148,7 @@
                     <li class="list-group-item">{{lecture.title}} {{lecture.length}} min</li>
                     {% else %}
                     <li class="list-group-item">
-                        <a href="{% url 'video' lecture.id %}" target="_blank">{{lecture.title}} {{lecture.length}} min</a>
+                        <a href="{% url 'video' subject.id lecture.id %}" target="_blank">{{lecture.title}} {{lecture.length}} min</a>
                     </li>
                     {% endif %}
                     </div>

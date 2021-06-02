@@ -39,7 +39,29 @@
         </div>
 
 
+ 
+
+
+
 <div class="col-9">
+<form action="{% url 'gen_search' %}">
+    {% csrf_token %}
+
+    <div class="form-group">
+        <select name="sort_criteria" class='form-select' id="sort_criteria">
+            <option selected='true' disabled="disabled">Sort by criteria</option>
+            <option value="av_rating">Rating</option>
+            <option value="transactions">Number of transactions</option>
+            <option value="reviews">Number of reviews</option>
+            
+        </select>
+    </div>
+
+    <div class="row mb-2">
+        <div class="col"><input type="submit" value="Sort" class='btn btn-sm btn-block btn-outline-dark'></div>
+    </div>
+</form>
+
     {% for subject in query %}
     <div class="row">
         <div class="col">
@@ -75,7 +97,7 @@
                 <!-- <p class="card-text">Description: {{subject.description}}</p> -->
                
                 <div class="row"><div class="col">
-                    <strong>Rating:</strong> {{subject.av_rating}}
+                    <strong>Rating:</strong> {{subject.av_rating}} 
                     
                     <div class="stars-outer">
                         <div class="stars-inner" style="width:{{subject.percent}}"></div>
@@ -84,7 +106,7 @@
                 </div>
                     <div class="row">
                     <div class="col">
-                    <strong>Transactions: </strong> {{subject.transactions}}
+                    <strong>Transactions: </strong> {{subject.transactions}} reviews: {{subject.reviews}}
                     </div>
                 </div>
             </div>
