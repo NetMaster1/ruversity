@@ -38,7 +38,7 @@ def email (request):
               #sender
               request.user.email,
               #receiver
-              ['79200711112@yandedx.ru'],
+              ['ruversity@gmail.com'],
               fail_silently=False
             )
             messages.success(request, 'You successfully sent us your message.')

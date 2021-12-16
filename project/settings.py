@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'app_ratings',
     'app_reviews',
     'app_workshop',
-    'paypal.standard.ipn',
+    #'paypal.standard.ipn',
     'app_contacts',
 
 ]
@@ -144,10 +144,13 @@ PAYPAL_TEST = True
 
 #Email Settings
 EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_POSRT = 537
 EMAIL_POSRT = 587
 EMAIL_HOST_USER = 'ruversity@gmail.com'
 EMAIL_HOST_PASSWORD = 'Ylhio65v_01'
+# EMAIL_HOST = 'smtp.yandex.ru'
+# EMAIL_POSRT = 537
+# EMAIL_HOST_USER = '79200711112@yandex.ru'
+# EMAIL_HOST_PASSWORD = 'RsK-ydU-3Ar-iYX'
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 

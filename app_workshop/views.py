@@ -77,8 +77,7 @@ def create_author_page(request):
                     }
                     return redirect('studio')
             else:
-                messages.error(
-                    request, 'File has inproper format. Load jpg, jpeg, png or bmp file')
+                messages.error(request, 'File has inproper format. Load jpg, jpeg, png or bmp file')
                 return redirect('studio')
         else:
             return redirect('studio')   
