@@ -25,7 +25,6 @@ from django.contrib.auth import authenticate, login, logout
 
 # Create your views here.
 
-
 def studio(request):
     if request.user.is_authenticated:
         if Author.objects.filter(user=request.user).exists():
@@ -45,7 +44,6 @@ def studio(request):
             return render(request, 'workshop/studio.html')
     else:
         return redirect('login')
-
 
 def create_author_page(request):
     if request.user.is_authenticated:
@@ -83,7 +81,6 @@ def create_author_page(request):
             return redirect('studio')   
     else:
         return redirect('login')
-
 
 def author_page(request, user_id):
         if Author.objects.filter(user=user_id).exists():
@@ -192,7 +189,6 @@ def create_new_subject(request):
         logout(request)
         return redirect('login')
 
-
 def edit_subject(request, subject_id):
     if request.user.is_authenticated:
         subject = MainSubject.objects.get(id=subject_id)
@@ -299,7 +295,6 @@ def edit_subject(request, subject_id):
     else:
         return redirect('login')
 
-
 def delete_subject(request, subject_id):
     if request.user.is_authenticated:
         subject = MainSubject.objects.get(id=subject_id)
@@ -316,7 +311,6 @@ def delete_subject(request, subject_id):
     else:
         logout(request)
         return redirect('login')
-
 
 def create_new_section(request, subject_id):
     if request.user.is_authenticated:
@@ -380,10 +374,10 @@ def create_new_lecture(request, subject_id, section_id):
             if request.method == 'POST':
                 title = request.POST['title']
                 video_file = request.FILES['video_file']
-                subtitle_file = request.FILES['subtitle_file']
+                #subtitle_file = request.FILES['subtitle_file']
+                subtitle_file=request.POST.get('subtitle_file', False)
                 # translation_file = request.FILES['translation_file']
                 author = request.user
-
                 free_access = False
                 try:
                     if request.POST['free_access']:
@@ -391,7 +385,6 @@ def create_new_lecture(request, subject_id, section_id):
                         free_access = True
                 except KeyError:
                     free_access = False
-                        
                 # filesize = os.path.getsize(video_file.name)
                 if video_file.name.endswith('.mp4'):
                     lecture = Lecture.objects.create(
@@ -438,7 +431,6 @@ def create_new_lecture(request, subject_id, section_id):
             return redirect('login')
     else:
         return redirect('login')
-
 
 def edit_lecture(request, lecture_id):
     if request.user.is_authenticated:
@@ -488,7 +480,6 @@ def edit_lecture(request, lecture_id):
         logout(request)
         return redirect('login')
 
-
 def delete_lecture(request, lecture_id):
     if request.user.is_authenticated:
         lecture = Lecture.objects.get(id=lecture_id)
@@ -508,7 +499,6 @@ def delete_lecture(request, lecture_id):
     else:
         logout(request)
         return redirect('login')
-
 
 def video(request, subject_id, lecture_id):
     if request.user.is_authenticated:
