@@ -13,20 +13,20 @@
 <form action="{% url 'gen_search' %}" method='POST' class="form-inline m-auto">
   {% csrf_token %}
   <!-- <input type="text" name="keyword" placeholder="Модель или брэнд" class='rounded'> -->
-  <input type="text" name="keyword" placeholder="Search for anything " class="form-control mr-sm-2">
+  <input type="text" name="keyword" placeholder="Введите ключевое слово " class="form-control mr-sm-2">
   {% if 'gen_search' in request.path %}
-  <button class="btn btn-sm btn-outline-dark active" input type="submit">Search</button>
+  <button class="btn btn-sm btn-outline-dark active" input type="submit">Поиск</button>
   {% else %}
-  <button class="btn btn-sm btn-outline-dark" input type="submit">Search</button>
+  <button class="btn btn-sm btn-outline-dark" input type="submit">Поиск</button>
   {% endif %}
 </form>
 
 {% if user.is_authenticated %}
 
   {% if 'main_page' in request.path %}
-  <a class="btn btn-outline-dark mr-1 active" href="{% url 'main_page' %}" role=’button’>Catalogue</a>
+  <a class="btn btn-outline-dark mr-1 active" href="{% url 'main_page' %}" role=’button’>Каталог</a>
   {% else %}
-  <a class="btn btn-outline-dark mr-1" href="{% url 'main_page' %}" role=’button’>Catalogue</a>
+  <a class="btn btn-outline-dark mr-1" href="{% url 'main_page' %}" role=’button’>Каталог</a>
   {% endif %}
 
 
@@ -47,7 +47,7 @@
       <a href="{% url 'dashboard' %}" class="dropdown-item">Dashboard</a>
       <!-- <a href="{% url 'email' %}" class="dropdown-item">Send us email</a> -->
       <a href="#" class="dropdown-item" data-bs-toggle='modal'
-        data-bs-target='#messagelModal'>Send us email</a>
+        data-bs-target='#messagelModal'>Напишите нам</a>
   
     </div>
     </div>
@@ -59,22 +59,22 @@
     <div class="dropdown mr-1">
       <button type="button" class='btn btn-outline-dark btn-md dropdown-toggle active'
       data-bs-toggle='dropdown'>
-        Student
+        Студент
     </button>
 
     {% else %}
     <div class="dropdown mr-1">
     <button type="button" class='btn btn-outline-dark btn-md dropdown-toggle' data-bs-toggle='dropdown'>
-      Student
+      Студент
     </button>
 
     {% endif %}
 
       <div class="dropdown-menu">
-        <a href="{% url 'mycourses' %}" class="dropdown-item">My courses</a>
-        <a href="{% url 'cart' %}" class="dropdown-item">My cart</a>
+        <a href="{% url 'mycourses' %}" class="dropdown-item">Мои курсы</a>
+        <a href="{% url 'cart' %}" class="dropdown-item">Корзина</a>
         <div class="dropdown-divider"></div>
-        <a href="#" class="dropdown-item disable">Exams</a>
+        <a href="#" class="dropdown-item disable">Тестирование</a>
       </div>
   </div>
    
@@ -83,39 +83,39 @@
     {% if 'author_profile' in request.path or 'transactions' in request.path%}
     <div class="dropdown mr-1">
         <button type="button" class='btn btn-outline-dark btn-md dropdown-toggle active' data-bs-toggle='dropdown'>
-            Instructor
+            Преподаватель
         </button>
       {% else %}
       <div class="dropdown mr-1">
       <button type="button" class='btn btn-outline-dark btn-md dropdown-toggle' data-bs-toggle='dropdown'>
-        Instructor
+        Преподаватель
       </button>
       {% endif %}
           <div class="dropdown-menu">
-            <a href="{% url 'author_page' request.user.id %}" class="dropdown-item">Author Page</a>
-            <a href="{% url 'author_profile' %}" class="dropdown-item">Reimbursement</a>
-            <a href="{% url 'transactions' %}" class="dropdown-item">My Transactions</a>
-            <a href="{% url 'studio' %}" class="dropdown-item">Creation Studio</a>
+            <a href="{% url 'author_page' request.user.id %}" class="dropdown-item">Личный профиль</a>
+            <a href="{% url 'author_profile' %}" class="dropdown-item">Оплата</a>
+            <a href="{% url 'transactions' %}" class="dropdown-item">Мои сделки</a>
+            <a href="{% url 'studio' %}" class="dropdown-item">Творческая студия</a>
            
           </div>
     </div>
     
   
-    <a class="btn btn-outline-dark btn-md" href="{% url 'logout' %}" role=’button’>Signout</a>
+    <a class="btn btn-outline-dark btn-md" href="{% url 'logout' %}" role=’button’>Выход</a>
 
     {% else %}
     
      
     {% if 'login' in request.path %}
-    <a href="{% url 'login' %}" class="btn btn-md btn-outline-dark mr-2 active">Signin</a>
+    <a href="{% url 'login' %}" class="btn btn-md btn-outline-dark mr-2 active">Вход</a>
     {% else %}
-    <a href="{% url 'login' %}" class="btn btn-md btn-outline-dark mr-2">Signin</a>
+    <a href="{% url 'login' %}" class="btn btn-md btn-outline-dark mr-2">Вход</a>
     {% endif %}
     
     {% if 'register_user' in request.path %}
-    <a href="{% url 'register_user' %}" class="btn btn-md btn-outline-dark active">Signup</a>
+    <a href="{% url 'register_user' %}" class="btn btn-md btn-outline-dark active">Регистрация</a>
     {% else%}
-    <a href="{% url 'register_user' %}" class="btn btn-md btn-outline-dark">Signup</a>
+    <a href="{% url 'register_user' %}" class="btn btn-md btn-outline-dark">Регистрация</a>
     {% endif %}
    
   {% endif %}

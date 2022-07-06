@@ -3,7 +3,6 @@ from app_content.models import MainSubject, Section, Lecture, Price, Category, L
 from .models import Country
 from app_accounts.models import Author
 
-
 from django.http import HttpResponseRedirect, HttpResponse
 from django.views.generic import View
 from .utils import render_to_pdf
@@ -14,7 +13,7 @@ from django.contrib import messages
 # import moviepy
 from moviepy.editor import *
 import os
-import cv2
+import cv2 # to use cv2 with Linux you have to 'pip install opencv-python-headless'
 import PIL
 from PIL import Image
 from pathlib import Path
@@ -424,7 +423,6 @@ def create_new_lecture(request, subject_id, section_id):
                     messages.error(request, 'File has inproper format. Load mp4 file')
                     return redirect('edit_section', subject_id, section_id)
             else:
-               
                 return redirect('edit_section', subject_id, section_id)
         else:
             logout(request)

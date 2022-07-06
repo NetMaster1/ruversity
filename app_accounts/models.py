@@ -46,8 +46,8 @@ class Author(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=100, blank=True)
     last_name = models.CharField(max_length=100, blank=True)
-    photo = models.FileField(upload_to='uploads')
+    photo = models.FileField(upload_to='uploads', null=True)
     background = models.TextField(null=True, max_length=250)
 
     def __str__(self):
-        return self.name
+        return self.last_name
