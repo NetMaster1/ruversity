@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-<body oncontextmenu="return false;">
+<!-- <body oncontextmenu="return false;"> -->
  
 
 <div class="container">
@@ -10,7 +10,10 @@
     {% if subject.ready == True %}
     <div class="row p-3 mt-3">
         <div class="col-12">
-        Your course has been uploaded to ruversisty.com & is ready for sale. Since ruversity.com provides life-time access for the buyers, you are no longer able neither to delete it nor edit. In order to make changes in the course you have to apply to us via email.
+        Ваш курс был загружен на сервер для продажи. Так как ruversity.com предоставляет неограниченный срок использования приобретенного курса, мы вынуждены ограничить вас в вашем праве удалить или редактировать данный курс.
+        Для внесения изменений в курс свяжитесь с нами по электронной почте.
+
+        <!-- Your course has been uploaded to ruversisty.com & is ready for sale. Since ruversity.com provides life-time access for the buyers, you are no longer able neither to delete it nor edit. In order to make changes in the course you have to apply to us via email. -->
         </div>
     </div>
 
@@ -89,12 +92,12 @@
         
     <div class="row p-3">
         <div class="col-8">
-    <h5>After your course is completed & ready to be uploaded, push the button</h5>
+    <h5>По окончанию редактирования курса нажмите на кнопку</h5>
             </div>
             
-        <div class="col-2">
+        <div class="col-3">
     <a href="{% url 'agreement' subject.id%}">
-    <input type="submit" value="Upload" class="btn btn-outline-dark btn-block">
+    <input type="submit" value="Загрузить на сервер" class="btn btn-outline-dark btn-block">
     </a>
         </div>
 
@@ -103,7 +106,7 @@
 
 <!-- ====================================================== -->
 <div class="row border rounded bg-light text-center">
-    <h5>Edit the subject</h5>
+    <h5>Страница редактирования курса</h5>
 </div>
 
 <div class="row mt-2">
@@ -118,7 +121,7 @@
             <div class="card-body">
             <div class="row">
                 <div class="col">
-                    <strong>Description: </strong>
+                    <strong>Описание: </strong>
                     <!-- <a ref='#collapse-p' data-toggle="collapse" data-target="#collapse-p">
                             Read More
                             </a> -->
@@ -132,7 +135,7 @@
 
             <div class="row">
                 <div class="col">
-                    <strong>Prerequisites: </strong>
+                    <strong>Предварительная подготовка: </strong>
                 </div>
             </div>
             <div class="row" style='height:6rem'>
@@ -143,10 +146,10 @@
 
              
             <div class="row">
-                <div class="col"><strong>Language: </strong>{{subject.language}}</div>
+                <div class="col"><strong>Язык: </strong>{{subject.language}}</div>
             </div>
             <div class="row">
-                <div class="col"><strong>Category: </strong>{{subject.category}}</div>
+                <div class="col"><strong>Категория: </strong>{{subject.category}}</div>
             </div>
         </div>
     </div>
@@ -158,9 +161,10 @@
     <form action="{% url 'edit_subject' subject.id %}" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="form-group">
-                <input type="text" class='form-control' id="title" name="title" maxlength='50' required placeholder='Edit title of the subject'>
+                <input type="text" class='form-control' id="title" name="title" maxlength='50' required placeholder='Редактировать название курса'>
             </div>
             <div class="form-group">
+                <label for="description">Редактировать язык курса</label>
                 <select name="language" class='form-select' id="language" required>
                     {% for item in languages %}
                     <option value="{{item.id}}">{{item.name}}</option>
@@ -168,6 +172,7 @@
                 </select>
             </div>
             <div class="form-group">
+                <label for="description">Редактировать категорию</label>
                     <select name="category" class='form-select' id="category" required>
                         {% for item in categories %}
                         <option value="{{item.id}}">{{item.name}}</option>
@@ -175,14 +180,14 @@
                     </select>
             </div>
             <div class="form-group">
-                <label for="description">Edit short description for the subject:</label>
+                <label for="description">Редактировать краткое описание курса</label>
                 <textarea class='form-control' id="description" rows='3' minlength='120' maxlength='180' name="description" required placeholder='Please, enter short description from 120 to 180 symbols'></textarea>
             <div class="form-group">
-                <label for="prerequisites">Edit prerequisites for the subject:</label>
-                <textarea class='form-control' rows='3' id="prerequisite" minlength='120' maxlength='180' minlength='150'name="prerequisite" required></textarea>
+                <label for="prerequisites">Редактировать предварительную подготовку</label>
+                <textarea class='form-control' rows='3' id="prerequisite" minlength='120' maxlength='180' minlength='150'name="prerequisites" required></textarea>
             <div>
             <div class="form-group">
-                <label for="thumbnail">Load new thumbnail for the subject:</label>
+                <label for="thumbnail">Загрузить новую картинку для курса:</label>
                 <input type="file" class="form-control" id="thumbnail" name='thumbnail' required>
             </div>
             </div>
@@ -190,7 +195,7 @@
    
         <div class="row mb-2">
             <!-- <div class="col"><input type="submit" value="Edit" class="btn btn-info btn-block"></div> -->
-            <div class="col"><input type="submit" value="Edit" class='btn btn-sm btn-block btn-outline-dark'></div>     
+            <div class="col"><input type="submit" value="Редактировать" class='btn btn-sm btn-block btn-outline-dark'></div>     
         </div>
 </form>
 
@@ -198,7 +203,7 @@
             <div class="col">
                 <a href="{% url 'delete_subject' subject.id %}">
                     <!-- <input type="submit" value="Delete" class="btn btn-info btn-block"> -->
-                    <input type="button" value="Delete" class='btn btn-sm btn-block btn-outline-dark'>
+                    <input type="button" value="Удалить курс" class='btn btn-sm btn-block btn-outline-dark'>
                 </a>
             </div>
         </div>
@@ -210,7 +215,7 @@
 <!-- ===================Create New Section Box============================== -->
 
     <div class="row mt-3 border rounded bg-light text-center">
-        <h5>Create new section</h5>
+        <h5>Создать новый раздел</h5>
     </div>
     <div class="row mt-2 pb-3 border rounded">
     
@@ -220,16 +225,16 @@
             <div class="form-row">
                 <div class="col-3">
                     <label for="title">
-                        <h5>Add new section:</h5>
+                        <h5>Добавить новый раздел:</h5>
                     </label>
-                    <input class='form-control' type="text" id="title" name="title" placeholder="Section Title" required>
+                    <input class='form-control' type="text" id="title" name="title" placeholder="Название раздела" required>
                 </div>
     
                 <div class="col-2 align-self-end">
                     <!-- <button type='submit' value="Create" class="btn btn-info btn-block"> -->
                     <!-- <input type="submit" value="Create" class="btn btn-info btn-block "> -->
-                    <input type="submit" value="Create" class='btn btn-sm btn-block btn-outline-dark'>
-                    <input type="reset" value="Clear" class="btn btn-sm btn-block btn-outline-dark">
+                    <input type="submit" value="Создать" class='btn btn-sm btn-block btn-outline-dark'>
+                    <input type="reset" value="Очистить" class="btn btn-sm btn-block btn-outline-dark">
                 </div>
             </div>
     </div>
@@ -239,7 +244,7 @@
     <!-- =====================Sections============================================== -->
     {% for section in sections %}
     <div class="row mt-2 mb-2 border rounded bg-light text-center">
-        <a href="{% url 'edit_section' subject.id section.id %}"><h3>{{section.title}}</h3></a>
+        <a href="{% url 'edit_section' subject.id section.id %}"><h3>Редактировать раздел "{{section.title}}"</h3></a>
 
     </div>
         <!-- <div class="row mt-3 border rounded text-center"></div> -->

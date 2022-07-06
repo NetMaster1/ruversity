@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from datetime import datetime, date
+from . storage import OverwriteStorage
 
 
 # Create your models here.
@@ -9,7 +10,6 @@ class Language(models.Model):
 
     def __str__(self):
         return self.name
-
 
 class Price(models.Model):
     regular = models.DecimalField(max_digits=5, decimal_places=2)
@@ -24,13 +24,11 @@ class DiscountOn(models.Model):
     def __int__(self):
         return self.id
 
-
 class Category(models.Model):
     name = models.CharField(max_length=50)
 
     def __str__(self):
         return self.name
-
 
 class TempImage(models.Model):
     temp_thumbnail_file = models.FileField(upload_to='uploads')
@@ -68,7 +66,6 @@ class MainSubject(models.Model):
     def __int__(self):
         return self.id
 
-
 class Section(models.Model):
     course = models.ForeignKey(MainSubject, on_delete=models.CASCADE)
     length = models.DecimalField(max_digits=5, decimal_places=2, default=0)
@@ -83,6 +80,7 @@ class Lecture(models.Model):
     subject = models.ForeignKey(MainSubject, on_delete=models.CASCADE)
     section = models.ForeignKey(Section, on_delete=models.CASCADE)
     video_file = models.FileField(upload_to='uploads', null=True)
+    #video_file = models.FileField(upload_to='uploads', null=True, storage=OverwriteStorage())
     subtitle_file = models.FileField(upload_to='uploads', null=True)
     translation_file = models.FileField(upload_to='uploads', null=True)
     author = models.ForeignKey(User, on_delete=models.DO_NOTHING)
@@ -96,7 +94,6 @@ class Lecture(models.Model):
 
     def __int__(self):
         return self.id
-
 
 class Transaction(models.Model):
     course = models.ForeignKey(MainSubject, on_delete=models.DO_NOTHING)
@@ -123,13 +120,11 @@ class Rating (models.Model):
     def __int__(self):
         return self.id
 
-
 class Badword (models.Model):
     badword = models.CharField(max_length=50)
 
     def __int__(self):
         return self.id
-
 
 class Keyword (models.Model):
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
@@ -138,7 +133,6 @@ class Keyword (models.Model):
     def __int__(self):
         return self.id
 
-
 class Paypal (models.Model):
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
     name = models.CharField(max_length=50)
@@ -146,13 +140,11 @@ class Paypal (models.Model):
     def __int__(self):
         return self.id
 
-
 class Credit_card_type(models.Model):
     type = models.CharField(max_length=50)
 
     def __int__(self):
         return self.id
-
 
 class Credit_card (models.Model):
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
@@ -163,7 +155,6 @@ class Credit_card (models.Model):
 
     def __int__(self):
         return self.id
-
 
 class Bank_account (models.Model):
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
@@ -178,14 +169,12 @@ class Bank_account (models.Model):
     def __int__(self):
         return self.id
 
-
 class Main_method (models.Model):
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
     method = models.CharField(max_length=50)
 
     def __int__(self):
         return self.id
-
 
 class Cart(models.Model):
     subject = models.ForeignKey(MainSubject, on_delete=models.CASCADE)
@@ -194,7 +183,6 @@ class Cart(models.Model):
 
     def __int__(self):
         return self.id
-
 
 class Question(models.Model):
     subject = models.ForeignKey(MainSubject, on_delete=models.CASCADE)

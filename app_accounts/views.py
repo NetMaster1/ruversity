@@ -8,7 +8,6 @@ from app_accounts.models import Entity, Person
 
 def register_user(request):
     if request.method == 'POST':
-        # Get from values
         first_name = request.POST['first_name']
         last_name = request.POST['last_name']
         username = request.POST['username']
@@ -27,17 +26,19 @@ def register_user(request):
         if password == password2:
             # Check user name
             if User.objects.filter(username=username).exists():
-                messages.error(
-                    request, 'There is a user with this name')
+                messages.error(request, 'Пользователь с таким логином уже существует.')
                 return redirect('register_user')
             else:
                 if User.objects.filter(email=email).exists():
-                    messages.error(
-                        request, 'There is a user with this email')
+                    messages.error(request, 'Такой адрес электронной почты уже существует.')
                     return redirect('register_user')
                 else:
                     user = User.objects.create_user(
-                        username=username, password=password, email=email, first_name=first_name, last_name=last_name)
+                        username=username,
+                        password=password,
+                        email=email, 
+                        first_name=first_name, 
+                        last_name=last_name)
 
                     # including the user in Person or Entity table
                     if customer_type:
@@ -72,22 +73,24 @@ def register_user(request):
                                 'entity': entity,
                                 'group': group
                             }
-                            messages.success(request, 'You are successfully logged in as an entity.')
-                            return redirect('dashboard')
+                            messages.success(request, 'Вы зарегистрировались как юридическое лицо.')
+                            #return redirect('dashboard')
+                            return redirect('main_page')
                     #     else:
                     #         person = Person.objects.get(user=request.user)
                     #         context = {
                     #             'person': person,
                     #         }
                         # return render(request, 'accounts/dashboard.html', context)
-                        return redirect('dashboard')
+                        #return redirect('dashboard')
+                        return redirect('main_page')
                     else:
                     # person = Person.objects.get(user=request.user)
                     # context = {
                     #     'person': person,
                     # }
                     # return redirect ('dashboard')
-                        return redirect('dashboard')
+                        return redirect('main_page')
 
                     # Login after register
                     #auth.login(request, user)
@@ -124,11 +127,11 @@ def logout_user(request):
     return redirect('index')
 
 
-def dashboard(request):
-    if request.user.is_authenticated:
-        return render(request, 'accounts/dashboard.html')
-    else:
-        return redirect('login')
+# def dashboard(request):
+#     if request.user.is_authenticated:
+#         return render(request, 'accounts/dashboard.html')
+#     else:
+#         return redirect('login')
 
 def change_email(request):
     if request.user.is_authenticated:

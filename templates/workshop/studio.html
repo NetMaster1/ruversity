@@ -13,21 +13,22 @@
 
             <div class="form-row">
                 <div class="col-3">
-                    <label for="description" >You background</label>
+                    <label for="description" >Ваша профессиональная подготовка:</label>
                 </div>
                 <div class="col">
-                    <textarea class='form-control' id="background" rows='3' minlength='120' maxlength='180' name="background" required placeholder='Please, tell us a few words about yourself & your professional background'></textarea>
+                    <textarea class='form-control' id="background" rows='3' minlength='120' maxlength='180' name="background" required placeholder='Пожалуйста, расскажите о себе и своем опыте'></textarea>
                 </div> 
             </div>
 
 
             <div class="form-row mt-4">
                 <div class="col-3">
-                <label for="photo">Your photo</label>
+                <label for="photo">Ваше фото:</label>
             </div>
             <div class="col">
                 <p>
-                Load a thumbnail file in jpg, jpeg, png or bmp format. Minimum required dimensions: 750 x 422 pixels. Always keep aspect ratio of 16 by 9. You may use stock images but we recommend you hire a professional web designer to create an image for your thumbnail.
+                Загрузить файл в формате jpg, jpeg, png или bmp. Минимальный размер: 750 х 422 пикселя. 
+                Load a thumbnail file in jpg, jpeg, png or bmp format. Minimum required dimensions: 750 x 422 pixels. Формат фото: 16х9. 
                 </p>
                 <input type="file" id="photo" class='form-control' name="photo" required>
             </div>
@@ -52,17 +53,18 @@
     <div class="col-3">
         <a href="{% url 'create_new_subject'  %}">
             <!-- <input type="submit" value="Create New Subject" class="btn btn-info btn-block"> -->
-            <input type="submit" value="Create New Subject" class='btn btn-sm btn-block btn-outline-dark'>
+            <input type="submit" value="Создать новый курс" class='btn btn-sm btn-block btn-outline-dark'>
         </a>
     </div>
 </div>
        
-
-    <p><h3>My subjects created</h3></p>
-    
+<div class="row">
+    <p><h3>Мои курсы в процессе редактирования</h3></p>
+</div>
     
     <div class="row">
         {% for subject in subjects %}
+        {% if subject.ready == False %}
         
         <div class="col-sm-3">
             <div class="card mb-3" style="border-color: transparent;">
@@ -72,7 +74,7 @@
                 <a href="{% url 'edit_subject' subject.id %}">
                     <!-- <figure class="image is-4by3"> -->
                     <figure class="image is-16by9">
-                        <img src="{{subject.thumbnail_file.url}}" alt="Placeholder image" class='rounded-2 img-fluid'>
+                        <img src="{{subject.thumbnail_file.url}}" alt="Placeholder image" class='rounded-2 img-fluid' id="edit_subject">
                         <!-- <img src="{{subject.thumbnail_file.url}}" alt="Placeholder image"  class='card-image-top' style='width:18rem; height: 10rem;'> -->
                     </figure>
                 </a>
@@ -106,10 +108,62 @@
                 </div>
             </div>
         </div>
-
+        {% endif %}
     {% endfor %}
 
 </div>
+
+    <p><h3>Мои курсы, загруженные на сервер</h3></p>
+    <div class="row">
+        {% for subject in subjects %}
+        {% if subject.ready == True %}
+    
+        <div class="col-sm-3">
+            <div class="card mb-3" style="border-color: transparent;">
+                <div class="card-header" style='height:4rem'>
+                    <h5>{{subject.title}}</h5>
+                </div>
+                <a href="{% url 'edit_subject' subject.id %}">
+                    <!-- <figure class="image is-4by3"> -->
+                    <figure class="image is-16by9">
+                        <img src="{{subject.thumbnail_file.url}}" alt="Placeholder image" class='rounded-2 img-fluid'
+                            id="edit_subject">
+                        <!-- <img src="{{subject.thumbnail_file.url}}" alt="Placeholder image"  class='card-image-top' style='width:18rem; height: 10rem;'> -->
+                    </figure>
+                </a>
+                <div class="card-body">
+                    <!-- <div class="media ml-1">
+                                                <p class="title is-6" style="height:10px">{{subject.title}}</p>
+                                            </div> -->
+                    <div class="row">
+                        <div class="col"><strong>Created by: </strong>{{subject.author}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col"><strong>Date posted: </strong>{{subject.date_posted}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <strong>
+                                Rating:
+                            </strong> {{subject.av_rating}}
+                            <div class="stars-outer">
+                                <div class="stars-inner" style="width: {{subject.percent}}"></div>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div class="row">
+                        <div class="col">
+                            <strong>Transactions:</strong> {{subject.transactions}}
+                        </div>
+                    </div>
+    
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+
 
 {% endif %}
     <!-- ===================================Pagination====================================== -->
@@ -154,5 +208,20 @@
     <!-- ==========================End of Pagination========================================== -->
 
 </div>
+
+<script>
+console.log ('Scrpt starts')
+
+    const edit_subject = document.querySelector('#edit_subject');
+
+    edit_subject.addEventListener('mouseenter', showMessage)
+
+
+    function showMessage() {
+           
+        }
+
+console.log ('Script ends')
+</script>
 
 {% endblock %}
