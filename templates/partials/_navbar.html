@@ -7,30 +7,30 @@
   <!-- <div class="collapse navbar-collapse" id="navbarResponsive"> -->
   <!-- <nav class="navbar bg-info sticky-top" role="navigation" aria-label="main navigation"> -->
    
-<div class="container">
+
   <img src={% static "images/logo.png" %} alt="Image" width="200" height="200">
 
 <form action="{% url 'gen_search' %}" method='POST' class="form-inline m-auto">
   {% csrf_token %}
   <!-- <input type="text" name="keyword" placeholder="Модель или брэнд" class='rounded'> -->
-  <input type="text" name="keyword" placeholder="Search for anything " class="form-control mr-sm-2">
+  <input type="text" name="keyword" placeholder="" class="form-control mr-sm-4">
   {% if 'gen_search' in request.path %}
-  <button class="btn btn-sm btn-outline-dark active" input type="submit">Search</button>
+  <button class="btn btn-sm btn-outline-dark active" input type="submit">Поиск</button>
   {% else %}
-  <button class="btn btn-sm btn-outline-dark" input type="submit">Search</button>
+  <button class="btn btn-sm btn-outline-dark" input type="submit">Поиск</button>
   {% endif %}
 </form>
 
 {% if user.is_authenticated %}
 
   {% if 'main_page' in request.path %}
-  <a class="btn btn-outline-dark mr-1 active" href="{% url 'main_page' %}" role=’button’>Catalogue</a>
+  <a class="btn btn-outline-dark mr-1 active" href="{% url 'main_page' %}" role=’button’>Каталог</a>
   {% else %}
-  <a class="btn btn-outline-dark mr-1" href="{% url 'main_page' %}" role=’button’>Catalogue</a>
+  <a class="btn btn-outline-dark mr-1" href="{% url 'main_page' %}" role=’button’>Каталог</a>
   {% endif %}
 
 
-    {% if 'dashboard' in request.path %}
+    <!-- {% if 'dashboard' in request.path %}
     <div class="dropdown mr-1">
     <button type="button" class='btn btn-outline-dark btn-md dropdown-toggle active' data-bs-toggle='dropdown'>
     {{user.first_name}} {{user.last_name}}
@@ -41,16 +41,16 @@
       <button type="button" class='btn btn-outline-dark btn-md dropdown-toggle' data-bs-toggle='dropdown'>
       {{user.first_name}}{{user.last_name}}
       </button>
-    {% endif %}
+    {% endif %} -->
 
-    <div class="dropdown-menu">
-      <a href="{% url 'dashboard' %}" class="dropdown-item">Dashboard</a>
-      <!-- <a href="{% url 'email' %}" class="dropdown-item">Send us email</a> -->
+    <!-- <div class="dropdown-menu">
+     
+      <a href="{% url 'email' %}" class="dropdown-item">Send us email</a>
       <a href="#" class="dropdown-item" data-bs-toggle='modal'
         data-bs-target='#messagelModal'>Send us email</a>
   
     </div>
-    </div>
+    </div> -->
 
 
 
@@ -59,22 +59,22 @@
     <div class="dropdown mr-1">
       <button type="button" class='btn btn-outline-dark btn-md dropdown-toggle active'
       data-bs-toggle='dropdown'>
-        Student
+        Продолжить как студент
     </button>
 
     {% else %}
     <div class="dropdown mr-1">
     <button type="button" class='btn btn-outline-dark btn-md dropdown-toggle' data-bs-toggle='dropdown'>
-      Student
+      Продолжить как студент
     </button>
 
     {% endif %}
 
       <div class="dropdown-menu">
-        <a href="{% url 'mycourses' %}" class="dropdown-item">My courses</a>
-        <a href="{% url 'cart' %}" class="dropdown-item">My cart</a>
+        <a href="{% url 'mycourses' %}" class="dropdown-item">Приобретенные курсы</a>
+        <a href="{% url 'cart' %}" class="dropdown-item">Корзина</a>
         <div class="dropdown-divider"></div>
-        <a href="#" class="dropdown-item disable">Exams</a>
+        <a href="#" class="dropdown-item disable">Тесты</a>
       </div>
   </div>
    
@@ -83,39 +83,39 @@
     {% if 'author_profile' in request.path or 'transactions' in request.path%}
     <div class="dropdown mr-1">
         <button type="button" class='btn btn-outline-dark btn-md dropdown-toggle active' data-bs-toggle='dropdown'>
-            Instructor
+            Продолжить как лектор
         </button>
       {% else %}
       <div class="dropdown mr-1">
       <button type="button" class='btn btn-outline-dark btn-md dropdown-toggle' data-bs-toggle='dropdown'>
-        Instructor
+        Продолжить как лектор
       </button>
       {% endif %}
           <div class="dropdown-menu">
-            <a href="{% url 'author_page' request.user.id %}" class="dropdown-item">Author Page</a>
-            <a href="{% url 'author_profile' %}" class="dropdown-item">Reimbursement</a>
-            <a href="{% url 'transactions' %}" class="dropdown-item">My Transactions</a>
-            <a href="{% url 'studio' %}" class="dropdown-item">Creation Studio</a>
+            <a href="{% url 'author_page' request.user.id %}" class="dropdown-item">Профиль автора</a>
+            <a href="{% url 'author_profile' %}" class="dropdown-item">Оплата</a>
+            <a href="{% url 'transactions' %}" class="dropdown-item">Мои сделки</a>
+            <a href="{% url 'studio' %}" class="dropdown-item">Творческая студия</a>
            
           </div>
     </div>
     
   
-    <a class="btn btn-outline-dark btn-md" href="{% url 'logout' %}" role=’button’>Signout</a>
+    <a class="btn btn-outline-dark btn-md" href="{% url 'logout' %}" role=’button’>Выход</a>
 
     {% else %}
     
      
     {% if 'login' in request.path %}
-    <a href="{% url 'login' %}" class="btn btn-md btn-outline-dark mr-2 active">Signin</a>
+    <a href="{% url 'login' %}" class="btn btn-md btn-outline-dark mr-2 active">Войти</a>
     {% else %}
-    <a href="{% url 'login' %}" class="btn btn-md btn-outline-dark mr-2">Signin</a>
+    <a href="{% url 'login' %}" class="btn btn-md btn-outline-dark mr-2">Войти</a>
     {% endif %}
     
     {% if 'register_user' in request.path %}
-    <a href="{% url 'register_user' %}" class="btn btn-md btn-outline-dark active">Signup</a>
+    <a href="{% url 'register_user' %}" class="btn btn-md btn-outline-dark active">Регистрация</a>
     {% else%}
-    <a href="{% url 'register_user' %}" class="btn btn-md btn-outline-dark">Signup</a>
+    <a href="{% url 'register_user' %}" class="btn btn-md btn-outline-dark">Регистрация</a>
     {% endif %}
    
   {% endif %}

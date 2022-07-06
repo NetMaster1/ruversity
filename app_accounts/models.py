@@ -50,4 +50,4 @@ class Author(models.Model):
     background = models.TextField(null=True, max_length=250)
 
     def __str__(self):
-        return self.name
+        return self.last_name

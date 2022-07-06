@@ -6,8 +6,7 @@ class MainSubjectAdmin(admin.ModelAdmin):
     list_display = ('id', 'title', 'percent', 'date_posted', 'author')
 
 class SectionAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title')
-
+    list_display = ('id', 'title', 'course')
 
 class LectureAdmin(admin.ModelAdmin):
     list_display = ('id', 'title', 'author', 'date_posted')

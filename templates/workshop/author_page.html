@@ -6,54 +6,56 @@
     <div class="col-6">
       <div class="row m-auto">
         <div class="col">
-      Instructor:
+      Лектор:
       </div>
       </div>
       <div class="row m-auto"><div class="col">
         <h2>{{author.first_name}} {{author.last_name}}</h2>
       </div></div>
       
-      <div class="row m-auto"><div class="col">About me</div></div>
-      <p>
-      <div class="row m-auto"><div class="col"><strong>
+      <div class="row m-auto"><div class="col">Обо мне</div></div>
+    
+      <div class="row">
+        <div class="col-12">
         {{author.background}}
-      </strong></div></div>
-      </p>
+      </div></div>
+      
       <!-- Author info change button -->
 <!-- ==================================================== -->
     {% if author.user == request.user %}
 
     <!-- ================= Modal =========================== -->
-      <button class="btn btn-sm btn-block btn-outline-dark" data-toggle='modal' data-target='#edit_author_modal'>Edit author info</button>
+      <button class="btn btn-sm btn-block btn-outline-dark" data-bs-toggle='modal' data-bs-target='#edit_author_modal'>Редактировать</button>
 
       <div class="modal" id='edit_author_modal'>
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h3 class='modal-title'>Edit your info</h3>
-              <button class="close" data-dismiss='modal'>&times;</button>
+              <h3 class='modal-title'>Редактировать</h3>
+              <button class="close" data-bs-dismiss='modal'>&times;</button>
             </div>
 
           <div class="modal-body">
           <div class="row">
             <div class="col-12 m-auto">
+
                 <form action="{% url 'edit_author_page' request.user.id %}" method="POST" enctype="multipart/form-data">
                   {% csrf_token %}
                 
                   <div class="form-row">
                     <div class="col-3">
-                      <label for="description">Edit your background</label>
+                      <label for="description">Редактировать вашу проф. подготовку</label>
                     </div>
                     <div class="col">
                       <textarea class='form-control' id="background" rows='3' minlength='120' maxlength='180' name="background" required
-                        placeholder='Please, tell us a few words about yourself & your professional background'></textarea>
+                        value = '{{author.background}}'></textarea>
                     </div>
                   </div>
                 
                 
                   <div class="form-row mt-2">
                     <div class="col-3">
-                      <label for="photo">Change your photo</label>
+                      <label for="photo">Редактировать фото</label>
                     </div>
                     <div class="col">
                       <p>
@@ -90,70 +92,7 @@
 </div>
 
     
-<div class="row mt-5">
-  {% for subject in subjects %} 
-  <div class="col-sm-3">
-    <div class="card mb-3" style="border-color: transparent;">
-      <!-- <div class="p-2"> -->
-      <div class="card-header" style='height:4rem'>
-        <h5>{{subject.title}}</h5>
-      </div>
-  
-      <a href="{% url 'subject' subject.id %}">
-        <!-- <figure class="image is-4by3"> -->
-        <figure class="image is-16by9">
-          <img src="{{subject.thumbnail_file.url}}" alt="Placeholder image" class='rounded-2 img-fluid'>
-          <!-- <img src="{{subject.thumbnail_file.url}}" alt="Placeholder image"  class='card-image-top' style='width:18rem; height: 10rem;'> -->
-        </figure>
-      </a>
-      <div class="card-body">
-        <!-- <div class="media ml-1">
-                          <p class="title is-6" style="height:10px">{{subject.title}}</p>
-                      </div> -->
-        <div class="row">
-          <div class="col"><strong>Created by:</strong>
-            {{subject.author}}
-          </div>
-        </div>
-        <div class="row">
-          <div class="col"><strong>Date posted: </strong>{{subject.date_posted}}</div>
-        </div>
-  
-        <div class="row">
-          <div class="col">
-            <strong>
-              Rating:
-            </strong> {{subject.av_rating}}
-            <div class="stars-outer">
-              <div class="stars-inner" style="width: {{subject.percent}}"></div>
-            </div>
-          </div>
-        </div>
-  
-        <div class="row">
-          <div class="col">
-            <strong>Transactions:</strong> {{subject.transactions}}
-          </div>
-        </div>
-        {% if subject.discount_programs == True and discount_time.discount_on == True %}
-        <div class="row">
-          <div class="col">
-            <strong>Price:</strong> {{subject.price.discount}} USD
-          </div>
-        </div>
-        {% else %}
-        <div class="row">
-          <div class="col">
-            <strong>Price:</strong> {{subject.price.regular}} USD
-          </div>
-        </div>
-        {% endif %}
-      </div>
-    </div>
-  </div>
-  
-  {% endfor %}
-</div>
+
 
 
 </div>

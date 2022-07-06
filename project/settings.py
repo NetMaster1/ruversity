@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 from pathlib import Path
 import os
 
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -48,6 +50,7 @@ INSTALLED_APPS = [
     'app_workshop',
     #'paypal.standard.ipn',
     'app_contacts',
+    'storages'
 
 ]
 
@@ -147,9 +150,13 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'project/static')
 ]
+
 # Media Folder Settings
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+# DEFAULT_FILE_STORAGE = 'https://selfcare.cdnnow.ru/projects/5d5744fd-8dff-458c-949f-6fd1445f9b49/vod/videos/'
+# MEDIA_ROOT = 'selfcare.cdnnow.ru/projects/5d5744fd-8dff-458c-949f-6fd1445f9b49/vod/videos/'
+# MEDIA_URL = 'selfcare.cdnnow.ru/projects/5d5744fd-8dff-458c-949f-6fd1445f9b49/vod/videos/'
 
 PAYPAL_RECEIVER_EMAIL = '79200711112@yandex.ru'
 PAYPAL_TEST = True

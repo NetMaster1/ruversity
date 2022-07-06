@@ -19,15 +19,15 @@
           <form action="{% url 'login' %}" method='POST'>
             {% csrf_token %}
             <div class="form-group">
-              <label for="username">Username</label>
-              <input type="text" name="username" class="form-control" placeholder="Enter your username" required>
+              <label for="username">Имя пользователя</label>
+              <input type="text" name="username" class="form-control" placeholder="Введите имя пользователя" required>
             </div>
             <div class="form-group">
-              <label for="password">Password</label>
-              <input type="password" name="password" class="form-control" placeholder='Enter your password' required>
+              <label for="password">Пароль</label>
+              <input type="password" name="password" class="form-control" placeholder='Введите пароль' required>
             </div>
             <!-- <input type="submit" value="Signin" class="btn btn-info btn-block"> -->
-            <input type="submit" value="Signin" class="btn btn-sm btn-outline-dark btn-block">
+            <input type="submit" value="Войти" class="btn btn-sm btn-outline-dark btn-block">
           </form>
 
         </div>

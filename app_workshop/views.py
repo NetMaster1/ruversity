@@ -15,6 +15,7 @@ from django.contrib import messages
 from moviepy.editor import *
 import os
 import cv2
+import re
 import PIL
 from PIL import Image
 from pathlib import Path
@@ -59,6 +60,7 @@ def create_author_page(request):
                     last_name=request.user.last_name
                 )
                 img = cv2.imread(author.photo.path, 0)
+                print(type(img))
                 wid = img.shape[1]
                 hgt = img.shape[0]
                 ratio = wid / hgt
@@ -103,27 +105,32 @@ def edit_author_page(request, user_id):
             if request.method == 'POST':
                 background = request.POST['background']
                 photo = request.FILES['photo']
-                if photo.name.endswith('.jpg') or photo.name.endswith('.png') or photo.name.endswith('.gif') or photo.name.endswith('.bmp') or photo.name.endswith('.jpeg'):
-                    temp_image = TempImage.objects.create(
-                        temp_thumbnail_file=photo
-                    )
 
-                    img = cv2.imread(temp_image.temp_thumbnail_file.path, 0)
-                    wid = img.shape[1]
-                    hgt = img.shape[0]
-                    ratio = wid / hgt
-                    if ratio < 0.9 or ratio > 1.1:
-                        temp_image.delete()
-                        messages.error(request, 'Image has inproper ratio. Use a square photo with aspect ratio of 1.')
-                        return redirect('author_page', user_id)
+                if photo.name.endswith('.jpg') or photo.name.endswith('.png') or photo.name.endswith('.gif') or photo.name.endswith('.bmp') or photo.name.endswith('.jpeg'):
+                    if re.search(r'[а-яА-я]', photo.name) == None:
+                        temp_image = TempImage.objects.create(
+                            temp_thumbnail_file=photo
+                        )
+
+                        img = cv2.imread(temp_image.temp_thumbnail_file.path, 0)
+                    
+                        wid = img.shape[1]
+                        hgt = img.shape[0]
+                        ratio = wid / hgt
+                        if ratio < 0.9 or ratio > 1.1:
+                            temp_image.delete()
+                            messages.error(request, 'Image has inproper ratio. Use a square photo with aspect ratio of 1.')
+                            return redirect('author_page', user_id)
+                        else:
+                            author.background = background
+                            author.photo = photo
+                            author.save()
+                            return redirect('author_page', user_id)
                     else:
-                        author.background = background
-                        author.photo = photo
-                        author.save()
-                        return redirect('author_page', user_id)
+                       messages.error(request, 'Используйте латинницу в названии файла')
+                       return redirect('author_page', user_id)
                 else:
-                    messages.error(
-                        request, 'File has inproper format. Load jpg, jpeg, png or bmp file')
+                    messages.error(request, 'File has inproper format. Load jpg, jpeg, png or bmp file')
                     return redirect('author_page', user_id)
 
             return redirect('author_page', user_id)
@@ -521,7 +528,7 @@ def video(request, subject_id, lecture_id):
             return render(request, 'video.html', context)
         else:
             logout(request)
-            messages.error(request, 'Sorry, you have to buy this course.')
+            messages.error(request, 'Для просмотра видео вам необходимо приобрести данный курс.')
             return redirect('login')
         # comments = Review.objects.filter(video=video_id)
 
@@ -540,8 +547,7 @@ def video(request, subject_id, lecture_id):
 
         
     else:
-        return render('login')
-
+        return redirect('login')
 
 def agreement(request, subject_id):
     if request.user.is_authenticated:
@@ -553,7 +559,6 @@ def agreement(request, subject_id):
     else:
         return redirect ('login')
         
-
 def disagree(request, subject_id):
     if request.user.is_authenticated:
         subject = MainSubject.objects.get(id=subject_id)
@@ -586,37 +591,34 @@ def agree(request, subject_id):
                     section_length += lecture_sec.length
                 section.length=section_length
                 section.save()
-            for word in badwords:
-                if word.badword in subject.title:
-                    subject.blocked = True
-                    subject.save()
-                else:
-                    subject.checked = True
-                    subject.ready=True
-                    subject.save()
-            for lecture in lectures:
+            if badwords:
                 for word in badwords:
-                    if word.badword in lecture.title:
-                        lecture.blocked = True
-                        lecture.save()
-            lectures = lectures.filter(blocked=True)
-            for lecture in lectures:
-                subject = MainSubject.objects.get(id=lecture.subject)
-                subject.blocked = True
+                    if word.badword in subject.title:
+                        subject.blocked = True
+                        subject.save()
+                    else:
+                        subject.checked = True
+                        subject.ready=True
+                        subject.save()
+            else:
+                subject.checked = True
+                subject.ready=True
                 subject.save()
-            subject_id=subject.id
-            context = {
-                'subject': subject,
-                'lecures': lectures,
-            }
-            return redirect('edit_subject', subject_id)
+            for lecture in lectures:
+                if badwords:
+                    for word in badwords:
+                        if word.badword in lecture.title:
+                            lecture.blocked = True
+                            lecture.save()
+                            subject.blocked = True
+                            subject.save()
+            return redirect('main_page')
         else:
             subject_id=subject.id
-            messages.error(request, 'The subject has no lectures. Please load lectures & try again')
+            messages.error(request, 'В курсе отсутствуют лекции. Пожалуйста, создайте лекции.')
             return redirect('edit_subject', subject_id)
     else:
         return redirect('login')
-
 
 def author_profile(request):
     if request.user.is_authenticated:
@@ -739,7 +741,6 @@ def main_method(request):
     else:
         return redirect('login')
 
-
 def edit_main_method(request):
     if request.user.is_authenticated:
         main_method = Main_method.objects.get(user=request.user)
@@ -799,7 +800,6 @@ def credit_card(request):
     else:
         return redirect('login')
 
-
 def paypal(request):
     if request.user.is_authenticated:
         if Paypal.objects.filter(user=request.user).exists():   #sercurity reasons
@@ -852,7 +852,6 @@ def transactions(request):
             return render(request, 'workshop/transactions.html', context)
     return redirect('login')
 
-
 class GeneratePDF(View):
     # def get(self, request, *args, **kwargs):
     def get(self, request):
@@ -867,7 +866,6 @@ class GeneratePDF(View):
         return response
         # return HttpResponse(result.getvalue(), content_type='application/pdf')
         # return None
-
 
 def answer(request, subject_id, question_id):
     if request.user.is_authenticated:
