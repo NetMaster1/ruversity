@@ -1,45 +1,17 @@
 {% extends 'base.html' %}
 {% load humanize %}
+{% load static %}
 {% block content %}
-
-<!-- <body onselectstart="return false" oncopy="return false" oncontextmenu="return false"> -->
-
-<body oncontextmenu="return false">
-
     <div class="container">
         <div class="row m-2">
-            <h5>{{the_video.title}}</h5>
+          <h5>{{the_video.title}}</h5>
         </div>
         <div class="row m-2">
-          
-    <!-- <video id="video" class="video-js vjs-big-play-centered" preload="auto" width="1280" height="640" poster="https://picsum.photos/800/450"data-setup="{}"> -->
-        
-    <!-- <video id="video" class="video-js vjs-theme-fantasy" preload="auto" width="1280" height="640"
-    poster='http://127.0.0.1:8000/static/images/logo.png' data-setup="{}"> -->
 
-    <!-- <video id="video" class="video-js vjs-big-play-centered" preload="auto" width="1280" height="640" poster='http://127.0.0.1:8000/static/images/logo.png' data-setup="{}"> -->
+        <iframe height="720" allow="encrypted-media" src="https://cdn.playernow.ru/embed.html?hls={{the_video.hls_url}}&fairplayServerUrl={{the_video.fairplay_url}}&fairplayCertificateUrl={{the_video.fairplay_certificate_url}}&dash={{the_video.dash_url}}&widevineServerUrl={{the_video.widevine_url}}&playreadyServerUrl={{the_video.playready_url}}&poster=http://{{ request.META.HTTP_HOST }}{% static 'images/logo.png' %}" frameborder="0" allowfullscreen></iframe>
 
-    
-    <!-- <video id="video" class="video-js vjs-big-play-centered" preload="auto" controls controlsList="nodownload" 
-    poster='http://127.0.0.1:8000/static/images/logo.png'data-setup="{}" > -->
+        </div>
 
-
-    <video id="video" class="video-js vjs-big-play-centered" preload="auto"
-        poster='http://127.0.0.1:8000/static/images/logo.png' data-setup="{}">
-
-        <source src="{{the_video.video_file.url}}" type="video/mp4" />
-
-        
-      
-        <p class="vjs-no-js">
-            To view this video please enable JavaScript, and consider upgrading to a
-            web browser that
-            <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
-        </p>
-    </video>
-</div>
-
-
-</div>
+    </div>
 
 {% endblock %}
