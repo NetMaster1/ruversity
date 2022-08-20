@@ -1,0 +1,14 @@
+http {
+    # ADAPT: add here common settings, if needed.
+
+    server {
+      listen       80; # ADAPT: change to your port
+      server_name  localhost; # ADAPT: change to your server name
+
+      location ~\.mp4$ {
+         deny all;
+         error_page 403 =404 / ;
+      }
+    }
+
+}

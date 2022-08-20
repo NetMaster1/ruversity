@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from datetime import datetime, date
 from . storage import OverwriteStorage
-
+import uuid
 
 # Create your models here.
 class Language(models.Model):
@@ -80,7 +80,14 @@ class Lecture(models.Model):
     subject = models.ForeignKey(MainSubject, on_delete=models.CASCADE)
     section = models.ForeignKey(Section, on_delete=models.CASCADE)
     video_file = models.FileField(upload_to='uploads', null=True)
-    #video_file = models.FileField(upload_to='uploads', null=True, storage=OverwriteStorage())
+    video_uuid = models.UUIDField(default=uuid.uuid4)
+    dash_url = models.CharField(max_length=512, null=True)
+    hls_url = models.CharField(max_length=512, null=True)
+    widevine_url = models.CharField(max_length=512, null=True)
+    playready_url = models.CharField(max_length=512, null=True)
+    fairplay_url = models.CharField(max_length=512, null=True)
+    fairplay_certificate_url = models.CharField(max_length=512, null=True)
+    processing_state = models.DecimalField(max_digits=1,decimal_places=0,default=0)
     subtitle_file = models.FileField(upload_to='uploads', null=True)
     translation_file = models.FileField(upload_to='uploads', null=True)
     author = models.ForeignKey(User, on_delete=models.DO_NOTHING)

@@ -1,0 +1,20 @@
+[Unit]
+Description=upload-videos-background-service
+
+[Service]
+Type=simple
+
+User=USER
+
+ExecStart=/usr/bin/env python3 PORTAL_DIR/manage.py process_tasks > /dev/null 2>&1
+ExecReload=/usr/bin/env kill -HUP $MAINPID
+
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=USER-upload-videos-background-service
+
+Restart=always
+RestartSec=1s
+
+[Install]
+WantedBy=multi-user.target
