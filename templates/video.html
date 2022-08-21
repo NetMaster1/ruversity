@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% load humanize %}
 {% block content %}
 
@@ -25,12 +26,10 @@
 
 
     <video id="video" class="video-js vjs-big-play-centered" preload="auto"
-        poster='http://127.0.0.1:8000/static/images/logo.png' data-setup="{}">
+        poster='{% static "images/logo.png" %}' data-setup="{}">
 
         <source src="{{the_video.video_file.url}}" type="video/mp4" />
-
         
-      
         <p class="vjs-no-js">
             To view this video please enable JavaScript, and consider upgrading to a
             web browser that
