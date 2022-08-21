@@ -160,7 +160,8 @@ BACKGROUND_TASK_RUN_ASYNC = True
 # CDN API settings
 CDN_TIMEOUT_SECONDS = 5
 CDN_FILE_UPLOAD_TIMEOUT_SECONDS = 120
-CDN_API_TOKEN = '0000000000000000000000000000000000000000' # ADAPT: replace with actual token.
+#CDN_API_TOKEN = '0000000000000000000000000000000000000000' # ADAPT: replace with actual token.
+CDN_API_TOKEN = '038d0b32566d9621800255a62aea35f3eba45652' # ADAPT: replace with actual token.
 CDN_JWT_URL = 'https://some.domain.tld/get_jwt' # ADAPT: replace with actual URL.
 CDN_RECEIVE_UPLOAD_LINK_URL = 'https://some.domain.tld/get_upload_link' # ADAPT: replace with actual URL.
 CDN_VIDEO_INFO_URL = 'https://some.domain.tld/get_info/{}' # ADAPT: replace with actual URL. The placeholder "{}" stands for video uuid and MUST be present - video uuid is substituted instead of it.
