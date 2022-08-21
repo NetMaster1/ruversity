@@ -48,6 +48,9 @@ INSTALLED_APPS = [
     'app_workshop',
     #'paypal.standard.ipn',
     'app_contacts',
+    'storages',
+    'background_task'
+
 
 ]
 
@@ -105,6 +108,8 @@ DATABASES = {
     }
 }
 
+DEFAULT_AUTO_FIELD='django.db.models.AutoField'
+
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
 
@@ -151,6 +156,20 @@ STATICFILES_DIRS = [
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
+BACKGROUND_TASK_RUN_ASYNC = True
+# CDN API settings
+CDN_TIMEOUT_SECONDS = 5
+CDN_FILE_UPLOAD_TIMEOUT_SECONDS = 120
+CDN_API_TOKEN = '0000000000000000000000000000000000000000' # ADAPT: replace with actual token.
+CDN_JWT_URL = 'https://some.domain.tld/get_jwt' # ADAPT: replace with actual URL.
+CDN_RECEIVE_UPLOAD_LINK_URL = 'https://some.domain.tld/get_upload_link' # ADAPT: replace with actual URL.
+CDN_VIDEO_INFO_URL = 'https://some.domain.tld/get_info/{}' # ADAPT: replace with actual URL. The placeholder "{}" stands for video uuid and MUST be present - video uuid is substituted instead of it.
+CDN_REQUESTS_COMMON_PARAMS = {'timeout': CDN_TIMEOUT_SECONDS,
+                              'headers': {"X-AUTH-TOKEN": CDN_API_TOKEN}}
+
+FILE_UPLOAD_HANDLERS = ["django.core.files.uploadhandler.TemporaryFileUploadHandler"]
+
+
 PAYPAL_RECEIVER_EMAIL = '79200711112@yandex.ru'
 PAYPAL_TEST = True
 
@@ -165,4 +184,3 @@ EMAIL_HOST_PASSWORD = 'Ylhio65v_01'
 # EMAIL_HOST_PASSWORD = 'RsK-ydU-3Ar-iYX'
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
-
