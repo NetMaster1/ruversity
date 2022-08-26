@@ -29,10 +29,12 @@ def payment_complete(request):
     body = json.loads(request.body)
     print('BODY:', body)
     subject = MainSubject.objects.get(id=body['subject_id'])
+    #==============================================================
     Transaction.objects.create(
         course=subject,
         buyer=request.user
     )
+    #==============================================================
     counter = subject.transactions + 1
     subject.transactions = counter
     subject.save()

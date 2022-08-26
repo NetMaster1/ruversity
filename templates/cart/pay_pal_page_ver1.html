@@ -47,7 +47,7 @@
 
                 var total = '{{subject.price.discount}}'
                 var subject_id = '{{subject.id}}'
-                
+                //======================================
                 function completeOrder() {
                     var url = "{% url 'payment_complete' %}"
                     fetch(url, {
@@ -59,7 +59,8 @@
                         body: JSON.stringify({ 'subject_id': subject_id })
                     })
                 }
-
+                //===========================================
+                
                 // Render the PayPal button into #paypal-button-container
                 paypal.Buttons({
 

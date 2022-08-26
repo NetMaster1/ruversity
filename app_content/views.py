@@ -44,8 +44,7 @@ def subject(request, subject_id):
     reviews = Review.objects.filter(subject=subject_id)
     if request.user.is_authenticated:
         if Transaction.objects.filter(course=subject, buyer=request.user).exists():
-            transaction = Transaction.objects.get(
-                course=subject, buyer=request.user)
+            transaction = Transaction.objects.get(course=subject, buyer=request.user)
             if Cart.objects.filter(subject=subject, user=request.user):
                 cart = Cart.objects.get(subject=subject, user=request.user)
                 context = {
