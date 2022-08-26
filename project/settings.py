@@ -26,7 +26,7 @@ SECRET_KEY = 'hwpix$6%l_k50ftoph2^7c7fdi(5i53#p-=*#0v0xrq0f74rfe'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', 'www.ruversity.com', 'ruversity.com']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'www.ruversity.com', 'ruversity.com']
 
 
 # Application definition

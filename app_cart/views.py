@@ -56,6 +56,18 @@ def payment_complete(request):
         # return redirect ('mycourses')
 
 
+def credit_card(request, subject_id):
+    if request.user.is_authenticated:
+        subject = MainSubject.objects.get(id=subject_id)
+
+        context = {
+            'subject': subject
+        }
+        return render(request, 'cart/credit_card.html', context)
+    else:
+        return redirect ('login')
+
+
 def payment_cancel(request):
     pass
 
