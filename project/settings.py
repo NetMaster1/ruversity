@@ -13,8 +13,6 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 from pathlib import Path
 import os
 
-
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -28,7 +26,7 @@ SECRET_KEY = 'hwpix$6%l_k50ftoph2^7c7fdi(5i53#p-=*#0v0xrq0f74rfe'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', 'www.ruversity.com', 'ruversity.com']
 
 
 # Application definition
@@ -52,6 +50,7 @@ INSTALLED_APPS = [
     'app_contacts',
     'storages',
     'background_task'
+
 
 ]
 
@@ -153,7 +152,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'project/static')
 ]
-
 # Media Folder Settings
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
@@ -162,15 +160,16 @@ BACKGROUND_TASK_RUN_ASYNC = True
 # CDN API settings
 CDN_TIMEOUT_SECONDS = 5
 CDN_FILE_UPLOAD_TIMEOUT_SECONDS = 120
-#CDN_API_TOKEN = '0000000000000000000000000000000000000000' # ADAPT: replace with actual token.
-CDN_API_TOKEN = '038d0b32566d9621800255a62aea35f3eba45652' # ADAPT: replace with actual token.
-CDN_JWT_URL = 'https://some.domain.tld/get_jwt' # ADAPT: replace with actual URL.
-CDN_RECEIVE_UPLOAD_LINK_URL = 'https://some.domain.tld/get_upload_link' # ADAPT: replace with actual URL.
-CDN_VIDEO_INFO_URL = 'https://some.domain.tld/get_info/{}' # ADAPT: replace with actual URL. The placeholder "{}" stands for video uuid and MUST be present - video uuid is substituted instead of it.
+#CDN_API_TOKEN = '038d0b32566d9621800255a62aea35f3eba45652' # ADAPT: replace with actual token.
+CDN_API_TOKEN = 'eb91eb0d6ab5f151979155025bf124a8740ce4a8'
+CDN_JWT_URL = 'https://api.cdnnow.ru/api/v3/upload/bef2861b-5668-4997-9f8c-6d6e85ad3f90/generate-jwt/video_source'
+CDN_RECEIVE_UPLOAD_LINK_URL = 'https://api.cdnnow.ru/api/v3/upload/bef2861b-5668-4997-9f8c-6d6e85ad3f90/link'
+CDN_VIDEO_INFO_URL = 'https://api.cdnnow.ru/api/v3/vod/projects/bef2861b-5668-4997-9f8c-6d6e85ad3f90/videos/{}'
 CDN_REQUESTS_COMMON_PARAMS = {'timeout': CDN_TIMEOUT_SECONDS,
                               'headers': {"X-AUTH-TOKEN": CDN_API_TOKEN}}
 
 FILE_UPLOAD_HANDLERS = ["django.core.files.uploadhandler.TemporaryFileUploadHandler"]
+
 
 PAYPAL_RECEIVER_EMAIL = '79200711112@yandex.ru'
 PAYPAL_TEST = True

@@ -1,7 +1,11 @@
 /media
+<<<<<<< HEAD
 /templates/workshop/video.html
 td
 Scripts
+=======
+/project/settings.py
+>>>>>>> 8fbeb95487861f31538f361763c4a0912a1eae93
 ruversity-spaces-key.txt
 Postgres_server_credentials.docx
 new_user_credentials(1).csv
