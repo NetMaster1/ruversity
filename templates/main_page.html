@@ -68,13 +68,13 @@
                     {% if subject.discount_programs == True and discount_time.discount_on == True %}
                         <div class="row">
                             <div class="col">
-                                <strong>Price:</strong> {{subject.price.discount}} руб.
+                                <strong>Price:</strong> {{subject.price.discount}} USD
                             </div>
                         </div>
                     {% else %}
                         <div class="row">
                             <div class="col">
-                                <strong>Price:</strong> {{subject.price.regular}} руб.
+                                <strong>Price:</strong> {{subject.price.regular}} USD
                             </div>
                         </div>
                     {% endif %}
