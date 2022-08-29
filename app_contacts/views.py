@@ -10,6 +10,9 @@ from django.contrib import messages
 def contacts(request):
     return render(request, 'contacts/contacts.html')
 
+def personal_data(request):
+    return render(request, 'contacts/personal_data.html')
+
 def help(request):
     return render(request, 'contacts/help.html')
 
