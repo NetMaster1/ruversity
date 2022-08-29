@@ -9,4 +9,6 @@ urlpatterns = [
     path('socialmedia/', views.socialmedia, name='socialmedia'),
     path('career/', views.career, name='career'),
     path('email/', views.email, name='email'),
+    path('personal_data/', views.personal_data, name='personal_data'),
+
 ]
