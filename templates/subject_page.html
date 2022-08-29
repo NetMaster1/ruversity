@@ -21,7 +21,7 @@
 
         <div class="row">
         <div class="col">
-        <strong>Rating: </strong>
+        <strong>Рейтинг: </strong>
          {{subject.av_rating}}
         <div class="stars-outer">
             <div class="stars-inner" style="width: {{subject.percent}}"></div>
@@ -30,17 +30,17 @@
         </div>
         <div class="row">
             <div class="col">
-        <strong>Transactions:</strong> ({{subject.transactions}})
+        <strong>Покупки:</strong> ({{subject.transactions}})
         </div>
         </div>
-        <div class="row"><div class="col"><strong>Created by: </strong><a href="{% url 'author_page' subject.author.id %}">{{subject.author}}</a></div></div>
-        <div class="row"><div class="col"><strong>Date posted: </strong>{{subject.date_posted}}</div></div>
+        <div class="row"><div class="col"><strong>Автор: </strong><a href="{% url 'author_page' subject.author.id %}">{{subject.author}}</a></div></div>
+        <div class="row"><div class="col"><strong>Дата создания: </strong>{{subject.date_posted}}</div></div>
 
         <div class="row">
             <div class="col">
-                <strong>Description: </strong>
+                <strong>Описание: </strong>
                 <a href='#collapse-p' data-bs-toggle="collapse" data-target="#collapse-p">
-                Read More
+                Ознакомиться
                 </a>
                 </div>
         </div>
@@ -56,9 +56,9 @@
 
             <div class="row">
             <div class="col">
-                <strong>Prerequisites: </strong>
+                <strong>Предварительные знания: </strong>
                 <a href='#collapse-pr' data-bs-toggle="collapse" data-target="#collapse-pr">
-                    Read More
+                    Ознакомиться
                 </a>
                 </div>
                 </div>
@@ -71,9 +71,9 @@
                     </div>
             </div>
             </div>
-        <div class="row"><div class="col"><strong>Timing: </strong>{{subject.length}} min</div></div>
+        <div class="row"><div class="col"><strong>Длительность: </strong>{{subject.length}} мин. </div></div>
         <div class="row">
-            <div class="col"><strong>Price: </strong> {{subject.price.discount}} руб.</div>
+            <div class="col"><strong>Стоимость: </strong> {{subject.price.discount}} руб.</div>
         </div>
     </div>
 
@@ -81,11 +81,11 @@
     <!-- ================================================================= -->
 {% if request.user == subject.author  %}
     <div class="card-footer">
-        <h5 class=”text-left”>You are the author of the course. You can't buy it.<h5>
+        <h5 class=”text-left”>Вы автор данного курса и не можете его приобрести.<h5>
     </div>
 {% elif transaction.buyer == request.user and transaction.course == subject %}
     <div class="card-footer">
-        <h5 class=”text-left”>You have already bought the course. Get to MyCourses.<h5>
+        <h5 class=”text-left”>Вы уже приобрели данный курс. Перейдите в раздел "Мои курсы"<h5>
     </div>
 {% else %}
 
@@ -97,7 +97,7 @@
         <a href="{% url 'credit_card' subject.id %}" style="text-decoration:none">
             <!-- <button type="button" name="button" class='btn btn-info btn-block'> -->
             <button type="button" name="button" class='btn btn-sm btn-block btn-outline-dark'>
-                Purchase
+                Купить
             </button>
         </a>
                 </div>
@@ -107,7 +107,7 @@
                 <a href="{% url 'create_cart_item' subject.id %}"style="text-decoration:none" >
                     <!-- <button type="button" name="button" class='btn btn-info btn-block'> -->
                     <button type="button" name="button" class='btn btn-sm btn-block btn-outline-dark'>
-                        Add to cart
+                        Добавить в корзину
                     </button>
                 </a>
                 </div>
@@ -116,7 +116,7 @@
                         <a href="{% url 'cart' %}">
                             <!-- <button type="button" name="button" class='btn btn-info btn-block'> -->
                             <button type="button" name="button" class='btn btn-sm btn-block btn-outline-dark'>
-                                Go to cart
+                                Перейти в корзину
                             </button>
                         </a>
                     </div>
@@ -133,7 +133,7 @@
 
 <div class="col-7 m-1">
     <div class="card">
-        <div class="card-header"><h4>Content</h4></div>
+        <div class="card-header"><h4>Содержание</h4></div>
         <!-- <div class="card-body"> -->
             <!-- <ul class="list-group list-group-flush"> -->
                 
@@ -162,7 +162,7 @@
 </div>
 
 <div class="row mt-2 pl-2"> .
-    <h3>Reivews</h3>
+    <h3>Отзывы</h3>
 </div>
 
     <div class="row mt-1">

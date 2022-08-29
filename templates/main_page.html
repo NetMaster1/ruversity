@@ -41,18 +41,18 @@
                         <p class="title is-6" style="height:10px">{{subject.title}}</p>
                     </div> -->
                     <div class="row">
-                        <div class="col"><strong>Created by:</strong>
+                        <div class="col"><strong>Автор:</strong>
                             <a href="{% url 'author_page' subject.author.id %}">{{subject.author}}</a>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col"><strong>Date posted: </strong>{{subject.date_posted}}</div>
+                        <div class="col"><strong>Дата размещения: <br> </strong>{{subject.date_posted}}</div>
                     </div>
                     
                     <div class="row">
                         <div class="col">
                             <strong>
-                    Rating: 
+                    Рейтинг: 
                             </strong> {{subject.av_rating}}
                         <div class="stars-outer">
                             <div class="stars-inner" style="width: {{subject.percent}}"></div>
@@ -62,19 +62,19 @@
 
                     <div class="row">
                         <div class="col">
-                        <strong>Transactions:</strong> {{subject.transactions}}
+                        <strong>Покупки:</strong> {{subject.transactions}}
                         </div>
                     </div>
                     {% if subject.discount_programs == True and discount_time.discount_on == True %}
                         <div class="row">
                             <div class="col">
-                                <strong>Price:</strong> {{subject.price.discount}} руб.
+                                <strong>Стоимость:</strong> {{subject.price.discount}} руб.
                             </div>
                         </div>
                     {% else %}
                         <div class="row">
                             <div class="col">
-                                <strong>Price:</strong> {{subject.price.regular}} руб.
+                                <strong>Стоимость:</strong> {{subject.price.regular}} руб.
                             </div>
                         </div>
                     {% endif %}
