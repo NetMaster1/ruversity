@@ -10,7 +10,7 @@
                 {% csrf_token %}
                 <ul>
                     <li>
-                        <h5><label for="language">Language</label>
+                        <h5><label for="language">Язык</label>
                     </li>
                     </h5>
                     <input type="checkbox" id="language" name="language" value="English"> English<br>
@@ -23,7 +23,7 @@
                 </ul>
                 <ul>
                     <li>
-                        <h5><label for="manufacture">Rating</label>
+                        <h5><label for="manufacture">Рейтинг</label>
                     </li>
                     </h5>
                     <input type="checkbox" id="rating" name="rating" value=4.5> above 4,5<br>
@@ -65,18 +65,18 @@
                                 </div>
                                 <div class="row">
                                     <div class="col">
-                                        <strong>Created by: </strong> {{subject.author}}
+                                        <strong>Автор: </strong> {{subject.author}}
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col">
-                                        <strong>Posted: </strong> {{subject.date_posted}}
+                                        <strong>Дата создания: </strong> {{subject.date_posted}}
                                     </div>
                                 </div>
 
                                 <div class="row">
                                     <div class="col">
-                                        <strong>Rating:</strong> {{subject.av_rating}}
+                                        <strong>Рейтинг:</strong> {{subject.av_rating}}
 
                                         <div class="stars-outer">
                                             <div class="stars-inner" style="width:{{subject.percent}}"></div>
@@ -85,7 +85,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col">
-                                        <strong>Transactions: </strong> {{subject.transactions}}
+                                        <strong>Покупки: </strong> {{subject.transactions}}
                                     </div>
                                 </div>
                             </div>
