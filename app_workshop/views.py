@@ -598,7 +598,9 @@ def agree(request, subject_id):
                 subject.ready=True
                 subject.save()
             for lecture in lectures:
+                #========DRM feature====================
                 lecture.processing_state = PROCESSING_READY_TO_START
+                #============================================
                 lecture.save()
                 if badwords:
                     for word in badwords:
