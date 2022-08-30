@@ -4,29 +4,30 @@
 <div class="container">
 <div class="row mt-3">
     <div class="col-6">
-      <div class="row m-auto">
-        <div class="col">
-      Лектор:
-      </div>
-      </div>
-      <div class="row m-auto"><div class="col">
+    
+      <div class="row m-auto"><div class="col-12">
         <h2>{{author.first_name}} {{author.last_name}}</h2>
       </div></div>
       
-      <div class="row m-auto"><div class="col">Обо мне</div></div>
-    
-      <div class="row">
+    <p>
+    <div class="row m-auto">
         <div class="col-12">
         {{author.background}}
-      </div></div>
-      
+      </div>
+    </div>
+    </p>
       <!-- Author info change button -->
 <!-- ==================================================== -->
     {% if author.user == request.user %}
 
     <!-- ================= Modal =========================== -->
+    <p>
+    <div class="row m-auto ">
+      <div class="col-12">
       <button class="btn btn-sm btn-block btn-outline-dark" data-bs-toggle='modal' data-bs-target='#edit_author_modal'>Редактировать</button>
-
+      </div>
+    </div>
+    </p>
       <div class="modal" id='edit_author_modal'>
         <div class="modal-dialog">
           <div class="modal-content">
@@ -59,7 +60,8 @@
                     </div>
                     <div class="col">
                       <p>
-                        Load your photo. The image must be square with aspect ratio of 1. The file must be of 'jpg', 'jpeg', 'png' or 'bmp' format.
+                        Загрузите ваше фото в одном из следующих форматов: 'jpg' 'jpeg' 'png' 'bmp'. Фотография должна быть квадратной с соотношением сторон 1 х 1;
+                        <!-- Load your photo. The image must be square with aspect ratio of 1. The file must be of 'jpg', 'jpeg', 'png' or 'bmp' format. -->
                       </p>
                       <input type="file" id="photo" class='form-control' name="photo" required>
                     </div>
@@ -71,7 +73,7 @@
               <div class="modal-footer">
                         <!-- <div class="form-row justify-content-start "> -->
                           <div class="col-9">
-                            <input type="submit" value="Submit" class="btn btn-md btn-block btn-outline-dark">
+                            <input type="submit" value="Отправить" class="btn btn-md btn-block btn-outline-dark">
                           </div>
                 <!-- <button class='btn btn-outline-dark' data-dismiss="modal">Close</button> -->
               </div>

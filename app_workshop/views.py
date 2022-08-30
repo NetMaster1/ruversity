@@ -14,13 +14,12 @@ from moviepy.editor import VideoFileClip
 # import moviepy
 from moviepy.editor import *
 import os
-import cv2
+from cv2 import cv2
 import re
 import PIL
 from PIL import Image
 from pathlib import Path
 import requests
-
 from django.conf import settings
 from django.contrib.auth.models import User, Group
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator

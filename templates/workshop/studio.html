@@ -12,34 +12,34 @@
                 {% csrf_token %}
 
             <div class="form-row">
-                <div class="col-3">
+                <div class="col-4">
                     <label for="description" >Ваша профессиональная подготовка:</label>
                 </div>
-                <div class="col">
-                    <textarea class='form-control' id="background" rows='3' minlength='120' maxlength='180' name="background" required placeholder='Пожалуйста, расскажите о себе и своем опыте'></textarea>
+                <div class="col-8">
+                    <textarea class='form-control' id="background" rows='3' minlength='120' maxlength='180' name="background" required placeholder='Пожалуйста, расскажите о себе и своем опыте. 120-180 слов'></textarea>
                 </div> 
             </div>
 
 
             <div class="form-row mt-4">
-                <div class="col-3">
-                <label for="photo">Ваше фото:</label>
+            <div class="col-4">
+                <label for="photo">Ваше фото или лого:</label>
             </div>
-            <div class="col">
+            <div class="col-8">
                 <p>
-                Загрузить файл в формате jpg, jpeg, png или bmp. Минимальный размер: 750 х 422 пикселя. 
-                Load a thumbnail file in jpg, jpeg, png or bmp format. Minimum required dimensions: 750 x 422 pixels. Формат фото: 16х9. 
+                Загрузите ваше фото в одном из следующих форматов: 'jpg' 'jpeg' 'png' 'bmp'. Фотография должна быть квадратной с соотношением сторон 1 х 1; 
+                <!-- Load a thumbnail file in jpg, jpeg, png or bmp format. Minimum required dimensions: 750 x 422 pixels. -->
                 </p>
                 <input type="file" id="photo" class='form-control' name="photo" required>
             </div>
             </div>
               
-            <div class="row mt-4">
-                <div class="col-3"></div>
-            <div class="col">
+            <div class="form-row mt-4">
+                <div class="col-4"></div>
+            <div class="col-8">
                 <!-- <input type="submit" value="Create" class="btn btn-info btn-block"> -->
                 <!-- <button type='submit'>Load</button><br> -->
-                <input type="submit" value="Submit" class="btn btn-sm btn-block btn-outline-dark">
+                <input type="submit" value="Submit" class="btn btn btn-block btn-outline-dark">
             </div>
             </div>
             </form>
@@ -51,7 +51,7 @@
 
 <div class="row mt-3">
     <div class="col-3">
-        <a href="{% url 'create_new_subject'  %}">
+        <a href="{% url 'create_new_subject'  %}" style="text-decoration: none">
             <!-- <input type="submit" value="Create New Subject" class="btn btn-info btn-block"> -->
             <input type="submit" value="Создать новый курс" class='btn btn-sm btn-block btn-outline-dark'>
         </a>
