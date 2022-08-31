@@ -9,7 +9,7 @@
     <div class="row pt-3">
         <div class="col">
             <div class="row p-2 mt-2 mb-2 border rounded bg-light">
-            <h5 class='text-center'>Choose your recompense method</h5>
+            <h5 class='text-center'>Выберите предпочитаемый способ оплаты</h5>
             </div>
      
 
@@ -21,7 +21,7 @@
                 {% csrf_token %}
                 
                 <div class="form-group">
-                    <label for="first_name"><strong>Please, enter your paypal account:</strong></label>
+                    <label for="first_name"><strong>Введите ваш счет в Paypal :</strong></label>
                     <input type="text" id="method" name="method" value='paypal' hidden>
                 <div class="form-group">
                 <input class='form-control' type="text" id="name" name="name" required>
@@ -43,24 +43,24 @@
                     {% csrf_token %}
                 
                     <div class="form-group">
-                        <label for="first_name"><strong>Please, enter your credit card info:</strong></label>
+                        <label for="first_name"><strong>Введите реквизиты вашей карты:</strong></label>
                         <input type="text" id="method" name="method" value='credit_card' required hidden><br>
                      
                     </div>
 
                     <div class="form-group">
-                            <label for="first_name">First Name</label>
+                            <label for="first_name">Имя</label>
                             <input class='form-control' type="text" id="first_name" name="first_name" required>
                     </div>
                      
 
                     <div class="form-group">
-                            <label for="last_name">Last Name</label>
+                            <label for="last_name">Фамилия</label>
                             <input class='form-control' type="text" id="last_name" name="last_name" required>
                     </div>
                    
                     <div class="form-group">
-                            <label for="credit_card_type">Credit card type</label>
+                            <label for="credit_card_type">Тип карты</label>
                             <select class="form-select" name="credit_card_type" id="credit_card_type" required>
                                 {% for item in credit_card_types %}
                                 <option value="{{item.type}}">{{item.type}}</option>
@@ -70,12 +70,12 @@
             
 
                 <div class="form-group">
-                    <label for="card_number">Credit Card Number</label>
+                    <label for="card_number">Номер</label>
                     <input class='form-control' type="text" id="card_number" name="card_number" required>
                 </div>
             
             <div class="form-group">
-                <input type="submit" value="Submit" class='btn btn-sm btn-block btn-outline-dark'>
+                <input type="submit" value="Отправить" class='btn btn-sm btn-block btn-outline-dark'>
                 <!-- <input type="submit" value="Submit" class="btn btn-info btn-block"> -->
                 <!-- <button type='submit'>Load</button><br> -->
             </div>       
@@ -87,46 +87,46 @@
                 {% csrf_token %}
             
                 <div class="form-group">
-                <label for="bank_account"><strong>Please, enter your bank account info:</strong></label>
+                <label for="bank_account"><strong>Введите свои банковские реквизиты:</strong></label>
                 <input type="text" id="bank_account" name="method" value='bank_account' required hidden>
                 </div>
 
             <div class="form-group">
-                <label for="country">Country of Registration</label>
+                <label for="country">Страна регистрации</label>
                 <select class="form-select" name="country" id="country" required>
                     {% for item in countries %}
-                    <option value="{{item.country}}">{{item.country}}</option>
+                    <option value="{{item.id}}">{{item.country}}</option>
                     {% endfor %}
                 </select>
             </div>
                 <div class="form-group">
-                <label for="entity_name">Entity Name</label>
+                <label for="entity_name">Название организации</label>
                 <input type="text" class='form-control' id="entity_name" name="entity_name" required>
                 </div>
             
                 <div class="form-group">
-                <label for="itin">ITIN</label>
+                <label for="itin">ИНН</label>
                 <input type="text" id="itin" class='form-control' name="itin" required>
                 </div>
 
                 <div class="form-group">
-                <label for="bic">BIC</label>
+                <label for="bic">БИК</label>
                 <input type="text" id="bic" name="bic" class='form-control' required>
                 </div>
             
                 <div class="form-group">
-                <label for="bank_account">Bank Account</label>
+                <label for="bank_account">Корреспондентский счет</label>
                 <input type="text" id="bank_account" class='form-control'  name="bank_account" required>
                 </div>
 
                 <div class="form-group">
-                <label for="account">Your Account</label>
+                <label for="account">Расчетный счет</label>
                 <input type="text" id="account" class='form-control' name="account" required>
              
                 </div>
             
                 <div class="form-group">
-                <input type="submit" value="Submit" class="btn btn-outline-dark btn-block">
+                <input type="submit" value="Отправить" class="btn btn-outline-dark btn-block">
                         <!-- <button type='submit'>Load</button><br> -->
                 </div>
             </form>            

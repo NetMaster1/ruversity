@@ -14,7 +14,7 @@ from moviepy.editor import VideoFileClip
 # import moviepy
 from moviepy.editor import *
 import os
-from cv2 import cv2
+import cv2
 import re
 import PIL
 from PIL import Image
@@ -616,6 +616,7 @@ def agree(request, subject_id):
 
 def author_profile(request):
     if request.user.is_authenticated:
+        countries=Country.objects.all()
         if Group.objects.filter(name='entity').exists():
             group = Group.objects.get(name='entity').user_set.all()
 
@@ -645,6 +646,7 @@ def author_profile(request):
                         'group': group,
                         'main_method': main_method,
                         'method': method,
+                        'countries': countries,
                         # 'credit_card_types': credit_card_types
                     }
                 return render(request, 'workshop/author_profile.html', context)
