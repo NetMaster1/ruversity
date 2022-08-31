@@ -96,7 +96,7 @@
             </div>
             
         <div class="col-3">
-    <a href="{% url 'agreement' subject.id%}">
+    <a href="{% url 'agreement' subject.id%}" style="text-decoration: none">
     <input type="submit" value="Загрузить на сервер" class="btn btn-outline-dark btn-block">
     </a>
         </div>
@@ -181,10 +181,10 @@
             </div>
             <div class="form-group">
                 <label for="description">Редактировать краткое описание курса</label>
-                <textarea class='form-control' id="description" rows='3' minlength='120' maxlength='180' name="description" required placeholder='Please, enter short description from 120 to 180 symbols'></textarea>
+                <textarea class='form-control' id="description" rows='3' minlength='120' maxlength='180' name="description" required placeholder='Введите краткое описание курса. 120-180 символов.'></textarea>
             <div class="form-group">
                 <label for="prerequisites">Редактировать предварительную подготовку</label>
-                <textarea class='form-control' rows='3' id="prerequisite" minlength='120' maxlength='180' minlength='150'name="prerequisites" required></textarea>
+                <textarea class='form-control' rows='3' id="prerequisite" minlength='120' maxlength='180' minlength='150'name="prerequisites" required placeholder='Введите требования к предварительной подготовке. 120-180 символов.'></textarea>
             <div>
             <div class="form-group">
                 <label for="thumbnail">Загрузить новую картинку для курса:</label>
@@ -201,7 +201,7 @@
 
         <div class="row mt-3">
             <div class="col">
-                <a href="{% url 'delete_subject' subject.id %}">
+                <a href="{% url 'delete_subject' subject.id %}" style="text-decoration: none">
                     <!-- <input type="submit" value="Delete" class="btn btn-info btn-block"> -->
                     <input type="button" value="Удалить курс" class='btn btn-sm btn-block btn-outline-dark'>
                 </a>

@@ -36,7 +36,6 @@ def index(request):
     else:
         return render(request, 'index.html')
 
-
 def subject(request, subject_id):
     subject = MainSubject.objects.get(id=subject_id)
     lectures = Lecture.objects.filter(subject=subject)
@@ -576,6 +575,61 @@ def list_personal(request):
                     'query': query_paged
                 }
                 return render(request, 'contents/list_personal.html', context)
+    else:
+        return redirect('login')
+
+def list_languages(request):
+    category = Category.objects.get(name='Languages')
+    query = MainSubject.objects.filter(
+        category=category, ready='True').exclude(blocked='True')
+    if request.user.is_authenticated:
+        if 'language' in request.GET:
+            languages = request.GET.getlist('language', None)
+            languages = Language.objects.filter(name__in=languages)
+            query = query.filter(language__in=languages)
+
+            if 'rating' in request.GET:
+                rating = request.GET['rating']
+                query = query.filter(av_rating__gte=rating)
+
+                paginator = Paginator(query, 20)
+                page = request.GET.get('page')
+                query_paged = paginator.get_page(page)
+
+                context = {
+                    'query': query_paged
+                }
+                return render(request, 'contents/list_fundamental.html', context)
+            else:
+                paginator = Paginator(query, 20)
+                page = request.GET.get('page')
+                query_paged = paginator.get_page(page)
+
+                context = {
+                    'query': query_paged
+                }
+                return render(request, 'contents/list_fundamental.html', context)
+        else:
+            if 'rating' in request.GET:
+                rating = request.GET['rating']
+                query = query.filter(av_rating__gte=rating)
+
+                paginator = Paginator(query, 20)
+                page = request.GET.get('page')
+                query_paged = paginator.get_page(page)
+
+                context = {
+                    'query': query_paged
+                }
+                return render(request, 'contents/list_fundamental.html', context)
+            else:
+                paginator = Paginator(query, 20)
+                page = request.GET.get('page')
+                query_paged = paginator.get_page(page)
+                context = {
+                    'query': query_paged
+                }
+                return render(request, 'contents/list_fundamental.html', context)
     else:
         return redirect('login')
 
