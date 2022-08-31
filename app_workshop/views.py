@@ -60,32 +60,37 @@ def create_author_page(request):
             background = request.POST['background']
             photo = request.FILES['photo']
             if photo.name.endswith('.jpg') or photo.name.endswith('.png') or photo.name.endswith('.gif') or photo.name.endswith('.bmp') or photo.name.endswith('.jpeg'):
-                author = Author.objects.create(
-                    background=background,
-                    photo=photo,
-                    user=request.user,
-                    first_name=request.user.first_name,
-                    last_name=request.user.last_name
-                )
-                img = cv2.imread(author.photo.path, 0)
-                print(type(img))
-                wid = img.shape[1]
-                hgt = img.shape[0]
-                ratio = wid / hgt
-                if ratio < 0.9 or ratio > 1.1:
-                    author.delete()
-                    messages.error(
-                        request, 'Image has inproper ratio. Use a square photo with aspect ratio of 1.')
-                    return redirect('studio')
+                if re.search(r'[а-яА-я]', photo.name) == None:
+                    author = Author.objects.create(
+                        background=background,
+                        photo=photo,
+                        user=request.user,
+                        first_name=request.user.first_name,
+                        last_name=request.user.last_name
+                    )
+                    img = cv2.imread(author.photo.path, 0)
+                    print(type(img))
+                    wid = img.shape[1]
+                    hgt = img.shape[0]
+                    ratio = wid / hgt
+                    if ratio < 0.9 or ratio > 1.1:
+                        author.delete()
+                        #messages.error(request, 'Image has inproper ratio. Use a square photo with aspect ratio of 1.')
+                        messages.error(request, 'Неправильное соотношение сторон фото. Загрузите фото с соотношением сторон 1х1;')
+                        return redirect('studio')
 
+                    else:
+                        author = Author.objects.get(user=request.user)
+                        context = {
+                            'author': author
+                        }
+                        return redirect('studio')
                 else:
-                    author = Author.objects.get(user=request.user)
-                    context = {
-                    'author': author
-                    }
+                    messages.error(request, 'Используйте латинницу в названии файла')
                     return redirect('studio')
             else:
-                messages.error(request, 'File has inproper format. Load jpg, jpeg, png or bmp file')
+                messages.error(request, 'Вы загрузили файл неправильного формата. Загрузите файл в формате jpg, jpeg, png или bmp')
+                # messages.error(request, 'File has inproper format. Load jpg, jpeg, png or bmp file')
                 return redirect('studio')
         else:
             return redirect('studio')
@@ -116,10 +121,7 @@ def edit_author_page(request, user_id):
 
                 if photo.name.endswith('.jpg') or photo.name.endswith('.png') or photo.name.endswith('.gif') or photo.name.endswith('.bmp') or photo.name.endswith('.jpeg'):
                     if re.search(r'[а-яА-я]', photo.name) == None:
-                        temp_image = TempImage.objects.create(
-                            temp_thumbnail_file=photo
-                        )
-
+                        temp_image = TempImage.objects.create(temp_thumbnail_file=photo)
                         img = cv2.imread(temp_image.temp_thumbnail_file.path, 0)
 
                         wid = img.shape[1]
@@ -127,7 +129,7 @@ def edit_author_page(request, user_id):
                         ratio = wid / hgt
                         if ratio < 0.9 or ratio > 1.1:
                             temp_image.delete()
-                            messages.error(request, 'Image has inproper ratio. Use a square photo with aspect ratio of 1.')
+                            messages.error(request,  'Неправильное соотношение сторон фото. Загрузите фото с соотношением сторон 1х1;')
                             return redirect('author_page', user_id)
                         else:
                             author.background = background
@@ -138,7 +140,7 @@ def edit_author_page(request, user_id):
                        messages.error(request, 'Используйте латинницу в названии файла')
                        return redirect('author_page', user_id)
                 else:
-                    messages.error(request, 'File has inproper format. Load jpg, jpeg, png or bmp file')
+                    messages.error(request, 'Вы загрузили файл неправильного формата. Загрузите файл в формате jpg, jpeg, png или bmp')
                     return redirect('author_page', user_id)
 
             return redirect('author_page', user_id)
