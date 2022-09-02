@@ -17,7 +17,8 @@
             href="{% url 'list_skills' %}">Домашние навыки</a></div>
     <div class="col-2 border rounded-pill text-center bg-light p-2 "><a class='nav-link'
             href="{% url 'list_buisness' %}" >Бизнес</a></div>
-    <div class="col-2 border rounded-pill text-center bg-light p-2 "><a class='nav-link' href="{% url 'list_fundamental' %}">Фундаментальные знания</a></div>
+    <div class="col-2 border rounded-pill text-center bg-light p-2 "><a class='nav-link' 
+            href="{% url 'list_fundamental' %}">Фундаментальные знания</a></div>
     <div class="col-2 border rounded-pill text-center bg-light p-2 "><a class='nav-link'
             href="{% url 'list_languages' %}">Языки</a></div>
 </div>
@@ -43,7 +44,7 @@
                         <p class="title is-6" style="height:10px">{{subject.title}}</p>
                     </div> -->
                     <div class="row">
-                        <div class="col"><strong>Автор:</strong>
+                        <div class="col"><strong>Автор: </strong>
                             <a href="{% url 'author_page' subject.author.id %}">{{subject.author}}</a>
                         </div>
                     </div>
@@ -54,7 +55,7 @@
                     <div class="row">
                         <div class="col">
                             <strong>
-                    Рейтинг: 
+                                Рейтинг: 
                             </strong> {{subject.av_rating}}
                         <div class="stars-outer">
                             <div class="stars-inner" style="width: {{subject.percent}}"></div>
