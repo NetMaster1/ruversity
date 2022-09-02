@@ -92,7 +92,6 @@ def subject(request, subject_id):
         }
         return render(request, 'subject_page.html', context)
 
-
 def gen_search(request):
     if request.method == 'POST':
         keyword = request.POST['keyword']
@@ -225,7 +224,6 @@ def gen_search(request):
         else:
             return redirect('login')
 
-
 def main_page(request):
     subjects = MainSubject.objects.filter(ready='True').exclude(blocked='True').order_by('-date_posted')
     discount_time = DiscountOn.objects.get(id=1)
@@ -237,7 +235,7 @@ def main_page(request):
     # ratings = Rating.objects.all()
     context = {
         'subjects': paged_subjects,
-        'discount_time': discount_time
+        'discount_time': discount_time,
         # 'ratings': ratings,
     }
     return render(request, 'main_page.html', context)
