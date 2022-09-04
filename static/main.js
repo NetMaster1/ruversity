@@ -14,7 +14,7 @@ const csrf = document.getElementsByName('csrfmiddlewaretoken')
 
 const handleStarSelect = (size) => {
     const children = form.children
-    for (let i = 0; i < children.length; i++){
+    for (let i = 0; i < children.length; i++) {
         if (i <= size) {
             children[i].classList.add('checked')
         }
@@ -25,65 +25,65 @@ const handleStarSelect = (size) => {
 }
 //longer version to be optimized
 const handleSelect = (selection) => {
-    switch(selection) {
+    switch (selection) {
         case 'first': {
-        // one.classList.add('checked')
-        // two.classList.remove('checked')
-        // three.classList.remove('checked')
-        // four.classList.remove('checked')
-        // five.classList.remove('checked')
-        handleStarSelect(1)
-        return
-            }
-    case 'second': {
-        // one.classList.add('checked')
-        // two.classList.add('checked')
-        // three.classList.remove('checked')
-        // four.classList.remove('checked')
-        // five.classList.remove('checked')
-        handleStarSelect(2)
-        return
-}
-    case 'third': {
-        // one.classList.add('checked')
-        // two.classList.add('checked')
-        // three.classList.add('checked')
-        // four.classList.remove('checked')
-        // five.classList.remove('checked')
-        handleStarSelect(3)
-        return
-}
-    case 'fourth': {
-        // one.classList.add('checked')
-        // two.classList.add('checked')
-        // three.classList.add('checked')
-        // four.classList.add('checked')
-        // five.classList.remove('checked')
-        handleStarSelect(4)
-        return
-}
-    case 'fifth': {
-        // one.classList.add('checked')
-        // two.classList.add('checked')
-        // three.classList.add('checked')
-        // four.classList.add('checked')
-        // five.classList.add('checked')
-        handleStarSelect(5)
-        return
-}
+            // one.classList.add('checked')
+            // two.classList.remove('checked')
+            // three.classList.remove('checked')
+            // four.classList.remove('checked')
+            // five.classList.remove('checked')
+            handleStarSelect(1)
+            return
+        }
+        case 'second': {
+            // one.classList.add('checked')
+            // two.classList.add('checked')
+            // three.classList.remove('checked')
+            // four.classList.remove('checked')
+            // five.classList.remove('checked')
+            handleStarSelect(2)
+            return
+        }
+        case 'third': {
+            // one.classList.add('checked')
+            // two.classList.add('checked')
+            // three.classList.add('checked')
+            // four.classList.remove('checked')
+            // five.classList.remove('checked')
+            handleStarSelect(3)
+            return
+        }
+        case 'fourth': {
+            // one.classList.add('checked')
+            // two.classList.add('checked')
+            // three.classList.add('checked')
+            // four.classList.add('checked')
+            // five.classList.remove('checked')
+            handleStarSelect(4)
+            return
+        }
+        case 'fifth': {
+            // one.classList.add('checked')
+            // two.classList.add('checked')
+            // three.classList.add('checked')
+            // four.classList.add('checked')
+            // five.classList.add('checked')
+            handleStarSelect(5)
+            return
+        }
     }
 }
 if (one) {
     const arr = [one, two, three, four, five]
-    arr.forEach(item => item.addEventListener('mouseover', (event) => { handleSelect(event.target.id) })) 
+    arr.forEach(item => item.addEventListener('mouseover', (event) => { handleSelect(event.target.id) }))
     arr.forEach(item => item.addEventListener('click', (event) => {
         const val = event.target.id
-        
+
         form.addEventListener('submit', e => {
             e.preventDefault()
             const id = e.target.id
         })
-    })) 
+    }))
 }
 
 
