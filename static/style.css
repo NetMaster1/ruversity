@@ -1,6 +1,6 @@
 .rating {
     /* overflow: hidden; */
-    transform: translate(-50%, -50%) rotateY(180deg) ;
+    transform: translate(-50%, -50%) rotateY(180deg);
     /* display: flex; */
     /* vertical-align: bottom;
     display: inline-block; */
@@ -8,7 +8,7 @@
     height: 30px; */
 }
 
-.rating > input {
+.rating>input {
     display: none;
     /* opacity: 1; */
 }
@@ -45,15 +45,18 @@
     top: 0;
     opacity: 0;
     transition: .5s;
-    text-shadow: 0 2px 5px rgba(0,0,0,.5);
+    text-shadow: 0 2px 5px rgba(0, 0, 0, .5);
 }
 
 .rating label:hover:after,
-.rating input:hover ~ label:after,
-.rating input:checked ~ label:after
-{
+.rating input:hover~label:after,
+.rating input:checked~label:after {
     opacity: 1;
 }
 
+.img_scale:hover {
+    /* opacity: 2; */
+    transform: scale(1.1);
+    z-index: 1;
 
-
+}
