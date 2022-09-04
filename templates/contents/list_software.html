@@ -65,7 +65,8 @@
                                 </div>
                                 <div class="row">
                                     <div class="col">
-                                        <strong>Автор: </strong> {{subject.author}}
+                                        <strong>Автор: </strong> 
+                                        <a href="{% url 'author_page' subject.author.id %}">{{subject.author.first_name}} {{subject.author.last_name}}</a>
                                     </div>
                                 </div>
                                 <div class="row">

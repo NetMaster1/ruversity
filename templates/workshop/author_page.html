@@ -92,6 +92,69 @@
         <!-- </figure> -->
     </div>   
 </div>
+<div class="row mt-3">
+  {% for subject in subjects%}
+      <div class="col-sm-3">
+        <div class="card mb-3 img_scale" style="border-color: transparent;">
+          <!-- <div class="p-2"> -->
+          <div class="card-header" style='height:4rem'>
+            <h5>{{subject.title}}</h5>
+          </div>
+      
+          <a href="{% url 'subject' subject.id %}">
+            <!-- <figure class="image is-4by3"> -->
+            <figure class="image is-16by9">
+              <img src="{{subject.thumbnail_file.url}}" alt="Placeholder image" class='rounded-2 img-fluid'>
+              <!-- <img src="{{subject.thumbnail_file.url}}" alt="Placeholder image"  class='card-image-top' style='width:18rem; height: 10rem;'> -->
+            </figure>
+          </a>
+          <div class="card-body">
+            <!-- <div class="media ml-1">
+                              <p class="title is-6" style="height:10px">{{subject.title}}</p>
+                          </div> -->
+            <div class="row">
+              <div class="col"><strong>Автор: </strong>
+                {{subject.author.first_name}} {{subject.author.last_name}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col"><strong>Дата размещения: <br> </strong>{{subject.date_posted}}</div>
+            </div>
+      
+            <div class="row">
+              <div class="col">
+                <strong>
+                  Рейтинг:
+                </strong> {{subject.av_rating}}
+                <div class="stars-outer">
+                  <div class="stars-inner" style="width: {{subject.percent}}"></div>
+                </div>
+              </div>
+            </div>
+      
+            <div class="row">
+              <div class="col">
+                <strong>Покупки:</strong> {{subject.transactions}}
+              </div>
+            </div>
+            {% if subject.discount_programs == True and discount_time.discount_on == True %}
+            <div class="row">
+              <div class="col">
+                <strong>Стоимость:</strong> {{subject.price.discount}} руб.
+              </div>
+            </div>
+            {% else %}
+            <div class="row">
+              <div class="col">
+                <strong>Стоимость:</strong> {{subject.price.regular}} руб.
+              </div>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+  {% endfor %}
+</div>
 
     
 

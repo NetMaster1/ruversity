@@ -49,10 +49,10 @@
 
     <div class="form-group">
         <select name="sort_criteria" class='form-select' id="sort_criteria">
-            <option selected='true' disabled="disabled">Sort by criteria</option>
-            <option value="av_rating">Rating</option>
-            <option value="transactions">Number of transactions</option>
-            <option value="reviews">Number of reviews</option>
+            <option selected='true' disabled="disabled">Отсортировать</option>
+            <option value="av_rating">По рейтингу</option>
+            <option value="transactions">По количеству покупок</option>
+            <option value="reviews">По количеству отзывов</option>
             
         </select>
     </div>
@@ -70,9 +70,9 @@
             <div class="col-md-4">
             <a href="{% url 'subject' subject.id %}">
                 <!-- <figure style='width: 18rem; height:10rem;'> -->
-                <!-- <figure class="image is-16by9"> -->
-            <figure class="image is-16by9">
-            <img src="{{subject.thumbnail_file.url}}" alt="Placeholder image" class='rounded-2 img-fluid' >
+             
+            <figure class="image is-16by9" style="height: 10rem">
+            <img src="{{subject.thumbnail_file.url}}" alt="Placeholder image" class='rounded-2 img-fluid' style="height: 11rem" >
             <!-- <img src="{{subject.thumbnail_file.url}}" alt="Placeholder image" class='rounded-2 img-fluid' style='width: 18rem; height:11rem;' > -->
             </figure>
             </a>
@@ -86,18 +86,19 @@
             </div>
             <div class="row">
                 <div class="col">
-                    <strong>Created by: </strong> {{subject.author}}
+                    <strong>Автор: </strong> 
+                    <a href="{% url 'author_page' subject.author.id %}">{{subject.author.first_name}} {{subject.author.last_name}}</a>
                 </div>
             </div>
             <div class="row">
                 <div class="col">
-                    <strong>Posted: </strong> {{subject.date_posted}}
+                    <strong>Дата размещения: </strong> {{subject.date_posted}}
                 </div>
             </div>
                 <!-- <p class="card-text">Description: {{subject.description}}</p> -->
                
                 <div class="row"><div class="col">
-                    <strong>Rating:</strong> {{subject.av_rating}} 
+                    <strong>Рейтинг:</strong> {{subject.av_rating}} 
                     
                     <div class="stars-outer">
                         <div class="stars-inner" style="width:{{subject.percent}}"></div>
@@ -106,8 +107,9 @@
                 </div>
                     <div class="row">
                     <div class="col">
-                    <strong>Transactions: </strong> {{subject.transactions}} reviews: {{subject.reviews}}
+                    <strong>Покупки: </strong> {{subject.transactions}} 
                     </div>
+                    
                 </div>
             </div>
         </div>

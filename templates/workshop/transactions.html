@@ -6,24 +6,24 @@
 
         
     <div class="row m-5">
-        <div class="col-8">
+      
         <form action="{% url 'transactions' %}" class="form-inline">
-            <strong>Sort by</strong>
+            <strong>Сортировать</strong>
             <div class="col-4">
-        <input type="radio" name="sort" value="title" id="sort" checked> By title
+        <input type="radio" name="sort" value="title" id="sort" checked> По названию
   
-        <input type="radio" name="sort" value="buyer" id="sort">
-        By buyer
-        <input type="radio" name="sort" value="date" id="sort">
-        By date
+        <input type="radio" name="sort" value="buyer" id="sort"> По покупателю
+
+        <input type="radio" name="sort" value="date" id="sort"> По дате покупки
+      
         </div>
         <div class="col-3">
-        <input type="submit" value="Sort" class="btn btn-outline-dark btn-block">
+        <input type="submit" value="Сортировать" class="btn btn-outline-dark btn-block">
         </div>
         </form>
-        </div>
-        <div class="col-2"><a href="{% url 'GeneratePDF' %}" target='_blank'>
-                <input type="submit" value="Print" class="btn btn-outline-dark btn-block">
+       
+        <div class="col-2"><a href="{% url 'GeneratePDF' %}" target='_blank' style="text-decoration: none">
+                <input type="submit" value="Печать списка" class="btn btn-outline-dark btn-block">
             </a>
         </div>
     

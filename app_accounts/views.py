@@ -110,12 +110,12 @@ def login_user(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            messages.success(
-                request, ('Your have successfully been logged in. Welcome to ruversity.com'))
+            #messages.success(request, ('Your have successfully been logged in. Welcome to ruversity.com'))
+            messages.success(request, ('Вы успешно вошли. Добро пожаловать на ruversity.com'))
             return redirect('main_page')
         else:
-            messages.error(
-                request, ('Incorrect username or password. Check your credentials & try again'))
+            #messages.error(request, ('Incorrect username or password. Check your credentials & try again'))
+            messages.error(request, ('Неправильное имя пользователи или пароль. Проверьте ваше данные и попробуйте еще раз'))
             return redirect('login')
     else:
         return render(request, 'accounts/login.html')
@@ -123,7 +123,8 @@ def login_user(request):
 
 def logout_user(request):
     logout(request)
-    messages.success(request, ('You are now logged out'))
+    #messages.success(request, ('You are now logged out'))
+    messages.success(request, ('Вы вышли из личного кабинета ruversity.com'))
     return redirect('index')
 
 

@@ -119,30 +119,49 @@
                 <img src="{{subject.thumbnail_file.url}}" alt="Placeholder image" class='card-image-top'>
             </figure>
             <div class="card-body">
-            <div class="row">
-                <div class="col">
-                    <strong>Описание: </strong>
-                    <!-- <a ref='#collapse-p' data-toggle="collapse" data-target="#collapse-p">
-                            Read More
-                            </a> -->
-                </div>
+       
+
+
+        <div class="row">
+            <div class="col">
+                <strong>Описание: </strong>
+                <a href='#collapse-p' data-bs-toggle="collapse" data-target="#collapse-p">
+                    Ознакомиться
+                </a>
             </div>
-            <div class="row" style='height:6rem'>
+        </div>
+        
+        <!-- <div class="collapse show" id='collapse-p'> -->
+        <div class="collapse" id='collapse-p'>
+            <div class="row" style='height:13.5rem'>
                 <div class="col">
                     {{subject.description}}
                 </div>
             </div>
+        </div>
 
-            <div class="row">
-                <div class="col">
-                    <strong>Предварительная подготовка: </strong>
-                </div>
+
+
+
+        
+
+        <div class="row">
+            <div class="col">
+                <strong>Предварительные знания: </strong>
+                <a href='#collapse-pr' data-bs-toggle="collapse" data-target="#collapse-pr">
+                    Ознакомиться
+                </a>
             </div>
-            <div class="row" style='height:6rem'>
+        </div>
+        
+        
+        <div class="collapse" id='collapse-pr'>
+            <div class="row" style='height:13.5rem'>
                 <div class="col">
                     {{subject.prerequisite}}
                 </div>
             </div>
+        </div>
 
              
             <div class="row">
@@ -181,10 +200,10 @@
             </div>
             <div class="form-group">
                 <label for="description">Редактировать краткое описание курса</label>
-                <textarea class='form-control' id="description" rows='3' minlength='120' maxlength='180' name="description" required placeholder='Введите краткое описание курса. 120-180 символов.'></textarea>
+                <textarea class='form-control' id="description" rows='4' minlength='160' maxlength='360' name="description" required placeholder='Введите краткое описание курса. 120-180 символов.'></textarea>
             <div class="form-group">
                 <label for="prerequisites">Редактировать предварительную подготовку</label>
-                <textarea class='form-control' rows='3' id="prerequisite" minlength='120' maxlength='180' minlength='150'name="prerequisites" required placeholder='Введите требования к предварительной подготовке. 120-180 символов.'></textarea>
+                <textarea class='form-control' rows='4' id="prerequisite" minlength='160' maxlength='360' name="prerequisites" required placeholder='Введите требования к предварительной подготовке. 120-180 символов.'></textarea>
             <div>
             <div class="form-group">
                 <label for="thumbnail">Загрузить новую картинку для курса:</label>

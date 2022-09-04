@@ -12,7 +12,9 @@ class LectureAdmin(admin.ModelAdmin):
     list_display = ('id', 'title', 'author', 'date_posted')
 
 class TransactionAdmin(admin.ModelAdmin):
-    list_display = ('id', 'course', 'buyer', 'paid_amount')
+    list_display = ('id', 'course', 'author', 'date_bought', 'buyer', 'paid_amount', 'money_transfer', 'date_transfer')
+    ordering = ('-date_bought',)
+    list_per_page=50
 
 # class RatingAdmin(admin.ModelAdmin):
 #     list_display = ('id', 'subject', 'user', 'rating')

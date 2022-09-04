@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from datetime import datetime, date
 from . storage import OverwriteStorage
 import uuid
+from app_accounts.models import Author
 
 # Create your models here.
 class Language(models.Model):
@@ -104,9 +105,12 @@ class Lecture(models.Model):
 
 class Transaction(models.Model):
     course = models.ForeignKey(MainSubject, on_delete=models.DO_NOTHING)
+    author = models.ForeignKey(Author, on_delete=models.DO_NOTHING, null=True)
     buyer = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     date_bought = models.DateField(auto_now_add=True)
     paid_amount = models.FloatField(null=True)
+    money_transfer = models.BooleanField(default=False)#check after money transfer to the author
+    date_transfer = models.DateField(auto_now=True)
 
     def __int__(self):
         return self.id
