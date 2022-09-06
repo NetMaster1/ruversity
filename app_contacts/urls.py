@@ -5,6 +5,7 @@ urlpatterns = [
     path('', views.contacts, name='contacts'),
     path('help/', views.help, name='help'),
     path('termsofuse/', views.termsofuse, name='termsofuse'),
+    path('security_policy/', views.security_policy, name='security_policy'),
     path('partneship/', views.partnership, name='partnership'),
     path('socialmedia/', views.socialmedia, name='socialmedia'),
     path('career/', views.career, name='career'),
