@@ -13,6 +13,9 @@ def contacts(request):
 def personal_data(request):
     return render(request, 'contacts/personal_data.html')
 
+def security_policy(request):
+    return render(request, 'contacts/security_policy.html')
+
 def help(request):
     return render(request, 'contacts/help.html')
 
