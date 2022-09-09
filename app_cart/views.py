@@ -68,6 +68,25 @@ def credit_card(request, subject_id):
         return redirect ('login')
 
 
+def qiwi_payment_complete (request):
+    if request.method=='POST':
+        id = request.POST['id']
+        sum = request.POST['sum']
+        key = request.POST['key']
+
+        #==============================================================
+        Transaction.objects.create(
+            course=id,
+            paid_amount=sum,
+            buyer=request.user
+        )
+    #==============================================================
+        pass
+        # return JsonResponse('Payment completed!' , context, safe=False)
+    else:
+        return redirect ('login')
+
+
 def payment_cancel(request):
     pass
 
