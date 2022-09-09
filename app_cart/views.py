@@ -68,6 +68,11 @@ def credit_card(request, subject_id):
         return redirect ('login')
 
 
+def qiwi_payment_complete (request):
+
+    return JsonResponse('Payment completed!', safe=False)
+
+
 def payment_cancel(request):
     pass
 
