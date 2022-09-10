@@ -9,6 +9,9 @@ from ipstack import GeoLookup
 from app_workshop.utils import render_to_pdf
 from django.views.generic import View
 from io import BytesIO
+from django.views.decorators.csrf import csrf_exempt
+import hashlib
+from django.contrib.auth.models import User, Group
 
 # Create your views here.
 
@@ -67,22 +70,37 @@ def credit_card(request, subject_id):
     else:
         return redirect ('login')
 
-
+@csrf_exempt
 def qiwi_payment_complete (request):
-    if request.method=='POST':
-        id = request.POST['id']
-        sum = request.POST['sum']
-        key = request.POST['key']
-
-        #==============================================================
-        Transaction.objects.create(
-            course=id,
-            paid_amount=sum,
-            buyer=request.user
-        )
+    if request.method == 'POST':
+        #arr[] = request.POST.get('id', 'sum', 'key')
+        # data=request.data
+        # body = json.loads(request.body)
+        id = request.POST.get('id')
+        sum = request.POST.get('sum')
+        orderid = request.POST.get('orderid')
+        clientid = request.POST.get('clientid')
+        key = request.POST.get('key')
+        # key = request.POST['key']
+        secret_word='KLdr[=fjtC4YJb4jf'
+        subject=MainSubject.objects.get(id=1)
+        user=User.objects.get(id=1)
     #==============================================================
-        pass
-        # return JsonResponse('Payment completed!' , context, safe=False)
+        Transaction.objects.create(
+            course=subject,
+            paid_amount=sum,
+            buyer=user
+        )
+
+        string = id + sum + clientid + orderid + secret_word
+        if key == hashlib.md5(b'string'):
+            string=id + secret_word
+            print ('OK', hashlib.md5(b'string'))
+    #==============================================================
+       
+        
+        return JsonResponse('Payment completed!', safe=False)
+        #return render(request, 'cart/qiwi_payment_complete.html')
     else:
         return redirect ('login')
 
