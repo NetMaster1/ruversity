@@ -679,7 +679,7 @@ def author_profile(request):
                 context = {
                     'credit_card_types': credit_card_types,
                 }
-                return render(request, 'workshop/author_profile.html')
+                return render(request, 'workshop/author_profile.html', context)
     else:
         return redirect('login')
 

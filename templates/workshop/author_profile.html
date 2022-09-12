@@ -100,7 +100,7 @@
                 </select>
             </div>
                 <div class="form-group">
-                <label for="entity_name">Название организации</label>
+                <label for="entity_name">Название организации/ИП</label>
                 <input type="text" class='form-control' id="entity_name" name="entity_name" required>
                 </div>
             
@@ -144,32 +144,31 @@
     {% if main_method.user == request.user %}
     <div class="row mt-3">
         <div class="col-6 border rounded">
-    Your primary recompense method is <strong>{{main_method.method}}</strong><br>
+    Предпочитаемый способ получения оплаты <strong>{{main_method.method}}</strong><br>
         </div>
     </div>
 
     <div class="row mt-2">
         <div class="col-6 p-2 border rounded">
         {% if main_method.method == 'paypal' %}
-    Your paypal account login: p{{method.name}}
+    Логин ЛК Paypal: p{{method.name}}
         {% endif %}
 
         {% if main_method.method == 'credit_card' %}
         <div class="row">
-            <div class="col">
-    Your current card info <br>
+            <div class="col">Реквизиты кредитной карты:<br>
             </div>
         </div>
         <div class="row">
-    <div class="col">Cardholder First Name</div>
+    <div class="col">Имя</div>
     <div class="col">{{method.first_name}}</div>
         </div>
     <div class="row">
-    <div class="col">Cardholder Last Name</div>
+    <div class="col">Фамилия</div>
     <div class="col">{{method.last_name}}</div>
     </div>
     <div class="row">
-        <div class="col">Card Number</div>
+        <div class="col">Номер карты</div>
         <div class="col">{{method.card_number}}</div>
     </div>
     
@@ -178,31 +177,31 @@
         {% if main_method.method == 'bank_account' %}
             <div class="row">
                 <div class="col">
-                    Your current bank account <br>
+                    Ваши банковские реквизиты <br>
                 </div>
             </div>
             <div class="row">
-                <div class="col">Country of Registration</div>
+                <div class="col">Страна</div>
                 <div class="col">{{method.country}}</div>
             </div>
             <div class="row">
-                <div class="col">Entity Name</div>
+                <div class="col">Название организации/ИП</div>
                 <div class="col">{{method.entity_name}}</div>
             </div>
             <div class="row">
-                <div class="col">ITIN</div>
+                <div class="col">ИНН</div>
                 <div class="col">{{method.itin}}</div>
             </div>
             <div class="row">
-                <div class="col">BIC</div>
+                <div class="col">БИК</div>
                 <div class="col">{{method.bic}}</div>
             </div>
             <div class="row">
-                <div class="col">Bank account</div>
+                <div class="col">Корреспондентский счет</div>
                 <div class="col">{{method.bank_account}}</div>
             </div>
             <div class="row">
-                <div class="col">Account</div>
+                <div class="col">Расчетный счет</div>
                 <div class="col">{{method.account}}</div>
             </div>
         {% endif %}
@@ -213,10 +212,10 @@
     <div class="row mt-2">
         <div class="col-6 p-2 border rounded">
             <div class="row">
-        <div class="col-6">Change your recompense method</div>
-        <div class="col-3">
-    <a href="{% url 'edit_main_method' %}">
-        <input type="submit" value="Edit or Delete" class="btn btn-outline-dark btn-block">
+        <div class="col-6">Изменить способ получения оплаты</div>
+        <div class="col-5">
+    <a href="{% url 'edit_main_method' %}" style="text-decoration: none">
+        <input type="submit" value="Изменить или удалить" class="btn btn-outline-dark btn-block">
     </a>
         </div>
         </div>

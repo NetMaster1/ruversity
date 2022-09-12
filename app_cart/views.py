@@ -104,7 +104,7 @@ def qiwi_payment_complete (request):
             transaction.date_paid=datetime.datetime.now()
             transaction.save()
             subject=MainSubject.objects.get(subject=subject)
-            subject.transaction+=1
+            subject.transactions+=1
             subject.save
 
         string = id + sum + clientid + transaction_id + secret_word
