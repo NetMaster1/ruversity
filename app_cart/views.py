@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from app_content.models import MainSubject, Transaction, Cart, DiscountOn
+from app_account.models import Author
 
 from hashlib import md5
 from django.http import HttpResponse
