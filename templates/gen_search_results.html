@@ -6,7 +6,7 @@
     <div class="row mt-3">
 
         <div class="col-2 rounded mr-2">
-            <form action="{% url 'gen_search' %}">
+            <!-- <form action="{% url 'gen_search' %}">
                     {% csrf_token %}
                     <ul>
                         <li>
@@ -23,18 +23,18 @@
                     </ul>
                     <ul>
                         <li>
-                            <h5><label for="rating">Rating</label>
+                            <h5><label for="rating">Сортировать по рейтингу</label>
                         </li>
                         </h5>
-                        <input type="checkbox" id="rating" name="rating" value=4.5> above 4,5<br>
-                        <input type="checkbox" id="rating" name="rating" value=4.> above 4<br>
-                        <input type="checkbox" id="rating" name="rating" value=3.5> above 3,5<br>
-                        <input type="checkbox" id="rating" name="rating" value=3.0> above3<br>
-                        <input type="checkbox" id="rating" name="rating" value=2.5> above 2,5<br>
-                        <input type="checkbox" id="rating" name="rating" value=2.0> above 2<br>
-                    </ul>
-                    <!-- <input type="submit" value="Sort" class="btn btn-info"> -->
-                    <input type="submit" value="Sort" class="btn btn-sm btn-block btn-outline-dark">
+                        <input type="checkbox" id="rating" name="rating" value=4.5> все выше 4,5<br>
+                        <input type="checkbox" id="rating" name="rating" value=4.> все выше 4<br>
+                        <input type="checkbox" id="rating" name="rating" value=3.5> все выше 3,5<br>
+                        <input type="checkbox" id="rating" name="rating" value=3.0> все выше 3<br>
+                        <input type="checkbox" id="rating" name="rating" value=2.5> все выше 2,5<br>
+                        <input type="checkbox" id="rating" name="rating" value=2.0> все выше 2<br>
+                        </ul> -->
+                        <!-- <input type="submit" value="Sort" class="btn btn-info"> -->
+                        <!-- <input type="submit" value="Показать" class="btn btn-sm btn-block btn-outline-dark"> -->
             </form>
         </div>
 
@@ -58,7 +58,7 @@
     </div>
 
     <div class="row mb-2">
-        <div class="col"><input type="submit" value="Sort" class='btn btn-sm btn-block btn-outline-dark'></div>
+        <div class="col"><input type="submit" value="Сортировать" class='btn btn-sm btn-block btn-outline-dark'></div>
     </div>
 </form>
 

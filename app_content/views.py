@@ -103,8 +103,7 @@ def gen_search(request):
         keyword = request.POST['keyword']
         if keyword:  # if search line is not blank
             # if MainSubject.objects.filter(title__icontains=keyword).exists():
-            query = MainSubject.objects.filter(
-                title__icontains=keyword, ready='True').exclude(blocked='True')
+            query = MainSubject.objects.filter(title__icontains=keyword, ready='True').exclude(blocked='True').order_by('rating')
 
             paginator = Paginator(query, 10)
             page = request.GET.get('page')
@@ -115,22 +114,15 @@ def gen_search(request):
                     keyword=keyword,
                     user=request.user
                 )
-
-                context = {
-                    'query': query_paged
-                }
-
-                template = 'gen_search_results.html'
-                return render(request, template, context)
             else:
                 keyword = Keyword.objects.create(
                     keyword=keyword,
                 )
-                context = {
-                    'query': query_paged
-                }
-                template = 'gen_search_results.html'
-                return render(request, template, context)
+            context = {
+                'query': query_paged
+            }
+            template = 'gen_search_results.html'
+            return render(request, template, context)
         else:
             return redirect('main_page')
     else:
@@ -138,95 +130,35 @@ def gen_search(request):
             keyword = Keyword.objects.filter(user=request.user)
             query = keyword.last()
             keyword = query.keyword
-            query = MainSubject.objects.filter(
-                title__icontains=keyword, ready='True').exclude(blocked='True')
+            query = MainSubject.objects.filter(title__icontains=keyword, ready='True').exclude(blocked='True').order_by('-rating')
 
-            if 'language' in request.GET:
-                languages = request.GET.getlist('language', None)
-                languages = Language.objects.filter(name__in=languages)
-                query = query.filter(language__in=languages)
+            # if 'language' in request.GET:
+            #     languages = request.GET.getlist('language', None)
+            #     languages = Language.objects.filter(name__in=languages)
+            #     query = query.filter(language__in=languages)
 
-                if 'rating' in request.GET:
-                    rating = request.GET['rating']
-                    query = query.filter(av_rating__gte=rating)
+            #     if 'rating' in request.GET:
+            #         rating = request.GET['rating']
+            #         query = query.filter(av_rating__gte=rating)
 
-                    if 'sort_criteria' in request.GET:
-                        sort_criteria = request.GET['sort_criteria']
-                        if sort_criteria == 'rating':
-                            query = query.order_by('rating')
-                        elif sort_criteria == 'reviews':
-                            query = query.order_by('reviews')
-                        elif sort_criteria == 'transactions':
-                            query = query.order_by('transactions')
+            if 'sort_criteria' in request.GET:
+                sort_criteria = request.GET['sort_criteria']
+                if sort_criteria == 'rating':
+                    query = query.order_by('rating')
+                elif sort_criteria == 'reviews':
+                    query = query.order_by('reviews')
+                elif sort_criteria == 'transactions':
+                    query = query.order_by('transactions')
 
-                            paginator = Paginator(query, 5)
-                            page = request.GET.get('page')
-                            query_paged = paginator.get_page(page)
+            paginator = Paginator(query, 5)
+            page = request.GET.get('page')
+            query_paged = paginator.get_page(page)
 
-                            context = {
-                                'query': query_paged
-                            }
-                            return render(request, 'gen_search_results.html', context)
+            context = {
+                'query': query_paged
+            }
+            return render(request, 'gen_search_results.html', context)
 
-                    else:
-                        paginator = Paginator(query, 5)
-                        page = request.GET.get('page')
-                        query_paged = paginator.get_page(page)
-
-                        context = {
-                            'query': query_paged
-                        }
-                        return render(request, 'gen_search_results.html', context)
-                else:
-                    paginator = Paginator(query, 5)
-                    page = request.GET.get('page')
-                    query_paged = paginator.get_page(page)
-
-                    context = {
-                        'query': query_paged
-                    }
-                    return render(request, 'gen_search_results.html', context)
-            else:
-                if 'rating' in request.GET:
-                    rating = request.GET['rating']
-                    query = query.filter(av_rating__gte=rating)
-
-                    paginator = Paginator(query, 5)
-                    page = request.GET.get('page')
-                    query_paged = paginator.get_page(page)
-
-                    context = {
-                        'query': query_paged
-                    }
-                    return render(request, 'gen_search_results.html', context)
-                else:
-                    if 'sort_criteria' in request.GET:
-                        sort_criteria = request.GET['sort_criteria']
-                        if sort_criteria == 'av_rating':
-                            query = query.order_by('-av_rating')[:20]
-                        elif sort_criteria == 'reviews':
-                            query = query.order_by('-reviews')[:20]
-                        elif sort_criteria == 'transactions':
-                            query = query.order_by('-transactions')[:20]
-                        else:
-
-                            paginator = Paginator(query, 10)
-                            page = request.GET.get('page')
-                            query_paged = paginator.get_page(page)
-
-                            context = {
-                                'query': query_paged
-                            }
-                            return render(request, 'gen_search_results.html', context)
-
-                        paginator = Paginator(query, 20)
-                        page = request.GET.get('page')
-                        query_paged = paginator.get_page(page)
-
-                        context = {
-                            'query': query_paged
-                        }
-                        return render(request, 'gen_search_results.html', context)
         else:
             return redirect('login')
 
@@ -246,11 +178,9 @@ def main_page(request):
     }
     return render(request, 'main_page.html', context)
 
-
 def list_software(request):
     category = Category.objects.get(name='Software & IT')
-    query = MainSubject.objects.filter(
-        category=category, ready='True').exclude(blocked='True')
+    query = MainSubject.objects.filter(category=category, ready='True').exclude(blocked='True').order_by('-rating')
     if request.user.is_authenticated:
         if 'language' in request.GET:
             languages = request.GET.getlist('language', None)
@@ -268,7 +198,7 @@ def list_software(request):
                 context = {
                     'query': query_paged
                 }
-                return render(request, 'contents/list_software.html', context)
+                return render(request, 'contents/list_by_category.html', context)
             else:
                 paginator = Paginator(query, 5)
                 page = request.GET.get('page')
@@ -277,7 +207,7 @@ def list_software(request):
                 context = {
                     'query': query_paged
                 }
-                return render(request, 'contents/list_software.html', context)
+                return render(request, 'contents/list_by_category.html', context)
         else:
             if 'rating' in request.GET:
                 rating = request.GET['rating']
@@ -290,7 +220,7 @@ def list_software(request):
                 context = {
                     'query': query_paged
                 }
-                return render(request, 'contents/list_software.html', context)
+                return render(request, 'contents/list_by_category.html', context)
             else:
                 paginator = Paginator(query, 5)
                 page = request.GET.get('page')
@@ -298,10 +228,9 @@ def list_software(request):
                 context = {
                     'query': query_paged
                 }
-                return render(request, 'contents/list_software.html', context)
+                return render(request, 'contents/list_by_category.html', context)
     else:
         return redirect('login')
-
 
 def list_fitness(request):
     category = Category.objects.get(name='Fitness')
@@ -324,7 +253,7 @@ def list_fitness(request):
                 context = {
                     'query': query_paged
                 }
-                return render(request, 'contents/list_fitness.html', context)
+                return render(request, 'contents/list_by_category.html', context)
             else:
                 paginator = Paginator(query, 5)
                 page = request.GET.get('page')
@@ -333,7 +262,7 @@ def list_fitness(request):
                 context = {
                     'query': query_paged
                 }
-                return render(request, 'contents/list_fitness.html', context)
+                return render(request, 'contents/list_by_category.html', context)
         else:
             if 'rating' in request.GET:
                 rating = request.GET['rating']
@@ -346,7 +275,7 @@ def list_fitness(request):
                 context = {
                     'query': query_paged
                 }
-                return render(request, 'contents/list_fitness.html', context)
+                return render(request, 'contents/list_by_category.html', context)
             else:
                 paginator = Paginator(query, 5)
                 page = request.GET.get('page')
@@ -354,10 +283,9 @@ def list_fitness(request):
                 context = {
                     'query': query_paged
                 }
-                return render(request, 'contents/list_fitness.html', context)
+                return render(request, 'contents/list_by_category.html', context)
     else:
         return redirect('login')
-
 
 def list_skills(request):
     category = Category.objects.get(name='Everyday Skills')
@@ -380,7 +308,7 @@ def list_skills(request):
                 context = {
                     'query': query_paged
                 }
-                return render(request, 'contents/list_skills.html', context)
+                return render(request, 'contents/list_by_category.html', context)
             else:
                 paginator = Paginator(query, 20)
                 page = request.GET.get('page')
@@ -389,7 +317,7 @@ def list_skills(request):
                 context = {
                     'query': query_paged
                 }
-                return render(request, 'contents/list_skills.html', context)
+                return render(request, 'contents/list_by_category.html', context)
         else:
             if 'rating' in request.GET:
                 rating = request.GET['rating']
@@ -402,7 +330,7 @@ def list_skills(request):
                 context = {
                     'query': query_paged
                 }
-                return render(request, 'contents/list_skills.html', context)
+                return render(request, 'contents/list_by_category.html', context)
             else:
                 paginator = Paginator(query, 20)
                 page = request.GET.get('page')
@@ -410,10 +338,9 @@ def list_skills(request):
                 context = {
                     'query': query_paged
                 }
-                return render(request, 'contents/list_skills.html', context)
+                return render(request, 'contents/list_by_category.html', context)
     else:
         return redirect('login')
-
 
 def list_arts(request):
     category = Category.objects.get(name='Arts')
@@ -436,7 +363,7 @@ def list_arts(request):
                 context = {
                     'query': query_paged
                 }
-                return render(request, 'contents/list_arts.html', context)
+                return render(request, 'contents/list_by_category.html', context)
             else:
                 paginator = Paginator(query, 20)
                 page = request.GET.get('page')
@@ -445,7 +372,7 @@ def list_arts(request):
                 context = {
                     'query': query_paged
                 }
-                return render(request, 'contents/list_arts.html', context)
+                return render(request, 'contents/list_by_category.html', context)
         else:
             if 'rating' in request.GET:
                 rating = request.GET['rating']
@@ -458,7 +385,7 @@ def list_arts(request):
                 context = {
                     'query': query_paged
                 }
-                return render(request, 'contents/list_arts.html', context)
+                return render(request, 'contents/list_by_category.html', context)
             else:
                 paginator = Paginator(query, 20)
                 page = request.GET.get('page')
@@ -466,10 +393,9 @@ def list_arts(request):
                 context = {
                     'query': query_paged
                 }
-                return render(request, 'contents/list_arts.html', context)
+                return render(request, 'contents/list_by_category.html', context)
     else:
         return redirect('login')
-
 
 def list_buisness(request):
     category = Category.objects.get(name='Business')
@@ -492,7 +418,7 @@ def list_buisness(request):
                 context = {
                     'query': query_paged
                 }
-                return render(request, 'contents/list_business.html', context)
+                return render(request, 'contents/list_by_category.html', context)
             else:
                 paginator = Paginator(query, 20)
                 page = request.GET.get('page')
@@ -501,7 +427,7 @@ def list_buisness(request):
                 context = {
                     'query': query_paged
                 }
-                return render(request, 'contents/list_business.html', context)
+                return render(request, 'contents/list_by_category.html', context)
         else:
             if 'rating' in request.GET:
                 rating = request.GET['rating']
@@ -514,7 +440,7 @@ def list_buisness(request):
                 context = {
                     'query': query_paged
                 }
-                return render(request, 'contents/list_business.html', context)
+                return render(request, 'contents/list_by_category.html', context)
             else:
                 paginator = Paginator(query, 20)
                 page = request.GET.get('page')
@@ -522,10 +448,9 @@ def list_buisness(request):
                 context = {
                     'query': query_paged
                 }
-                return render(request, 'contents/list_business.html', context)
+                return render(request, 'contents/list_by_category.html', context)
     else:
         return redirect('login')
-
 
 def list_personal(request):
     category = Category.objects.get(name='Personal Development')
@@ -548,7 +473,7 @@ def list_personal(request):
                 context = {
                     'query': query_paged
                 }
-                return render(request, 'contents/list_personal.html', context)
+                return render(request, 'contents/list_by_category.html', context)
             else:
                 paginator = Paginator(query, 20)
                 page = request.GET.get('page')
@@ -557,7 +482,7 @@ def list_personal(request):
                 context = {
                     'query': query_paged
                 }
-                return render(request, 'contents/list_personal.html', context)
+                return render(request, 'contents/list_by_category.html', context)
         else:
             if 'rating' in request.GET:
                 rating = request.GET['rating']
@@ -570,7 +495,7 @@ def list_personal(request):
                 context = {
                     'query': query_paged
                 }
-                return render(request, 'contents/list_personal.html', context)
+                return render(request, 'contents/list_by_category.html', context)
             else:
                 paginator = Paginator(query, 20)
                 page = request.GET.get('page')
@@ -578,7 +503,7 @@ def list_personal(request):
                 context = {
                     'query': query_paged
                 }
-                return render(request, 'contents/list_personal.html', context)
+                return render(request, 'contents/list_by_category.html', context)
     else:
         return redirect('login')
 
@@ -603,7 +528,7 @@ def list_languages(request):
                 context = {
                     'query': query_paged
                 }
-                return render(request, 'contents/list_fundamental.html', context)
+                return render(request, 'contents/list_by_category.html', context)
             else:
                 paginator = Paginator(query, 20)
                 page = request.GET.get('page')
@@ -612,7 +537,7 @@ def list_languages(request):
                 context = {
                     'query': query_paged
                 }
-                return render(request, 'contents/list_fundamental.html', context)
+                return render(request, 'contents/list_by_category.html', context)
         else:
             if 'rating' in request.GET:
                 rating = request.GET['rating']
@@ -625,7 +550,7 @@ def list_languages(request):
                 context = {
                     'query': query_paged
                 }
-                return render(request, 'contents/list_fundamental.html', context)
+                return render(request, 'contents/list_by_category.html', context)
             else:
                 paginator = Paginator(query, 20)
                 page = request.GET.get('page')
@@ -633,10 +558,9 @@ def list_languages(request):
                 context = {
                     'query': query_paged
                 }
-                return render(request, 'contents/list_fundamental.html', context)
+                return render(request, 'contents/list_by_category.html', context)
     else:
         return redirect('login')
-
 
 def list_fundamental(request):
     category = Category.objects.get(name='Fundamental Science')
@@ -659,7 +583,7 @@ def list_fundamental(request):
                 context = {
                     'query': query_paged
                 }
-                return render(request, 'contents/list_fundamental.html', context)
+                return render(request, 'contents/list_by_category.html', context)
             else:
                 paginator = Paginator(query, 20)
                 page = request.GET.get('page')
@@ -668,7 +592,7 @@ def list_fundamental(request):
                 context = {
                     'query': query_paged
                 }
-                return render(request, 'contents/list_fundamental.html', context)
+                return render(request, 'contents/list_by_category.html', context)
         else:
             if 'rating' in request.GET:
                 rating = request.GET['rating']
@@ -681,7 +605,7 @@ def list_fundamental(request):
                 context = {
                     'query': query_paged
                 }
-                return render(request, 'contents/list_fundamental.html', context)
+                return render(request, 'contents/list_by_category.html', context)
             else:
                 paginator = Paginator(query, 20)
                 page = request.GET.get('page')
@@ -689,7 +613,7 @@ def list_fundamental(request):
                 context = {
                     'query': query_paged
                 }
-                return render(request, 'contents/list_fundamental.html', context)
+                return render(request, 'contents/list_by_category.html', context)
     else:
         return redirect('login')
 

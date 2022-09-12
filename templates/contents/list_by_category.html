@@ -6,35 +6,35 @@
     <div class="row mt-3">
 
         <div class="col-2 rounded mr-2">
-            <form action="{% url 'list_software' %}">
+            <form action="{% url 'list_software' %}" id="form_select">
                 {% csrf_token %}
-                <ul>
+                <!-- <ul>
                     <li>
                         <h5><label for="language">Язык</label>
                     </li>
                     </h5>
-                    <input type="checkbox" id="language" name="language" value="English"> Engish<br>
+                    <input type="checkbox" id="language" name="language" value="English"> English<br>
                     <input type="checkbox" id="language" name="language" value="Chinese"> Chinese <br>
                     <input type="checkbox" id="language" name="language" value="Hindi"> Hindi <br>
                     <input type="checkbox" id="language" name="language" value="Russian"> Russian <br>
                     <input type="checkbox" id="language" name="language" value="Spanish"> Spanish <br>
                     <input type="checkbox" id="language" name="language" value="German"> German <br>
                     <input type="checkbox" id="language" name="language" value="French"> French <br>
-                </ul>
+                </ul> -->
                 <ul>
                     <li>
-                        <h5><label for="manufacture">Рейтинг</label>
+                        <h5><label for="rating">Сортировать по рейтингу</label>
                     </li>
                     </h5>
-                    <input type="checkbox" id="rating" name="rating" value=4.5> above 4,5<br>
-                    <input type="checkbox" id="rating" name="rating" value=4.> above 4<br>
-                    <input type="checkbox" id="rating" name="rating" value=3.5> above 3,5<br>
-                    <input type="checkbox" id="rating" name="rating" value=3.0> above3<br>
-                    <input type="checkbox" id="rating" name="rating" value=2.5> above 2,5<br>
-                    <input type="checkbox" id="rating" name="rating" value=2.0> above 2<br>
+                    <input type="checkbox" id="rating" name="rating" value=4.5> все выше 4,5<br>
+                    <input type="checkbox" id="rating" name="rating" value=4.> все выше 4<br>
+                    <input type="checkbox" id="rating" name="rating" value=3.5> все выше 3,5<br>
+                    <input type="checkbox" id="rating" name="rating" value=3.0> все выше 3<br>
+                    <input type="checkbox" id="rating" name="rating" value=2.5> все выше 2,5<br>
+                    <input type="checkbox" id="rating" name="rating" value=2.0> все выше 2<br>
                 </ul>
                 <!-- <input type="submit" value="Sort" class="btn btn-info"> -->
-                <input type="submit" value="Sort" class="btn btn-sm btn-block btn-outline-dark">
+                <input type="submit" value="Показать" class="btn btn-sm btn-block btn-outline-dark">
             </form>
         </div>
 
@@ -43,29 +43,31 @@
             {% for subject in query %}
             <div class="row">
                 <div class="col">
-                    <div class="card mb-3" style="height:11rem;">
+                    <div class="card mb-3 img_scale">
                         <div class="row">
                             <div class="col-md-4">
+
                                 <a href="{% url 'subject' subject.id %}">
                                     <!-- <figure style='width: 18rem; height:10rem;'> -->
-                                    <!-- <figure class="image is-16by9"> -->
-                                    <figure class="image is-16by9">
+                                    <figure class="image is-16by9 mb-0">
                                         <img src="{{subject.thumbnail_file.url}}" alt="Placeholder image"
                                             class='rounded-2 img-fluid'>
                                         <!-- <img src="{{subject.thumbnail_file.url}}" alt="Placeholder image" class='rounded-2 img-fluid' style='width: 18rem; height:11rem;' > -->
                                     </figure>
                                 </a>
+
                             </div>
                             <div class="col-md-8">
-                                <div class="row mt-3">
+                                <div class="row">
                                     <div class="col">
                                         <h5 class="card-title">{{subject.title}}</h5>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col">
-                                        <strong>Автор: </strong> 
-                                        <a href="{% url 'author_page' subject.author.id %}">{{subject.author.first_name}} {{subject.author.last_name}}</a>
+                                        <strong>Автор: </strong>
+                                        <a href="{% url 'author_page' subject.author.id %}">{{subject.author.first_name}}
+                                            {{subject.author.last_name}}</a>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -90,6 +92,7 @@
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
