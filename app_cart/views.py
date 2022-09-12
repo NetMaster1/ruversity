@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from app_content.models import MainSubject, Transaction, Cart, DiscountOn
+from app_accounts.models import Author
+
 from hashlib import md5
 from django.http import HttpResponse
 import json
@@ -61,6 +63,7 @@ def payment_complete(request):
 def credit_card(request, subject_id):
     if request.user.is_authenticated:
         subject = MainSubject.objects.get(id=subject_id)
+        author=Author.objects.get(id=subject.author)
         author = subject.author.last_name
         discount_time = DiscountOn.objects.get(id=1)
         if Transaction.objects.filter(buyer=request.user, course=subject).exists():
