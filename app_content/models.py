@@ -104,10 +104,12 @@ class Lecture(models.Model):
         return self.id
 
 class Transaction(models.Model):
+    date_created = models.DateField(auto_now_add=True)
+    payment_id = models.CharField(max_length=100, null=True)
     course = models.ForeignKey(MainSubject, on_delete=models.DO_NOTHING)
     author = models.ForeignKey(Author, on_delete=models.DO_NOTHING, null=True)
     buyer = models.ForeignKey(User, on_delete=models.DO_NOTHING)
-    date_bought = models.DateField(auto_now_add=True)
+    date_paid = models.DateField(null=True)
     paid_amount = models.FloatField(null=True)
     money_transfer = models.BooleanField(default=False)#check after money transfer to the author
     date_transfer = models.DateField(auto_now=True)

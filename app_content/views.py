@@ -41,9 +41,10 @@ def subject(request, subject_id):
     lectures = Lecture.objects.filter(subject=subject)
     sections = Section.objects.filter(course=subject)
     reviews = Review.objects.filter(subject=subject_id)
+    discount_time = DiscountOn.objects.get(id=1)
     if request.user.is_authenticated:
-        if Transaction.objects.filter(course=subject, buyer=request.user).exists():
-            transaction = Transaction.objects.get(course=subject, buyer=request.user)
+        if Transaction.objects.filter(course=subject, buyer=request.user, payment_id__isnull=False).exists():
+            transaction = Transaction.objects.get(course=subject, buyer=request.user, payment_id__isnull=False)
             if Cart.objects.filter(subject=subject, user=request.user):
                 cart = Cart.objects.get(subject=subject, user=request.user)
                 context = {
@@ -53,6 +54,7 @@ def subject(request, subject_id):
                     'reviews': reviews,
                     'cart': cart,
                     'transaction': transaction,
+                    'discount_time': discount_time,
                 }
                 return render(request, 'subject_page.html', context)
             else:
@@ -62,6 +64,7 @@ def subject(request, subject_id):
                     'lectures': lectures,
                     'reviews': reviews,
                     'transaction': transaction,
+                    'discount_time': discount_time,
                 }
                 return render(request, 'subject_page.html', context)
         else:
@@ -73,6 +76,7 @@ def subject(request, subject_id):
                     'lectures': lectures,
                     'reviews': reviews,
                     'cart': cart,
+                    'discount_time': discount_time,
                 }
                 return render(request, 'subject_page.html', context)
             else:
@@ -81,6 +85,7 @@ def subject(request, subject_id):
                     'sections': sections,
                     'lectures': lectures,
                     'reviews': reviews,
+                    'discount_time': discount_time,
                 }
                 return render(request, 'subject_page.html', context)
     else:
@@ -89,6 +94,7 @@ def subject(request, subject_id):
             'sections': sections,
             'lectures': lectures,
             'reviews': reviews,
+            'discount_time': discount_time,
         }
         return render(request, 'subject_page.html', context)
 

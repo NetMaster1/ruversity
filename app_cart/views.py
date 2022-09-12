@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from app_content.models import MainSubject, Transaction, Cart
+from app_content.models import MainSubject, Transaction, Cart, DiscountOn
 from hashlib import md5
 from django.http import HttpResponse
 import json
@@ -13,6 +13,7 @@ from django.views.decorators.csrf import csrf_exempt
 import hashlib
 from django.contrib.auth.models import User, Group
 
+import datetime
 # Create your views here.
 
 
@@ -26,7 +27,6 @@ def pay_pal(request, subject_id):
         return render(request, 'cart/pay_pal_page_ver1.html', context)
     else:
         return redirect ('login')
-
 
 def payment_complete(request):
     body = json.loads(request.body)
@@ -58,13 +58,23 @@ def payment_complete(request):
         return JsonResponse('Payment completed!', safe=False)
         # return redirect ('mycourses')
 
-
 def credit_card(request, subject_id):
     if request.user.is_authenticated:
         subject = MainSubject.objects.get(id=subject_id)
-
+        author = subject.author.last_name
+        discount_time = DiscountOn.objects.get(id=1)
+        if Transaction.objects.filter(buyer=request.user, course=subject).exists():
+            transaction=Transaction.objects.get(buyer=request.user, course=subject)
+        else:
+           transaction= Transaction.objects.create(
+                course=subject,
+                buyer=request.user,
+                author=author,
+            )
         context = {
-            'subject': subject
+            'subject': subject,
+            'discount_time': discount_time,
+            'transaction':transaction,
         }
         return render(request, 'cart/credit_card.html', context)
     else:
@@ -73,26 +83,24 @@ def credit_card(request, subject_id):
 @csrf_exempt
 def qiwi_payment_complete (request):
     if request.method == 'POST':
-        #arr[] = request.POST.get('id', 'sum', 'key')
-        # data=request.data
-        # body = json.loads(request.body)
-        id = request.POST.get('id')
+        id = request.POST.get('id')#unique payment id
         sum = request.POST.get('sum')
-        orderid = request.POST.get('orderid')
+        transaction_id = request.POST.get('orderid')
         clientid = request.POST.get('clientid')
+        subject = request.POST.get('service_name')
         key = request.POST.get('key')
         # key = request.POST['key']
         secret_word='KLdr[=fjtC4YJb4jf'
-        subject=MainSubject.objects.get(id=1)
+        subject=MainSubject.objects.get(id=subject)
         user=User.objects.get(id=1)
     #==============================================================
-        Transaction.objects.create(
-            course=subject,
-            paid_amount=sum,
-            buyer=user
-        )
+        transaction=Transaction.objects.get(id=transaction_id)
+        if transaction.date_paid is None:
+            transaction.paid_amount=sum
+            transaction.date_paid=datetime.datetime.now()
+            transaction.save()
 
-        string = id + sum + clientid + orderid + secret_word
+        string = id + sum + clientid + transaction_id + secret_word
         if key == hashlib.md5(b'string'):
             string=id + secret_word
             print ('OK', hashlib.md5(b'string'))
