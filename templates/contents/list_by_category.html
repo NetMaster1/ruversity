@@ -6,8 +6,8 @@
     <div class="row mt-3">
 
         <div class="col-2 rounded mr-2">
-            <form action="{% url 'list_software' %}" id="form_select">
-                {% csrf_token %}
+            <!-- <form action="{% url 'list_software' %}" id="form_select">
+                {% csrf_token %} -->
                 <!-- <ul>
                     <li>
                         <h5><label for="language">Язык</label>
@@ -21,7 +21,7 @@
                     <input type="checkbox" id="language" name="language" value="German"> German <br>
                     <input type="checkbox" id="language" name="language" value="French"> French <br>
                 </ul> -->
-                <ul>
+                <!-- <ul>
                     <li>
                         <h5><label for="rating">Сортировать по рейтингу</label>
                     </li>
@@ -33,13 +33,29 @@
                     <input type="checkbox" id="rating" name="rating" value=2.5> все выше 2,5<br>
                     <input type="checkbox" id="rating" name="rating" value=2.0> все выше 2<br>
                 </ul>
-                <!-- <input type="submit" value="Sort" class="btn btn-info"> -->
+                <input type="submit" value="Sort" class="btn btn-info">
                 <input type="submit" value="Показать" class="btn btn-sm btn-block btn-outline-dark">
-            </form>
+            </form> -->
         </div>
 
 
         <div class="col-9">
+            <form action="{% url 'gen_search' %}">
+                {% csrf_token %}
+            
+                <div class="form-group">
+                    <select name="sort_criteria" class='form-select' id="sort_criteria">
+                        <option selected='true' value="av_rating">По рейтингу</option>
+                        <option value="transactions">По количеству покупок</option>
+                        <option value="reviews">По количеству отзывов</option>
+                    </select>
+                </div>
+            
+                <div class="row mb-2">
+                    <div class="col"><input type="submit" value="Сортировать" class='btn btn-sm btn-block btn-outline-dark'></div>
+                </div>
+            </form>
+
             {% for subject in query %}
             <div class="row">
                 <div class="col">

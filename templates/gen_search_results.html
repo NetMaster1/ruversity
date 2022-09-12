@@ -39,9 +39,6 @@
         </div>
 
 
- 
-
-
 
 <div class="col-9">
 <form action="{% url 'gen_search' %}">
@@ -49,11 +46,9 @@
 
     <div class="form-group">
         <select name="sort_criteria" class='form-select' id="sort_criteria">
-            <option selected='true' disabled="disabled">Отсортировать</option>
-            <option value="av_rating">По рейтингу</option>
+            <option selected='true' value="av_rating">По рейтингу</option>
             <option value="transactions">По количеству покупок</option>
-            <option value="reviews">По количеству отзывов</option>
-            
+            <option value="reviews">По количеству отзывов</option>   
         </select>
     </div>
 

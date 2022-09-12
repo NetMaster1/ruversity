@@ -8,7 +8,6 @@ from django.contrib.auth import authenticate, login, logout
 
 # Create your views here.
 
-
 def index(request):
     if request.user.is_authenticated:
         # videos=Paginator (videos, 3)
@@ -209,9 +208,17 @@ def list_software(request):
                 }
                 return render(request, 'contents/list_by_category.html', context)
         else:
-            if 'rating' in request.GET:
-                rating = request.GET['rating']
-                query = query.filter(av_rating__gte=rating)
+            # if 'rating' in request.GET:
+            #     rating = request.GET['rating']
+            #     query = query.filter(av_rating__gte=rating)
+            if 'sort_criteria' in request.GET:
+                sort_criteria = request.GET['sort_criteria']
+                if sort_criteria == 'rating':
+                    query = query.order_by('-rating')
+                elif sort_criteria == 'reviews':
+                    query = query.order_by('-reviews')
+                elif sort_criteria == 'transactions':
+                    query = query.order_by('-transactions')
 
                 paginator = Paginator(query, 5)
                 page = request.GET.get('page')
@@ -221,6 +228,7 @@ def list_software(request):
                     'query': query_paged
                 }
                 return render(request, 'contents/list_by_category.html', context)
+
             else:
                 paginator = Paginator(query, 5)
                 page = request.GET.get('page')
@@ -264,9 +272,17 @@ def list_fitness(request):
                 }
                 return render(request, 'contents/list_by_category.html', context)
         else:
-            if 'rating' in request.GET:
-                rating = request.GET['rating']
-                query = query.filter(av_rating__gte=rating)
+            # if 'rating' in request.GET:
+            #     rating = request.GET['rating']
+            #     query = query.filter(av_rating__gte=rating)
+            if 'sort_criteria' in request.GET:
+                sort_criteria = request.GET['sort_criteria']
+                if sort_criteria == 'rating':
+                    query = query.order_by('-rating')
+                elif sort_criteria == 'reviews':
+                    query = query.order_by('-reviews')
+                elif sort_criteria == 'transactions':
+                    query = query.order_by('-transactions')
 
                 paginator = Paginator(query, 5)
                 page = request.GET.get('page')
@@ -319,11 +335,19 @@ def list_skills(request):
                 }
                 return render(request, 'contents/list_by_category.html', context)
         else:
-            if 'rating' in request.GET:
-                rating = request.GET['rating']
-                query = query.filter(av_rating__gte=rating)
+           # if 'rating' in request.GET:
+            #     rating = request.GET['rating']
+            #     query = query.filter(av_rating__gte=rating)
+            if 'sort_criteria' in request.GET:
+                sort_criteria = request.GET['sort_criteria']
+                if sort_criteria == 'rating':
+                    query = query.order_by('-rating')
+                elif sort_criteria == 'reviews':
+                    query = query.order_by('-reviews')
+                elif sort_criteria == 'transactions':
+                    query = query.order_by('-transactions')
 
-                paginator = Paginator(query, 20)
+                paginator = Paginator(query, 5)
                 page = request.GET.get('page')
                 query_paged = paginator.get_page(page)
 
@@ -374,11 +398,19 @@ def list_arts(request):
                 }
                 return render(request, 'contents/list_by_category.html', context)
         else:
-            if 'rating' in request.GET:
-                rating = request.GET['rating']
-                query = query.filter(av_rating__gte=rating)
+           # if 'rating' in request.GET:
+            #     rating = request.GET['rating']
+            #     query = query.filter(av_rating__gte=rating)
+            if 'sort_criteria' in request.GET:
+                sort_criteria = request.GET['sort_criteria']
+                if sort_criteria == 'rating':
+                    query = query.order_by('-rating')
+                elif sort_criteria == 'reviews':
+                    query = query.order_by('-reviews')
+                elif sort_criteria == 'transactions':
+                    query = query.order_by('-transactions')
 
-                paginator = Paginator(query, 20)
+                paginator = Paginator(query, 5)
                 page = request.GET.get('page')
                 query_paged = paginator.get_page(page)
 
@@ -429,11 +461,19 @@ def list_buisness(request):
                 }
                 return render(request, 'contents/list_by_category.html', context)
         else:
-            if 'rating' in request.GET:
-                rating = request.GET['rating']
-                query = query.filter(av_rating__gte=rating)
+            # if 'rating' in request.GET:
+            #     rating = request.GET['rating']
+            #     query = query.filter(av_rating__gte=rating)
+            if 'sort_criteria' in request.GET:
+                sort_criteria = request.GET['sort_criteria']
+                if sort_criteria == 'rating':
+                    query = query.order_by('-rating')
+                elif sort_criteria == 'reviews':
+                    query = query.order_by('-reviews')
+                elif sort_criteria == 'transactions':
+                    query = query.order_by('-transactions')
 
-                paginator = Paginator(query, 20)
+                paginator = Paginator(query, 5)
                 page = request.GET.get('page')
                 query_paged = paginator.get_page(page)
 
@@ -484,11 +524,19 @@ def list_personal(request):
                 }
                 return render(request, 'contents/list_by_category.html', context)
         else:
-            if 'rating' in request.GET:
-                rating = request.GET['rating']
-                query = query.filter(av_rating__gte=rating)
+           # if 'rating' in request.GET:
+            #     rating = request.GET['rating']
+            #     query = query.filter(av_rating__gte=rating)
+            if 'sort_criteria' in request.GET:
+                sort_criteria = request.GET['sort_criteria']
+                if sort_criteria == 'rating':
+                    query = query.order_by('-rating')
+                elif sort_criteria == 'reviews':
+                    query = query.order_by('-reviews')
+                elif sort_criteria == 'transactions':
+                    query = query.order_by('-transactions')
 
-                paginator = Paginator(query, 20)
+                paginator = Paginator(query, 5)
                 page = request.GET.get('page')
                 query_paged = paginator.get_page(page)
 
@@ -539,11 +587,19 @@ def list_languages(request):
                 }
                 return render(request, 'contents/list_by_category.html', context)
         else:
-            if 'rating' in request.GET:
-                rating = request.GET['rating']
-                query = query.filter(av_rating__gte=rating)
+            # if 'rating' in request.GET:
+            #     rating = request.GET['rating']
+            #     query = query.filter(av_rating__gte=rating)
+            if 'sort_criteria' in request.GET:
+                sort_criteria = request.GET['sort_criteria']
+                if sort_criteria == 'rating':
+                    query = query.order_by('-rating')
+                elif sort_criteria == 'reviews':
+                    query = query.order_by('-reviews')
+                elif sort_criteria == 'transactions':
+                    query = query.order_by('-transactions')
 
-                paginator = Paginator(query, 20)
+                paginator = Paginator(query, 5)
                 page = request.GET.get('page')
                 query_paged = paginator.get_page(page)
 
@@ -594,11 +650,19 @@ def list_fundamental(request):
                 }
                 return render(request, 'contents/list_by_category.html', context)
         else:
-            if 'rating' in request.GET:
-                rating = request.GET['rating']
-                query = query.filter(av_rating__gte=rating)
+           # if 'rating' in request.GET:
+            #     rating = request.GET['rating']
+            #     query = query.filter(av_rating__gte=rating)
+            if 'sort_criteria' in request.GET:
+                sort_criteria = request.GET['sort_criteria']
+                if sort_criteria == 'rating':
+                    query = query.order_by('-rating')
+                elif sort_criteria == 'reviews':
+                    query = query.order_by('-reviews')
+                elif sort_criteria == 'transactions':
+                    query = query.order_by('-transactions')
 
-                paginator = Paginator(query, 20)
+                paginator = Paginator(query, 5)
                 page = request.GET.get('page')
                 query_paged = paginator.get_page(page)
 
@@ -616,7 +680,6 @@ def list_fundamental(request):
                 return render(request, 'contents/list_by_category.html', context)
     else:
         return redirect('login')
-
 
 def search_by_author(request, subject_author):
     subjects = MainSubject.objects.filter(ready='True').exclude(blocked='True')
