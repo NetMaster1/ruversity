@@ -37,10 +37,10 @@
     <div class="col">
         {% for transaction in query %}
         <div class="row pt-3 border-bottom">
+            <div class="col-4 fst-italic">{{transaction.date_paid}}</div>
             <div class="col-4 fst-italic">{{transaction.course.title}}</div>
-            <div class="col-2 fst-italic">{{transaction.buyer}}</div>
-            <div class="col-2 fst-italic ">{{transaction.date_bought}}</div>
-            <div class="col-2 fst-italic"> {{transaction.amount}}</div>
+            <div class="col-2 fst-italic ">{{transaction.date_transfer}}</div>
+            <div class="col-2 fst-italic"> {{transaction.transferred_amount}}</div>
         </div>
         {% endfor %}
     </div>
