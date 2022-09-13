@@ -93,9 +93,10 @@
       {% endif %}
           <div class="dropdown-menu">
             <a href="{% url 'author_page' request.user.id %}" class="dropdown-item">Профиль автора</a>
-            <a href="{% url 'author_profile' %}" class="dropdown-item">Оплата</a>
+            <a href="{% url 'author_profile' %}" class="dropdown-item">Платежные реквизиты</a>
             <a href="{% url 'transactions' %}" class="dropdown-item">Мои сделки</a>
             <a href="{% url 'studio' %}" class="dropdown-item">Творческая студия</a>
+            <a href="{% url 'tutorial' %}" class="dropdown-item">Инструкции по созданию курса</a>
            
           </div>
     </div>

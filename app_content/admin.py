@@ -12,7 +12,8 @@ class LectureAdmin(admin.ModelAdmin):
     list_display = ('id', 'title', 'author', 'date_posted')
 
 class TransactionAdmin(admin.ModelAdmin):
-    list_display = ('id', 'date_created', 'course', 'author', 'payment_id', 'date_paid', 'paid_amount', 'buyer', 'money_transfer', 'date_transfer')
+    list_display = ('id', 'date_created', 'course', 'author', 'money_paid', 'payment_id', 'date_paid', 'paid_amount', 'buyer', 'money_transfer', 'date_transfer', 'transferred_amount')
+    list__filter = ('money_paid', 'money_transfer')
     ordering = ('-date_paid',)
     list_per_page=100
 

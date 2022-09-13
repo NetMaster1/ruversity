@@ -1,38 +1,41 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div class="container">
-
-
-        
-    <div class="row m-5">
-      
-        <form action="{% url 'transactions' %}" class="form-inline">
-            <strong>Сортировать</strong>
-            <div class="col-4">
-        <input type="radio" name="sort" value="title" id="sort" checked> По названию
-  
-        <input type="radio" name="sort" value="buyer" id="sort"> По покупателю
-
-        <input type="radio" name="sort" value="date" id="sort"> По дате покупки
-      
-        </div>
-        <div class="col-3">
-        <input type="submit" value="Сортировать" class="btn btn-outline-dark btn-block">
-        </div>
-        </form>
-       
+<div class="container">      
+    <!-- <div class="row m-5">  
         <div class="col-2"><a href="{% url 'GeneratePDF' %}" target='_blank' style="text-decoration: none">
                 <input type="submit" value="Печать списка" class="btn btn-outline-dark btn-block">
             </a>
         </div>
+    </div> -->
+<div class="row mt-3">
+    <form action="{% url 'transactions' %}">
+        {% csrf_token %}
     
-    </div>
+        <div class="form-group">
+            <select name="sort_criteria" class='form-select' id="sort_criteria">
+                <option selected='true' value="sell_date">По дате продажи</option>
+                <option value="transfer_date">По дате перевода средств</option>
+                <option value="course_title">По названию курса</option>
+            </select>
+        </div>
+    
+        <div class="row mb-3">
+            <div class="col"><input type="submit" value="Сортировать" class='btn btn-sm btn-block btn-outline-dark'></div>
+        </div>
+    </form>
+</div>
 
+<div class="row m-auto border rounded bg-light">
+    <div class="col" style="font-size: 1.2rem">Дата покупки</div>
+    <div class="col"style="font-size: 1.2rem" >Курс</div>
+    <div class="col" style="font-size: 1.2rem">Дата перевода средств</div>
+    <div class="col" style="font-size: 1.2rem">Переведенная сумма</div>
+</div>
 
-<div class="row m-5">
+<div class="row m-5" >
     <div class="col">
-        {% for transaction in my_transactions %}
+        {% for transaction in query %}
         <div class="row pt-3 border-bottom">
             <div class="col-4 fst-italic">{{transaction.course.title}}</div>
             <div class="col-2 fst-italic">{{transaction.buyer}}</div>

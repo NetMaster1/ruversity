@@ -49,7 +49,8 @@ INSTALLED_APPS = [
     #'paypal.standard.ipn',
     'app_contacts',
     'storages',
-    'background_task'
+    'background_task',
+    'app_tutorial'
 
 
 ]
