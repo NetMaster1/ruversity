@@ -829,25 +829,31 @@ def bank_account(request):
 
 def transactions(request):
     if request.user.is_authenticated:
-        my_subjects = MainSubject.objects.filter(author=request.user)
-        my_transactions = Transaction.objects.filter(course__in=my_subjects)
-        if 'sort' in request.GET:
-            option = request.GET['sort']
-            if option == 'title':
-                my_transactions=my_transactions.order_by('course')
-            elif option == 'buyer':
-                my_transactions=my_transactions.order_by('buyer')
-            elif option == 'date':
-                my_transactions=my_transactions.order_by('date_bought')
+        if Author.objects.filter(user=request.user).exists():
+            author=Author.objects.get(user=request.user)
+            query = Transaction.objects.filter(author=author, money_paid=True).order_by('-date_paid')
+            if 'sort_criteria' in request.GET:
+                sort_criteria = request.GET['sort_criteria']
+                if sort_criteria == 'sell_date':
+                    query = query.order_by('-date_paid')
+                elif sort_criteria == 'transfer_date':
+                    query = query.order_by('-date_transfer')
+                elif sort_criteria == 'course_titel':
+                    query = query.order_by('-course')
+
+            paginator = Paginator(query, 50)
+            page = request.GET.get('page')
+            query_paged = paginator.get_page(page)
+
             context = {
-                    'my_transactions': my_transactions
-                }
+                'query': query_paged
+            }
+
             return render(request, 'workshop/transactions.html', context)
-        else:
-            context = {
-                            'my_transactions': my_transactions
-                        }
-            return render(request, 'workshop/transactions.html', context)
+      
+        messages.error(request, "У вас отсутствуют проданные курсы.")
+        return render(request, 'workshop/transactions.html')
+           
     return redirect('login')
 
 class GeneratePDF(View):

@@ -105,6 +105,7 @@ class Lecture(models.Model):
 
 class Transaction(models.Model):
     date_created = models.DateField(auto_now_add=True)
+    money_paid = models.BooleanField(default=False)#check if money have been paid
     payment_id = models.CharField(max_length=100, null=True)
     course = models.ForeignKey(MainSubject, on_delete=models.DO_NOTHING)
     author = models.ForeignKey(Author, on_delete=models.DO_NOTHING, null=True)
@@ -112,7 +113,8 @@ class Transaction(models.Model):
     date_paid = models.DateField(null=True)
     paid_amount = models.FloatField(null=True)
     money_transfer = models.BooleanField(default=False)#check after money transfer to the author
-    date_transfer = models.DateField(auto_now=True)
+    date_transfer = models.DateField(null=True)
+    transferred_amount = models.FloatField(null=True)
 
     def __int__(self):
         return self.id

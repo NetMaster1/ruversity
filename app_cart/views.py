@@ -99,6 +99,7 @@ def qiwi_payment_complete (request):
     #==============================================================
         transaction=Transaction.objects.get(id=transaction_id)
         if transaction.date_paid is None:
+            transaction.money_paid=True
             transaction.payment_id=id
             transaction.paid_amount=sum
             transaction.date_paid=datetime.datetime.now()
