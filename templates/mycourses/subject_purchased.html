@@ -34,11 +34,11 @@
                 <div class="col">
                     <div class="row">
                         <div class="col">
-                    <h5>Please rate the course</h5>
+                    <h5>Пожалуйста, оцените курс</h5>
                         </div>
                     </div>
 
-            <div class="row">
+            <div class="row mr-2">
                 <div class="col pt-3">
                     <form action="{% url 'rating' subject.id %}">
                         {% csrf_token %}
@@ -57,7 +57,7 @@
                         <div class="row">
                             <div class="col mb-2">
                         <!-- <input type="submit" value="Rate" class="btn btn-info btn-block"> -->
-                        <input type="submit" value="Rate" class='btn btn-sm btn-block btn-outline-dark'>
+                        <input type="submit" value="Оценить" class='btn btn-sm btn-block btn-outline-dark'>
                         </div>
                         </div>
                     </form>
@@ -80,18 +80,18 @@
   
         <div class="row">
             <div class="col">
-                <strong>Transactions:</strong> ({{subject.transactions}})
+                <strong>Покупки:</strong> ({{subject.transactions}})
             </div>
         </div>
 
         <div class="row">
-            <div class="col"><strong>Created by: </strong>{{subject.author}}</div>
+            <div class="col"><strong>Автор: </strong>{{subject.author}}</div>
         </div>
         <div class="row">
-            <div class="col"><strong>Date posted: </strong>{{subject.date_posted}}</div>
+            <div class="col"><strong>Дата размещения: </strong>{{subject.date_posted}}</div>
         </div>
             <div class="row">
-                <div class="col"><strong>Timing: </strong>{{subject.length}} min</div>
+                <div class="col"><strong>Длительность: </strong>{{subject.length}} min</div>
             </div>
 
             <!-- =============================================================== -->
@@ -108,12 +108,12 @@
 <div class="col-8 mt-1 ml-auto" id='scroll_col'>
     <div class="card" >
         <div class="card-header" >
-            <h4>Content</h4>
+            <h4>Содержание</h4>
         </div>
 
     {% for section in sections %}
             <div class="section_1" >
-            <a id='a_id_section' href='#' <h5 data-bs-toggle="collapse" data-bs-target='#section{{section.id}}'>{{section.title}}. Duration: {{section.length}} min </a></h5></a>
+            <a id='a_id_section' href='#' <h5 data-bs-toggle="collapse" data-bs-target='#section{{section.id}}'>{{section.title}}. Длительность: {{section.length}} min </a></h5></a>
             </div>
             {% for lecture in lectures %}
                 {% if lecture.section == section %}
@@ -137,23 +137,23 @@
     <ul class="nav nav-tabs" id="myTab" role="tablist">
 
         <li class="nav-item " role="presentation">
-            <button class="nav-link active pl-1 pr-3" id="home-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button" role="tab" aria-controls="home" aria-selected="true">Reviews</button>
+            <button class="nav-link active pl-1 pr-3" id="home-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button" role="tab" aria-controls="home" aria-selected="true">Отзывы</button>
         </li>
 
         <li class="nav-item " role="presentation">
-            <button class="nav-link pl-1 pr-3" id="profile-tab" data-bs-toggle="tab" data-bs-target="#questions" type="button" role="tab" aria-controls="profile" aria-selected="false">Q&A</button>
+            <button class="nav-link pl-1 pr-3" id="profile-tab" data-bs-toggle="tab" data-bs-target="#questions" type="button" role="tab" aria-controls="profile" aria-selected="false">Вопросы и Ответы</button>
         </li>
 
         <li class="nav-item " role="presentation">
-            <button class="nav-link pl-1 pr-3" id="contact-tab" data-bs-toggle="tab" data-bs-target="#author" type="button" role="tab" aria-controls="contact" aria-selected="false">Author</button>
+            <button class="nav-link pl-1 pr-3" id="contact-tab" data-bs-toggle="tab" data-bs-target="#author" type="button" role="tab" aria-controls="contact" aria-selected="false">Автор</button>
         </li>
 
         <li class="nav-item" role="presentation">
-            <button class="nav-link pl-1 pr-3" id="contact-tab" data-bs-toggle="tab" data-bs-target="#overview" type="button" role="tab" aria-controls="overview" aria-selected="false">Overview</button>
+            <button class="nav-link pl-1 pr-3" id="contact-tab" data-bs-toggle="tab" data-bs-target="#overview" type="button" role="tab" aria-controls="overview" aria-selected="false">О чем курс</button>
         </li>
 
         <li class="nav-item" role="presentation">
-            <button class="nav-link pl-1 pr-3" id="contact-tab" data-bs-toggle="tab" data-bs-target="#prerequisites" type="button" role="tab" aria-controls="overview" aria-selected="false">Prerequisites</button>
+            <button class="nav-link pl-1 pr-3" id="contact-tab" data-bs-toggle="tab" data-bs-target="#prerequisites" type="button" role="tab" aria-controls="overview" aria-selected="false">Предварительная подготовка</button>
         </li>
     </ul>
     
