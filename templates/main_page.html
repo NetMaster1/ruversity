@@ -4,25 +4,24 @@
 <div class="container">
 <div class="row p-2">
 
-    <div class="col-2 border rounded-pill text-center bg-light p-2" style="width: 0.5rem"><a class='nav-link'
+    <div class="col-2 border rounded-pill text-center bg-light p-2 img_scale"><a class='nav-link'
             href="{% url 'list_software' %}">Программирование и IT</a></div>
-
-    <div class="col-2 border rounded-pill text-center bg-light p-2"><a class='nav-link'
+    <div class="col-1 border rounded-pill text-center bg-light p-2 img_scale"><a class='nav-link'
             href="{% url 'list_arts' %}">Искусство</a></div>
-    <div class="col-2 border rounded-pill text-center bg-light p-2"><a class='nav-link'
-            href="{% url 'list_fitness' %}">Спорт и фитнесс</a></div>
-    <div class="col-2 border rounded-pill text-center bg-light p-2"><a class='nav-link'
+    <div class="col-1 border rounded-pill text-center bg-light p-2 img_scale"><a class='nav-link'
+            href="{% url 'list_fitness' %}">Спорт и фитнес</a></div>
+    <div class="col-2 border rounded-pill text-center bg-light p-2 img_scale"><a class='nav-link'
             href="{% url 'list_personal' %}">Личностное развитие</a></div>
-    <div class="col-2 border rounded-pill text-center bg-light p-2"><a class='nav-link'
+    <div class="col-2 border rounded-pill text-center bg-light p-2 img_scale"><a class='nav-link'
             href="{% url 'list_skills' %}">Домашние навыки</a></div>
-    <div class="col-2 border rounded-pill text-center bg-light p-2 "><a class='nav-link'
+    <div class="col-1 border rounded-pill text-center bg-light p-2 img_scale"><a class='nav-link'
             href="{% url 'list_buisness' %}" >Бизнес</a></div>
-    <div class="col-2 border rounded-pill text-center bg-light p-2 "><a class='nav-link' 
+    <div class="col-2 border rounded-pill text-center bg-light p-2 img_scale"><a class='nav-link' 
             href="{% url 'list_fundamental' %}">Фундаментальные знания</a></div>
-    <div class="col-2 border rounded-pill text-center bg-light p-2 "><a class='nav-link'
+    <div class="col-1 border rounded-pill text-center bg-light p-2 img_scale"><a class='nav-link'
             href="{% url 'list_languages' %}">Языки</a></div>
 </div>
-    
+
     <div class="row">
 
 {% for subject in subjects %}
