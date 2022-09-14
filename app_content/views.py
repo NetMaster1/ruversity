@@ -178,7 +178,7 @@ def main_page(request):
     return render(request, 'main_page.html', context)
 
 def list_software(request):
-    category = Category.objects.get(name='Software & IT')
+    category = Category.objects.get(name='Программирование и IT')
     query = MainSubject.objects.filter(category=category, ready='True').exclude(blocked='True').order_by('-rating')
     if request.user.is_authenticated:
         if 'language' in request.GET:
@@ -241,7 +241,7 @@ def list_software(request):
         return redirect('login')
 
 def list_fitness(request):
-    category = Category.objects.get(name='Fitness')
+    category = Category.objects.get(name='Здоровье и фитнес')
     query = MainSubject.objects.filter(
         category=category, ready='True').exclude(blocked='True')
     if request.user.is_authenticated:
@@ -304,7 +304,7 @@ def list_fitness(request):
         return redirect('login')
 
 def list_skills(request):
-    category = Category.objects.get(name='Everyday Skills')
+    category = Category.objects.get(name='Домашние навыки')
     query = MainSubject.objects.filter(
         category=category, ready='True').exclude(blocked='True')
     if request.user.is_authenticated:
@@ -367,7 +367,7 @@ def list_skills(request):
         return redirect('login')
 
 def list_arts(request):
-    category = Category.objects.get(name='Arts')
+    category = Category.objects.get(name='Искусство')
     query = MainSubject.objects.filter(
         category=category, ready='True').exclude(blocked='True')
     if request.user.is_authenticated:
@@ -430,7 +430,7 @@ def list_arts(request):
         return redirect('login')
 
 def list_buisness(request):
-    category = Category.objects.get(name='Business')
+    category = Category.objects.get(name='Бизнес')
     query = MainSubject.objects.filter(
         category=category, ready='True').exclude(blocked='True')
     if request.user.is_authenticated:
@@ -493,7 +493,7 @@ def list_buisness(request):
         return redirect('login')
 
 def list_personal(request):
-    category = Category.objects.get(name='Personal Development')
+    category = Category.objects.get(name='Личностное развитие')
     query = MainSubject.objects.filter(
         category=category, ready='True').exclude(blocked='True')
     if request.user.is_authenticated:
@@ -556,7 +556,7 @@ def list_personal(request):
         return redirect('login')
 
 def list_languages(request):
-    category = Category.objects.get(name='Languages')
+    category = Category.objects.get(name='Языки')
     query = MainSubject.objects.filter(
         category=category, ready='True').exclude(blocked='True')
     if request.user.is_authenticated:
@@ -619,7 +619,7 @@ def list_languages(request):
         return redirect('login')
 
 def list_fundamental(request):
-    category = Category.objects.get(name='Fundamental Science')
+    category = Category.objects.get(name='Фундаментальные знания')
     query = MainSubject.objects.filter(
         category=category, ready='True').exclude(blocked='True')
     if request.user.is_authenticated:
