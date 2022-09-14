@@ -108,7 +108,7 @@ def author_page(request, user_id):
             return render(request, 'workshop/author_page.html', context)
         else:
             messages.error(
-                request, 'The author has no profile yet')
+                request, 'Профиль автора отсутствует. Создайте его.')
             return redirect('studio')
 
 def edit_author_page(request, user_id):
@@ -831,28 +831,31 @@ def transactions(request):
     if request.user.is_authenticated:
         if Author.objects.filter(user=request.user).exists():
             author=Author.objects.get(user=request.user)
-            query = Transaction.objects.filter(author=author, money_paid=True).order_by('-date_paid')
-            if 'sort_criteria' in request.GET:
-                sort_criteria = request.GET['sort_criteria']
-                if sort_criteria == 'sell_date':
-                    query = query.order_by('-date_paid')
-                elif sort_criteria == 'transfer_date':
-                    query = query.order_by('-date_transfer')
-                elif sort_criteria == 'course_titel':
-                    query = query.order_by('-course')
+            if Transaction.objects.filter(author=author, money_paid=True).exists():
+                query = Transaction.objects.filter(author=author, money_paid=True).order_by('-date_paid')
+                if 'sort_criteria' in request.GET:
+                    sort_criteria = request.GET['sort_criteria']
+                    if sort_criteria == 'sell_date':
+                        query = query.order_by('-date_paid')
+                    elif sort_criteria == 'transfer_date':
+                        query = query.order_by('-date_transfer')
+                    elif sort_criteria == 'course_titel':
+                        query = query.order_by('-course')
 
-            paginator = Paginator(query, 50)
-            page = request.GET.get('page')
-            query_paged = paginator.get_page(page)
+                paginator = Paginator(query, 50)
+                page = request.GET.get('page')
+                query_paged = paginator.get_page(page)
 
-            context = {
-                'query': query_paged
-            }
-
-            return render(request, 'workshop/transactions.html', context)
-      
-        messages.error(request, "У вас отсутствуют проданные курсы.")
-        return render(request, 'workshop/transactions.html')
+                context = {
+                    'query': query_paged
+                }
+                return render(request, 'workshop/transactions.html', context)
+            else:
+                messages.error(request, 'Вы не продали ни одного курса')
+                return render(request, 'workshop/transactions.html')
+        else:
+            messages.error(request, 'Вы не загрузили ни одного курса')
+            return render(request, 'workshop/transactions.html')
            
     return redirect('login')
 
