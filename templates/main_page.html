@@ -9,7 +9,7 @@
     <div class="col-1 border rounded-pill text-center bg-light p-2 img_scale"><a class='nav-link'
             href="{% url 'list_arts' %}">Искусство</a></div>
     <div class="col-1 border rounded-pill text-center bg-light p-2 img_scale"><a class='nav-link'
-            href="{% url 'list_fitness' %}">Спорт и фитнес</a></div>
+            href="{% url 'list_fitness' %}">Здоровье и фитнес</a></div>
     <div class="col-2 border rounded-pill text-center bg-light p-2 img_scale"><a class='nav-link'
             href="{% url 'list_personal' %}">Личностное развитие</a></div>
     <div class="col-2 border rounded-pill text-center bg-light p-2 img_scale"><a class='nav-link'
@@ -24,7 +24,7 @@
 
     <div class="row">
 
-{% for subject in subjects %}
+{% for subject in paged_subjects %}
 
         <div class="col-sm-3">
             <div class="card mb-3 img_scale" style="border-color: transparent;">
