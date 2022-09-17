@@ -4,6 +4,7 @@ from django.core.paginator import Paginator
 from app_reviews.models import Review
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
 # from django.http import HttpResponse
 
 # Create your views here.
@@ -24,16 +25,17 @@ def index(request):
         #     }
         # return render(request, 'index.html', context)
 
-        subjects = MainSubject.objects.filter(
-            ready='True').exclude(blocked='True')
-        # ratings = Rating.objects.all()
+        subjects = MainSubject.objects.filter(ready='True').exclude(blocked='True').order_by('-date_posted')
+        paginator = Paginator(subjects, 12)
+        page = request.GET.get('page')
+        paged_subjects = paginator.get_page(page)
+
         context = {
-            'subjects': subjects,
-            # 'ratings': ratings,
+            'paged_subjects': paged_subjects,
         }
         return render(request, 'main_page.html', context)
     else:
-        return render(request, 'index.html')
+        return redirect('login')
 
 def subject(request, subject_id):
     subject = MainSubject.objects.get(id=subject_id)
@@ -177,10 +179,39 @@ def main_page(request):
     }
     return render(request, 'main_page.html', context)
 
-def list_software(request):
-    category = Category.objects.get(name='Программирование и IT')
-    query = MainSubject.objects.filter(category=category, ready='True').exclude(blocked='True').order_by('-rating')
+def sorting (request, category_id):
     if request.user.is_authenticated:
+        category=Category.objects.get(id=category_id)
+        query = MainSubject.objects.filter(category=category_id, ready='True').exclude(blocked='True').order_by('-av_rating')
+        if 'sort_criteria' in request.GET:
+            sort_criteria = request.GET['sort_criteria']
+            if sort_criteria == 'av_rating':
+                query = query.order_by('-av_rating')
+            elif sort_criteria == 'reviews':
+                query = query.order_by('-reviews')
+            elif sort_criteria == 'transactions':
+                query = query.order_by('-transactions')
+
+            paginator = Paginator(query, 10)
+            page = request.GET.get('page')
+            query_paged = paginator.get_page(page)
+
+            context = {
+                'query': query_paged,
+                'category': category
+            }
+            return render(request, 'contents/list_by_category.html', context)
+
+    else:
+        return redirect ('login')
+
+def list_software(request):
+    if request.user.is_authenticated:
+        category = Category.objects.get(name='Программирование и IT')
+        query = MainSubject.objects.filter(category=category, ready='True').exclude(blocked='True').order_by('-av_rating')      
+        if query.count()==0:
+            messages.error(request, ('Курсы в данной категории отсутствуют'))
+            return redirect('main_page')
         if 'language' in request.GET:
             languages = request.GET.getlist('language', None)
             languages = Language.objects.filter(name__in=languages)
@@ -211,40 +242,35 @@ def list_software(request):
             # if 'rating' in request.GET:
             #     rating = request.GET['rating']
             #     query = query.filter(av_rating__gte=rating)
-            if 'sort_criteria' in request.GET:
-                sort_criteria = request.GET['sort_criteria']
-                if sort_criteria == 'rating':
-                    query = query.order_by('-rating')
-                elif sort_criteria == 'reviews':
-                    query = query.order_by('-reviews')
-                elif sort_criteria == 'transactions':
-                    query = query.order_by('-transactions')
 
-                paginator = Paginator(query, 5)
-                page = request.GET.get('page')
-                query_paged = paginator.get_page(page)
+            paginator = Paginator(query, 10)
+            page = request.GET.get('page')
+            query_paged = paginator.get_page(page)
 
-                context = {
-                    'query': query_paged
-                }
-                return render(request, 'contents/list_by_category.html', context)
+            context = {
+                'query': query_paged,
+                'category': category
+            }
+            return render(request, 'contents/list_by_category.html', context)
 
-            else:
-                paginator = Paginator(query, 5)
-                page = request.GET.get('page')
-                query_paged = paginator.get_page(page)
-                context = {
-                    'query': query_paged
-                }
-                return render(request, 'contents/list_by_category.html', context)
+            # else:
+            #     paginator = Paginator(query, 5)
+            #     page = request.GET.get('page')
+            #     query_paged = paginator.get_page(page)
+            #     context = {
+            #         'query': query_paged
+            #     }
+            #     return render(request, 'contents/list_by_category.html', context)
     else:
         return redirect('login')
 
 def list_fitness(request):
-    category = Category.objects.get(name='Здоровье и фитнес')
-    query = MainSubject.objects.filter(
-        category=category, ready='True').exclude(blocked='True')
     if request.user.is_authenticated:
+        category = Category.objects.get(name='Здоровье и фитнес')
+        query = MainSubject.objects.filter(category=category, ready='True').exclude(blocked='True').order_by('-av_rating')
+        if query.count()==0:
+            messages.error(request, ('Курсы в данной категории отсутствуют'))
+            return redirect('main_page') 
         if 'language' in request.GET:
             languages = request.GET.getlist('language', None)
             languages = Language.objects.filter(name__in=languages)
@@ -275,38 +301,27 @@ def list_fitness(request):
             # if 'rating' in request.GET:
             #     rating = request.GET['rating']
             #     query = query.filter(av_rating__gte=rating)
-            if 'sort_criteria' in request.GET:
-                sort_criteria = request.GET['sort_criteria']
-                if sort_criteria == 'rating':
-                    query = query.order_by('-rating')
-                elif sort_criteria == 'reviews':
-                    query = query.order_by('-reviews')
-                elif sort_criteria == 'transactions':
-                    query = query.order_by('-transactions')
 
-                paginator = Paginator(query, 5)
-                page = request.GET.get('page')
-                query_paged = paginator.get_page(page)
+            paginator = Paginator(query, 5)
+            page = request.GET.get('page')
+            query_paged = paginator.get_page(page)
 
-                context = {
-                    'query': query_paged
-                }
-                return render(request, 'contents/list_by_category.html', context)
-            else:
-                paginator = Paginator(query, 5)
-                page = request.GET.get('page')
-                query_paged = paginator.get_page(page)
-                context = {
-                    'query': query_paged
-                }
-                return render(request, 'contents/list_by_category.html', context)
+            context = {
+                'query': query_paged,
+                'category': category
+            }
+            return render(request, 'contents/list_by_category.html', context)
+          
     else:
         return redirect('login')
 
 def list_skills(request):
     category = Category.objects.get(name='Домашние навыки')
     query = MainSubject.objects.filter(
-        category=category, ready='True').exclude(blocked='True')
+        category=category, ready='True').exclude(blocked='True').order_by('-av_rating')
+    if query.count()==0:
+        messages.error(request, ('Курсы в данной категории отсутствуют'))
+        return redirect('main_page') 
     if request.user.is_authenticated:
         if 'language' in request.GET:
             languages = request.GET.getlist('language', None)
@@ -338,38 +353,26 @@ def list_skills(request):
            # if 'rating' in request.GET:
             #     rating = request.GET['rating']
             #     query = query.filter(av_rating__gte=rating)
-            if 'sort_criteria' in request.GET:
-                sort_criteria = request.GET['sort_criteria']
-                if sort_criteria == 'rating':
-                    query = query.order_by('-rating')
-                elif sort_criteria == 'reviews':
-                    query = query.order_by('-reviews')
-                elif sort_criteria == 'transactions':
-                    query = query.order_by('-transactions')
 
-                paginator = Paginator(query, 5)
-                page = request.GET.get('page')
-                query_paged = paginator.get_page(page)
+            paginator = Paginator(query, 10)
+            page = request.GET.get('page')
+            query_paged = paginator.get_page(page)
 
-                context = {
-                    'query': query_paged
-                }
-                return render(request, 'contents/list_by_category.html', context)
-            else:
-                paginator = Paginator(query, 20)
-                page = request.GET.get('page')
-                query_paged = paginator.get_page(page)
-                context = {
-                    'query': query_paged
-                }
-                return render(request, 'contents/list_by_category.html', context)
+            context = {
+                'query': query_paged,
+                'category': category
+            }
+            return render(request, 'contents/list_by_category.html', context)
     else:
         return redirect('login')
 
 def list_arts(request):
     category = Category.objects.get(name='Искусство')
     query = MainSubject.objects.filter(
-        category=category, ready='True').exclude(blocked='True')
+        category=category, ready='True').exclude(blocked='True').order_by('-av_rating')
+    if query.count()==0:
+        messages.error(request, ('Курсы в данной категории отсутствуют'))
+        return redirect('main_page') 
     if request.user.is_authenticated:
         if 'language' in request.GET:
             languages = request.GET.getlist('language', None)
@@ -401,38 +404,24 @@ def list_arts(request):
            # if 'rating' in request.GET:
             #     rating = request.GET['rating']
             #     query = query.filter(av_rating__gte=rating)
-            if 'sort_criteria' in request.GET:
-                sort_criteria = request.GET['sort_criteria']
-                if sort_criteria == 'rating':
-                    query = query.order_by('-rating')
-                elif sort_criteria == 'reviews':
-                    query = query.order_by('-reviews')
-                elif sort_criteria == 'transactions':
-                    query = query.order_by('-transactions')
+            paginator = Paginator(query, 10)
+            page = request.GET.get('page')
+            query_paged = paginator.get_page(page)
 
-                paginator = Paginator(query, 5)
-                page = request.GET.get('page')
-                query_paged = paginator.get_page(page)
-
-                context = {
-                    'query': query_paged
-                }
-                return render(request, 'contents/list_by_category.html', context)
-            else:
-                paginator = Paginator(query, 20)
-                page = request.GET.get('page')
-                query_paged = paginator.get_page(page)
-                context = {
-                    'query': query_paged
-                }
-                return render(request, 'contents/list_by_category.html', context)
+            context = {
+                'query': query_paged,
+                'category': category
+            }
+            return render(request, 'contents/list_by_category.html', context)
     else:
         return redirect('login')
 
 def list_buisness(request):
     category = Category.objects.get(name='Бизнес')
-    query = MainSubject.objects.filter(
-        category=category, ready='True').exclude(blocked='True')
+    query = MainSubject.objects.filter(category=category, ready='True').exclude(blocked='True').order_by('av_rating')
+    if query.count()==0:
+        messages.error(request, ('Курсы в данной категории отсутствуют'))
+        return redirect('main_page') 
     if request.user.is_authenticated:
         if 'language' in request.GET:
             languages = request.GET.getlist('language', None)
@@ -464,38 +453,26 @@ def list_buisness(request):
             # if 'rating' in request.GET:
             #     rating = request.GET['rating']
             #     query = query.filter(av_rating__gte=rating)
-            if 'sort_criteria' in request.GET:
-                sort_criteria = request.GET['sort_criteria']
-                if sort_criteria == 'rating':
-                    query = query.order_by('-rating')
-                elif sort_criteria == 'reviews':
-                    query = query.order_by('-reviews')
-                elif sort_criteria == 'transactions':
-                    query = query.order_by('-transactions')
 
-                paginator = Paginator(query, 5)
-                page = request.GET.get('page')
-                query_paged = paginator.get_page(page)
+            paginator = Paginator(query, 10)
+            page = request.GET.get('page')
+            query_paged = paginator.get_page(page)
 
-                context = {
-                    'query': query_paged
-                }
-                return render(request, 'contents/list_by_category.html', context)
-            else:
-                paginator = Paginator(query, 20)
-                page = request.GET.get('page')
-                query_paged = paginator.get_page(page)
-                context = {
-                    'query': query_paged
-                }
-                return render(request, 'contents/list_by_category.html', context)
+            context = {
+                'query': query_paged,
+                'category': category
+            }
+            return render(request, 'contents/list_by_category.html', context)
     else:
         return redirect('login')
 
 def list_personal(request):
     category = Category.objects.get(name='Личностное развитие')
     query = MainSubject.objects.filter(
-        category=category, ready='True').exclude(blocked='True')
+        category=category, ready='True').exclude(blocked='True').order_by('-av_rating')
+    if query.count()==0:
+        messages.error(request, ('Курсы в данной категории отсутствуют'))
+        return redirect('main_page') 
     if request.user.is_authenticated:
         if 'language' in request.GET:
             languages = request.GET.getlist('language', None)
@@ -527,38 +504,25 @@ def list_personal(request):
            # if 'rating' in request.GET:
             #     rating = request.GET['rating']
             #     query = query.filter(av_rating__gte=rating)
-            if 'sort_criteria' in request.GET:
-                sort_criteria = request.GET['sort_criteria']
-                if sort_criteria == 'rating':
-                    query = query.order_by('-rating')
-                elif sort_criteria == 'reviews':
-                    query = query.order_by('-reviews')
-                elif sort_criteria == 'transactions':
-                    query = query.order_by('-transactions')
+            paginator = Paginator(query, 10)
+            page = request.GET.get('page')
+            query_paged = paginator.get_page(page)
 
-                paginator = Paginator(query, 5)
-                page = request.GET.get('page')
-                query_paged = paginator.get_page(page)
-
-                context = {
-                    'query': query_paged
-                }
-                return render(request, 'contents/list_by_category.html', context)
-            else:
-                paginator = Paginator(query, 20)
-                page = request.GET.get('page')
-                query_paged = paginator.get_page(page)
-                context = {
-                    'query': query_paged
-                }
-                return render(request, 'contents/list_by_category.html', context)
+            context = {
+                'query': query_paged,
+                'category': category
+            }
+            return render(request, 'contents/list_by_category.html', context)
     else:
         return redirect('login')
 
 def list_languages(request):
     category = Category.objects.get(name='Языки')
     query = MainSubject.objects.filter(
-        category=category, ready='True').exclude(blocked='True')
+        category=category, ready='True').exclude(blocked='True').order_by('-av_rating')
+    if query.count()==0:
+        messages.error(request, ('Курсы в данной категории отсутствуют'))
+        return redirect('main_page') 
     if request.user.is_authenticated:
         if 'language' in request.GET:
             languages = request.GET.getlist('language', None)
@@ -590,38 +554,26 @@ def list_languages(request):
             # if 'rating' in request.GET:
             #     rating = request.GET['rating']
             #     query = query.filter(av_rating__gte=rating)
-            if 'sort_criteria' in request.GET:
-                sort_criteria = request.GET['sort_criteria']
-                if sort_criteria == 'rating':
-                    query = query.order_by('-rating')
-                elif sort_criteria == 'reviews':
-                    query = query.order_by('-reviews')
-                elif sort_criteria == 'transactions':
-                    query = query.order_by('-transactions')
+            paginator = Paginator(query, 10)
+            page = request.GET.get('page')
+            query_paged = paginator.get_page(page)
 
-                paginator = Paginator(query, 5)
-                page = request.GET.get('page')
-                query_paged = paginator.get_page(page)
-
-                context = {
-                    'query': query_paged
-                }
-                return render(request, 'contents/list_by_category.html', context)
-            else:
-                paginator = Paginator(query, 20)
-                page = request.GET.get('page')
-                query_paged = paginator.get_page(page)
-                context = {
-                    'query': query_paged
-                }
-                return render(request, 'contents/list_by_category.html', context)
+            context = {
+                'query': query_paged,
+                'category': category
+            }
+            return render(request, 'contents/list_by_category.html', context)
+   
     else:
         return redirect('login')
 
 def list_fundamental(request):
     category = Category.objects.get(name='Фундаментальные знания')
     query = MainSubject.objects.filter(
-        category=category, ready='True').exclude(blocked='True')
+        category=category, ready='True').exclude(blocked='True').order_by('-av_rating')
+    if query.count()==0:
+        messages.error(request, ('Курсы в данной категории отсутствуют'))
+        return redirect('main_page') 
     if request.user.is_authenticated:
         if 'language' in request.GET:
             languages = request.GET.getlist('language', None)
@@ -653,31 +605,16 @@ def list_fundamental(request):
            # if 'rating' in request.GET:
             #     rating = request.GET['rating']
             #     query = query.filter(av_rating__gte=rating)
-            if 'sort_criteria' in request.GET:
-                sort_criteria = request.GET['sort_criteria']
-                if sort_criteria == 'rating':
-                    query = query.order_by('-rating')
-                elif sort_criteria == 'reviews':
-                    query = query.order_by('-reviews')
-                elif sort_criteria == 'transactions':
-                    query = query.order_by('-transactions')
+            paginator = Paginator(query, 10)
+            page = request.GET.get('page')
+            query_paged = paginator.get_page(page)
 
-                paginator = Paginator(query, 5)
-                page = request.GET.get('page')
-                query_paged = paginator.get_page(page)
-
-                context = {
-                    'query': query_paged
-                }
-                return render(request, 'contents/list_by_category.html', context)
-            else:
-                paginator = Paginator(query, 20)
-                page = request.GET.get('page')
-                query_paged = paginator.get_page(page)
-                context = {
-                    'query': query_paged
-                }
-                return render(request, 'contents/list_by_category.html', context)
+            context = {
+                'query': query_paged,
+                'category': category
+            }
+            return render(request, 'contents/list_by_category.html', context)
+ 
     else:
         return redirect('login')
 

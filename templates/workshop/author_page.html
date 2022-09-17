@@ -87,12 +87,16 @@
     </div>
 <!-- ========================Instructor Image =================================        -->
     <div class="col-6">
+      {% if author.photo %}
         <!-- <figure class="image is-1by1"> -->
           <img src="{{author.photo.url}}" alt="Placeholder image" class='rounded-circle mx-auto d-block' style='width: 15rem; height: 15rem;' >
         <!-- </figure> -->
+      {% else %}
+      no photo
+      {% endif %}
     </div>   
 </div>
-<div class="row mt-3">
+<div class="row mt-2 mb-3">
   {% for subject in subjects%}
       <div class="col-sm-3">
         <div class="card mb-3 img_scale" style="border-color: transparent;">

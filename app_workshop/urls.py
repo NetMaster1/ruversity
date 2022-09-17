@@ -11,6 +11,7 @@ urlpatterns = [
     path('edit_section/<int:subject_id>/<int:section_id>',
          views.edit_section, name='edit_section'),
     path('delete_section/<int:subject_id>/<int:section_id>',views.delete_section, name='delete_section'),
+    # path('open_lecture/<int:lecture_id>',views.open_lecture, name='open_lecture'),
     path('edit_lecture/<int:lecture_id>',views.edit_lecture, name='edit_lecture'),
     path('delete_lecture/<int:lecture_id>',views.delete_lecture, name='delete_lecture'),
     path('video/<int:subject_id>/<int:lecture_id>', views.video, name='video'),

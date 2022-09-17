@@ -5,6 +5,7 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('subject/<int:subject_id>', views.subject, name='subject'),
     path('gen_search/', views.gen_search, name='gen_search'),
+    path('sorting/<int:category_id>', views.sorting, name='sorting'),
     path('main_page/', views.main_page, name='main_page'),
     path('list_software/', views.list_software, name='list_software'),
     path('list_fitness/', views.list_fitness, name='list_fitness'),

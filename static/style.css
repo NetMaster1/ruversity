@@ -523,3 +523,16 @@ select > option {
   border-style: dashed;
   border-color: grey;
 }
+
+.lecture_modal {
+  display: none;
+}
+
+.lectureModal.openModal {
+  display: block;
+  position: fixed;
+  top: 12rem;
+  width: 100rem;
+  min-height: 10rem;
+  left: 15rem;
+}

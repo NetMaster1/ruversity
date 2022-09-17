@@ -40,7 +40,7 @@
 
 
         <div class="col-9">
-            <form action="{% url 'gen_search' %}">
+            <form action="{% url 'sorting' category.id %}">
                 {% csrf_token %}
             
                 <div class="form-group">

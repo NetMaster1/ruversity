@@ -5,7 +5,15 @@
  
 
 <div class="container">
-
+    <div class="row m-auto">
+        <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);"
+            aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'studio' %}">Творческая студия</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Редактирование курса</li>
+            </ol>
+        </nav>
+    </div>
     
     {% if subject.ready == True %}
     <div class="row p-3 mt-3">
@@ -66,7 +74,7 @@
             {% csrf_token %}
             <div class="form-row mt-4">
                 <div class="col-2">
-                    <label for="answer">Your answer</label>
+                    <label for="answer">Ваш ответ</label>
                 </div>
                 <div class="col ">
                     <input type="text" class='form-control' id="answer" name="answer" maxlength='50' required><br>
@@ -105,8 +113,8 @@
    
 
 <!-- ====================================================== -->
-<div class="row border rounded bg-light text-center">
-    <h5>Страница редактирования курса</h5>
+<div class="row m-auto border rounded bg-light text-center">
+    <h3>Редактировать курс</h3>
 </div>
 
 <div class="row mt-2">
@@ -175,15 +183,16 @@
 </div>
 
 
-    <div class="col-7 p-3 m-1">
+    <div class="col-7 pl-3 m-1">
        
     <form action="{% url 'edit_subject' subject.id %}" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="form-group">
-                <input type="text" class='form-control' id="title" name="title" maxlength='50' required placeholder='Редактировать название курса'>
+                <label for="title"><strong>Редактировать название курса</strong></label>
+                <input type="text" class='form-control' id="title" name="title" maxlength='50' required placeholder='Название курса'>
             </div>
             <div class="form-group">
-                <label for="description">Редактировать язык курса</label>
+                <label for="language"><strong>Редактировать язык курса</strong></label>
                 <select name="language" class='form-select' id="language" required>
                     {% for item in languages %}
                     <option value="{{item.id}}">{{item.name}}</option>
@@ -191,7 +200,7 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="description">Редактировать категорию</label>
+                <label for="description"><strong>Редактировать категорию</strong></label>
                     <select name="category" class='form-select' id="category" required>
                         {% for item in categories %}
                         <option value="{{item.id}}">{{item.name}}</option>
@@ -199,14 +208,14 @@
                     </select>
             </div>
             <div class="form-group">
-                <label for="description">Редактировать краткое описание курса</label>
+                <label for="description"><strong>Редактировать краткое описание курса</strong></label>
                 <textarea class='form-control' id="description" rows='4' minlength='160' maxlength='360' name="description" required placeholder='Введите краткое описание курса. 160-360 символов.'></textarea>
             <div class="form-group">
-                <label for="prerequisites">Редактировать предварительную подготовку</label>
+                <label for="prerequisites"> <strong>Редактировать предварительную подготовку</strong></label>
                 <textarea class='form-control' rows='4' id="prerequisite" minlength='160' maxlength='360' name="prerequisites" required placeholder='Введите требования к предварительной подготовке. 160-360 символов.'></textarea>
             <div>
             <div class="form-group">
-                <label for="thumbnail">Загрузить новую картинку для курса:</label>
+                <label for="thumbnail"> <strong>Загрузить новую картинку для курса:</strong></label>
                 <input type="file" class="form-control" id="thumbnail" name='thumbnail' required>
             </div>
             </div>
@@ -233,27 +242,23 @@
   
 <!-- ===================Create New Section Box============================== -->
 
-    <div class="row mt-3 border rounded bg-light text-center">
-        <h5>Создать новый раздел</h5>
+    <div class="row m-auto border rounded bg-light text-center">
+        <h3>Создать новый раздел</h3>
     </div>
-    <div class="row mt-2 pb-3 border rounded">
+    <div class="row m-auto pb-2 border rounded">
     
         <form action="{% url 'create_new_section' subject.id %}" method="POST">
             {% csrf_token %}
     
-            <div class="form-row">
+            <div class="form-row mt-2">
                 <div class="col-3">
-                    <label for="title">
-                        <h5>Добавить новый раздел:</h5>
-                    </label>
                     <input class='form-control' type="text" id="title" name="title" placeholder="Название раздела" required>
                 </div>
     
                 <div class="col-2 align-self-end">
                     <!-- <button type='submit' value="Create" class="btn btn-info btn-block"> -->
                     <!-- <input type="submit" value="Create" class="btn btn-info btn-block "> -->
-                    <input type="submit" value="Создать" class='btn btn-sm btn-block btn-outline-dark'>
-                    <input type="reset" value="Очистить" class="btn btn-sm btn-block btn-outline-dark">
+                    <input type="submit" value="Создать" class='btn btn-block btn-outline-dark'>
                 </div>
             </div>
     </div>
@@ -262,10 +267,11 @@
   
     <!-- =====================Sections============================================== -->
     {% for section in sections %}
-    <div class="row mt-2 mb-2 border rounded bg-light text-center">
+    <div class="row m-auto mb-2 border rounded bg-light text-center">
         <a href="{% url 'edit_section' subject.id section.id %}"><h3>Редактировать раздел "{{section.title}}"</h3></a>
 
     </div>
+    <br>
         <!-- <div class="row mt-3 border rounded text-center"></div> -->
 
     {% endfor %}

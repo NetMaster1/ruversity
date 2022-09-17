@@ -84,7 +84,7 @@ def create_author_page(request):
                         context = {
                             'author': author
                         }
-                        return redirect('studio')
+                        return render (request, 'workshop/author_page.html', context)
                 else:
                     messages.error(request, 'Используйте латинницу в названии файла')
                     return redirect('studio')
@@ -92,23 +92,20 @@ def create_author_page(request):
                 messages.error(request, 'Вы загрузили файл неправильного формата. Загрузите файл в формате jpg, jpeg, png или bmp')
                 # messages.error(request, 'File has inproper format. Load jpg, jpeg, png or bmp file')
                 return redirect('studio')
-        else:
-            return redirect('studio')
     else:
         return redirect('login')
 
 def author_page(request, user_id):
         if Author.objects.filter(user=user_id).exists():
             author = Author.objects.get(user=user_id)
-            subjects =MainSubject.objects.filter(author=author.user)
+            subjects =MainSubject.objects.filter(author=author.user, ready=True, blocked=False)
             context = {
                 'author': author,
                 'subjects': subjects
             }
             return render(request, 'workshop/author_page.html', context)
         else:
-            messages.error(
-                request, 'Профиль автора отсутствует. Создайте его.')
+            messages.error (request, 'Профиль автора отсутствует. Создайте его.')
             return redirect('studio')
 
 def edit_author_page(request, user_id):
@@ -384,10 +381,7 @@ def delete_section (request, subject_id, section_id):
         return redirect('login')
 
 def create_new_lecture(request, subject_id, section_id):
-    #
     # Initial sanity checks
-    #
-
     if not request.user.is_authenticated:
         return redirect('login')
 
@@ -467,7 +461,7 @@ def edit_lecture(request, lecture_id):
                 if request.method == "POST":
                     title = request.POST['title']
                     video_file = request.FILES['video_file']
-                    subtitle_file = request.FILES['subtitle_file']
+                    subtitle_file = request.POST.get('subtitle_file', False)
                     # translation_file = request.FILES['translation_file']
                     if video_file.name.endswith('.mp4'):
                         lecture.video_file=video_file

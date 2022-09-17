@@ -6,18 +6,21 @@
 
   <!-- <div class="collapse navbar-collapse" id="navbarResponsive"> -->
   <!-- <nav class="navbar bg-info sticky-top" role="navigation" aria-label="main navigation"> -->
-   
 
   <img src={% static "images/logo.png" %} alt="Image" width="200" height="200">
+
+
+ 
 
 <form action="{% url 'gen_search' %}" method='POST' class="form-inline m-auto">
   {% csrf_token %}
   <!-- <input type="text" name="keyword" placeholder="Модель или брэнд" class='rounded'> -->
-  <input type="text" name="keyword" placeholder="" class="form-control mr-sm-4">
+  <input type="text" name="keyword" placeholder="Введите запрос" class="form-control mr-sm-4">
   {% if 'gen_search' in request.path %}
   <button class="btn btn-sm btn-outline-dark active" input type="submit">Поиск</button>
   {% else %}
-  <button class="btn btn-sm btn-outline-dark" input type="submit">Поиск</button>
+ 
+  <button class="btn btn-sm btn-outline-dark" input type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
   {% endif %}
 </form>
 
@@ -71,10 +74,10 @@
     {% endif %}
 
       <div class="dropdown-menu">
-        <a href="{% url 'mycourses' %}" class="dropdown-item">Приобретенные курсы</a>
+        <a href="{% url 'mycourses' %}" class="dropdown-item">Мои покупки</a>
         <a href="{% url 'cart' %}" class="dropdown-item">Корзина</a>
-        <div class="dropdown-divider"></div>
-        <a href="#" class="dropdown-item disable">Тесты</a>
+        <!-- <div class="dropdown-divider"></div>
+        <a href="#" class="dropdown-item disable">Тесты</a> -->
       </div>
   </div>
    

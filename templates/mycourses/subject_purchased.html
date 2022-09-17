@@ -3,7 +3,6 @@
 {% block content %}
 
 <div class="container">
-    <!-- <iframe src="workshop/video.html" frameborder="0"></iframe> -->
 
     {% if messages %}
     <div class="alert alert-success alert-dismissible">
@@ -13,9 +12,7 @@
     </div>
     {% endif %}
 
-
 <div class="row m-2">
-
 <div class="col-4 mt-1 mr-auto">
 <div class="card">
             <div class="card-header">
@@ -38,7 +35,7 @@
                         </div>
                     </div>
 
-            <div class="row mr-2">
+            <div class="row">
                 <div class="col pt-3">
                     <form action="{% url 'rating' subject.id %}">
                         {% csrf_token %}
@@ -54,7 +51,7 @@
                             <input type="radio" name="rating" value=1 id="rating5">
                             <label for='rating5'></label>
                         </div>
-                        <div class="row">
+                        <div class="row ">
                             <div class="col mb-2">
                         <!-- <input type="submit" value="Rate" class="btn btn-info btn-block"> -->
                         <input type="submit" value="Оценить" class='btn btn-sm btn-block btn-outline-dark'>
@@ -90,19 +87,16 @@
         <div class="row">
             <div class="col"><strong>Дата размещения: </strong>{{subject.date_posted}}</div>
         </div>
-            <div class="row">
-                <div class="col"><strong>Длительность: </strong>{{subject.length}} min</div>
-            </div>
-
+        <div class="row">
+            <div class="col"><strong>Длительность: </strong>{{subject.length}} min</div>
+        </div>
+        <div class="row">
+            <div class="col"><strong>Оставьте отзыв</strong></div>
+        </div>
+            .
             <!-- =============================================================== -->
-    </div>
-
-
-
-    
+    </div> 
 </div>
-
-
 </div>
 
 <div class="col-8 mt-1 ml-auto" id='scroll_col'>
@@ -126,34 +120,31 @@
             {% endfor%}
                 
     {% endfor %}
-
     </div>
 </div>
 </div>
 
 
-
 <div class="row mt-2 ml-auto">
     <ul class="nav nav-tabs" id="myTab" role="tablist">
-
         <li class="nav-item " role="presentation">
-            <button class="nav-link active pl-1 pr-3" id="home-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button" role="tab" aria-controls="home" aria-selected="true">Отзывы</button>
+            <button class="nav-link active pl-1 pr-3" id="home-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button" role="tab" aria-controls="home" aria-selected="true"><div class="menu_font">Отзывы</div></button>
         </li>
 
         <li class="nav-item " role="presentation">
-            <button class="nav-link pl-1 pr-3" id="profile-tab" data-bs-toggle="tab" data-bs-target="#questions" type="button" role="tab" aria-controls="profile" aria-selected="false">Вопросы и Ответы</button>
+            <button class="nav-link pl-1 pr-3" id="profile-tab" data-bs-toggle="tab" data-bs-target="#questions" type="button" role="tab" aria-controls="profile" aria-selected="false"><div class="menu_font">Вопросы и Ответы</div></button>
         </li>
 
         <li class="nav-item " role="presentation">
-            <button class="nav-link pl-1 pr-3" id="contact-tab" data-bs-toggle="tab" data-bs-target="#author" type="button" role="tab" aria-controls="contact" aria-selected="false">Автор</button>
+            <button class="nav-link pl-1 pr-3" id="contact-tab" data-bs-toggle="tab" data-bs-target="#author" type="button" role="tab" aria-controls="contact" aria-selected="false"><div class="menu_font">Автор</div></button>
         </li>
 
         <li class="nav-item" role="presentation">
-            <button class="nav-link pl-1 pr-3" id="contact-tab" data-bs-toggle="tab" data-bs-target="#overview" type="button" role="tab" aria-controls="overview" aria-selected="false">О чем курс</button>
+            <button class="nav-link pl-1 pr-3" id="contact-tab" data-bs-toggle="tab" data-bs-target="#overview" type="button" role="tab" aria-controls="overview" aria-selected="false"><div class="menu_font">О чем курс</div></button>
         </li>
 
         <li class="nav-item" role="presentation">
-            <button class="nav-link pl-1 pr-3" id="contact-tab" data-bs-toggle="tab" data-bs-target="#prerequisites" type="button" role="tab" aria-controls="overview" aria-selected="false">Предварительная подготовка</button>
+            <button class="nav-link pl-1 pr-3" id="contact-tab" data-bs-toggle="tab" data-bs-target="#prerequisites" type="button" role="tab" aria-controls="overview" aria-selected="false"><div class="menu_font">Предварительная подготовка</div> </button>
         </li>
     </ul>
     
@@ -185,12 +176,11 @@
             </div>
         </div>
     </div>
+   
 
-    
     <div class="tab-pane fade" id="questions" role="tabpanel" aria-labelledby="profile-tab">
-<div class="row mt-2">
-
-    <div id="box">
+        <!-- <div class="row mt-2">
+        <div id="box">
         <form action="{% url 'new_question' subject.id%}" method="POST">
             {% csrf_token %}
             <div class="form-row mt-4">
@@ -216,17 +206,12 @@
             <div class="row mt-2">
             <div class="col-2"></div>
             <div class="col">
-                                    <!-- <input type="submit" value="Create" class="btn btn-info btn-block"> -->
+                                    <input type="submit" value="Create" class="btn btn-info btn-block"> -->
                                     <!-- <button type='submit'>Load</button><br> -->
-            <input type="submit" value="Ask" class="btn btn-sm btn-block btn-outline-dark">
-            </div>
-            </div>
-            </form>
-</div>
-</div>
-
-<div class="row mt-2 mb-2">
-
+            <!-- <input type="submit" value="Ask" class="btn btn-sm btn-block btn-outline-dark">
+            </form> -->
+   
+        <div class="row mt-2 mb-2">
             {% for question in questions %}
             <div class="row">
                 <div class="col">{{question.date_posted}}</div>
@@ -235,22 +220,22 @@
                 <div class="col">{{question.lecture.title}}</div>
             {% endfor %}
             </div>
-</div>
         </div>
+    </div>
 
-
-        <div class="tab-pane fade" id="author" role="tabpanel" aria-labelledby="contact-tab">
+    <div class="tab-pane fade" id="author" role="tabpanel" aria-labelledby="contact-tab">
             11111111111111111111111
         </div>
 
-        <div class="tab-pane fade" id="overview" role="tabpanel" aria-labelledby="overview-tab">
+    <div class="tab-pane fade" id="overview" role="tabpanel" aria-labelledby="overview-tab">
+            <!-- <div class="row">{{subject.description}}</div> -->
             {{subject.description}}
-        </div>
+    </div>
 
         <div class="tab-pane fade" id="prerequisites" role="tabpanel" aria-labelledby="overview-tab">
-            <div class="row mt-2">
+            <!-- <div class="row"> -->
                 {{subject.prerequisite}}
-            </div>
+            <!-- </div> -->
 
         </div>
     </div>
@@ -258,14 +243,14 @@
 
 
 
-
+<div class="container">
 {% if review.author != request.user and review.subject != subject %}
 <div class="row mt-3">
     <div class="col">
     <div class="row">    
     <form action="{% url 'review' subject.id %}" method="POST">
             {% csrf_token %}
-            <label for="content"><h5>Make a review, please.</h5></label>
+            <label for="content"><h5>Make a review, please.sdfsdf</h5></label>
     </div>
     
     <div class="form-group">
@@ -282,7 +267,9 @@
     </form>
 </div>
 </div>
-{% endif %}
-
 </div>
+</div>
+
+
+{% endif %}
 {% endblock %}
