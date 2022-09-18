@@ -534,15 +534,14 @@ select > option {
 
 .lecture_box {
   padding: 1rem;
- 
   margin: auto;
   /* display: block; */
   position: relative;
   top: 20Vh;
   border-radius: 0.5%;
   /* position: absolute; */
-  width: 60%;
-  height: 40%;
+  width: 65%;
+  height: 47%;
   background-color: white;
   /* overflow-y: scroll; */
   /* overflow-y: auto; */

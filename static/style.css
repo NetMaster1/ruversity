@@ -7,7 +7,11 @@ body {
 }
 
 h3 {
+<<<<<<< HEAD
   font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+=======
+  font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+>>>>>>> d65722c556e579f19c6ea38b132f147ea615736e
   font-weight: 300;
   font-size: 2rem;
 }
@@ -539,15 +543,23 @@ select>option {
 
 .lecture_box {
   padding: 1rem;
+<<<<<<< HEAD
 
+=======
+>>>>>>> d65722c556e579f19c6ea38b132f147ea615736e
   margin: auto;
   /* display: block; */
   position: relative;
   top: 20Vh;
   border-radius: 0.5%;
   /* position: absolute; */
+<<<<<<< HEAD
   width: 60%;
   height: 40%;
+=======
+  width: 65%;
+  height: 47%;
+>>>>>>> d65722c556e579f19c6ea38b132f147ea615736e
   background-color: white;
   /* overflow-y: scroll; */
   /* overflow-y: auto; */
@@ -559,7 +571,6 @@ select>option {
 
 #lectureModal.openModal {
   display: block;
-
 }
 
 .hide {
@@ -589,4 +600,8 @@ select>option {
   background-color: white;
   /* overflow-y: scroll; */
   /* overflow-y: auto; */
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> d65722c556e579f19c6ea38b132f147ea615736e
