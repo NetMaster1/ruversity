@@ -2,11 +2,29 @@
     --max-width: 56%;
 }
 
+html {
+  min-height: 100%;
+  /* display: flex; */
+}
+
+/*making footer appear at the bottom of blank pages & go it down at pages with a lot of content */
 body {
   font-family: Arial, Helvetica, sans-serif;
-  min-height: 1080px;
-
+  min-height: 100vh;
+  max-height: fit-content;
+  /*background-color: blueviolet;*/
+  position: relative;
 }
+
+.my_footer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  background-color: whitesmoke;
+}
+
 
 h3 {
   font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
@@ -19,18 +37,7 @@ h5 {
 }
 .menu_font {
   font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-
 }
-
-.my_footer {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  text-align: center;
-  background-color: whitesmoke;
-}
-
 
 .rating {
     /* overflow: hidden; */
