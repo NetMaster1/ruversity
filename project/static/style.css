@@ -3,7 +3,9 @@
 }
 
 body {
-  font-family: Arial, Helvetica, sans-serif
+  font-family: Arial, Helvetica, sans-serif;
+  min-height: 1080px;
+
 }
 
 h3 {
@@ -19,6 +21,16 @@ h5 {
   font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
 
 }
+
+.my_footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  background-color: whitesmoke;
+}
+
 
 .rating {
     /* overflow: hidden; */
@@ -536,12 +548,14 @@ select > option {
   padding: 1rem;
   margin: auto;
   /* display: block; */
-  position: relative;
+ 
+  position: absolute;
   top: 20Vh;
+  left: 20vw;
   border-radius: 0.5%;
   /* position: absolute; */
-  width: 65%;
-  height: 47%;
+  width: 1000px;
+  height: 380px;
   background-color: white;
   /* overflow-y: scroll; */
   /* overflow-y: auto; */
