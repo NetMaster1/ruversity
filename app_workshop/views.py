@@ -40,12 +40,12 @@ def studio(request):
             author = Author.objects.get(user=request.user)
             subjects = MainSubject.objects.filter(author=request.user.id)
 
-            paginator = Paginator(subjects, 8)
-            page = request.GET.get('page')
-            subjects_paged = paginator.get_page(page)
+            # paginator = Paginator(subjects, 8)
+            # page = request.GET.get('page')
+            # subjects_paged = paginator.get_page(page)
 
             context = {
-                'subjects': subjects_paged,
+                'subjects': subjects,
                 'author': author
             }
             return render(request, 'workshop/studio.html', context)
