@@ -329,10 +329,14 @@ def delete_subject(request, subject_id):
 def create_new_section(request, subject_id):
     if request.user.is_authenticated:
         subject = MainSubject.objects.get(id=subject_id)
+        lectures=Lecture.objects.filter(subject=subject)
         if request.user == subject.author:
             if request.method == 'POST':
                 title = request.POST['title']
                 enumerator = request.POST['enumerator']
+                if Section.objects.filter(course=subject, enumerator=enumerator).exists():
+                    messages.error(request, 'Раздел с таким порядковым номером уже существует. Измените номер раздела')
+                    return redirect('edit_subject', subject_id)
                 section = Section.objects.create(
                     title=title,
                     course=subject,
@@ -354,6 +358,9 @@ def edit_section (request, subject_id, section_id):
             if request.method == 'POST':
                 title = request.POST['title']
                 enumerator = request.POST['enumerator']
+                if Section.objects.filter(course=subject, enumerator=enumerator).exists():
+                    messages.error(request, 'Раздел с таким порядковым номером уже существует. Измените номер раздела.')
+                    return redirect('edit_section', subject_id, section_id)
                 section.enumerator= enumerator
                 section.title = title
                 section.save()
@@ -409,6 +416,9 @@ def create_new_lecture(request, subject_id, section_id):
     video_file_name = video_file.file.name
     title = request.POST['title']
     enumerator = request.POST['enumerator']
+    if Lecture.objects.filter(subject=subject, enumerator=enumerator).exists():
+        messages.error(request, 'Лекция с таким порядковым номером уже существует. Поменяйте номер лекции.')
+        return redirect('edit_section', subject_id, section_id)
     subtitle_file = request.POST.get('subtitle_file', False)
     # translation_file = request.FILES['translation_file']
     author = request.user
@@ -420,13 +430,13 @@ def create_new_lecture(request, subject_id, section_id):
         free_access = False
 
     if not video_file_name.endswith('.mp4'):
-        messages.error(request, 'File has inproper format. Load mp4 file')
+        messages.error(request, 'Некорректный форма файла. Используйте файл в формате MP4.')
         return redirect('edit_section', subject_id, section_id)
 
     size_bytes = os.path.getsize(video_file_name)
     size_mbytes = size_bytes/1024/1024
-    if size_mbytes > 100:
-        messages.error(request, 'Your file is too large.')
+    if size_mbytes > 300:
+        messages.error(request, 'Размер файла больше 200МБ. Попробуйте использовать файлы меньшего размера.')
         return redirect('edit_section', subject_id, section_id)
 
     clip = VideoFileClip(video_file_name)
@@ -463,7 +473,7 @@ def edit_lecture(request, lecture_id):
         section = lecture.section
         if request.user == subject.author:
             if subject.ready == True:
-                messages.error(request, 'Sorry, you can not edit a loaded lecture.')
+                messages.error(request, 'Вы не можете редактировать лекции, загруженные на сервер.')
                 return redirect('edit_section', subject.id, section.id)
             else:
                 if request.method == "POST":
@@ -482,7 +492,7 @@ def edit_lecture(request, lecture_id):
                         size_mbytes = size_bytes / 1024 / 1024
                         lecture.size_mbytes = size_mbytes
                         lecture.save()
-                        if lecture.size_mb > 100:
+                        if lecture.size_mb > 300:
                             lecture.delete()
                             messages.error(request, 'Your file is too large.')
                             return redirect('edit_section', subject.id, section.id)

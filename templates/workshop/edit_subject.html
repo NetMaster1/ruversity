@@ -100,7 +100,7 @@
         
     <div class="row p-3">
         <div class="col-8">
-    <h5>По окончанию редактирования курса нажмите на кнопку</h5>
+    <h5>После того, как ваш курс полностью готов для продаж, нажмите на кнопку. После загрузки на сервер ваш курс перестанет быть доступным для редактирования. </h5>
             </div>
             
         <div class="col-3">
@@ -270,11 +270,25 @@
   
     <!-- =====================Sections============================================== -->
     <h3>Редактирование разделов</h3>
+    
     {% for section in sections %}
     <div class="row m-auto">
-        <a href="{% url 'edit_section' subject.id section.id %}"><h5>Раздел {{section.enumerator}}: {{section.title}}.</h5></a>
-
+        <a href="{% url 'edit_section' subject.id section.id %}"  id="open_sections"><h5>Раздел {{section.enumerator}}: {{section.title}}.</h5></a>
+        <br><br>
     </div>
+
+    <div id="openSectionModal">
+          
+        {% for lecture in lectures %}
+        {% if lecture.section == section %}
+        <div class="row">
+            {{lecture.title}}
+        </div>
+        {% endif %}
+        {%endfor%}
+        
+    </div>
+
 
         <!-- <div class="row mt-3 border rounded text-center"></div> -->
 
@@ -298,4 +312,24 @@
 
 </div>
 
+
+<script>
+    console.log('start OK')
+    const open_sections = document.querySelectorAll('#open_sections');
+    const openSectionModal = document.querySelectorAll('#openSectionModal');
+
+
+    for (let i = 0; i < open_sections.length; i++) {
+        open_sections[i].addEventListener('mouseover', e => {
+            openSectionModal[i].classList.add('openModal')
+        })
+    }
+
+     for (let i = 0; i < open_sections.length; i++) {
+            open_sections[i].addEventListener('mouseout', e => {
+                openSectionModal[i].classList.remove('openModal')
+            })
+        }
+    console.log('end OK')
+</script>
 {% endblock %}
