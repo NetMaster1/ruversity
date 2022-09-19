@@ -240,10 +240,11 @@
 </div>
 </div>
   
+<h3>Разделы</h3>
 <!-- ===================Create New Section Box============================== -->
 
     <div class="row m-auto border rounded bg-light text-center">
-        <h3>Создать новый раздел</h3>
+        <h5>Создать новый раздел</h5>
     </div>
     <div class="row m-auto pb-2 border rounded">
     
@@ -251,6 +252,9 @@
             {% csrf_token %}
     
             <div class="form-row mt-2">
+                <div class="col-3">
+                    <input class='form-control' type="number" id="enumerator" name="enumerator" placeholder="Порядковый номер раздела" required>
+                </div>
                 <div class="col-3">
                     <input class='form-control' type="text" id="title" name="title" placeholder="Название раздела" required>
                 </div>
@@ -261,17 +265,17 @@
                     <input type="submit" value="Создать" class='btn btn-block btn-outline-dark'>
                 </div>
             </div>
-    </div>
     </form>
-    
+    </div>
   
     <!-- =====================Sections============================================== -->
+    <h3>Редактирование разделов</h3>
     {% for section in sections %}
-    <div class="row m-auto mb-2 border rounded bg-light text-center">
-        <a href="{% url 'edit_section' subject.id section.id %}"><h3>Редактировать раздел "{{section.title}}"</h3></a>
+    <div class="row m-auto">
+        <a href="{% url 'edit_section' subject.id section.id %}"><h5>Раздел {{section.enumerator}}: {{section.title}}.</h5></a>
 
     </div>
-    <br>
+
         <!-- <div class="row mt-3 border rounded text-center"></div> -->
 
     {% endfor %}

@@ -249,7 +249,7 @@ def edit_subject(request, subject_id):
                         return redirect('edit_subject', subject_id)
                 else:
                     if Section.objects.filter(course=subject).exists():
-                        sections = Section.objects.filter(course=subject)
+                        sections = Section.objects.filter(course=subject).order_by('enumerator')
                         if Lecture.objects.filter(subject=subject).exists:
                             lectures=Lecture.objects.filter(subject=subject)
                             languages = Language.objects.all()
@@ -332,15 +332,18 @@ def create_new_section(request, subject_id):
         if request.user == subject.author:
             if request.method == 'POST':
                 title = request.POST['title']
+                enumerator = request.POST['enumerator']
                 section = Section.objects.create(
                     title=title,
-                    course=subject
+                    course=subject,
+                    enumerator=enumerator
                 )
                 return redirect ('edit_subject', subject_id)
             else:
                 return redirect('edit_subject', subject_id)
         logout(request)
         return redirect('login')
+    logout(request)  
     return redirect('login')
 
 def edit_section (request, subject_id, section_id):
@@ -350,12 +353,15 @@ def edit_section (request, subject_id, section_id):
         if request.user == subject.author:
             if request.method == 'POST':
                 title = request.POST['title']
+                enumerator = request.POST['enumerator']
+                section.enumerator= enumerator
                 section.title = title
                 section.save()
-                return redirect('edit_section', subject_id, section_id)
+                # return redirect('edit_section', subject_id, section_id)
+                return redirect('edit_subject', subject_id)
             else:
                 section = Section.objects.get(id=section_id)
-                lectures=Lecture.objects.filter(section=section)
+                lectures=Lecture.objects.filter(section=section).order_by('enumerator')
                 context = {
                     'subject': subject,
                     'section': section,
@@ -402,6 +408,7 @@ def create_new_lecture(request, subject_id, section_id):
     video_file = request.FILES['video_file']
     video_file_name = video_file.file.name
     title = request.POST['title']
+    enumerator = request.POST['enumerator']
     subtitle_file = request.POST.get('subtitle_file', False)
     # translation_file = request.FILES['translation_file']
     author = request.user
@@ -436,7 +443,8 @@ def create_new_lecture(request, subject_id, section_id):
         subject=subject,
         free=free_access,
         length=length,
-        size_mb=size_mb
+        size_mb=size_mb,
+        enumerator=enumerator
     )
 
     lectures = Lecture.objects.filter(subject=subject)
@@ -459,13 +467,15 @@ def edit_lecture(request, lecture_id):
                 return redirect('edit_section', subject.id, section.id)
             else:
                 if request.method == "POST":
-                    title = request.POST['title']
+                    # title = request.POST['title']
+                    # enumerator = request.POST['enumerator']
                     video_file = request.FILES['video_file']
                     subtitle_file = request.POST.get('subtitle_file', False)
                     # translation_file = request.FILES['translation_file']
                     if video_file.name.endswith('.mp4'):
                         lecture.video_file=video_file
                         lecture.title = request.POST['title']
+                        lecture.enumerator = request.POST['enumerator']
                         lecture.save()
                         path = lecture.video_file.path
                         size_bytes = os.path.getsize(path)

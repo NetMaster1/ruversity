@@ -14,7 +14,7 @@
             </nav>
         </div>
 <div class="row m-auto"> 
-    <h3>{{section.title}}</h3> 
+    <h3>Раздел {{section.enumerator}}: {{section.title}}</h3> 
 </div>
 <div class="row m-auto">
     <form action="{% url 'edit_section' subject.id section.id %}" method="POST">
@@ -22,7 +22,9 @@
     
         <div class="form-row">
             <div class="col-3">
-           
+                <input class='form-control' type="number" id="enumerator" name="enumerator" placeholder="Изменить порядковый раздела" required>
+            </div>
+            <div class="col-3">
                 <input class='form-control' type="text" id="title" name="title" placeholder="Изменить название раздела" required>
             </div>
     
@@ -32,14 +34,16 @@
                 <input type="submit" value="Редактировать" class='btn btn-block btn-outline-dark'>
                 <!-- <input type="reset" value="Очистить" class="btn btn-sm btn-block btn-outline-dark"> -->
             </div>
+            </form>
+
             <div class="col-2 align-self-end">
                 <a href="{% url 'delete_section' subject.id section.id %}" style="text-decoration: none">
                     <!-- <input type="submit" value="Delete" class="btn btn-info btn-block"> -->
-                    <input type="submit" value="Удалить раздел" class='btn btn-block btn-outline-dark'>
+                    <input type="button" value="Удалить раздел" class='btn btn-block btn-outline-dark'>
                 </a>
             </div>
         </div>
-    </form>
+    
 </div>
 <br>
 <div class="row m-auto">
@@ -47,24 +51,36 @@
 </div>
 
 <!-- =============Create New Lecture Box============================================ -->
-<div class="row m-auto">        
+     
               
     <div class="row m-auto border rounded bg-light text-center">
         <h5>Создать новую лекцию</h5>
     </div>
-    <div class="row"> 
+    <div class="row m-auto border rounded">
+  
     <form action="{% url 'create_new_lecture' subject.id section.id %}" method="POST" enctype="multipart/form-data">
                             {% csrf_token %}
-     
+        <div class="form-row mt-1 mb-1">
+            <div class="col-3">
+                <label for="enumerator">
+                    <strong>Порядковый номер лекции :</strong>
+                </label>
+            </div>
+        
+            <div class="col-4">
+                <input class='form-control' type="number" id="enumerator" name="enumerator" placeholder="Порядковый номер лекции"
+                    required>
+            </div>
+        </div>
         <div class="form-row mt-1 mb-1">
             <div class="col-3">
                 <label for="title">
                     <strong>Название лекции :</strong>
                 </label>
-                </div>
-                <div class="col-4">
+            </div>
+            <div class="col-4">
                     <input class='form-control' type="text" id="title" name="title" placeholder="Название лекции" required>
-                </div>
+            </div>
         </div>
         <div class="form-row mt-1 mb-1">
             <div class="col-3">
@@ -95,7 +111,7 @@
             <div class="col-4">
                 <input type="file" class="form-control" id="translation_file" name="translation_file">
             </div> -->
-        </div>
+       
         <div class="form-row">
             <div class="col-2 ml-4">
             <input type="checkbox" id='free_access' class='form-check-input' name='free_access' value='free_access'>
@@ -106,7 +122,7 @@
                 </label>
             </div>
         </div>
-        <div class="row">
+        <div class="row mb-2">
             <div class="col-3"></div>
             <div class="col-4">
                 <input type="submit" value="Создать" class='btn btn-sm btn-block btn-outline-dark'>
@@ -122,10 +138,10 @@
 {% for lecture in lectures %}
 {% if lecture.section == section %}
  
-    <div class="row mb-1">
+    <div class="row m-auto">
         <!-- <a href="{% url 'edit_lecture' lecture.id %}" style="text-decoration: none" id="title"> -->
         <a href="#" style="text-decoration: none" id="lecture_title">
-        <strong>{{lecture.title}} {{lecture.length}} мин {{lecture.size_mb}} мб</strong>
+        <strong>Лекция {{lecture.enumerator}}: {{lecture.title}}. Длительность: {{lecture.length}} мин. Размер:  {{lecture.size_mb}} мб</strong>
         </a>
     <!-- ==============================Lecture Edit Modal=================================== -->
         <div id="lectureModal">
@@ -142,15 +158,19 @@
                         <div class="row">
                             <div class="col-5">
                                 <div class="row">
-                                    <div class="col-5"><strong>Название: </strong></div>
+                                    <div class="col-6"><strong>Порядковый номер: </strong></div>
+                                    <div class="col-5">{{lecture.enumerator}}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6"><strong>Название: </strong></div>
                                     <div class="col-5">{{lecture.title}}</div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-5"><strong>Продолжительность: </strong></div>
+                                    <div class="col-6"><strong>Продолжительность: </strong></div>
                                     <div class="col-5">{{lecture.length}} мин.</div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-5"><strong>Размер: </strong></div>
+                                    <div class="col-6"><strong>Размер: </strong></div>
                                     <div class="col-5">{{lecture.length}} Mb</div>
                                 </div>
                                 <div class="row mt-1">
@@ -170,6 +190,12 @@
                             <div class="col-7">
                                 <form action="{% url 'edit_lecture' lecture.id %}" method="POST" enctype="multipart/form-data">
                                     {% csrf_token %}
+                                    <div class="form-row">
+                                        <div class="col-4"><label for="enumerator"> <strong>Редактировать порядковый номер: </strong></label>
+                                        </div>
+                                        <div class="col-8"><input class='form-control' type="number" id="enumerator" name="enumerator" placeholder="Порядковый номер лекции"
+                                                required></div>
+                                    </div>
                                     <div class="form-row">
                                         <div class="col-4"><label for="title"> <strong>Редактировать название: </strong></label>
                                         </div>
