@@ -300,8 +300,8 @@
                 <div class="col">
                     {% for lecture in lectures %}
                     {% if lecture.section == section %}
-                    <div class="row m-auto">
-                        {{lecture.title}}
+                    <div class="row ml-4">
+                       <div style="font-style:italic"> Лекция {{lecture.enumerator}}. {{lecture.title}}</div>
                     </div>
                     {% endif %}
                     {%endfor%}
