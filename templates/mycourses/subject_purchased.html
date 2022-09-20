@@ -107,7 +107,7 @@
 
     {% for section in sections %}
             <div class="section_1" >
-            <a id='a_id_section' href='#' <h5 data-bs-toggle="collapse" data-bs-target='#section{{section.id}}'>{{section.title}}. Длительность: {{section.length}} min </a></h5></a>
+            <a id='a_id_section' href='#' <h5 data-bs-toggle="collapse" data-bs-target='#section{{section.id}}'>{{section.title}}. Длительность: {{section.length}} min </h5></a>
             </div>
             {% for lecture in lectures %}
                 {% if lecture.section == section %}
