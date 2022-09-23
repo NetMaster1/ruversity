@@ -16,8 +16,7 @@ import hashlib
 from django.contrib.auth.models import User, Group
 
 import datetime
-# Create your views here.
-
+from django.contrib import messages
 
 def pay_pal(request, subject_id):
     if request.user.is_authenticated:
@@ -81,6 +80,7 @@ def credit_card(request, subject_id):
         }
         return render(request, 'cart/credit_card.html', context)
     else:
+        messages.error(request, ('Покупка курсов доступна только зарегистрированным пользователям. Зарегистрируйтесь, пожалуйста.'))
         return redirect ('login')
 
 @csrf_exempt

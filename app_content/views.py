@@ -35,7 +35,15 @@ def index(request):
         }
         return render(request, 'main_page.html', context)
     else:
-        return redirect('login')
+        subjects = MainSubject.objects.filter(ready='True').exclude(blocked='True').order_by('-date_posted')[:4]
+        paginator = Paginator(subjects, 12)
+        page = request.GET.get('page')
+        paged_subjects = paginator.get_page(page)
+
+        context = {
+            'paged_subjects': paged_subjects,
+        }
+        return render (request, 'index.html', context)
 
 def subject(request, subject_id):
     subject = MainSubject.objects.get(id=subject_id)
@@ -103,12 +111,15 @@ def gen_search(request):
     if request.method == 'POST':
         keyword = request.POST['keyword']
         if keyword:  # if search line is not blank
-            # if MainSubject.objects.filter(title__icontains=keyword).exists():
-            query = MainSubject.objects.filter(title__icontains=keyword, ready='True').exclude(blocked='True').order_by('rating')
+            if MainSubject.objects.filter(title__icontains=keyword, ready='True').exclude(blocked='True').exists():
+                query = MainSubject.objects.filter(title__icontains=keyword, ready='True').exclude(blocked='True').order_by('rating')
+            else:
+                messages.error(request, ('Курсов по вашему запросу не найдено.'))
+                return redirect('main_page')
 
-            paginator = Paginator(query, 10)
+            paginator = Paginator(query, 50)
             page = request.GET.get('page')
-            query_paged = paginator.get_page(page)
+            query_paged = paginator.get_page(page) 
 
             if request.user.is_authenticated:
                 keyword = Keyword.objects.create(
@@ -161,27 +172,28 @@ def gen_search(request):
             return render(request, 'gen_search_results.html', context)
 
         else:
+            messages.error(request, ('Данная операция доступна только зарегистрированным пользователям. Зарегистрируйтесь, пожалуйста.'))
             return redirect('login')
 
 def main_page(request):
-    if request.user.is_authenticated:
-        subjects = MainSubject.objects.filter(ready='True').exclude(blocked='True').order_by('-date_posted')
-        discount_time = DiscountOn.objects.get(id=1)
+    # if request.user.is_authenticated:
+    subjects = MainSubject.objects.filter(ready='True').exclude(blocked='True').order_by('-date_posted')
+    discount_time = DiscountOn.objects.get(id=1)
 
-        paginator = Paginator(subjects, 12)
-        page = request.GET.get('page')
-        paged_subjects = paginator.get_page(page)
+    paginator = Paginator(subjects, 12)
+    page = request.GET.get('page')
+    paged_subjects = paginator.get_page(page)
 
-        # ratings = Rating.objects.all()
-        context = {
-            'paged_subjects': paged_subjects,
-            'discount_time': discount_time,
-            # 'ratings': ratings,
-        }
-        return render(request, 'main_page.html', context)
-    else:
-        auth.logout(request)
-        return redirect('login')
+    # ratings = Rating.objects.all()
+    context = {
+        'paged_subjects': paged_subjects,
+        'discount_time': discount_time,
+        # 'ratings': ratings,
+    }
+    return render(request, 'main_page.html', context)
+    # else:
+    #     auth.logout(request)
+    #     return redirect('login')
 
 def sorting (request, category_id):
     if request.user.is_authenticated:
@@ -630,7 +642,6 @@ def search_by_author(request, subject_author):
     }
     return render(request, 'main_page.html', context)
 
-
 def create_cart_item(request, subject_id):
     if request.user.is_authenticated:
         subject = MainSubject.objects.get(id=subject_id)
@@ -643,8 +654,8 @@ def create_cart_item(request, subject_id):
             )
             return redirect('cart')
     else:
+        messages.error(request, ('Данная операция доступна только зарегистрированным пользователям.'))
         return redirect('login')
-
 
 def cart(request):
     if request.user.is_authenticated:
@@ -653,7 +664,9 @@ def cart(request):
             'cart': cart
         }
         return render(request, 'contents/cart.html', context)
-
+    else:
+        messages.error(request, ('Данная операция доступна только зарегистрированным пользователям.'))
+        return redirect('login')
 
 def delete_from_cart(request, subject_id):
     if request.user.is_authenticated:

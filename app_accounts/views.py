@@ -11,7 +11,7 @@ def register_user(request):
         first_name = request.POST['first_name']
         last_name = request.POST['last_name']
         username = request.POST['username']
-        email = request.POST['email']
+        # email = request.POST['email']
         password = request.POST['password']
         password2 = request.POST['password2']
         # checking if the user is a person or entity
@@ -28,74 +28,75 @@ def register_user(request):
             if User.objects.filter(username=username).exists():
                 messages.error(request, 'Пользователь с таким логином уже существует.')
                 return redirect('register_user')
+            # else:
+            #     if User.objects.filter(email=email).exists():
+            #         messages.error(request, 'Такой адрес электронной почты уже существует.')
+            #         return redirect('register_user')
             else:
-                if User.objects.filter(email=email).exists():
-                    messages.error(request, 'Такой адрес электронной почты уже существует.')
-                    return redirect('register_user')
-                else:
-                    user = User.objects.create_user(
-                        username=username,
-                        password=password,
-                        email=email, 
-                        first_name=first_name, 
-                        last_name=last_name)
+                user = User.objects.create_user(
+                    username=username,
+                    password=password,
+                    # email=email, 
+                    email=username, 
+                    first_name=first_name, 
+                    last_name=last_name)
 
-                    # including the user in Person or Entity table
-                    if customer_type:
-                        if Group.objects.filter(name='entity').exists():
-                            entity = Group.objects.get(name='entity')
-                        else:
-                            Group.objects.create(name='entity').save()
-                            entity = Group.objects.get(name='entity')
-                        entity.user_set.add(user)
-                        Entity.objects.create(user=user).save()
-                    else:
-                        if Group.objects.filter(name='person').exists():
-                            person = Group.objects.get(name='person')
-                        else:
-                            Group.objects.create(name='person').save()
-                            person = Group.objects.get(name='person')
-                        person.user_set.add(user)
-                        Person.objects.create(user=user).save()
-
-                    # saving the request.user
-                    user.save()
-                    auth.login(request, user)
-
+                # including the user in Person or Entity table
+                if customer_type:
                     if Group.objects.filter(name='entity').exists():
-                        # if 'entity' in request.user.groups.all:
-                        group = Group.objects.get(name='entity').user_set.all()
-                        if request.user in group:
-                        # or you can use the following structure:
-                        #if user.groups.filter(name=entity).count() != 0
-                            entity = Entity.objects.get(user=request.user)
-                            context = {
-                                'entity': entity,
-                                'group': group
-                            }
-                            messages.success(request, 'Вы зарегистрировались как юридическое лицо.')
-                            #return redirect('dashboard')
-                            return redirect('main_page')
-                    #     else:
-                    #         person = Person.objects.get(user=request.user)
-                    #         context = {
-                    #             'person': person,
-                    #         }
-                        # return render(request, 'accounts/dashboard.html', context)
+                        entity = Group.objects.get(name='entity')
+                    else:
+                        Group.objects.create(name='entity').save()
+                        entity = Group.objects.get(name='entity')
+                    entity.user_set.add(user)
+                    Entity.objects.create(user=user).save()
+                else:
+                    if Group.objects.filter(name='person').exists():
+                        person = Group.objects.get(name='person')
+                    else:
+                        Group.objects.create(name='person').save()
+                        person = Group.objects.get(name='person')
+                    person.user_set.add(user)
+                    Person.objects.create(user=user).save()
+
+                # saving the request.user
+                user.save()
+                auth.login(request, user)
+
+                if Group.objects.filter(name='entity').exists():
+                    # if 'entity' in request.user.groups.all:
+                    group = Group.objects.get(name='entity').user_set.all()
+                    if request.user in group:
+                    # or you can use the following structure:
+                    #if user.groups.filter(name=entity).count() != 0
+                        entity = Entity.objects.get(user=request.user)
+                        context = {
+                            'entity': entity,
+                            'group': group
+                        }
+                        messages.success(request, 'Вы зарегистрировались как юридическое лицо.')
                         #return redirect('dashboard')
                         return redirect('main_page')
-                    else:
-                    # person = Person.objects.get(user=request.user)
-                    # context = {
-                    #     'person': person,
-                    # }
-                    # return redirect ('dashboard')
-                        return redirect('main_page')
+                #     else:
+                #         person = Person.objects.get(user=request.user)
+                #         context = {
+                #             'person': person,
+                #         }
+                    # return render(request, 'accounts/dashboard.html', context)
+                    #return redirect('dashboard')
+                    return redirect('main_page')
+                else:
+                # person = Person.objects.get(user=request.user)
+                # context = {
+                #     'person': person,
+                # }
+                # return redirect ('dashboard')
+                    return redirect('main_page')
 
-                    # Login after register
-                    #auth.login(request, user)
-                    #messages.success(request, 'You are now logged in')
-                    # return redirect ('index')
+                # Login after register
+                #auth.login(request, user)
+                #messages.success(request, 'You are now logged in')
+                # return redirect ('index')
         else:
             messages.error(request, "Пароли не совпадают. Попробуйте еще раз.")
             return redirect('register_user')
