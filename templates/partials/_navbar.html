@@ -9,9 +9,6 @@
 
   <img src={% static "images/logo.png" %} alt="Image" width="200" height="200">
 
-
- 
-
 <form action="{% url 'gen_search' %}" method='POST' class="form-inline m-auto">
   {% csrf_token %}
   <!-- <input type="text" name="keyword" placeholder="Модель или брэнд" class='rounded'> -->
@@ -24,8 +21,12 @@
   {% endif %}
 </form>
 
+
 {% if user.is_authenticated %}
 
+Добро пожаловать: {{request.user.first_name}} {{request.user.last_name}}
+&nbsp;&nbsp;
+  
   {% if 'main_page' in request.path %}
   <a class="btn btn-outline-dark mr-1 active" href="{% url 'main_page' %}" role=’button’>Каталог</a>
   {% else %}
@@ -106,7 +107,7 @@
     
   
     <a class="btn btn-outline-dark btn-md" href="{% url 'logout' %}" role=’button’>Выход</a>
-
+   
     {% else %}
     
      
@@ -128,15 +129,4 @@
 </div>
 </nav>
 
-<div class="container">
-  {% if messages %}
-    {% for message in messages %}
-    <div class="alert alert-info" role="alert">
-      <button class="close" data-dismiss="alert">
-        <small><sup>x</sup></small>
-      </button>
-    {{ message }}
-    </div>
-    {% endfor%}
-  {% endif%}
-  </div>
+

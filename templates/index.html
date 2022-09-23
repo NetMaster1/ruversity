@@ -6,7 +6,7 @@
         <div class="col">
             <p>
             <h3>
-               Добро пожаловать в ваш Удаленный Университет, место где вы можете обмениваться знаниями и умениями с другими людьми
+               Добро пожаловать в ваш Удаленный Университет, место, где вы можете обмениваться знаниями и умениями с другими людьми.
 
             </h3>
             </p>
@@ -25,30 +25,114 @@
 
         </div>
     </div>
-    <div class="row">
-        <!-- <img src={% static 'images/woman.jpg' %} alt="Image" width="350">
-        <img src={% static 'images/handson.jpg' %} alt="Image" width="350">
-        <img src={% static 'images/computer.jpg' %} alt="Image" width="350">
-        <img src={% static 'images/shop.jpg' %} alt="Image" width="350">
-        <img src={% static 'images/sports.jpg' %} alt="Image" width="350">
-        <img src={% static 'images/painting.jpg' %} alt="Image" width="350"> -->
 
-
-        <!-- <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                <img src={% static 'images/woman.jpg' %} alt="Image" width="350">
+    <div class="row mt-3">
+    
+        {% for subject in paged_subjects %}
+    
+        <div class="col-sm-3">
+            <div class="card mb-3 img_scale" style="border-color: transparent;">
+                <!-- <div class="p-2"> -->
+                <div class="card-header" style='height:4rem'>
+                    <h5>{{subject.title}}</h5>
                 </div>
-                <div class="carousel-item">
-                    <img src={% static 'images/handson.jpg' %} alt="Image" width="350">
-                </div>
-                <div class="carousel-item">
-                <img src={% static 'images/computer.jpg' %} alt="Image" width="350">
+    
+                <a href="{% url 'subject' subject.id %}">
+                    <!-- <figure class="image is-4by3"> -->
+                    <figure class="image is-16by9">
+                        <img src="{{subject.thumbnail_file.url}}" alt="Placeholder image" class='rounded-2 img-fluid'>
+                        <!-- <img src="{{subject.thumbnail_file.url}}" alt="Placeholder image"  class='card-image-top' style='width:18rem; height: 10rem;'> -->
+                    </figure>
+                </a>
+                <div class="card-body">
+                    <!-- <div class="media ml-1">
+                            <p class="title is-6" style="height:10px">{{subject.title}}</p>
+                        </div> -->
+                    <div class="row">
+                        <div class="col"><strong>Автор: </strong>
+                            <a href="{% url 'author_page' subject.author.id %}">{{subject.author.first_name}}
+                                {{subject.author.last_name}}</a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col"><strong>Дата размещения: <br> </strong>{{subject.date_posted}}</div>
+                    </div>
+    
+                    <div class="row">
+                        <div class="col">
+                            <strong>
+                                Рейтинг:
+                            </strong> {{subject.av_rating}}
+                            <div class="stars-outer">
+                                <div class="stars-inner" style="width: {{subject.percent}}"></div>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div class="row">
+                        <div class="col">
+                            <strong>Покупки:</strong> {{subject.transactions}}
+                        </div>
+                    </div>
+                    {% if subject.discount_programs == True and discount_time.discount_on == True %}
+                    <div class="row">
+                        <div class="col">
+                            <strong>Стоимость:</strong> {{subject.price.discount}} руб.
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="row">
+                        <div class="col">
+                            <strong>Стоимость:</strong> {{subject.price.regular}} руб.
+                        </div>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
-        </div> -->
+        </div>
     
-       
+        {% endfor %}
     </div>
+
+        <!-- ===================================Pagination====================================== -->
+        <div class="row m-5">
+            <div class="col">
+                {% if subjects.has_other_pages %}
+                <ul class="pagination justify-content-center">
+                    {% if subjects.has_previous %}
+                    <li class="page-item">
+                        <a href="?page={{subjects.previous_page_number}}" class="page-link">&laquo;</a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <a class="page-link">&laquo;</a>
+                    </li>
+                    {% endif %}
+                    {% for i in subjects.paginator.page_range%}
+                    {% if subjects.number == i %}
+                    <li class="page-item active">
+                        <a class="page-link">{{i}}</a>
+                    </li>
+                    {% else %}
+                    <li class="page-item">
+                        <a href="?page={{i}}" class="page-link">{{i}}</a>
+                    </li>
+                    {% endif %}
+                    {% endfor %}
+        
+                    {% if subjects.has_next %}
+                    <li class="page-item">
+                        <a href="?page={{subjects.next_page_number}}" class="page-link">&raquo;</a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <a class="page-link">&raquo;</a>
+                    </li>
+                    {% endif %}
+                </ul>
+                {%endif %}
+            </div>
+        </div>
+        <!-- ==========================End of Pagination========================================== -->
 </div>
 {% endblock %}

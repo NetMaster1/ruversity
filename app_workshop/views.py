@@ -537,18 +537,17 @@ def delete_lecture(request, lecture_id):
         return redirect('login')
 
 def video(request, subject_id, lecture_id):
-    if not request.user.is_authenticated:
-        return redirect('login')
+    # if not request.user.is_authenticated:
+    #     return redirect('login')
 
     subject = get_object_or_404(MainSubject, id=subject_id)
     the_video = get_object_or_404(Lecture, id=lecture_id)
 
-    if not (Transaction.objects.filter(buyer=request.user, course=subject).exists()
-            or request.user == subject.author
-            or the_video.free == True):
-        logout(request)
-        messages.error(request, 'Для просмотра видео вам необходимо приобрести данный курс.')
-        return redirect('login')
+    # if not (Transaction.objects.filter(buyer=request.user, course=subject).exists()
+    #         or request.user == subject.author
+    #         or the_video.free == True):
+    #     messages.error(request, 'Для просмотра видео вам необходимо приобрести данный курс.')
+    #     return redirect('login')
 
     context = {'the_video': the_video}
     template_name = 'video.html'

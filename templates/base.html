@@ -37,8 +37,6 @@
     <!-- Navbar -->
     {% include 'partials/_navbar.html' %}
 
-
-
     <!-- ===========================Modal Accessible at every page from navbar======================= -->
     <!-- <div class="modal" id='messagelModal'>
         <div class="modal-dialog">
@@ -68,6 +66,19 @@
         </div>
     </div> -->
     <!-- ==============================End of Modal======================== -->
+    <br>
+    <div class="container">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-info" role="alert">
+            <button class="close" data-dismiss="alert">
+                <small><sup>x</sup></small>
+            </button>
+            {{ message }}
+        </div>
+        {% endfor%}
+        {% endif%}
+    </div>
     {% block content %}
 
     {% endblock %}

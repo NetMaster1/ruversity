@@ -153,7 +153,7 @@
 
 {% for section in sections %}
         <div class="section_1">
-        <h5 data-bs-toggle="collapse" data-bs-target='#section{{section.id}}'>{{section.title}} {{section.length}} min</h5>
+        <h5 data-bs-toggle="collapse" data-bs-target='#section{{section.id}}'>Раздел {{section.enumerator}}: {{section.title}}. {{section.length}} мин.</h5>
         </div>
                 {% for lecture in lectures %}
                     {% if lecture.section == section %}
@@ -162,7 +162,7 @@
                     <li class="list-group-item">{{lecture.title}} {{lecture.length}} min</li>
                     {% else %}
                     <li class="list-group-item">
-                        <a href="{% url 'video' subject.id lecture.id %}" target="_blank">{{lecture.title}} {{lecture.length}} min</a>
+                        <a href="{% url 'video' subject.id lecture.id %}" target="_blank">{{lecture.title}} {{lecture.length}} мин. </a>
                     </li>
                     {% endif %}
                     </div>
