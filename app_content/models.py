@@ -111,7 +111,8 @@ class Transaction(models.Model):
     date_created = models.DateField(auto_now_add=True)
     money_paid = models.BooleanField(default=False)#check if money have been paid
     payment_id = models.CharField(max_length=100, null=True)
-    course = models.ForeignKey(MainSubject, on_delete=models.DO_NOTHING)
+    # course = models.ForeignKey(MainSubject, on_delete=models.DO_NOTHING)
+    course = models.ForeignKey(MainSubject, on_delete=models.CASCADE)
     # author = models.ForeignKey(Author, on_delete=models.DO_NOTHING, null=True)
     author = models.ForeignKey(Author, on_delete=models.SET_DEFAULT, null=True, default=1)
     buyer = models.ForeignKey(User, on_delete=models.CASCADE)
