@@ -7,23 +7,24 @@
 {% if author.user != request.user %}
 
 <div class="row mt-5">
-    <div class="col-6">
+    <div class="col-12">
     <form action="{% url 'create_author_page' %}" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
 
             <div class="form-row">
                 <div class="col-4">
-                    <label for="description" >Ваша профессиональная подготовка:</label>
+                    <label for="description" ><strong>
+                        Ваша профессиональная подготовка:</strong></label>
                 </div>
                 <div class="col-8">
-                    <textarea class='form-control' id="background" rows='3' minlength='120' maxlength='180' name="background" required placeholder='Пожалуйста, расскажите о себе и своем опыте. 120-180 слов'></textarea>
+                    <textarea class='form-control' id="background" rows='3' minlength='120' maxlength='180' name="background" required placeholder='Пожалуйста, расскажите о себе и своем опыте. Испоьзуйте не более 360 символов'></textarea>
                 </div> 
             </div>
 
 
             <div class="form-row mt-4">
             <div class="col-4">
-                <label for="photo">Ваше фото или лого:</label>
+                <label for="photo"> <strong> Ваше фото или лого:</strong></label>
             </div>
             <div class="col-8">
                 <p>

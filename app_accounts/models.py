@@ -47,7 +47,7 @@ class Author(models.Model):
     first_name = models.CharField(max_length=100, blank=True)
     last_name = models.CharField(max_length=100, blank=True)
     photo = models.FileField(upload_to='uploads', null=True)
-    background = models.TextField(null=True, max_length=250)
+    background = models.TextField(null=True)
 
     def __str__(self):
         return self.last_name

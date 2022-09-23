@@ -4,7 +4,7 @@ from django.core.paginator import Paginator
 from app_reviews.models import Review
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.contrib.auth import authenticate, login, logout
-from django.contrib import messages
+from django.contrib import messages, auth
 # from django.http import HttpResponse
 
 # Create your views here.
@@ -164,20 +164,24 @@ def gen_search(request):
             return redirect('login')
 
 def main_page(request):
-    subjects = MainSubject.objects.filter(ready='True').exclude(blocked='True').order_by('-date_posted')
-    discount_time = DiscountOn.objects.get(id=1)
+    if request.user.is_authenticated:
+        subjects = MainSubject.objects.filter(ready='True').exclude(blocked='True').order_by('-date_posted')
+        discount_time = DiscountOn.objects.get(id=1)
 
-    paginator = Paginator(subjects, 12)
-    page = request.GET.get('page')
-    paged_subjects = paginator.get_page(page)
+        paginator = Paginator(subjects, 12)
+        page = request.GET.get('page')
+        paged_subjects = paginator.get_page(page)
 
-    # ratings = Rating.objects.all()
-    context = {
-        'paged_subjects': paged_subjects,
-        'discount_time': discount_time,
-        # 'ratings': ratings,
-    }
-    return render(request, 'main_page.html', context)
+        # ratings = Rating.objects.all()
+        context = {
+            'paged_subjects': paged_subjects,
+            'discount_time': discount_time,
+            # 'ratings': ratings,
+        }
+        return render(request, 'main_page.html', context)
+    else:
+        auth.logout(request)
+        return redirect('login')
 
 def sorting (request, category_id):
     if request.user.is_authenticated:

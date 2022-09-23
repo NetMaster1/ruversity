@@ -71,6 +71,7 @@ class Section(models.Model):
     course = models.ForeignKey(MainSubject, on_delete=models.CASCADE)
     length = models.DecimalField(max_digits=5, decimal_places=2, default=0)
     title = models.CharField(max_length=100)
+    enumerator = models.IntegerField(null=True)
 
     def __int__(self):
         return self.id
@@ -96,6 +97,7 @@ class Lecture(models.Model):
     free = models.BooleanField(default=False)
     length = models.DecimalField(max_digits=5, decimal_places=2, default=0)
     size_mb = models.DecimalField(max_digits=5, decimal_places=2, default=0)
+    enumerator = models.IntegerField(null=True)
 
     # def get_absolute_file_upload_url(self):
     #     return MEDIA_URL + self.file_upload.url

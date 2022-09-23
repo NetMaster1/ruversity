@@ -60,34 +60,34 @@ def create_author_page(request):
             background = request.POST['background']
             photo = request.FILES['photo']
             if photo.name.endswith('.jpg') or photo.name.endswith('.png') or photo.name.endswith('.gif') or photo.name.endswith('.bmp') or photo.name.endswith('.jpeg'):
-                if re.search(r'[а-яА-я]', photo.name) == None:
-                    author = Author.objects.create(
-                        background=background,
-                        photo=photo,
-                        user=request.user,
-                        first_name=request.user.first_name,
-                        last_name=request.user.last_name
-                    )
-                    img = cv2.imread(author.photo.path, 0)
-                    print(type(img))
-                    wid = img.shape[1]
-                    hgt = img.shape[0]
-                    ratio = wid / hgt
-                    if ratio < 0.9 or ratio > 1.1:
-                        author.delete()
-                        #messages.error(request, 'Image has inproper ratio. Use a square photo with aspect ratio of 1.')
-                        messages.error(request, 'Неправильное соотношение сторон фото. Загрузите фото с соотношением сторон 1х1;')
-                        return redirect('studio')
-
-                    else:
-                        author = Author.objects.get(user=request.user)
-                        context = {
-                            'author': author
-                        }
-                        return render (request, 'workshop/author_page.html', context)
-                else:
-                    messages.error(request, 'Используйте латинницу в названии файла')
+            # if re.search(r'[а-яА-я]', photo.name) == None:
+                author = Author.objects.create(
+                    background=background,
+                    photo=photo,
+                    user=request.user,
+                    first_name=request.user.first_name,
+                    last_name=request.user.last_name
+                )
+                img = cv2.imread(author.photo.path, 0)
+                print(type(img))
+                wid = img.shape[1]
+                hgt = img.shape[0]
+                ratio = wid / hgt
+                if ratio < 0.9 or ratio > 1.1:
+                    author.delete()
+                    #messages.error(request, 'Image has inproper ratio. Use a square photo with aspect ratio of 1.')
+                    messages.error(request, 'Неправильное соотношение сторон фото. Загрузите фото с соотношением сторон 1х1;')
                     return redirect('studio')
+
+                else:
+                    author = Author.objects.get(user=request.user)
+                    context = {
+                        'author': author
+                    }
+                    return render (request, 'workshop/author_page.html', context)
+                # else:
+                #     messages.error(request, 'Используйте латинницу в названии файла')
+                #     return redirect('studio')
             else:
                 messages.error(request, 'Вы загрузили файл неправильного формата. Загрузите файл в формате jpg, jpeg, png или bmp')
                 # messages.error(request, 'File has inproper format. Load jpg, jpeg, png or bmp file')
@@ -249,7 +249,7 @@ def edit_subject(request, subject_id):
                         return redirect('edit_subject', subject_id)
                 else:
                     if Section.objects.filter(course=subject).exists():
-                        sections = Section.objects.filter(course=subject)
+                        sections = Section.objects.filter(course=subject).order_by('enumerator')
                         if Lecture.objects.filter(subject=subject).exists:
                             lectures=Lecture.objects.filter(subject=subject)
                             languages = Language.objects.all()
@@ -329,18 +329,25 @@ def delete_subject(request, subject_id):
 def create_new_section(request, subject_id):
     if request.user.is_authenticated:
         subject = MainSubject.objects.get(id=subject_id)
+        lectures=Lecture.objects.filter(subject=subject)
         if request.user == subject.author:
             if request.method == 'POST':
                 title = request.POST['title']
+                enumerator = request.POST['enumerator']
+                if Section.objects.filter(course=subject, enumerator=enumerator).exists():
+                    messages.error(request, 'Раздел с таким порядковым номером уже существует. Измените номер раздела')
+                    return redirect('edit_subject', subject_id)
                 section = Section.objects.create(
                     title=title,
-                    course=subject
+                    course=subject,
+                    enumerator=enumerator
                 )
                 return redirect ('edit_subject', subject_id)
             else:
                 return redirect('edit_subject', subject_id)
         logout(request)
         return redirect('login')
+    logout(request)  
     return redirect('login')
 
 def edit_section (request, subject_id, section_id):
@@ -350,12 +357,18 @@ def edit_section (request, subject_id, section_id):
         if request.user == subject.author:
             if request.method == 'POST':
                 title = request.POST['title']
+                enumerator = request.POST['enumerator']
+                if Section.objects.filter(course=subject, enumerator=enumerator).exists():
+                    messages.error(request, 'Раздел с таким порядковым номером уже существует. Измените номер раздела.')
+                    return redirect('edit_section', subject_id, section_id)
+                section.enumerator= enumerator
                 section.title = title
                 section.save()
-                return redirect('edit_section', subject_id, section_id)
+                # return redirect('edit_section', subject_id, section_id)
+                return redirect('edit_subject', subject_id)
             else:
                 section = Section.objects.get(id=section_id)
-                lectures=Lecture.objects.filter(section=section)
+                lectures=Lecture.objects.filter(section=section).order_by('enumerator')
                 context = {
                     'subject': subject,
                     'section': section,
@@ -402,6 +415,10 @@ def create_new_lecture(request, subject_id, section_id):
     video_file = request.FILES['video_file']
     video_file_name = video_file.file.name
     title = request.POST['title']
+    enumerator = request.POST['enumerator']
+    if Lecture.objects.filter(subject=subject, enumerator=enumerator).exists():
+        messages.error(request, 'Лекция с таким порядковым номером уже существует. Поменяйте номер лекции.')
+        return redirect('edit_section', subject_id, section_id)
     subtitle_file = request.POST.get('subtitle_file', False)
     # translation_file = request.FILES['translation_file']
     author = request.user
@@ -413,13 +430,13 @@ def create_new_lecture(request, subject_id, section_id):
         free_access = False
 
     if not video_file_name.endswith('.mp4'):
-        messages.error(request, 'File has inproper format. Load mp4 file')
+        messages.error(request, 'Некорректный форма файла. Используйте файл в формате MP4.')
         return redirect('edit_section', subject_id, section_id)
 
     size_bytes = os.path.getsize(video_file_name)
     size_mbytes = size_bytes/1024/1024
-    if size_mbytes > 100:
-        messages.error(request, 'Your file is too large.')
+    if size_mbytes > 300:
+        messages.error(request, 'Размер файла больше 200МБ. Попробуйте использовать файлы меньшего размера.')
         return redirect('edit_section', subject_id, section_id)
 
     clip = VideoFileClip(video_file_name)
@@ -436,7 +453,8 @@ def create_new_lecture(request, subject_id, section_id):
         subject=subject,
         free=free_access,
         length=length,
-        size_mb=size_mb
+        size_mb=size_mb,
+        enumerator=enumerator
     )
 
     lectures = Lecture.objects.filter(subject=subject)
@@ -455,24 +473,26 @@ def edit_lecture(request, lecture_id):
         section = lecture.section
         if request.user == subject.author:
             if subject.ready == True:
-                messages.error(request, 'Sorry, you can not edit a loaded lecture.')
+                messages.error(request, 'Вы не можете редактировать лекции, загруженные на сервер.')
                 return redirect('edit_section', subject.id, section.id)
             else:
                 if request.method == "POST":
-                    title = request.POST['title']
+                    # title = request.POST['title']
+                    # enumerator = request.POST['enumerator']
                     video_file = request.FILES['video_file']
                     subtitle_file = request.POST.get('subtitle_file', False)
                     # translation_file = request.FILES['translation_file']
                     if video_file.name.endswith('.mp4'):
                         lecture.video_file=video_file
                         lecture.title = request.POST['title']
+                        lecture.enumerator = request.POST['enumerator']
                         lecture.save()
                         path = lecture.video_file.path
                         size_bytes = os.path.getsize(path)
                         size_mbytes = size_bytes / 1024 / 1024
                         lecture.size_mbytes = size_mbytes
                         lecture.save()
-                        if lecture.size_mb > 100:
+                        if lecture.size_mb > 300:
                             lecture.delete()
                             messages.error(request, 'Your file is too large.')
                             return redirect('edit_section', subject.id, section.id)

@@ -2,8 +2,6 @@
 {% load static %}
 {% block content %}
 <!-- <body oncontextmenu="return false;"> -->
- 
-
 <div class="container">
     <div class="row m-auto">
         <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);"
@@ -100,12 +98,12 @@
         
     <div class="row p-3">
         <div class="col-8">
-    <h5>По окончанию редактирования курса нажмите на кнопку</h5>
+    <h5>После того, как ваш курс полностью готов для продаж, нажмите на кнопку. После загрузки на сервер ваш курс перестанет быть доступным для редактирования. </h5>
             </div>
             
         <div class="col-3">
     <a href="{% url 'agreement' subject.id%}" style="text-decoration: none">
-    <input type="submit" value="Загрузить на сервер" class="btn btn-outline-dark btn-block">
+    <input type="submit" value="Загрузить на сервер" class="btn btn-outline-danger btn-block">
     </a>
         </div>
 
@@ -237,20 +235,25 @@
         </div>
     </div>
 </div>
-</div>
-</div>
-  
-<!-- ===================Create New Section Box============================== -->
 
-    <div class="row m-auto border rounded bg-light text-center">
+</div>
+<!-- ===================Create New Section Box============================== -->
+<div class="row m-auto border rounded bg-light text-center">
+<h3>Разделы</h3>
+</div>
+
+    <div class="row m-auto">
         <h3>Создать новый раздел</h3>
     </div>
-    <div class="row m-auto pb-2 border rounded">
+    <div class="row m-auto>">
     
         <form action="{% url 'create_new_section' subject.id %}" method="POST">
             {% csrf_token %}
     
             <div class="form-row mt-2">
+                <div class="col-3">
+                    <input class='form-control' type="number" id="enumerator" name="enumerator" placeholder="Порядковый номер раздела" required>
+                </div>
                 <div class="col-3">
                     <input class='form-control' type="text" id="title" name="title" placeholder="Название раздела" required>
                 </div>
@@ -261,30 +264,67 @@
                     <input type="submit" value="Создать" class='btn btn-block btn-outline-dark'>
                 </div>
             </div>
-    </div>
     </form>
-    
+    </div>
   
     <!-- =====================Sections============================================== -->
-    {% for section in sections %}
-    <div class="row m-auto mb-2 border rounded bg-light text-center">
-        <a href="{% url 'edit_section' subject.id section.id %}"><h3>Редактировать раздел "{{section.title}}"</h3></a>
-
+    <div class="row m-auto pt-2">
+        <h3>Редактирование разделов</h3>
     </div>
-    <br>
-        <!-- <div class="row mt-3 border rounded text-center"></div> -->
+    {% for section in sections %}
+    <!-- <div class="row m-auto pt-2" id="sections"> -->
+        <!-- <div class="col-6"> -->
+         <!-- <h5><span id="open_sections">Раздел {{section.enumerator}}: {{section.title}}.</span></h5> -->
+         <!-- <h5>Раздел {{section.enumerator}}: {{section.title}}.</h5>
+        </div> -->
+
+    <div class="row m-auto pt-2">
+        <div class="col-6">
+            <a id='a_id_section' href='#' <h5 data-bs-toggle="collapse" data-bs-target='#section{{section.id}}'>{{section.enumerator}} {{section.title}} </h5></a>
+        </div>
+        <div class="col-2 align-self-end">
+            <a href="{% url 'edit_section' subject.id section.id %}" style="text-decoration: none">
+                <input type="button" value="Редактировать" class='btn btn-sm btn-block btn-outline-dark'>
+            </a>
+        </div>
+        
+        <div class="col-2 align-self-end">
+            <a href="{% url 'delete_section' subject.id section.id %}" style="text-decoration: none">
+                <!-- <input type="submit" value="Delete" class="btn btn-info btn-block"> -->
+                <input type="button" value="Удалить" class='btn btn-sm btn-block btn-outline-dark'>
+            </a>
+        </div>
+       
+        <div class="collapse" id='section{{section.id}}'>
+            <div class="row" style='min-height:fit-content'>
+                <div class="col">
+                    {% for lecture in lectures %}
+                    {% if lecture.section == section %}
+                    <div class="row ml-4">
+                       <div style="font-style:italic"> Лекция {{lecture.enumerator}}. {{lecture.title}}</div>
+                    </div>
+                    {% endif %}
+                    {%endfor%}
+                </div>
+            </div>
+        </div>  
+    </div>
+
+
+    <div id="openSectionModal">        
+        {% for lecture in lectures %}
+        {% if lecture.section == section %}
+        <div class="row m-auto">
+            {{lecture.title}}
+        </div>
+        {% endif %}
+        {%endfor%}     
+    </div>
 
     {% endfor %}
     <!-- ======================End of Section Box=========================== -->
-
-
-
-    </div>
 </div>
-
-
-
-  
+ 
 </div>
 </div>
         </div>
@@ -293,5 +333,26 @@
     {% endif %}
 
 </div>
+</div>
 
+
+<script>
+    console.log('start OK')
+    const open_sections = document.querySelectorAll('#open_sections');
+    const openSectionModal = document.querySelectorAll('#openSectionModal');
+
+
+    for (let i = 0; i < open_sections.length; i++) {
+        open_sections[i].addEventListener('mouseover', e => {
+            openSectionModal[i].classList.add('openModal')
+        })
+    }
+
+     for (let i = 0; i < open_sections.length; i++) {
+            open_sections[i].addEventListener('mouseout', e => {
+                openSectionModal[i].classList.remove('openModal')
+            })
+        }
+    console.log('end OK')
+</script>
 {% endblock %}
