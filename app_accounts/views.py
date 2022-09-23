@@ -26,7 +26,7 @@ def register_user(request):
         if password == password2:
             # Check user name
             if User.objects.filter(username=username).exists():
-                messages.error(request, 'Пользователь с таким логином уже существует.')
+                messages.error(request, 'Пользователь с таким адресом электронной почты уже существует.')
                 return redirect('register_user')
             # else:
             #     if User.objects.filter(email=email).exists():
