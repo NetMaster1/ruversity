@@ -24,7 +24,7 @@
 
 {% if user.is_authenticated %}
 
-Добро пожаловать: {{request.user.first_name}} {{request.user.last_name}} {{request.user.id}}
+Добро пожаловать: {{request.user.first_name}} {{request.user.last_name}}
 &nbsp;&nbsp;
   
   {% if 'main_page' in request.path %}

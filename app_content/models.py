@@ -147,7 +147,7 @@ class Badword (models.Model):
         return self.id
 
 class Keyword (models.Model):
-    user = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     keyword = models.CharField(max_length=50)
 
     def __int__(self):
