@@ -6,20 +6,25 @@
 
   <!-- <div class="collapse navbar-collapse" id="navbarResponsive"> -->
   <!-- <nav class="navbar bg-info sticky-top" role="navigation" aria-label="main navigation"> -->
-
+<div class="col-6">
   <img src={% static "images/logo.png" %} alt="Image" width="200" height="200">
+</div>
 
+<div class="mobile">
 <form action="{% url 'gen_search' %}" method='POST' class="form-inline m-auto">
   {% csrf_token %}
   <!-- <input type="text" name="keyword" placeholder="Модель или брэнд" class='rounded'> -->
-  <input type="text" name="keyword" placeholder="Введите запрос" class="form-control mr-sm-4">
-  {% if 'gen_search' in request.path %}
-  <button class="btn btn-sm btn-outline-dark active" input type="submit">Поиск</button>
-  {% else %}
- 
+  <input type="text" name="keyword" placeholder="Введите запрос"  class='form-control mr-sm-4'>
+  <!-- {% if 'gen_search' in request.path %}
+  <button class="btn btn-sm btn-outline-dark active" input type="submit"><i class="fa-solid fa-magnifying-glass"></button>
+  {% else %} -->
+
   <button class="btn btn-sm btn-outline-dark" input type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
-  {% endif %}
+  <!-- {% endif %} -->
 </form>
+</div>
+
+
 
 
 {% if user.is_authenticated %}
@@ -110,7 +115,7 @@
    
     {% else %}
     
-     
+   <div class="mobile">
     {% if 'login' in request.path %}
     <a href="{% url 'login' %}" class="btn btn-md btn-outline-dark mr-2 active">Войти</a>
     {% else %}
@@ -122,7 +127,8 @@
     {% else%}
     <a href="{% url 'register_user' %}" class="btn btn-md btn-outline-dark">Регистрация</a>
     {% endif %}
-   
+  </div>
+
   {% endif %}
 
 

@@ -1,11 +1,42 @@
 :root {
-    --max-width: 56%;
+  --max-width: 56%;
 }
 
 html {
   min-height: 100%;
   /* display: flex; */
 }
+
+.mobile {
+
+  width: 50rem;
+
+}
+
+@media(max-width: 575px) {
+  body {
+    font-size: 0.2rem;
+    background: red
+  }
+
+   body h3 {
+    font-size: 1rem;
+    font-weight: 0;
+  }
+  .mobile {
+    width:20rem;
+ 
+  }
+  .mobile button {
+    margin-top: 0.2rem;
+    width:30rem;
+  }
+  .mobile .btn {
+    margin: 0.2rem;
+    width: 9rem;
+  }
+}
+
 
 /*making footer appear at the bottom of blank pages & go it down at pages with a lot of content */
 body {
@@ -27,7 +58,7 @@ body {
 
 
 h3 {
-  font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
   font-weight: 300;
   font-size: 2rem;
 }
@@ -35,98 +66,98 @@ h3 {
 h5 {
   font-size: 1.2rem;
 }
+
 .menu_font {
   font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
 }
 
 .rating {
-    /* overflow: hidden; */
-    transform: translate(-50%, -50%) rotateY(180deg) ;
-    /* display: flex; */
-    /* vertical-align: bottom;
+  /* overflow: hidden; */
+  transform: translate(-50%, -50%) rotateY(180deg);
+  /* display: flex; */
+  /* vertical-align: bottom;
     display: inline-block; */
-    /* width: 155px;
+  /* width: 155px;
     height: 30px; */
 }
 
-.rating > input {
-    display: none;
-    /* opacity: 1; */
+.rating>input {
+  display: none;
+  /* opacity: 1; */
 }
 
 .rating label {
-    /* display: inline; */
-    cursor: pointer;
-    width: 30px;
-    padding-left: 1px;
-    /* background: #ccc; */
+  /* display: inline; */
+  cursor: pointer;
+  width: 30px;
+  padding-left: 1px;
+  /* background: #ccc; */
 }
 
 .rating label::before {
-    content: '\f005';
-    font-family: 'Font Awesome 5 free';
-    /* font-weight: 900; */
-    position: relative;
-    /* position: absolute; */
+  content: '\f005';
+  font-family: 'Font Awesome 5 free';
+  /* font-weight: 900; */
+  position: relative;
+  /* position: absolute; */
 
-    /* display: block; */
-    font-size: 20px;
-    color: grey;
+  /* display: block; */
+  font-size: 20px;
+  color: grey;
 }
 
 .rating label::after {
-    content: '\f005';
-    font-family: 'Font Awesome 5 free';
-    font-weight: 900;
-    position: absolute;
-    /* position: relative; */
-    display: block;
-    font-size: 20px;
-    color: yellow;
-    top: 0;
-    opacity: 0;
-    transition: .5s;
-    text-shadow: 0 2px 5px rgba(0,0,0,.5);
+  content: '\f005';
+  font-family: 'Font Awesome 5 free';
+  font-weight: 900;
+  position: absolute;
+  /* position: relative; */
+  display: block;
+  font-size: 20px;
+  color: yellow;
+  top: 0;
+  opacity: 0;
+  transition: .5s;
+  text-shadow: 0 2px 5px rgba(0, 0, 0, .5);
 }
 
 .rating label:hover:after,
-.rating input:hover ~ label:after,
-.rating input:checked ~ label:after
-{
-    opacity: 1;
+.rating input:hover~label:after,
+.rating input:checked~label:after {
+  opacity: 1;
 }
 
 /*=========================================*/
 
 .stars-outer {
-    position: relative;
-    display: inline-block;
+  position: relative;
+  display: inline-block;
 }
 
 .stars-inner {
-    position: absolute;
-    top: 0;
-    /* left: 0; */
-    white-space: nowrap;
-    overflow: hidden;
-    /*color: yellow;*/
-   /* width: var(--max-width);*/
+  position: absolute;
+  top: 0;
+  /* left: 0; */
+  white-space: nowrap;
+  overflow: hidden;
+  /*color: yellow;*/
+  /* width: var(--max-width);*/
 }
 
 .stars-outer::before {
-    content: '\f005 \f005 \f005 \f005 \f005';
-    font-family: 'Font Awesome 5 Free';
-    font-weight: 200;
-    color:grey;
-    font-size: 20px;
+  content: '\f005 \f005 \f005 \f005 \f005';
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 200;
+  color: grey;
+  font-size: 20px;
 }
 
 .stars-inner::before {
-    content: '\f005 \f005 \f005 \f005 \f005';
-    font-family: 'Font Awesome 5 Free';
-    font-weight: 900;
-    color: yellow;
-    font-size: 20px;
+  content: '\f005 \f005 \f005 \f005 \f005';
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  color: yellow;
+  font-size: 20px;
 }
 
 /* ==========================VideoPlayer=========================== */
@@ -157,9 +188,10 @@ video_1 {
 
 /* Containers */
 .show-controls:hover .controls-container {
-    opacity: 1;
-    transition: all 0.1s ease-out;
+  opacity: 1;
+  transition: all 0.1s ease-out;
 }
+
 .show-controls {
   width: 100%;
   height: 5%;
@@ -184,8 +216,9 @@ video_1 {
   justify-content: space-between;
   opacity: 0;
   transition: all 0.5s ease-out 0.5s;
- 
+
 }
+
 /* Progress Bar */
 .progress-range {
   height: 8px;
@@ -202,7 +235,7 @@ video_1 {
   transition: height 0.1s ease-in-out;
 }
 
-.progress-range:hover{
+.progress-range:hover {
   height: 12px;
 }
 
@@ -287,7 +320,7 @@ video_1 {
   margin-right: 15px;
 }
 
-.speed{
+.speed {
   position: relative;
   top: 10px;
 }
@@ -314,7 +347,7 @@ select {
   border-radius: 5px;
 }
 
-select > option {
+select>option {
   /* background: (0, 0, 0, 0.9); */
   background: rgb(255, 254, 254);
   border: none;
@@ -378,6 +411,7 @@ select > option {
   .progress-bar {
     border-radius: 0;
   }
+
   /* Volume Bar */
   .volume-range {
     width: 50px;
@@ -438,7 +472,7 @@ select > option {
   float: left;
   width: 70%;
   /* background: red; */
-  /* height: 100%;
+/* height: 100%;
   overflow: auto;
   box-sizing: border-box;
   padding: 0.5em;
@@ -455,12 +489,13 @@ select > option {
 }
 
 
- #video {
+#video {
   max-width: 80vw;
   min-width: 800px;
   border: 5px solid black;
   border-radius: 10px;
-  /* background: black; */ */
+  /* background: black; */
+  */
   /* position: relative; */
   /* cursor: pointer; */
 
@@ -478,17 +513,17 @@ select > option {
 }
 
 .section_1 {
-  background-color:rgb(245, 244, 244);
+  background-color: rgb(245, 244, 244);
   padding: 10px;
   border-style: solid;
   border-width: 0.1rem;
   border-color: grey;
-} 
+}
 
-.section_1:hover{
+.section_1:hover {
   background-color: lightgrey;
   font-size: 1.1rem;
-  
+
 }
 
 #a_id_section {
@@ -502,7 +537,7 @@ select > option {
   /* text-decoration: line-through; */
   color: black;
   font-weight: 900;
-  
+
 }
 
 
@@ -515,7 +550,7 @@ select > option {
   display: block;
   color: blue;
   font-style: italic;
-  
+
 }
 
 #a_id:hover {
@@ -523,25 +558,26 @@ select > option {
   color: blue;
   /* font-size: 1.1rem; */
   font-weight: bold;
- 
+
 }
+
 /* #img_fit{ */
-  /* height: 10rem; */
-  /* object-fit: cover; */
-  /* object-fit: none; */
-  /* object-fit: scale-down; */
-  /* object-fit: contain; */
-  /* object-fit: fill; */
+/* height: 10rem; */
+/* object-fit: cover; */
+/* object-fit: none; */
+/* object-fit: scale-down; */
+/* object-fit: contain; */
+/* object-fit: fill; */
 /* } */
 
-.img_scale:hover{
+.img_scale:hover {
   /* opacity: 2; */
   transform: scale(1.1);
   z-index: 1;
 }
 
-.nav-link{
-  padding:0%;
+.nav-link {
+  padding: 0%;
 }
 
 #box {
@@ -575,19 +611,21 @@ select > option {
 #lectureModal.openModal {
   display: block;
 }
+
 /*=====================================*/
 #openSectionModal {
   display: none;
 }
+
 /* =========================================== */
 #openSectionModal.openModal {
   border-radius: 5px;
   border-color: grey;
-  border-width:2px;
+  border-width: 2px;
   display: block;
   position: absolute;
-  bottom:10px;
-  left:200px;
+  bottom: 10px;
+  left: 200px;
   width: 300px;
   height: 200px;
   background-color: grey;
@@ -614,5 +652,3 @@ select > option {
   visibility: hidden;*/
   z-index: 1;
 }
-
-
