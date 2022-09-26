@@ -7,6 +7,37 @@ html {
   /* display: flex; */
 }
 
+.mobile {
+
+  width: 50rem;
+
+}
+
+@media(max-width: 575px) {
+  body {
+    font-size: 0.2rem;
+    background: red
+  }
+
+   body h3 {
+    font-size: 1rem;
+    font-weight: 0;
+  }
+  .mobile {
+    width:20rem;
+ 
+  }
+  .mobile button {
+    margin-top: 0.2rem;
+    width:30rem;
+  }
+  .mobile .btn {
+    margin: 0.2rem;
+    width: 9rem;
+  }
+}
+
+
 /*making footer appear at the bottom of blank pages & go it down at pages with a lot of content */
 body {
   font-family: Arial, Helvetica, sans-serif;
@@ -15,7 +46,6 @@ body {
   /*background-color: blueviolet;*/
   position: relative;
 }
-
 
 .my_footer {
   position: absolute;
@@ -140,6 +170,17 @@ h5 {
   font-size: 25px;
   color: black;
 }
+
+
+/* .player {
+  max-width: 80vw;
+  min-width: 800px;
+  border: 5px solid black;
+  border-radius: 10px;
+  background: black;
+  position: relative;
+  cursor: pointer;
+} */
 
 video_1 {
   border-radius: 5px;
