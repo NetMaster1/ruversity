@@ -16,7 +16,6 @@ html {
 @media(max-width: 575px) {
   body {
     font-size: 0.2rem;
-    background: red
   }
 
    body h3 {
