@@ -15,13 +15,14 @@ html {
 
 @media(max-width: 575px) {
   body {
-    font-size: 0.2rem;
+    font-size: 0.7rem;
   }
 
-   body h3 {
+  body h3 h5 {
     font-size: 1rem;
     font-weight: 0;
   }
+
   .mobile {
     width:20rem;
  
