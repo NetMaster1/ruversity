@@ -8,35 +8,8 @@ html {
 }
 
 .mobile {
-
   width: 50rem;
-
 }
-
-@media(max-width: 575px) {
-  body {
-    font-size: 0.7rem;
-  }
-
-  body h3 h5 {
-    font-size: 1rem;
-    font-weight: 0;
-  }
-
-  .mobile {
-    width:20rem;
- 
-  }
-  .mobile button {
-    margin-top: 0.2rem;
-    width:30rem;
-  }
-  .mobile .btn {
-    margin: 0.2rem;
-    width: 9rem;
-  }
-}
-
 
 /*making footer appear at the bottom of blank pages & go it down at pages with a lot of content */
 body {
@@ -45,6 +18,28 @@ body {
   max-height: fit-content;
   /*background-color: blueviolet;*/
   position: relative;
+}
+
+
+@media(max-width: 575px) {
+  body {
+    font-size: 0.7rem;
+  }
+  body h3 {
+    font-size: 1rem;
+    font-weight: 0;
+  }
+  .mobile {
+    width:20rem;
+  }
+  .mobile button {
+    margin-top: 0.2rem;
+    width:30rem;
+  }
+  .mobile .btn {
+    margin: 0.2rem;
+    width: 20rem;
+  }
 }
 
 .my_footer {
