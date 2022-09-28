@@ -43,7 +43,9 @@ h5 {
 }
 .card_menu {
   display: inline;
-  width: 40vw;
+  width: 35vw;
+  min-height: fit-content;
+  max-height: fit-content;
 }
 
 @media(max-width: 575px) {
@@ -73,12 +75,12 @@ h5 {
 
   .card_subject {
     display: block;
-    width: 100vw;
+    width: 98vw;
   }
   .card_menu {
     margin-top: 2vh;
     display: block;
-    width: 100vw;
+    width: 98vw;
   }
 }
 
