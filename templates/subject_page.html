@@ -5,20 +5,21 @@
 <div class="container">
   
 <div class="row mt-1">
-    <div class="col-4 m-1">
+
+    <!-- <div class="col-4 m-1"> -->
+        <div class="card_subject">
         <div class="card">
 
-                <div class="card-header" style='min-height:5rem' >
-                <h4>{{subject.title}}</h4>
-                </div>
+            <div class="card-header" style='min-height:5rem' >
+            <h4>{{subject.title}}</h4>
+            </div>
 
-                <figure>
-                    <img src="{{subject.thumbnail_file.url}}" alt="Placeholder image" class='card-image-top'>
-                </figure>
+            <figure>
+                <img src="{{subject.thumbnail_file.url}}" alt="Placeholder image" class='card-image-top'>
+            </figure>
                
 
     <div class="card-body">
-
         <div class="row">
         <div class="col">
         <strong>Рейтинг: </strong>
@@ -88,7 +89,7 @@
             </div>
             {% endif %}
         </div>
-    </div>
+    
 
    
     <!-- ================================================================= -->
@@ -101,7 +102,7 @@
         <h5 class=”text-left”>Вы уже приобрели данный курс. Перейдите в раздел "Мои покупки"<h5>
     </div>
 {% else %}
-
+</div>
       
     <div class="card-footer">  
                 <div class="col">
@@ -135,23 +136,20 @@
                     </div>
             {% endif %}
             </div>
-    </div>
-    
+    </div>  
 {% endif %}
-   
-
-    <!-- ===================================================================== -->
 </div>
 </div>
+<!-- ===================================================================== -->
 
-<div class="col-7 m-1">
-    <div class="card">
+<div class="card_menu">
+    <!-- <div class="col-7 m-1"> -->
+        <div class="card">
         <div class="card-header"><h4>Содержание</h4></div>
         <!-- <div class="card-body"> -->
             <!-- <ul class="list-group list-group-flush"> -->
-                
-
-{% for section in sections %}
+        
+        {% for section in sections %}
         <div class="section_1">
         <h5 data-bs-toggle="collapse" data-bs-target='#section{{section.id}}'>Раздел {{section.enumerator}}: {{section.title}}. {{section.length}} мин.</h5>
         </div>
@@ -168,11 +166,11 @@
                     </div>
                     {% endif %}
                 {% endfor%}               
-{% endfor %}
+            {% endfor %}
            
-</div>
-</div>
-</div>
+        </div>
+    </div>
+
 
 <div class="row mt-2 pl-2"> .
     <h3>Отзывы</h3>
@@ -199,7 +197,7 @@
     </div>
 
 
-
+</div>
 </div>
 
 
