@@ -115,7 +115,7 @@
    
     {% else %}
     
-   <div class="mobile">
+   <!-- <div class="mobile">
     {% if 'login' in request.path %}
     <a href="{% url 'login' %}" class="btn btn-md btn-outline-dark mr-2 active">Войти</a>
     {% else %}
@@ -127,9 +127,19 @@
     {% else%}
     <a href="{% url 'register_user' %}" class="btn btn-md btn-outline-dark">Регистрация</a>
     {% endif %}
+  </div> -->
+
+  <div class="mobile">
+    {% if 'login' in request.path %}
+    <a href="{% url 'register_user' %}" class="btn btn-md btn-outline-dark">Регистрация</a>
+    {% elif 'register_user' in request.path %}
+    <a href="{% url 'login' %}" class="btn btn-md btn-outline-dark mr-2">Войти</a>
+    {% endif %}
+  
+    {% endif %}
   </div>
 
-  {% endif %}
+
 
 
 </div>

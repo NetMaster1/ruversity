@@ -7,10 +7,10 @@
         <div class="row m-2">
           <h5>{{the_video.title}}</h5>
         </div>
-        <div class="row m-2">
-
-        <iframe height="720" allow="encrypted-media" src="https://cdn.playernow.ru/embed.html?hls={{the_video.hls_url}}&fairplayServerUrl={{the_video.fairplay_url}}&fairplayCertificateUrl={{the_video.fairplay_certificate_url}}&dash={{the_video.dash_url}}&widevineServerUrl={{the_video.widevine_url}}&playreadyServerUrl={{the_video.playready_url}}&poster=http://{{ request.META.HTTP_HOST }}{% static 'images/logo.png' %}" frameborder="0" allowfullscreen></iframe>
-
+        
+    <div class="row">
+        <iframe allow="encrypted-media" src="https://cdn.playernow.ru/embed.html?hls={{the_video.hls_url}}&fairplayServerUrl={{the_video.fairplay_url}}&fairplayCertificateUrl={{the_video.fairplay_certificate_url}}&dash={{the_video.dash_url}}&widevineServerUrl={{the_video.widevine_url}}&playreadyServerUrl={{the_video.playready_url}}&poster=http://{{ request.META.HTTP_HOST }}{% static 'images/logo.png' %}" frameborder="0" allowfullscreen></iframe>
+    </div>
 
     <!-- <video id="video" class="video-js vjs-big-play-centered" preload="auto"
         poster='{% static "images/logo.png" %}' data-setup="{}">
@@ -24,10 +24,6 @@
         </p>
     </video>
 </div> -->
-
-
-        </div>
-
 
     </div>
 
