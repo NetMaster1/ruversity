@@ -134,6 +134,9 @@
     <a href="{% url 'register_user' %}" class="btn btn-md btn-outline-dark">Регистрация</a>
     {% elif 'register_user' in request.path %}
     <a href="{% url 'login' %}" class="btn btn-md btn-outline-dark mr-2">Войти</a>
+    {% else %}
+    <a href="{% url 'login' %}" class="btn btn-md btn-outline-dark mr-2">Войти</a>
+    <a href="{% url 'register_user' %}" class="btn btn-md btn-outline-dark">Регистрация</a>
     {% endif %}
   
     {% endif %}

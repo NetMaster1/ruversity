@@ -48,6 +48,11 @@ h5 {
   max-height: fit-content;
 }
 
+.round_menu {
+  display: inline;
+  width: min-width;
+}
+
 iframe {
   aspect-ratio: 16/9;
 }
