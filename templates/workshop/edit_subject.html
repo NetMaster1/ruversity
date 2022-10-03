@@ -97,13 +97,13 @@
     {% else %}
         
     <div class="row p-3">
-        <div class="col-8">
+        <div class="card_subject">
     <h5>После того, как ваш курс полностью готов для продаж, нажмите на кнопку. После загрузки на сервер ваш курс перестанет быть доступным для редактирования. </h5>
             </div>
             
-        <div class="col-3">
+        <div class="card_menu">
     <a href="{% url 'agreement' subject.id%}" style="text-decoration: none">
-    <input type="submit" value="Загрузить на сервер" class="btn btn-outline-danger btn-block">
+    <input type="submit" value="Загрузить на сервер" class="btn btn-outline-danger btn-block" style="width:min-content" >
     </a>
         </div>
 
@@ -261,7 +261,7 @@
                 <div class="col-2 align-self-end">
                     <!-- <button type='submit' value="Create" class="btn btn-info btn-block"> -->
                     <!-- <input type="submit" value="Create" class="btn btn-info btn-block "> -->
-                    <input type="submit" value="Создать" class='btn btn-block btn-outline-dark'>
+                    <input type="submit" value="Создать" class='btn btn-block btn-outline-dark' style="width:fit-content">
                 </div>
             </div>
     </form>
