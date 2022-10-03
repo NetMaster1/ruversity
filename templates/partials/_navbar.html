@@ -29,8 +29,8 @@
 
 {% if user.is_authenticated %}
 
-Добро пожаловать: {{request.user.first_name}} {{request.user.last_name}}
-&nbsp;&nbsp;
+<!-- Добро пожаловать: {{request.user.first_name}} {{request.user.last_name}}
+&nbsp;&nbsp; -->
   
   {% if 'main_page' in request.path %}
   <a class="btn btn-outline-dark mr-1 active" href="{% url 'main_page' %}" role=’button’>Каталог</a>
