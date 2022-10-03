@@ -14,6 +14,7 @@ body {
   /*background-color: blueviolet;*/
   position: relative;
 }
+
 h3 {
   font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
   font-weight: 300;
@@ -41,6 +42,7 @@ h5 {
   display: inline;
   width: 20vw;
 }
+
 .card_menu {
   display: inline;
   width: 35vw;
@@ -48,13 +50,24 @@ h5 {
   max-height: fit-content;
 }
 
+.round_menu {
+  display: inline;
+  width: min-width;
+}
+
+iframe {
+  aspect-ratio: 16/9;
+}
+
 @media(max-width: 575px) {
   body {
     font-size: 0.7rem;
-    min-width:fit-content;
+    min-width: fit-content;
   }
 
-  h3, h4, h5 {
+  h3,
+  h4,
+  h5 {
     font-size: 1rem;
     font-weight: 0;
   }
@@ -70,18 +83,20 @@ h5 {
 
   .mobile .btn {
     margin: 0.2rem;
-    width: 9rem;
+    width: 20rem;
   }
 
   .card_subject {
     display: block;
     width: 98vw;
   }
+
   .card_menu {
     margin-top: 2vh;
     display: block;
     width: 98vw;
   }
+
 }
 
 .menu_font {

@@ -48,7 +48,7 @@
                       <label for="description">Редактировать вашу проф. подготовку</label>
                     </div>
                     <div class="col">
-                      <textarea class='form-control' id="background" rows='3' minlength='120' maxlength='180' name="background" required
+                      <textarea class='form-control' id="background" rows='3' minlength='180' maxlength='360' name="background" required
                         value = '{{author.background}}'></textarea>
                     </div>
                   </div>
@@ -89,7 +89,7 @@
     <div class="col-6">
       {% if author.photo %}
         <!-- <figure class="image is-1by1"> -->
-          <img src="{{author.photo.url}}" alt="Placeholder image" class='rounded-circle mx-auto d-block' style='width: 15rem; height: 15rem;' >
+          <img src="{{author.photo.url}}" alt="Placeholder image" class='rounded-circle mx-auto d-block author_photo' style='width: 15rem;' >
         <!-- </figure> -->
       {% else %}
       no photo
