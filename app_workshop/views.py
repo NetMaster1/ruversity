@@ -184,7 +184,8 @@ def create_new_subject(request):
                 ratio = wid / hgt
                 if ratio < 1.5 or ratio > 1.8:
                     new_subject.delete()
-                    messages.error(request, 'Image has inproper ratio. Use ration of 1.7 .')
+                    messages.error(request, 'Некорректное соотношение сторон. Используйте отношение длины изображения к его высоте равное 1.7.')
+                    # messages.error(request, 'Image has inproper ratio. Use ration of 1.7 .')
                     return redirect('create_new_subject')
 
                 else:
@@ -194,7 +195,8 @@ def create_new_subject(request):
                     }
                     return redirect('studio')
             else:
-                messages.error(request, 'File has inproper format. Load jpg, jpeg, png or bmp file')
+                # messages.error(request, 'File has inproper format. Load jpg, jpeg, png or bmp file')
+                messages.error(request, 'Некорректный формат файла. Используйте файл в формате jpg, jpeg, png или bmp.')
                 return redirect('create_new_subject')
 
         else:
@@ -226,7 +228,8 @@ def edit_subject(request, subject_id):
                         hgt = img.shape[0]
                         ratio = wid / hgt
                         if ratio < 1.5 or ratio > 1.8:
-                            messages.error(request, 'Image has inproper ratio. Use ration of 1.7 .')
+                            # messages.error(request, 'Image has inproper ratio. Use ration of 1.7 .')
+                            messages.error(request, 'Некорректное соотношение сторон. Используйте отношение длины изображения к его высоте равное 1.7.')
                             temp_image.delete()
                             return redirect('edit_subject', subject_id)
 
