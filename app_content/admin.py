@@ -1,5 +1,5 @@
 from django.contrib import admin
-from . models import MainSubject, Transaction, Price, Category, Language, Rating, Keyword, Lecture, Section, Badword, Credit_card, Credit_card_type, Paypal, Main_method, Cart, Bank_account, DiscountOn, Question, Answer
+from . models import MainSubject, Transaction, Price, Category, Language, Rating, Keyword, Lecture, Section, Badword, Credit_card, Credit_card_type, Paypal, Main_method, Cart, Bank_account, DiscountOn, Question, Answer, AdditionalMaterialLink
 
 
 class MainSubjectAdmin(admin.ModelAdmin):
@@ -65,13 +65,14 @@ class Bank_accountAdmin(admin.ModelAdmin):
 class DiscountOnAdmin(admin.ModelAdmin):
     list_display = ('id', 'discount_on')
 
-
 class QuestionAdmin(admin.ModelAdmin):
     list_display = ('id', 'author', 'content')
 
-
 class AnswerAdmin(admin.ModelAdmin):
     list_display = ('id', 'content')
+
+class AdditionalMaterialLinkAdmin(admin.ModelAdmin):
+    list_display = ('id', 'lecture', 'url_link')
 
 admin.site.register(MainSubject, MainSubjectAdmin)
 admin.site.register(Transaction, TransactionAdmin)
@@ -92,4 +93,5 @@ admin.site.register(Bank_account, Bank_accountAdmin)
 admin.site.register(DiscountOn, DiscountOnAdmin)
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(Answer, AnswerAdmin)
+admin.site.register(AdditionalMaterialLink, AdditionalMaterialLinkAdmin)
 

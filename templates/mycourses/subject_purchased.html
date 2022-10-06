@@ -113,18 +113,31 @@
                 {% if lecture.section == section %}
                     <div id="section{{section.id}}" class='collapse'>
                         <li class="list-group-item" id='lecture'>
+                        <div class="row">
+                            <div class="col-9">
+                       
                             <a href="{% url 'video' subject.id lecture.id %}" target="_blank" id='a_id'>{{lecture.title}} {{lecture.length}} мин. </a>
+                        
+                        </div>
+                            <div class="col-3">
+                            {% for item in lecture.additionalmateriallink_set.all %}
+                            <a href="{{item.url_link }}" target="_blank">Ссылка на код</a>
+                            {% endfor %}
+                            </div>
                         </li>
+                        </div>
                     </div>
                 {% endif %}
             {% endfor%}
                 
     {% endfor %}
     </div>
+
 </div>
 </div>
 
 
+<div class="container">
 <div class="row mt-2 ml-auto">
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item " role="presentation">
@@ -174,8 +187,8 @@
 
                     {% endfor %}
             </div>
+            </div>
         </div>
-    </div>
    
 
     <div class="tab-pane fade" id="questions" role="tabpanel" aria-labelledby="profile-tab">
@@ -240,36 +253,39 @@
         </div>
     </div>
 </div>
+</div>
 
-
-
-<div class="container">
 {% if review.author != request.user and review.subject != subject %}
+<div class="container">
 <div class="row mt-3">
-    <div class="col">
-    <div class="row">    
-    <form action="{% url 'review' subject.id %}" method="POST">
+
+    <div class="row">
+        <form action="{% url 'review' subject.id %}" method="POST">
             {% csrf_token %}
-            <label for="content"><h5>Make a review, please.sdfsdf</h5></label>
+            <!-- <label for="content"><h5>Make a review, please</h5></label> -->
+            <label for="content">
+                <h5>Ваше мнение очень важно для нас. Оставьте, пожалуйста, отзыв.</h5>
+            </label>
     </div>
-    
+
     <div class="form-group">
         <!-- <input type="textarea" id="contetnt" name="content" style="width:700px; height:100px;"><br>   -->
         <!-- <input type="textarea" id="contetnt" name="content" rows="10" cols="30"> -->
         <textarea name="content" class='form-control' rows="5" cols="50" required></textarea>
-        </div>
+    </div>
     <div class="row p-2">
         <div class="col-2">
-            <input type="submit" value="Post the Review" class='btn btn-sm btn-block btn-outline-dark'>
+            <!-- <input type="submit" value="Post the Review" class='btn btn-sm btn-block btn-outline-dark'> -->
+            <input type="submit" value="Отправить" class='btn btn-sm btn-block btn-outline-dark'>
             <!-- <button type='submit'>Load</button><br> -->
         </div>
     </div>
     </form>
 </div>
 </div>
-</div>
-</div>
-
-
 {% endif %}
+
+
+
+
 {% endblock %}

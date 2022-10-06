@@ -1,3 +1,4 @@
+from unittest.util import _MAX_LENGTH
 from django.db import models
 from django.contrib.auth.models import User
 from datetime import datetime, date
@@ -100,6 +101,16 @@ class Lecture(models.Model):
     length = models.DecimalField(max_digits=5, decimal_places=2, default=0)
     size_mb = models.DecimalField(max_digits=5, decimal_places=2, default=0)
     enumerator = models.IntegerField(null=True)
+
+    # def get_absolute_file_upload_url(self):
+    #     return MEDIA_URL + self.file_upload.url
+
+    def __int__(self):
+        return self.id
+
+class AdditionalMaterialLink(models.Model):
+    lecture = models.ForeignKey(Lecture, on_delete=models.CASCADE, null=True)
+    url_link = models.URLField(null=True)
 
     # def get_absolute_file_upload_url(self):
     #     return MEDIA_URL + self.file_upload.url

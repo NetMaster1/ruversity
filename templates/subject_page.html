@@ -4,11 +4,11 @@
 
 <div class="container">
   
-<div class="row mt-1">
+<div class="row">
 
     <!-- <div class="col-4 m-1"> -->
-    <div class="card_subject">
-        <div class="card">
+<div class="card_subject">
+    <div class="card">
 
             <div class="card-header" style='min-height:5rem' >
             <h4>{{subject.title}}</h4>
@@ -102,7 +102,7 @@
         <h5 class=”text-left”>Вы уже приобрели данный курс. Перейдите в раздел "Мои покупки"<h5>
     </div>
 {% else %}
-</div>
+
       
     <div class="card-footer">  
                 <div class="col">
@@ -140,6 +140,7 @@
 {% endif %}
 </div>
 </div>
+</div>
 <!-- ===================================================================== -->
 
 <div class="card_menu">
@@ -170,35 +171,36 @@
            
         </div>
 </div>
+</div>
 
-
+<!-- ============================================Reviews========================================= -->
 <div class="row mt-2 pl-2"> .
     <h3>Отзывы</h3>
 </div>
 
-    <div class="row mt-1">
-        <div class="col-11">
-        {% for review in reviews %}
-           <div class="row" style=" height: 6rem;">
-                <div class="col-2 m-2 border-top">
-                    <strong>{{review.author}}</strong>
-                </div>
-
-                <div class="col-7 m-2 border-top">
-                {{review.content}}
-                </div>
-                <div class="col-2 m-2 border-top">
-                    {{review.date_posted}}
-                </div>
+<div class="row mt-1 mb-5">
+<div class="col-11">
+    {% for review in reviews %}
+        <div class="row" style=" height: 6rem;">
+            <div class="col-2 m-2 border-top">
+                <strong>{{review.author}}</strong>
             </div>
-        {% endfor %}
-        
-    </div>
-    </div>
+
+            <div class="col-7 m-2 border-top">
+            {{review.content}}
+            </div>
+            <div class="col-2 m-2 border-top">
+                {{review.date_posted}}
+            </div>
+        </div>
+    {% endfor %}
+    
+</div>
+</div>
 
 
 </div>
-</div>
+
 
 
 {% endblock %}

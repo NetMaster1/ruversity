@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from app_content.models import MainSubject, Section, Lecture, Price, Category, Language, Transaction, Badword, Credit_card, Credit_card_type, Paypal, Main_method, Bank_account, TempImage, Question, Answer
+from app_content.models import MainSubject, Section, Lecture, AdditionalMaterialLink, Price, Category, Language, Transaction, Badword, Credit_card, Credit_card_type, Paypal, Main_method, Bank_account, TempImage, Question, Answer
 from .models import Country
 from app_accounts.models import Author
 
@@ -419,6 +419,8 @@ def create_new_lecture(request, subject_id, section_id):
     if Lecture.objects.filter(subject=subject, enumerator=enumerator).exists():
         messages.error(request, 'Лекция с таким порядковым номером уже существует. Поменяйте номер лекции.')
         return redirect('edit_section', subject_id, section_id)
+
+    url_link = request.POST.get('url_link', False)
     subtitle_file = request.POST.get('subtitle_file', False)
     # translation_file = request.FILES['translation_file']
     author = request.user
@@ -457,12 +459,19 @@ def create_new_lecture(request, subject_id, section_id):
         enumerator=enumerator
     )
 
+    if url_link:
+        url_link = AdditionalMaterialLink.objects.create(
+                lecture=lecture,
+                url_link=url_link,
+            )
+
     lectures = Lecture.objects.filter(subject=subject)
     lectures = lectures.filter(section=section)
     context = {
         'subject': subject,
         'section': section,
         'lectures': lectures,
+        'url_link': url_link,
     }
     return redirect('edit_section', subject_id, section_id)
 
@@ -479,6 +488,7 @@ def edit_lecture(request, lecture_id):
                 if request.method == "POST":
                     # title = request.POST['title']
                     # enumerator = request.POST['enumerator']
+                    url_link = request.POST.get('url_link', False)
                     video_file = request.FILES['video_file']
                     subtitle_file = request.POST.get('subtitle_file', False)
                     # translation_file = request.FILES['translation_file']
@@ -492,11 +502,25 @@ def edit_lecture(request, lecture_id):
                         size_mbytes = size_bytes / 1024 / 1024
                         lecture.size_mbytes = size_mbytes
                         lecture.save()
-                        if lecture.size_mb > 300:
+                        if lecture.size_mb > 500:
                             lecture.delete()
-                            messages.error(request, 'Your file is too large.')
+                            messages.error(request, 'Видео файл слишком большого размера. Лекция удалена. Создайте ее еще раз с файлом меньшего размера.')
                             return redirect('edit_section', subject.id, section.id)
                         else:
+                            if url_link:
+                                if AdditionalMaterialLink.objects.filter(lecture=lecture).exists():
+                                    item=AdditionalMaterialLink.objects.get(lecture=lecture)
+                                    item.url_link=url_link
+                                    item.save()
+                                else:
+                                    AdditionalMaterialLink.objects.create(
+                                        lecture=lecture,
+                                        url_link=url_link
+                                    )
+                            else:
+                                if AdditionalMaterialLink.objects.filter(lecture=lecture).exists():
+                                    item=AdditionalMaterialLink.objects.get(lecture=lecture)
+                                    item.delete()
                             lectures = Lecture.objects.filter(subject=subject)
                             context = {
                                 'lectures': lectures,
@@ -505,7 +529,8 @@ def edit_lecture(request, lecture_id):
                             }
                             return redirect('edit_section', subject.id, section.id)
                     else:
-                        messages.error(request, 'File has inproper format. Load mp4 file')
+                        #messages.error(request, 'File has inproper format. Load mp4 file')
+                        messages.error(request, 'Некорректный формат файла. Загрузите файл в формате mp4.')
                         return redirect('edit_section', subject.id, section.id)
                 else:
                     return redirect('edit_section', subject.id, section.id)
