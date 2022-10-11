@@ -39,12 +39,12 @@ h5 {
 }
 
 .card_subject {
-  display: inline;
+  display: inline-block;
   width: 20vw;
 }
 
 .card_menu {
-  display: inline;
+  display: inline-block;
   width: 35vw;
   min-height: fit-content;
   max-height: fit-content;
@@ -630,8 +630,8 @@ select>option {
   left: 20vw;
   border-radius: 0.5%;
   /* position: absolute; */
-  width: 1000px;
-  height: 380px;
+  width: 62rem;
+  height: fit-content;
   background-color: white;
   /* overflow-y: scroll; */
   /* overflow-y: auto; */
