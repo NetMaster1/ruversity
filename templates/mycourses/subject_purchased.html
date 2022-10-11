@@ -117,12 +117,19 @@
                             <div class="col-9">
                        
                             <a href="{% url 'video' subject.id lecture.id %}" target="_blank" id='a_id'>{{lecture.title}} {{lecture.length}} мин. </a>
-                        
-                        </div>
+                            </div>
+
                             <div class="col-3">
+                                <div class="row">
                             {% for item in lecture.additionalmateriallink_set.all %}
                             <a href="{{item.url_link }}" target="_blank">Ссылка на код</a>
                             {% endfor %}
+                                    </div>
+                                <div class="row">
+                            {% for item in lecture.additionalmaterialfile_set.all %}
+                            <a href="{{item.aditional_file }}">Загрузите файл</a>
+                            {% endfor %}
+                                    </div>
                             </div>
                         </li>
                         </div>

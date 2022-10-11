@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from app_content.models import MainSubject, Section, Lecture, AdditionalMaterialLink, Price, Category, Language, Transaction, Badword, Credit_card, Credit_card_type, Paypal, Main_method, Bank_account, TempImage, Question, Answer
+from app_content.models import MainSubject, Section, Lecture, AdditionalMaterialLink, AdditionalMaterialFile, Price, Category, Language, Transaction, Badword, Credit_card, Credit_card_type, Paypal, Main_method, Bank_account, TempImage, Question, Answer
 from .models import Country
 from app_accounts.models import Author
 
@@ -424,6 +424,7 @@ def create_new_lecture(request, subject_id, section_id):
         return redirect('edit_section', subject_id, section_id)
 
     url_link = request.POST.get('url_link', False)
+    additional_file = request.FILES.get('additional_file', False)
     subtitle_file = request.POST.get('subtitle_file', False)
     # translation_file = request.FILES['translation_file']
     author = request.user
@@ -463,10 +464,15 @@ def create_new_lecture(request, subject_id, section_id):
     )
 
     if url_link:
-        url_link = AdditionalMaterialLink.objects.create(
+        AdditionalMaterialLink.objects.create(
                 lecture=lecture,
                 url_link=url_link,
             )
+    if additional_file:
+        AdditionalMaterialFile.objects.create(
+            lecture=lecture,
+            additional_file=additional_file
+        )
 
     lectures = Lecture.objects.filter(subject=subject)
     lectures = lectures.filter(section=section)
@@ -474,7 +480,6 @@ def create_new_lecture(request, subject_id, section_id):
         'subject': subject,
         'section': section,
         'lectures': lectures,
-        'url_link': url_link,
     }
     return redirect('edit_section', subject_id, section_id)
 
@@ -491,6 +496,7 @@ def edit_lecture(request, lecture_id):
                 if request.method == "POST":
                     # title = request.POST['title']
                     # enumerator = request.POST['enumerator']
+                    additional_file = request.FILES.get('additional_file', False)
                     url_link = request.POST.get('url_link', False)
                     video_file = request.FILES['video_file']
                     subtitle_file = request.POST.get('subtitle_file', False)
@@ -524,6 +530,22 @@ def edit_lecture(request, lecture_id):
                                 if AdditionalMaterialLink.objects.filter(lecture=lecture).exists():
                                     item=AdditionalMaterialLink.objects.get(lecture=lecture)
                                     item.delete()
+                         
+                            if additional_file:
+                                if AdditionalMaterialFile.objects.filter(lecture=lecture).exists():
+                                    item=AdditionalMaterialFile.objects.get(lecture=lecture)
+                                    item.additional_file=additional_file
+                                    item.save()
+                                else:
+                                    AdditionalMaterialFile.objects.create(
+                                        lecture=lecture,
+                                        additional_file=additional_file
+                                    )
+                            else:
+                                if AdditionalMaterialFile.objects.filter(lecture=lecture).exists():
+                                    item=AdditionalMaterialFile.objects.get(lecture=lecture)
+                                    item.delete()
+                                    
                             lectures = Lecture.objects.filter(subject=subject)
                             context = {
                                 'lectures': lectures,

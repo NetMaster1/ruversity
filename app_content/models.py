@@ -118,6 +118,18 @@ class AdditionalMaterialLink(models.Model):
     def __int__(self):
         return self.id
 
+class AdditionalMaterialFile(models.Model):
+    lecture = models.ForeignKey(Lecture, on_delete=models.CASCADE, null=True)
+    additional_file = models.FileField(upload_to='uploads/', null=True)
+
+    # def get_absolute_file_upload_url(self):
+    #     return MEDIA_URL + self.file_upload.url
+
+    def __int__(self):
+        return self.id
+
+
+
 class Transaction(models.Model):
     date_created = models.DateField(auto_now_add=True)
     money_paid = models.BooleanField(default=False)#check if money have been paid
