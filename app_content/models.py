@@ -79,19 +79,19 @@ class Section(models.Model):
         return self.id
 
 class Lecture(models.Model):
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=100, null=True)
     date_posted = models.DateTimeField(auto_now_add=True)
     subject = models.ForeignKey(MainSubject, on_delete=models.CASCADE)
-    section = models.ForeignKey(Section, on_delete=models.CASCADE)
+    section = models.ForeignKey(Section, on_delete=models.CASCADE, null=True)
     video_file = models.FileField(upload_to='uploads', null=True)
-    video_uuid = models.UUIDField(default=uuid.uuid4)
-    dash_url = models.CharField(max_length=512, null=True)
-    hls_url = models.CharField(max_length=512, null=True)
-    widevine_url = models.CharField(max_length=512, null=True)
-    playready_url = models.CharField(max_length=512, null=True)
-    fairplay_url = models.CharField(max_length=512, null=True)
-    fairplay_certificate_url = models.CharField(max_length=512, null=True)
-    processing_state = models.DecimalField(max_digits=1,decimal_places=0,default=0)
+    video_uuid = models.UUIDField(default=uuid.uuid4)#CDN
+    dash_url = models.CharField(max_length=512, null=True)#CDN
+    hls_url = models.CharField(max_length=512, null=True)#CDN
+    widevine_url = models.CharField(max_length=512, null=True)#CDN
+    playready_url = models.CharField(max_length=512, null=True)#CDN
+    fairplay_url = models.CharField(max_length=512, null=True)#CDN
+    fairplay_certificate_url = models.CharField(max_length=512, null=True)#CDN
+    processing_state = models.DecimalField(max_digits=1,decimal_places=0,default=0)#CDN
     subtitle_file = models.FileField(upload_to='uploads', null=True)
     translation_file = models.FileField(upload_to='uploads', null=True)
     # author = models.ForeignKey(User, on_delete=models.DO_NOTHING)

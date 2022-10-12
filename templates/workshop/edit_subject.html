@@ -31,7 +31,7 @@
         <div class="col">{{question.date_posted}}</div>
         <div class="col">
             <button class="btn btn-outline-dark btn-block" data-bs-toggle="modal" data-bs-target="#answerModal">
-                Answer
+                Ответ
             </button>
         </div>
         </div>
@@ -39,7 +39,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class='modal-title'>Change your name:</h5>
+                    <h5 class='modal-title'>Ваше имя:</h5>
                     <button class='close' data-bs-dismiss='modal'>&times;</button>
                 </div>
                 <div class="modal-body">
@@ -47,7 +47,7 @@
                     <form action="{% url 'answer' subject.id question.id %}" method="POST">
                         {% csrf_token %}
                         <div class="form-group">
-                            <label for="answer">Enter your answer:</label>
+                            <label for="answer">Напишите ваш ответ:</label>
                             <input class='form-control' type="text" id="answer" name="answer" maxlength='50'
                                 required>
                         </div>
@@ -107,7 +107,16 @@
     </a>
         </div>
 
+    <div class="card_menu">
+        <a href="{% url 'upload_multiple_files' subject.id %}" style="text-decoration: none">
+            <input type="submit" value="Загрузить видеофайлы" class="btn btn-outline-dark btn-block"
+                style="width:min-content">
+        </a>
     </div>
+    </div>
+
+
+
    
 
 <!-- ====================================================== -->

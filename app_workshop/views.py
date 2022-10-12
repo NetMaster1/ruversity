@@ -312,6 +312,48 @@ def edit_subject(request, subject_id):
     else:
         return redirect('login')
 
+def upload_multiple_files (request, subject_id):
+    if request.user.is_authenticated: 
+        subject=MainSubject.objects.get(id=subject_id)
+        lectures=Lecture.objects.filter(subject=subject)
+        if request.user != subject.author:
+            logout(request)
+            return redirect('login')
+        if request.method == "POST":
+            author = request.user
+            files= request.FILES.getlist ('multiple_files')
+            for file in files:
+                lecture = Lecture.objects.create(
+                    #title=title,
+                    video_file=file,
+                    #subtitle_file=subtitle_file,
+                    # translation_file=translation_file,
+                    author=author,
+                    #section=section,
+                    subject=subject,
+                    #free=free_access,
+                    #length=length,
+                    #size_mb=size_mb,
+                    #enumerator=enumerator
+                )
+                print('===================')
+                print(file)
+                print(lecture.video_file)
+                print(lecture)
+                print(subject)
+            return redirect ('upload_multiple_files', subject.id)
+    
+        else:
+            context = {
+                'subject': subject,
+                'lectures': lectures,
+            }
+            return render(request, 'workshop/upload_multiple_files.html', context)
+
+
+    logout(request)
+    return redirect('login')
+
 def delete_subject(request, subject_id):
     if request.user.is_authenticated:
         subject = MainSubject.objects.get(id=subject_id)

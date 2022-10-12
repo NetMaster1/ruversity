@@ -30,5 +30,6 @@ urlpatterns = [
     path('transactions', views.transactions, name='transactions'),
     path('GeneratePDF', views.GeneratePDF.as_view(), name="GeneratePDF"),
 #     path('question_answer', views.question_answer, name="question_answer"),
-    path('answer/<int:subject_id>/<int:question_id>', views.answer, name="answer")
+    path('answer/<int:subject_id>/<int:question_id>', views.answer, name="answer"),
+    path('upload_multiple_files/<int:subject_id>', views.upload_multiple_files, name="upload_multiple_files")
 ]
