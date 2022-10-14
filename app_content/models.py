@@ -64,7 +64,7 @@ class MainSubject(models.Model):
     checked = models.BooleanField(default=False)
     blocked = models.BooleanField(default=False)
     discount_programs = models.BooleanField(default=True)
-    length = models.DecimalField(max_digits=5, decimal_places=2, default=0)
+    length = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
     def __int__(self):
         return self.id
