@@ -71,7 +71,7 @@ class MainSubject(models.Model):
 
 class Section(models.Model):
     course = models.ForeignKey(MainSubject, on_delete=models.CASCADE)
-    length = models.DecimalField(max_digits=5, decimal_places=2, default=0)
+    length = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     title = models.CharField(max_length=100)
     enumerator = models.IntegerField(null=True)
 
@@ -98,8 +98,8 @@ class Lecture(models.Model):
     author = models.ForeignKey(User, on_delete=models.SET_DEFAULT, null=True, default=1)
     blocked = models.BooleanField(default=False)
     free = models.BooleanField(default=False)
-    length = models.DecimalField(max_digits=5, decimal_places=2, default=0)
-    size_mb = models.DecimalField(max_digits=5, decimal_places=2, default=0)
+    length = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    size_mb = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     enumerator = models.IntegerField(null=True)
 
     # def get_absolute_file_upload_url(self):
@@ -117,6 +117,18 @@ class AdditionalMaterialLink(models.Model):
 
     def __int__(self):
         return self.id
+
+class AdditionalMaterialFile(models.Model):
+    lecture = models.ForeignKey(Lecture, on_delete=models.CASCADE, null=True)
+    additional_file = models.FileField(upload_to='uploads/', null=True)
+
+    # def get_absolute_file_upload_url(self):
+    #     return MEDIA_URL + self.file_upload.url
+
+    def __int__(self):
+        return self.id
+
+
 
 class Transaction(models.Model):
     date_created = models.DateField(auto_now_add=True)
