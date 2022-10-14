@@ -66,7 +66,7 @@
             {% else %}
             <div class="row">
                 <div class="col">
-                <strong>Rating: </strong>
+                <strong>Рейтинг: </strong>
                 {{subject.av_rating}}
                 <div class="stars-outer">
                     <div class="stars-inner" style="width: {{subject.percent}}"></div>
@@ -95,7 +95,7 @@
         </div>
             .
             <!-- =============================================================== -->
-    </div> 
+</div> 
 </div>
 </div>
 
@@ -106,9 +106,10 @@
         </div>
 
     {% for section in sections %}
-            <div class="section_1" >
+        <div class="section_1" >
             <a id='a_id_section' href='#' <h5 data-bs-toggle="collapse" data-bs-target='#section{{section.id}}'>{{section.title}}. Длительность: {{section.length}} min </h5></a>
-            </div>
+        </div>
+
             {% for lecture in lectures %}
                 {% if lecture.section == section %}
                     <div id="section{{section.id}}" class='collapse'>
@@ -132,13 +133,12 @@
                                     </div>
                             </div>
                         </li>
-                        </div>
                     </div>
                 {% endif %}
             {% endfor%}
-                
     {% endfor %}
-    </div>
+    </div> 
+</div>
 
 </div>
 </div>

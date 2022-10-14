@@ -14,7 +14,7 @@ from django.core.mail import send_mail
 
 def mycourses(request):
     if request.user.is_authenticated:
-        my_courses = Transaction.objects.filter(buyer=request.user)
+        my_courses = Transaction.objects.filter(buyer=request.user).order_by('-date_created')
 
         paginator = Paginator(my_courses, 8)
         page = request.GET.get('page')
