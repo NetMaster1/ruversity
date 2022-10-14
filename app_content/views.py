@@ -47,8 +47,8 @@ def index(request):
 
 def subject(request, subject_id):
     subject = MainSubject.objects.get(id=subject_id)
-    lectures = Lecture.objects.filter(subject=subject)
-    sections = Section.objects.filter(course=subject)
+    lectures = Lecture.objects.filter(subject=subject).order_by('enumerator')
+    sections = Section.objects.filter(course=subject).order_by('enumerator')
     reviews = Review.objects.filter(subject=subject_id)
     discount_time = DiscountOn.objects.get(id=1)
     if request.user.is_authenticated:
