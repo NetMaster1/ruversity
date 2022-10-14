@@ -31,5 +31,7 @@ urlpatterns = [
     path('GeneratePDF', views.GeneratePDF.as_view(), name="GeneratePDF"),
 #     path('question_answer', views.question_answer, name="question_answer"),
     path('answer/<int:subject_id>/<int:question_id>', views.answer, name="answer"),
-    path('upload_multiple_files/<int:subject_id>', views.upload_multiple_files, name="upload_multiple_files")
+    path('upload_multiple_files/<int:subject_id>', views.upload_multiple_files, name="upload_multiple_files"),
+    path('select_lecture_to_update/<int:subject_id>/<int:section_id>', views.select_lecture_to_update, name="select_lecture_to_update"),
+    path('lecture_update/<int:lecture_id>/<subject_id>/<section_id>', views.lecture_update, name="lecture_update")
 ]

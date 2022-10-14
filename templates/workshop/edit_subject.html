@@ -244,8 +244,15 @@
         </div>
     </div>
 </div>
-
 </div>
+<div class="row">
+    <div class="col-5">
+        <a href="{% url 'edit_section' %}">Вводить лекции по-очередно.</a>
+     </div>
+    <div class="col-5">
+        <a href="{% url 'upload_multiple_files' subject.id %}">Загрузить сразу несколько видеофайлов</a> </div>
+</div>
+
 <!-- ===================Create New Section Box============================== -->
 <div class="row m-auto border rounded bg-light text-center">
 <h3>Разделы</h3>

@@ -621,6 +621,14 @@ select>option {
 
 }
 
+.video_library
+{
+  width: 20rem;
+  border: 1px solid #aaaaaa;
+  margin-top: 1rem;
+  /*background-color: brown;*/
+}
+
 .lecture_box {
   padding: 1rem;
   margin: auto;
@@ -686,3 +694,10 @@ select>option {
   visibility: hidden;*/
   z-index: 1;
 }
+
+.video_library {
+  background-color: grey;
+  margin-top: 2px;
+  border-radius: 5px;
+  border-color: grey;
+  border-width: 2px;

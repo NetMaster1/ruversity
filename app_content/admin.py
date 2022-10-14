@@ -9,7 +9,7 @@ class SectionAdmin(admin.ModelAdmin):
     list_display = ('id', 'title', 'course')
 
 class LectureAdmin(admin.ModelAdmin):
-    list_display = ('id', 'subject', 'title', 'video_file', 'author', 'date_posted')
+    list_display = ('id', 'subject', 'title', 'video_file', 'author', 'date_posted', 'size_mb', 'length')
 
 class TransactionAdmin(admin.ModelAdmin):
     list_display = ('id', 'date_created', 'course', 'author', 'money_paid', 'payment_id', 'date_paid', 'paid_amount', 'buyer', 'money_transfer', 'date_transfer', 'transferred_amount')

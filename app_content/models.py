@@ -98,8 +98,8 @@ class Lecture(models.Model):
     author = models.ForeignKey(User, on_delete=models.SET_DEFAULT, null=True, default=1)
     blocked = models.BooleanField(default=False)
     free = models.BooleanField(default=False)
-    length = models.DecimalField(max_digits=5, decimal_places=2, default=0)
-    size_mb = models.DecimalField(max_digits=5, decimal_places=2, default=0)
+    length = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    size_mb = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     enumerator = models.IntegerField(null=True)
 
     # def get_absolute_file_upload_url(self):

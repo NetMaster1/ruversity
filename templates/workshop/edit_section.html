@@ -50,12 +50,11 @@
     <h3>Лекции</h3>
 </div>
 
-<!-- =============Create New Lecture Box============================================ -->
-     
-              
+<!-- =============Create New Lecture Box============================================ -->            
     <div class="row m-auto">
         <h3>Создать новую лекцию</h3>
     </div>
+<div class="input-form">
     <div class="row m-auto border rounded">
   
     <form action="{% url 'create_new_lecture' subject.id section.id %}" method="POST" enctype="multipart/form-data">
@@ -79,7 +78,7 @@
                 </label>
             </div>
             <div class="col-4">
-                    <input class='form-control' type="text" id="title" name="title" placeholder="Название лекции" required>
+                    <input type="text" class='form-control i-1'  id="title" name="title" placeholder="Название лекции" required>
             </div>
         </div>
         <div class="form-row mt-1 mb-1">
@@ -89,7 +88,7 @@
                 </label>
             </div>
             <div class="col-4">
-                <input type="file" class="form-control" id="video_file" name="video_file" required>
+                <input type="file" class="form-control i-2" name="video_file" required>
             </div>
         </div>
         <div class="form-row mt-1 mb-1">
@@ -150,8 +149,22 @@
         </div>                               
 </div>
     </form>
+</div>
     <br>
 <!-- ==============End of Create New Lecture Box================================        -->
+
+{% for item in lectures%}
+<form action="{% url 'select_lecture_to_update' subject.id section.id %}" method="POST" >
+        {% csrf_token %}
+    <div class="video_lib">{{item.video_file.url }}</div>
+    <input type="text" name='lecture_id' value="{{item.id}}">
+    <button type="submit" class="b-1">Выбрать лекцию</button>
+</form>
+{% endfor %}
+ 
+    
+
+
 
 <!-- ====================Edit Lecture Box========================================== -->
     <h3>Редактирование лекций</h3>
@@ -312,6 +325,11 @@
     const lectures = document.querySelectorAll('#lectureModal');
     const titles = document.querySelectorAll('#lecture_title');
     const buttons = document.querySelectorAll('.btn-close');
+    const video_lib = document.querySelectorAll('.video_lib');
+    const b_1 = document.querySelectorAll('.b-1');
+    const i_1 = document.querySelector('.i-1');
+    const i_2 = document.querySelector('.i-2');
+  
 
         for (let i = 0; i < titles.length; i++) {
             titles[i].addEventListener('click', e => {
@@ -324,6 +342,30 @@
                 lectures[i].classList.remove('openModal')
             })
         }
+       
+
+        for (let i = 0; i < video_lib.length; i++) {
+                b_1[i].addEventListener('click', e => {
+                    let data=video_lib[i].innerHTML;
+                    i_1.value=data;
+                })
+            }
+        for (let i = 0; i < video_lib.length; i++) {
+            b_1[i].addEventListener('click', e => {
+                let data = video_lib[i].url;
+                i_2.file = data;
+            })
+        }
+        
+        //document.querySelector('.b-1').addEventListener('click', () => {
+        //        let data = document.querySelector('.video_lib').innerHTML;
+        //        document.querySelector('.i-1').value = data;
+        //    })
+
+ 
+ 
+
+        
     console.log('end OK')
 </script>
 

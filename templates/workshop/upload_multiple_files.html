@@ -31,7 +31,10 @@
 {{subject.title}} <br>
 
 {% for item in lectures %}
-{{item.video_file}} <br>
+<div class="video_library" draggable="True" mb-2>
+{{item.video_file}}
+</div>
 {% endfor %}
+
 </div>
 {% endblock %}

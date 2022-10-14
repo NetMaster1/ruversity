@@ -438,6 +438,36 @@ def delete_section (request, subject_id, section_id):
     else:
         return redirect('login')
 
+def select_lecture_to_update (request, subject_id, section_id):
+    subject=MainSubject.objects.get(id=subject_id)
+    section=Section.objects.get(id=section_id)
+    if request.method == "POST":
+        lecture_id=request.POST ['lecture_id']
+        lecture=Lecture.objects.get(id=lecture_id )
+    return redirect ('lecture_update', lecture.id, subject.id, section.id)
+
+def lecture_update (request, lecture_id, subject_id, section_id):
+    subject=MainSubject.objects.get(id=subject_id)
+    section=Section.objects.get(id=section_id)
+    lecture=Lecture.objects.get(id=lecture_id)
+    if request.method == "POST":
+        enumerator = request.POST['enumerator']
+        title = request.POST['title']
+        url_link = request.POST.get('url_link', False)
+        additional_file = request.FILES.get('additional_file', False)
+        subtitle_file = request.POST.get('subtitle_file', False)
+        if Lecture.objects.filter(subject=subject, enumerator=enumerator).exists():
+            messages.error(request, 'Лекция с таким порядковым номером уже существует. Поменяйте номер лекции.')
+            return redirect('edit_section', subject_id, section_id)
+        lecture.subject=subject
+        lecture.section=section
+        lecture.title=title
+        lecture.save()
+        return redirect ('edit_section', subject.id, section.id)
+    else:
+        return redirect ('edit_section', subject.id, section.id)
+
+
 def create_new_lecture(request, subject_id, section_id):
     # Initial sanity checks
     if not request.user.is_authenticated:
