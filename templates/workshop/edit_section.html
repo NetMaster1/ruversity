@@ -9,56 +9,105 @@
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{% url 'studio' %}">Творческая студия</a></li>
                     <li class="breadcrumb-item"><a href="{% url 'edit_subject' subject.id %}">Редактирование курса</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Редактирование раздела</li>
+                    <li class="breadcrumb-item"><a href="{% url 'edit_section' subject.id section.id %}">Разделы</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Лекции</li>
                 </ol>
             </nav>
         </div>
-<div class="row m-auto"> 
-    <h3>Редактировать Раздел {{section.enumerator}}: {{section.title}}</h3> 
+<div class="row m-auto">
+    <h3>Редактировать Раздел {{section.enumerator}}: {{section.title}}</h3>
 </div>
+
 <div class="row m-auto">
     <form action="{% url 'edit_section' subject.id section.id %}" method="POST">
         {% csrf_token %}
-    
+
         <div class="form-row">
             <div class="col-3">
-                <input class='form-control' type="number" id="enumerator" name="enumerator" placeholder="Изменить порядковый раздела" required>
+                <input class='form-control' type="number" id="enumerator" name="enumerator"
+                    placeholder="Изменить порядковый раздела" required>
             </div>
             <div class="col-3">
-                <input class='form-control' type="text" id="title" name="title" placeholder="Изменить название раздела" required>
+                <input class='form-control' type="text" id="title" name="title" placeholder="Изменить название раздела"
+                    required>
             </div>
-    
+
             <div class="col-2 align-self-end">
                 <!-- <button type='submit' value="Create" class="btn btn-info btn-block"> -->
                 <!-- <input type="submit" value="Create" class="btn btn-info btn-block "> -->
                 <input type="submit" value="Редактировать" class='btn btn-block btn-outline-dark'>
                 <!-- <input type="reset" value="Очистить" class="btn btn-sm btn-block btn-outline-dark"> -->
             </div>
-            </form>
+    </form>
 
-            <div class="col-2 align-self-end">
-                <a href="{% url 'delete_section' subject.id section.id %}" style="text-decoration: none">
-                    <!-- <input type="submit" value="Delete" class="btn btn-info btn-block"> -->
-                    <input type="button" value="Удалить раздел" class='btn btn-block btn-outline-dark'>
-                </a>
-            </div>
-        </div>
-    
+    <div class="col-2 align-self-end">
+        <a href="{% url 'delete_section' subject.id section.id %}" style="text-decoration: none">
+            <!-- <input type="submit" value="Delete" class="btn btn-info btn-block"> -->
+            <input type="button" value="Удалить раздел" class='btn btn-block btn-outline-dark'>
+        </a>
+    </div>
 </div>
-<br>
-<div class="row m-auto border rounded bg-light text-center">
+
+
+
+
+
+<div class="row mt-3 border rounded bg-light text-center">
     <h3>Лекции</h3>
 </div>
 
-<!-- =============Create New Lecture Box============================================ -->            
+<div class="row mt-3">
+    <form action="{% url 'upload_multiple_files' subject.id section.id %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+    
+        <div class="form-row mt-1 mb-1">
+            <div class="col-5">
+                <label for="multiple_file">
+                    <strong>
+                        Загрузите видеофайл/ы mp4 для данного раздела. Общий размер файлов не должен превышать 500Mb.
+                    </strong>
+                </label>
+            </div>
+            <div class="col-4">
+                <input type="file" multiple class="form-control" id="multiple_files" name="multiple_files" required>
+            </div>
+        </div>
+
+        <div class="form-row mb-3">
+            <div class="col-5"></div>
+            <div class="col-4">
+                <input type="submit" value="Загрузить" class='btn btn-block btn-outline-dark'>
+            </div>
+        </div>
+        
+        </form>
+        
+        </div>
+
+
+
+<!-- =============Create New Lecture Box============================================ -->   
+<div class="row">
+    <div class="col-8">    
     <div class="row m-auto">
         <h3>Создать новую лекцию</h3>
     </div>
 <div class="input-form">
     <div class="row m-auto border rounded">
   
-    <form action="{% url 'create_new_lecture' subject.id section.id %}" method="POST" enctype="multipart/form-data">
-                            {% csrf_token %}
+    <form action="{% url 'lecture_update' subject.id section.id %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-row mt-1 mb-1">
+            <div class="col-5">
+                <label for="id">
+                    <strong>Уникальный идентификатор лекции :</strong>
+                </label>
+            </div>
+            <div class="col-4">
+                <input class='form-control i-1' type="text" id="lecture_id" name="lecture_id" placeholder="Уникальный идентификатор лекции" required>
+            </div>
+        </div>
+
         <div class="form-row mt-1 mb-1">
             <div class="col-5">
                 <label for="enumerator">
@@ -81,7 +130,7 @@
                     <input type="text" class='form-control i-1'  id="title" name="title" placeholder="Название лекции" required>
             </div>
         </div>
-        <div class="form-row mt-1 mb-1">
+        <!-- <div class="form-row mt-1 mb-1">
             <div class="col-5">
                 <label for="video_file">
                     <strong><div class="div" style="color: blue">Загрузите видеофайл mp4 размером до 500Mb:</div></strong>
@@ -90,7 +139,7 @@
             <div class="col-4">
                 <input type="file" class="form-control i-2" name="video_file" required>
             </div>
-        </div>
+        </div> -->
         <div class="form-row mt-1 mb-1">
             <div class="col-5">
                 <label for="additional_file">
@@ -149,27 +198,34 @@
         </div>                               
 </div>
     </form>
+
+
 </div>
     <br>
+    </div>
+<div class="col-4">
+    <div class="row m-auto">
+        <h3>Библиотека загруженных видеофайлов.</h3>
+    </div>
+
+    {% for item in v_files%}
+    <div class="row">
+        <div class="col"> <div class="d-1" draggable="True">{{item.id}}</div></div>
+        <div class="col">{{item.video_file}}</div>
+    </div>
+    {% endfor %}
+</div>
+
+</div>
 <!-- ==============End of Create New Lecture Box================================        -->
 
-{% for item in lectures%}
-<form action="{% url 'select_lecture_to_update' subject.id section.id %}" method="POST" >
-        {% csrf_token %}
-    <div class="video_lib">{{item.video_file.url }}</div>
-    <input type="text" name='lecture_id' value="{{item.id}}">
-    <button type="submit" class="b-1">Выбрать лекцию</button>
-</form>
-{% endfor %}
- 
-    
-
-
-
 <!-- ====================Edit Lecture Box========================================== -->
-    <h3>Редактирование лекций</h3>
+    <h3>Подготовленные лекции</h3>
+   
+
 {% for lecture in lectures %}
 {% if lecture.section == section %}
+
     <div class="form-row mt-1">
         <!-- <a href="{% url 'edit_lecture' lecture.id %}" style="text-decoration: none" id="title"> -->
         <div class="col-7">
@@ -189,14 +245,17 @@
             <div class="hide">
                     <div class="lecture_box">
                         <div class="row">
-                            <div class="col-11"><h4>Форма редактирования лекции</h4></div>
-                            <div class="col-1"><button type="button" class="btn-close" aria-label="Close"></button>
+                            <div class="col-11">
+                                <h4>Форма редактирования лекции</h4>
+                            </div>
+                            <div class="col-1">
+                                <button type="button" class="btn-close" aria-label="Close"></button>
                             </div>
                           
                         </div>
                         <hr>
                         <div class="row">
-                            <div class="col-5">
+                            <div class="col-4">
                                 <div class="row">
                                     <div class="col-6"><strong>Порядковый номер: </strong></div>
                                     <div class="col-5">{{lecture.enumerator}}</div>
@@ -252,7 +311,7 @@
                                 </div>
                             </div>
         
-                            <div class="col-7">
+                            <div class="col-4">
                                 <form action="{% url 'edit_lecture' lecture.id %}" method="POST" enctype="multipart/form-data">
                                     {% csrf_token %}
                                     <div class="form-row">
@@ -297,6 +356,7 @@
                                         <div class="col-4"><input type="submit" value="Редактировать"
                                                 class='btn btn-block btn-outline-dark'>
                                         </div>
+                                    </div>
         
                                 </form>
         
@@ -307,15 +367,24 @@
                                     </a>
                                 </div>
                             </div>
-        
+
+                            <div class="col-4">
+                                {% for item in v_files%}
+                                {{item.video_file}}
+                                {% endfor %}
+                            </div>
+
                         </div>
+
+                    </div>
                     </div>
                 </div>
-            </div>
+           
         <!-- ==============================================End of Lectue Edit Modal=========================== -->
     </div>
 {% endif %}
 {% endfor %}           
+</div>
 </div>
 
 
@@ -327,9 +396,9 @@
     const buttons = document.querySelectorAll('.btn-close');
     const video_lib = document.querySelectorAll('.video_lib');
     const b_1 = document.querySelectorAll('.b-1');
+    const d_1 = document.querySelectorAll('.d-1');
     const i_1 = document.querySelector('.i-1');
-    const i_2 = document.querySelector('.i-2');
-  
+
 
         for (let i = 0; i < titles.length; i++) {
             titles[i].addEventListener('click', e => {
@@ -344,18 +413,18 @@
         }
        
 
-        for (let i = 0; i < video_lib.length; i++) {
-                b_1[i].addEventListener('click', e => {
-                    let data=video_lib[i].innerHTML;
-                    i_1.value=data;
-                })
-            }
-        for (let i = 0; i < video_lib.length; i++) {
-            b_1[i].addEventListener('click', e => {
-                let data = video_lib[i].url;
-                i_2.file = data;
-            })
-        }
+        //for (let i = 0; i < video_lib.length; i++) {
+        //        b_1[i].addEventListener('click', e => {
+        //            let data=video_lib[i].innerHTML;
+        //            i_1.value=data;
+        //        })
+        //    }
+        //for (let i = 0; i < video_lib.length; i++) {
+        //    b_1[i].addEventListener('click', e => {
+        //        let data = video_lib[i].url;
+       //         i_2.file = data;
+        //    })
+        //}
         
         //document.querySelector('.b-1').addEventListener('click', () => {
         //        let data = document.querySelector('.video_lib').innerHTML;

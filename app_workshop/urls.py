@@ -5,13 +5,12 @@ urlpatterns = [
     path('studio', views.studio, name='studio'),
     path('create_new_subject', views.create_new_subject, name='create_new_subject'),
     path('delete_subject/<int:subject_id>', views.delete_subject, name='delete_subject'),
-    path('create_new_lecture/<int:subject_id>/<int:section_id>',views.create_new_lecture, name='create_new_lecture'),
+    # path('create_new_lecture/<int:subject_id>/<int:section_id>',views.create_new_lecture, name='create_new_lecture'),
     path('edit_subject/<int:subject_id>',views.edit_subject, name='edit_subject'),
     path('create_new_section/<int:subject_id>', views.create_new_section, name='create_new_section'),
     path('edit_section/<int:subject_id>/<int:section_id>',
          views.edit_section, name='edit_section'),
     path('delete_section/<int:subject_id>/<int:section_id>',views.delete_section, name='delete_section'),
-    # path('open_lecture/<int:lecture_id>',views.open_lecture, name='open_lecture'),
     path('edit_lecture/<int:lecture_id>',views.edit_lecture, name='edit_lecture'),
     path('delete_lecture/<int:lecture_id>',views.delete_lecture, name='delete_lecture'),
     path('video/<int:subject_id>/<int:lecture_id>', views.video, name='video'),
@@ -31,7 +30,7 @@ urlpatterns = [
     path('GeneratePDF', views.GeneratePDF.as_view(), name="GeneratePDF"),
 #     path('question_answer', views.question_answer, name="question_answer"),
     path('answer/<int:subject_id>/<int:question_id>', views.answer, name="answer"),
-    path('upload_multiple_files/<int:subject_id>', views.upload_multiple_files, name="upload_multiple_files"),
-    path('select_lecture_to_update/<int:subject_id>/<int:section_id>', views.select_lecture_to_update, name="select_lecture_to_update"),
-    path('lecture_update/<int:lecture_id>/<subject_id>/<section_id>', views.lecture_update, name="lecture_update")
+    path('upload_multiple_files/<int:subject_id>/<section_id>', views.upload_multiple_files, name="upload_multiple_files"),
+    path('lecture_update/<int:subject_id>/<section_id>', views.lecture_update, name="lecture_update"),
+   
 ]

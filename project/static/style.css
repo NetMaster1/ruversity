@@ -635,10 +635,10 @@ select>option {
   /* display: block; */
   position: absolute;
   top: 20Vh;
-  left: 20vw;
+  left: 10vw;
   border-radius: 0.5%;
   /* position: absolute; */
-  width: 62rem;
+  width: 80vw;
   height: fit-content;
   background-color: white;
   /* overflow-y: scroll; */

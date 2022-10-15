@@ -1,3 +1,4 @@
+from contextlib import nullcontext
 from django.shortcuts import render, redirect
 from app_content.models import MainSubject, Section, Lecture, AdditionalMaterialLink, AdditionalMaterialFile, Price, Category, Language, Transaction, Badword, Credit_card, Credit_card_type, Paypal, Main_method, Bank_account, TempImage, Question, Answer
 from .models import Country
@@ -248,7 +249,7 @@ def edit_subject(request, subject_id):
                             }
                             return render(request, 'workshop/edit_subject.html', context)
                     else:
-                        messages.error(request, 'File has inproper format. Load jpg, jpeg, png or bmp file')
+                        messages.error(request, 'Некорректный формат файла. Загрузите файл в формате jpg, jpeg, png или bmp')
                         return redirect('edit_subject', subject_id)
                 else:
                     if Section.objects.filter(course=subject).exists():
@@ -272,7 +273,8 @@ def edit_subject(request, subject_id):
                             context = {
                             'subject': subject,
                             'languages': languages,
-                            'categories': categories
+                            'categories': categories,
+                            'sections': sections
                         }
                         return render(request, 'workshop/edit_subject.html', context)
                     else:
@@ -312,48 +314,7 @@ def edit_subject(request, subject_id):
     else:
         return redirect('login')
 
-def upload_multiple_files (request, subject_id):
-    if request.user.is_authenticated: 
-        subject=MainSubject.objects.get(id=subject_id)
-        lectures=Lecture.objects.filter(subject=subject)
-        if request.user != subject.author:
-            logout(request)
-            return redirect('login')
-        if request.method == "POST":
-            author = request.user
-            files= request.FILES.getlist ('multiple_files')
-            for file in files:
-                lecture = Lecture.objects.create(
-                    #title=title,
-                    video_file=file,
-                    #subtitle_file=subtitle_file,
-                    # translation_file=translation_file,
-                    author=author,
-                    #section=section,
-                    subject=subject,
-                    #free=free_access,
-                    #length=length,
-                    #size_mb=size_mb,
-                    #enumerator=enumerator
-                )
-                print('===================')
-                print(file)
-                print(lecture.video_file)
-                print(lecture)
-                print(subject)
-            return redirect ('upload_multiple_files', subject.id)
-    
-        else:
-            context = {
-                'subject': subject,
-                'lectures': lectures,
-            }
-            return render(request, 'workshop/upload_multiple_files.html', context)
-
-
-    logout(request)
-    return redirect('login')
-
+#==================Creation Lectures One BY One==================================
 def delete_subject(request, subject_id):
     if request.user.is_authenticated:
         subject = MainSubject.objects.get(id=subject_id)
@@ -374,7 +335,6 @@ def delete_subject(request, subject_id):
 def create_new_section(request, subject_id):
     if request.user.is_authenticated:
         subject = MainSubject.objects.get(id=subject_id)
-        lectures=Lecture.objects.filter(subject=subject)
         if request.user == subject.author:
             if request.method == 'POST':
                 title = request.POST['title']
@@ -387,13 +347,13 @@ def create_new_section(request, subject_id):
                     course=subject,
                     enumerator=enumerator
                 )
-                return redirect ('edit_subject', subject_id)
-            else:
-                return redirect('edit_subject', subject_id)
+                return redirect ('edit_subject', subject.id)      
+        else:
+            logout(request)
+            return redirect('login')
+    else:
         logout(request)
         return redirect('login')
-    logout(request)  
-    return redirect('login')
 
 def edit_section (request, subject_id, section_id):
     if request.user.is_authenticated:
@@ -409,14 +369,15 @@ def edit_section (request, subject_id, section_id):
                 section.enumerator= enumerator
                 section.title = title
                 section.save()
-                # return redirect('edit_section', subject_id, section_id)
-                return redirect('edit_subject', subject_id)
+                return redirect('edit_section', subject_id, section_id)
+               
             else:
-                section = Section.objects.get(id=section_id)
-                lectures=Lecture.objects.filter(section=section).order_by('enumerator')
+                v_files=Lecture.objects.filter(subject=subject, section=section)
+                lectures=Lecture.objects.filter(subject=subject, section=section, enumerator__isnull= False)
                 context = {
                     'subject': subject,
                     'section': section,
+                    'v_files': v_files,
                     'lectures': lectures,
                 }
                 return render(request, 'workshop/edit_section.html', context)
@@ -437,36 +398,6 @@ def delete_section (request, subject_id, section_id):
             return redirect('login')
     else:
         return redirect('login')
-
-def select_lecture_to_update (request, subject_id, section_id):
-    subject=MainSubject.objects.get(id=subject_id)
-    section=Section.objects.get(id=section_id)
-    if request.method == "POST":
-        lecture_id=request.POST ['lecture_id']
-        lecture=Lecture.objects.get(id=lecture_id )
-    return redirect ('lecture_update', lecture.id, subject.id, section.id)
-
-def lecture_update (request, lecture_id, subject_id, section_id):
-    subject=MainSubject.objects.get(id=subject_id)
-    section=Section.objects.get(id=section_id)
-    lecture=Lecture.objects.get(id=lecture_id)
-    if request.method == "POST":
-        enumerator = request.POST['enumerator']
-        title = request.POST['title']
-        url_link = request.POST.get('url_link', False)
-        additional_file = request.FILES.get('additional_file', False)
-        subtitle_file = request.POST.get('subtitle_file', False)
-        if Lecture.objects.filter(subject=subject, enumerator=enumerator).exists():
-            messages.error(request, 'Лекция с таким порядковым номером уже существует. Поменяйте номер лекции.')
-            return redirect('edit_section', subject_id, section_id)
-        lecture.subject=subject
-        lecture.section=section
-        lecture.title=title
-        lecture.save()
-        return redirect ('edit_section', subject.id, section.id)
-    else:
-        return redirect ('edit_section', subject.id, section.id)
-
 
 def create_new_lecture(request, subject_id, section_id):
     # Initial sanity checks
@@ -657,6 +588,67 @@ def delete_lecture(request, lecture_id):
     else:
         logout(request)
         return redirect('login')
+
+#==============================Multiple Files Uploading========================
+def upload_multiple_files (request, subject_id, section_id):
+    if request.user.is_authenticated: 
+        subject=MainSubject.objects.get(id=subject_id)
+        section=Section.objects.get(id=section_id)
+        v_files=Lecture.objects.filter(subject=subject, section=section)
+        if request.user != subject.author:
+            logout(request)
+            return redirect('login')
+        if request.method == "POST":
+            author = request.user
+            v_files= request.FILES.getlist ('multiple_files')
+            for file in v_files:
+                lecture = Lecture.objects.create(
+                    #title=title,
+                    video_file=file,
+                    #subtitle_file=subtitle_file,
+                    # translation_file=translation_file,
+                    author=author,
+                    section=section,
+                    subject=subject,
+                    #free=free_access,
+                    #length=length,
+                    #size_mb=size_mb,
+                    #enumerator=enumerator
+                )
+            return redirect ('edit_section', subject.id, section.id)
+    logout(request)
+    return redirect('login')
+
+def lecture_update (request, subject_id, section_id):
+    if request.user.is_authenticated:
+        subject=MainSubject.objects.get(id=subject_id)
+        section=Section.objects.get(id=section_id)
+        if request.method == "POST":
+            lecture_id = request.POST['lecture_id']
+            enumerator = request.POST['enumerator']
+            title = request.POST['title']
+            url_link = request.POST.get('url_link', False)
+            additional_file = request.FILES.get('additional_file', False)
+            subtitle_file = request.POST.get('subtitle_file', False)
+            if Lecture.objects.filter(id=lecture_id).exists():
+                lecture=Lecture.objects.get(id=lecture_id)
+            else:
+                messages.error(request, 'Ооооооооопс, Лекции с таким ID не существует. Сначала загрузите видеофайл.')
+                return redirect('edit_section', subject.id, section.id)
+            if Lecture.objects.filter(subject=subject, enumerator=enumerator).exists():
+                messages.error(request, 'Ооооооооопс, Лекция с таким порядковым номером уже существуе.')
+                return redirect('edit_section', subject.id, section.id)
+            lecture.enumerator=enumerator  
+            lecture.subject=subject
+            lecture.section=section
+            lecture.title=title
+            lecture.save()
+            return redirect ('edit_section', subject.id, section.id)
+
+    else:
+        logout(request)
+        return redirect('login')
+#====================================================
 
 def video(request, subject_id, lecture_id):
     # if not request.user.is_authenticated:
