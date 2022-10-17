@@ -701,3 +701,29 @@ select>option {
   border-radius: 5px;
   border-color: grey;
   border-width: 2px;
+}
+
+.d-1 {
+  cursor: all-scroll;
+  border-radius: 1pc;
+  border: solid;
+  border-color: blue;
+  width: fit-content;
+  margin: 1px;
+  padding: 2px;
+}
+
+.d-1:hover {
+   background-color: #aaaaaa;
+   color: white;
+}
+
+.d-1-hidden {
+  display:none
+}
+
+.hovered {
+  background-color: #d1d8e2;
+  border: solid;
+  border-color: blue;
+}
