@@ -444,7 +444,7 @@ def create_new_lecture(request, subject_id, section_id):
 
     size_bytes = os.path.getsize(video_file_name)
     size_mbytes = size_bytes/1024/1024
-    if size_mbytes > 300:
+    if size_mbytes > 200:
         messages.error(request, 'Размер файла больше 200МБ. Попробуйте использовать файлы меньшего размера.')
         return redirect('edit_section', subject_id, section_id)
 
@@ -601,18 +601,34 @@ def upload_multiple_files (request, subject_id, section_id):
         if request.method == "POST":
             author = request.user
             v_files= request.FILES.getlist ('multiple_files')
-            for file in v_files:
+            for v_file in v_files:
+                video_file_name = v_file.file.name
+                if not video_file_name.endswith('.mp4'):
+                    string=f'Некорректный формат файла. Файл {video_file_name} и все последующие не загружены. Используйте корректный формат файла.'
+                    messages.error(request, string)
+                    return redirect('edit_section', subject_id, section_id)
+                size_bytes = os.path.getsize(video_file_name)
+                size_mbytes = size_bytes/1024/1024
+                # if size_mbytes > 200:
+                #     messages.error(request, 'Размер файла больше 200МБ. Попробуйте использовать файлы меньшего размера.')
+                #     return redirect('edit_section', subject_id, section_id)
+
+                clip = VideoFileClip(video_file_name)
+                length = clip.duration // 60
+                # length_sec = (clip.duration % 60)*60
+                # length = str(length_min) + str(length_sec)
+                size_mb = size_mbytes
                 lecture = Lecture.objects.create(
                     #title=title,
-                    video_file=file,
+                    video_file=v_file,
                     #subtitle_file=subtitle_file,
                     # translation_file=translation_file,
                     author=author,
                     section=section,
                     subject=subject,
                     #free=free_access,
-                    #length=length,
-                    #size_mb=size_mb,
+                    length=length,
+                    size_mb=size_mb,
                     #enumerator=enumerator
                 )
             return redirect ('edit_section', subject.id, section.id)
@@ -624,25 +640,41 @@ def lecture_update (request, subject_id, section_id):
         subject=MainSubject.objects.get(id=subject_id)
         section=Section.objects.get(id=section_id)
         if request.method == "POST":
-            lecture_id = request.POST['lecture_id']
+            lecture_id = request.POST.get('lecture_id', False)
             enumerator = request.POST['enumerator']
             title = request.POST['title']
             url_link = request.POST.get('url_link', False)
             additional_file = request.FILES.get('additional_file', False)
             subtitle_file = request.POST.get('subtitle_file', False)
-            if Lecture.objects.filter(id=lecture_id).exists():
-                lecture=Lecture.objects.get(id=lecture_id)
+            if lecture_id:
+                if Lecture.objects.filter(subject=subject, enumerator=enumerator).exists():
+                    messages.error(request, 'Ооооооооопс, Лекция с таким порядковым номером уже существует.')
+                    return redirect('edit_section', subject.id, section.id)
+                if Lecture.objects.filter(id=lecture_id).exists():
+                    lecture=Lecture.objects.get(id=lecture_id)
+                    lecture.enumerator=enumerator  
+                    lecture.subject=subject
+                    lecture.section=section
+                    lecture.title=title
+                    lecture.save()
             else:
-                messages.error(request, 'Ооооооооопс, Лекции с таким ID не существует. Сначала загрузите видеофайл.')
-                return redirect('edit_section', subject.id, section.id)
-            if Lecture.objects.filter(subject=subject, enumerator=enumerator).exists():
-                messages.error(request, 'Ооооооооопс, Лекция с таким порядковым номером уже существуе.')
-                return redirect('edit_section', subject.id, section.id)
-            lecture.enumerator=enumerator  
-            lecture.subject=subject
-            lecture.section=section
-            lecture.title=title
-            lecture.save()
+                lecture=Lecture.objects.create(
+                    subject=subject,
+                    section=section,
+                    title=title,
+                    enumerator=enumerator
+                )
+            if url_link:
+                AdditionalMaterialLink.objects.create(
+                        lecture=lecture,
+                        url_link=url_link,
+                    )
+            if additional_file:
+                AdditionalMaterialFile.objects.create(
+                    lecture=lecture,
+                    additional_file=additional_file
+                )   
+            
             return redirect ('edit_section', subject.id, section.id)
 
     else:

@@ -155,6 +155,7 @@
         <h5 data-bs-toggle="collapse" data-bs-target='#section{{section.id}}'>Раздел {{section.enumerator}}: {{section.title}}. {{section.length}} мин.</h5>
         </div>
                 {% for lecture in lectures %}
+
                     {% if lecture.section == section %}
                     <div id="section{{section.id}}" class='collapse'>
                     {% if lecture.free == False %}
