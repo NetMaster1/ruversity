@@ -220,7 +220,6 @@ iframe {
 
 }
 
-
 #lecture:hover {
   background-color: lightgrey;
 
@@ -267,16 +266,8 @@ iframe {
 
 }
 
-.video_library
-{
-  width: 20rem;
-  border: 1px solid #aaaaaa;
-  margin-top: 1rem;
-  /*background-color: brown;*/
-}
-
 .lecture_box {
-  padding: 1rem;
+  padding: 2rem;
   margin: auto;
   /* display: block; */
   position: absolute;
@@ -351,7 +342,6 @@ iframe {
 
 }
 
-
 /*=====================================*/
 #openSectionModal {
   display: none;
@@ -402,9 +392,10 @@ iframe {
 
 .d-1 {
   cursor: all-scroll;
-  border-radius: 1pc;
+  border-radius: 10px;
   border: solid;
-  border-color: blue;
+  border-color:blue;
+  min-width: 3rem;
   width: fit-content;
   margin: 1px;
   padding: 2px;
@@ -420,6 +411,7 @@ iframe {
   border-radius: 1pc;
   border: solid;
   border-color: blue;
+  min-width: ;
   width: fit-content;
   margin: 1px;
   padding: 2px;
