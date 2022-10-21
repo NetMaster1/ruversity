@@ -613,87 +613,114 @@ def lecture_update (request, subject_id, section_id):
         logout(request)
         return redirect('login')
 
-# def edit_lecture(request, lecture_id):
-#     if request.user.is_authenticated:
-#         lecture = Lecture.objects.get(id=lecture_id)
-#         subject = lecture.subject
-#         section = lecture.section
-#         if request.user == subject.author:
-#             if subject.ready == True:
-#                 messages.error(request, 'Вы не можете редактировать лекции, загруженные на сервер.')
-#                 return redirect('edit_section', subject.id, section.id)
-#             else:
-#                 if request.method == "POST":
-#                     title = request.POST['title']
-#                     enumerator = request.POST['enumerator']
-#                     additional_file = request.FILES.get('additional_file', False)
-#                     url_link = request.POST.get('url_link', False)
-#                     lecture_id = request.POST.get('lecture_id', False)
-#                     subtitle_file = request.POST.get('subtitle_file', False)
-#                     video_file = request.FILES['video_file']
-#                     # translation_file = request.FILES['translation_file']
-#                     if video_file.name.endswith('.mp4'):
-#                         lecture.video_file=video_file
-#                         lecture.title = request.POST['title']
-#                         lecture.enumerator = request.POST['enumerator']
-#                         lecture.save()
-#                         path = lecture.video_file.path
-#                         size_bytes = os.path.getsize(path)
-#                         size_mbytes = size_bytes / 1024 / 1024
-#                         lecture.size_mbytes = size_mbytes
-#                         lecture.save()
-#                         if lecture.size_mb > 500:
-#                             lecture.delete()
-#                             messages.error(request, 'Видео файл слишком большого размера. Лекция удалена. Создайте ее еще раз с файлом меньшего размера.')
-#                             return redirect('edit_section', subject.id, section.id)
-#                         else:
-#                             if url_link:
-#                                 if AdditionalMaterialLink.objects.filter(lecture=lecture).exists():
-#                                     item=AdditionalMaterialLink.objects.get(lecture=lecture)
-#                                     item.url_link=url_link
-#                                     item.save()
-#                                 else:
-#                                     AdditionalMaterialLink.objects.create(
-#                                         lecture=lecture,
-#                                         url_link=url_link
-#                                     )
-#                             else:
-#                                 if AdditionalMaterialLink.objects.filter(lecture=lecture).exists():
-#                                     item=AdditionalMaterialLink.objects.get(lecture=lecture)
-#                                     item.delete()
-                         
-#                             if additional_file:
-#                                 if AdditionalMaterialFile.objects.filter(lecture=lecture).exists():
-#                                     item=AdditionalMaterialFile.objects.get(lecture=lecture)
-#                                     item.additional_file=additional_file
-#                                     item.save()
-#                                 else:
-#                                     AdditionalMaterialFile.objects.create(
-#                                         lecture=lecture,
-#                                         additional_file=additional_file
-#                                     )
-#                             else:
-#                                 if AdditionalMaterialFile.objects.filter(lecture=lecture).exists():
-#                                     item=AdditionalMaterialFile.objects.get(lecture=lecture)
-#                                     item.delete()
-                                    
-#                             lectures = Lecture.objects.filter(subject=subject)
-#                             context = {
-#                                 'lectures': lectures,
-#                                 'section': section,
-#                                 'subject': subject
-#                             }
-#                             return redirect('edit_section', subject.id, section.id)
-#                     else:
-#                         #messages.error(request, 'File has inproper format. Load mp4 file')
-#                         messages.error(request, 'Некорректный формат файла. Загрузите файл в формате mp4.')
-#                         return redirect('edit_section', subject.id, section.id)
-#                 else:
-#                     return redirect('edit_section', subject.id, section.id)
-#         else:
-#             logout(request)
-#             return redirect('login')
-#     else:
+def edit_lecture(request, lecture_id):
+    if request.user.is_authenticated:
+        lecture = Lecture.objects.get(id=lecture_id)
+        subject = lecture.subject
+        section = lecture.section
+        if request.user == subject.author:
+            if subject.ready == True:
+                messages.error(request, 'Вы не можете редактировать лекции, загруженные на сервер.')
+                return redirect('edit_section', subject.id, section.id)
+            else:
+                if request.method == "POST":
+                    lecture_id_new = request.POST.get('lecture_id', False)
+                    title = request.POST['title']
+                    enumerator = request.POST['enumerator']
+                    additional_file = request.FILES.get('additional_file', False)
+                    url_link = request.POST.get('url_link', False)
+                    subtitle_file = request.POST.get('subtitle_file', False)
+                    #video_file = request.FILES['video_file']
+                    # translation_file = request.FILES['translation_file']
+                    #if video_file.name.endswith('.mp4'):
+                    #    lecture.video_file=video_file
+                    #    lecture.title = request.POST['title']
+                    #    lecture.enumerator = request.POST['enumerator']
+                    #    lecture.save()
+                    #    path = lecture.video_file.path
+                    #    size_bytes = os.path.getsize(path)
+                    #    size_mbytes = size_bytes / 1024 / 1024
+                    #    lecture.size_mbytes = size_mbytes
+                    #    lecture.save()
+                    #    if lecture.size_mb > 500:
+                    #        lecture.delete()
+                    #        messages.error(request, 'Видео файл слишком большого размера. Лекция удалена. Создайте ее еще раз с файлом меньшего размера.')
+                    #        return redirect('edit_section', subject.id, section.id)
+                    #    else:
+                    if lecture_id == lecture_id_new:
+                        lecture=Lecture.objects.get(id=lecture_id)
+                        lecture.title=title
+                        lecture.enumerator = enumerator
+                        lecture.save()
+                    else:
+                        if Lecture.objects.filter(id=lecture_id_new, subject=subject, section=section, enumerator__isnull= True).exists():
+                            lecture=Lecture.objects.get(id=lecture_id)
+                            lecture.enumerator = None
+                            lecture.save()
+                            if AdditionalMaterialLink.objects.filter(lecture=lecture).exists():
+                                item=AdditionalMaterialLink.objects.get(lecture=lecture)
+                                item.delete()
+                            if AdditionalMaterialFile.objects.filter(lecture=lecture).exists():
+                                item=AdditionalMaterialFile.objects.get(lecture=lecture)
+                                item.delete()
+                            lecture=Lecture.objects.get(id=lecture_id_new)
+                            lecture.title=title
+                            lecture.enumerator = enumerator
+                            lecture.save()
+                        else:
+                            lecture_ready=Lecture.objects.get(id=lecture_id_new)
+                            string=f'Данный видеофайл уже используется в лекции {lecture_ready.enumerator}. Для того, чтобы снова использовать данный видеофайл, необходимо предварительно удалить лекцию {lecture_ready.enumerator}. '
+                            messages.error(request, string)
+                            return redirect('edit_section', subject.id, section.id)
+                    if url_link:
+                        if AdditionalMaterialLink.objects.filter(lecture=lecture).exists():
+                            item=AdditionalMaterialLink.objects.get(lecture=lecture)
+                            item.url_link=url_link
+                            item.save()
+                        else:
+                            AdditionalMaterialLink.objects.create(
+                                lecture=lecture,
+                                url_link=url_link
+                            )
+                    else:
+                        if AdditionalMaterialLink.objects.filter(lecture=lecture).exists():
+                            item=AdditionalMaterialLink.objects.get(lecture=lecture)
+                            item.delete()
+                    
+                    if additional_file:
+                        if AdditionalMaterialFile.objects.filter(lecture=lecture).exists():
+                            item=AdditionalMaterialFile.objects.get(lecture=lecture)
+                            item.additional_file=additional_file
+                            item.save()
+                        else:
+                            AdditionalMaterialFile.objects.create(
+                                lecture=lecture,
+                                additional_file=additional_file
+                            )
+                    else:
+                        if AdditionalMaterialFile.objects.filter(lecture=lecture).exists():
+                            item=AdditionalMaterialFile.objects.get(lecture=lecture)
+                            item.delete()
+                            
+                    lectures = Lecture.objects.filter(subject=subject)
+                    context = {
+                        'lectures': lectures,
+                        'section': section,
+                        'subject': subject
+                    }
+                    return redirect('edit_section', subject.id, section.id)
+                    #else:
+                    #   messages.error(request, 'File has inproper format. Load mp4 file')
+                    #    messages.error(request, 'Некорректный формат файла. Загрузите файл в формате mp4.')
+                    #   return redirect('edit_section', subject.id, section.id)
+                else:
+                    return redirect('edit_section', subject.id, section.id)
+        else:
+            logout(request)
+            return redirect('login')
+    else:
+        logout(request)
+        return redirect('login')
 
 def delete_enumerator (request, subject_id, section_id, lecture_id):
     if request.user.is_authenticated:

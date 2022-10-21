@@ -112,85 +112,7 @@ iframe {
 }
 
 
-/*==========================Rating Stars Module======================*/
-.rating>input {
-  display: none;
-  /* opacity: 1; */
-}
 
-.rating label {
-  /* display: inline; */
-  cursor: pointer;
-  width: 30px;
-  padding-left: 1px;
-  /* background: #ccc; */
-}
-
-.rating label::before {
-  content: '\f005';
-  font-family: 'Font Awesome 5 free';
-  /* font-weight: 900; */
-  position: relative;
-  /* position: absolute; */
-
-  /* display: block; */
-  font-size: 20px;
-  color: grey;
-}
-
-.rating label::after {
-  content: '\f005';
-  font-family: 'Font Awesome 5 free';
-  font-weight: 900;
-  position: absolute;
-  /* position: relative; */
-  display: block;
-  font-size: 20px;
-  color: yellow;
-  top: 0;
-  opacity: 0;
-  transition: .5s;
-  text-shadow: 0 2px 5px rgba(0, 0, 0, .5);
-}
-
-.rating label:hover:after,
-.rating input:hover~label:after,
-.rating input:checked~label:after {
-  opacity: 1;
-}
-
-.stars-outer {
-  position: relative;
-  display: inline-block;
-}
-
-.stars-inner {
-  position: absolute;
-  top: 0;
-  /* left: 0; */
-  white-space: nowrap;
-  overflow: hidden;
-  /*color: yellow;*/
-  /* width: var(--max-width);*/
-}
-
-.stars-outer::before {
-  content: '\f005 \f005 \f005 \f005 \f005';
-  font-family: 'Font Awesome 5 Free';
-  font-weight: 200;
-  color: grey;
-  font-size: 20px;
-}
-
-.stars-inner::before {
-  content: '\f005 \f005 \f005 \f005 \f005';
-  font-family: 'Font Awesome 5 Free';
-  font-weight: 900;
-  color: yellow;
-  font-size: 20px;
-}
-
-/*===================End of Rating Stars Module=========================*/
 
 .section_1 {
   background-color: rgb(245, 244, 244);
@@ -320,6 +242,10 @@ iframe {
   border: solid 3px blue;
   border-radius: 10px;
 }
+.create_lecture:hover {
+    background-color: #aaaaaa;
+    color: white;
+}
 
 .lecture_note {
   display: none;
@@ -400,41 +326,124 @@ iframe {
   margin: 1px;
   padding: 2px;
 }
-
-.d-2:hover {
+.d-1:hover {
   background-color: #aaaaaa;
   color: white;
 }
 
+.d-1-hidden {
+  display: none
+}
+
 .d-2 {
   cursor: all-scroll;
-  border-radius: 1pc;
+  border-radius: 10px;
   border: solid;
   border-color: blue;
-  min-width: ;
+  min-width: 3rem;
   width: fit-content;
   margin: 1px;
   padding: 2px;
 }
 
-.d-1:hover {
-   background-color: #aaaaaa;
-   color: white;
+.d-2:hover {
+  background-color: #aaaaaa;
+  color: white;
 }
-
-.d-1-hidden {
-  display:none
-}
-
 .hovered {
   background-color: #d1d8e2;
   border: solid;
   border-color: blue;
 }
 
+
 .file_title {
   overflow-x: auto;
 }
+
+
+
+
+
+/*==========================Rating Stars Module======================*/
+.rating>input {
+  display: none;
+  /* opacity: 1; */
+}
+
+.rating label {
+  /* display: inline; */
+  cursor: pointer;
+  width: 30px;
+  padding-left: 1px;
+  /* background: #ccc; */
+}
+
+.rating label::before {
+  content: '\f005';
+  font-family: 'Font Awesome 5 free';
+  /* font-weight: 900; */
+  position: relative;
+  /* position: absolute; */
+
+  /* display: block; */
+  font-size: 20px;
+  color: grey;
+}
+
+.rating label::after {
+  content: '\f005';
+  font-family: 'Font Awesome 5 free';
+  font-weight: 900;
+  position: absolute;
+  /* position: relative; */
+  display: block;
+  font-size: 20px;
+  color: yellow;
+  top: 0;
+  opacity: 0;
+  transition: .5s;
+  text-shadow: 0 2px 5px rgba(0, 0, 0, .5);
+}
+
+.rating label:hover:after,
+.rating input:hover~label:after,
+.rating input:checked~label:after {
+  opacity: 1;
+}
+
+.stars-outer {
+  position: relative;
+  display: inline-block;
+}
+
+.stars-inner {
+  position: absolute;
+  top: 0;
+  /* left: 0; */
+  white-space: nowrap;
+  overflow: hidden;
+  /*color: yellow;*/
+  /* width: var(--max-width);*/
+}
+
+.stars-outer::before {
+  content: '\f005 \f005 \f005 \f005 \f005';
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 200;
+  color: grey;
+  font-size: 20px;
+}
+
+.stars-inner::before {
+  content: '\f005 \f005 \f005 \f005 \f005';
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  color: yellow;
+  font-size: 20px;
+}
+
+/*===================End of Rating Stars Module=========================*/
 
 
 

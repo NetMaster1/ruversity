@@ -104,11 +104,11 @@
         <div class="form-row mt-1 mb-1">
             <div class="col-5">
                 <label for="lecture_id">
-                    <strong>Уникальный идентификатор лекции :</strong>
+                    <strong>Уникальный Идентификационный Номер лекции :</strong>
                 </label>
             </div>
             <div class="col-4">
-                <input class='form-control i-1' type="text" id="lecture_id" name="lecture_id" placeholder="Уникальный идентификатор лекции">
+                <input class='form-control i-1' type="text" id="lecture_id" name="lecture_id" placeholder="УИН">
             </div>
         </div>
 
@@ -215,23 +215,25 @@
 </div>
 
     {% for item in v_files%}
+
     <div class="row mb-2">
+      
         <div class="col-2">
             <div class="hint">
                 Перетащите поле с УИН лекции в соответсвующее поле в форме "Создать новую лекцию".
             </div>
-            <div class="d-1" draggable="true">{{item.id}}
+            <div class="d-1" draggable="true">{{item.id}}</div>
         </div>
-    </div>
         <div class="col-8"><div class="file_title">{{item.video_file}}</div></div>
         <div class="col-1">
             <a href="{% url 'delete_lecture' item.id %}" style="text-decoration: none">
                 <!-- <input type="button" value="Удалить" class='btn btn-sm btn-block btn-outline-dark'><div class="col-1"> -->
                 <button type="button" class="btn-close delete_cross" aria-label="Close"></button>
-               
             </a>
         </div>
     </div>
+   
+
     {% endfor %}
 
 </div>
@@ -244,7 +246,7 @@
 {% for lecture in lectures %}
 {% if lecture.section == section %}
 
-    <div class="row mt-2">
+    <div class="row mt-2 collection">
         <div class="col-8">
         <strong>{{lecture.enumerator}}: {{lecture.title}}. Длительность: {{lecture.length}} мин. Размер:  {{lecture.size_mb}} Mb</strong>
         </div>
@@ -313,7 +315,7 @@
                                         {% endfor %}
                                     </div>
                                 </div>
-                                {% if lecture.video_file %}
+                            {% if lecture.video_file %}
                                 <div class="row mt-1">
                                     <div class="col-5>
                                             <a class="nav-link" href="{{ lecture.video_file.url }}" target='_blank'>
@@ -325,16 +327,19 @@
                                             </video>
                                         </a>
                                     </div>
-                                   
+                                </div>
                               
                                 {% else %}
+                                <div class="row">
+                                <div class="col-5">
                                 Видеофайл отсутствует.
-                                {% endif %}
                                 </div>
                                 </div>
+                            {% endif %}
+                            </div>
         
                         <div class="col-4">
-                            <form action="#" method="POST" enctype="multipart/form-data">
+                            <form action="{% url 'edit_lecture' lecture.id %}" method="POST" enctype="multipart/form-data">
                                 {% csrf_token %}
                                 <div class="form-row mt-1 mb-1">
                                     <div class="col-5">
@@ -343,7 +348,7 @@
                                         </label>
                                     </div>
                                     <div class="col-4">
-                                        <input class='form-control i-2' type="text" id="lecture_id" name="lecture_id" value={{lecture.id}}>
+                                        <input class='form-control i-2' type="text" id="lecture_id" name="lecture_id" value="{{lecture.id}}" required>
                                     </div>
                                 </div>
                                 <div class="form-row">
@@ -365,8 +370,7 @@
                                     <div class="col-8">
                                         <input type="file" class="form-control" id="video_file" name="video_file" required>
                                     </div>
-                                </div>
-                         -->
+                                </div>-->
                                 <div class="form-row mt-4">
                                     <div class="col-4">
                                         <label for="url_link">
@@ -382,7 +386,7 @@
                                     <div class="col-4"><label for="additional_file"> <strong>Загрузите дополнительный файл: </strong></label>
                                     </div>
                                     <div class="col-8">
-                                        <input type="file" class="form-control" id="additional_file" name="additional_file}">
+                                        <input type="file" class="form-control" id="additional_file" name="additional_file">
                                     </div>
                                 </div>
                                 <div class="row mt-2">
@@ -394,7 +398,7 @@
                             </form>
                         
                             <div class="col-4">
-                                <a href="{% url 'delete_lecture' lecture.id %}" style="text-decoration: none">
+                                <a href="{% url 'delete_enumerator' subject.id section.id lecture.id %}" style="text-decoration: none">
                                     <input type="button" value="Удалить" class='btn btn-block btn-outline-dark'>
                                 </a>
                             </div>
@@ -412,7 +416,12 @@
                                     <div class="col-2">
                                         <div class="d-2" draggable="true">{{item.id}}</div>
                                     </div>
+                                    {% if item.video_file %}
                                     <div class="col-9">{{item.video_file}}</div>
+                                    {% else %}
+                                    <div class="col-9">Видеофайл отсутствует</div>
+                                    {% endif %}
+                               
                                 </div>
                                 {% endfor %}
                             </div>
@@ -442,13 +451,14 @@
     const create_lecture = document.querySelector('.create_lecture');
     const lecture_note = document.querySelector('.lecture_note');
     //Drag & Drop API
-    const video_lib = document.querySelectorAll('.video_lib');
-    //const b_1 = document.querySelectorAll('.b-1');
+    //const video_lib = document.querySelectorAll('.video_lib');
     const d_1 = document.querySelectorAll('.d-1');
     const i_1 = document.querySelector('.i-1');
+    const d_2 = document.querySelectorAll('.d-2');
+    const i_2 = document.querySelectorAll('.i-2');
+    const collection = document.querySelectorAll('.collection')
+    //const d_2 = document.querySelectorAll('.collection').getElementsByClassName('.d-2')
     
-
-
         for (let i = 0; i < titles.length; i++) {
             titles[i].addEventListener('click', e => {
                 lectures[i].classList.add('openModal')
@@ -457,7 +467,8 @@
 
         for (let i = 0; i < buttons.length; i++) {
             buttons[i].addEventListener('click', e => {
-                lectures[i].classList.remove('openModal')
+                //lectures[i].classList.remove('openModal')
+                location.reload();
             })
         }
 
@@ -467,8 +478,7 @@
                     hint[i].classList.add('openModal');
                 })  
             };
-      
-        
+ 
        for (let i = 0; i < d_1.length; i++) {
             d_1[i].addEventListener('mouseleave', e => {
                 hint[i].classList.remove('openModal');
@@ -476,8 +486,8 @@
         };
      
         for (let i = 0; i < btn_close.length; i++) {
-            btn_close[i].addEventListener('click', (e) => {
-                confirm('Данное действие приедет к удалению файла и соответствующей лекции. Вы действительно хотите это сделать?');
+            btn_close[i].addEventListener('mouseover', (e) => {
+                confirm('Данное действие приедет к удалению видеофайла и соответствующей лекции. Вы действительно хотите это сделать?');
             });
         };
      
@@ -491,13 +501,26 @@
             }
             );
 
-    //=================Drag & Drop===============
+    //=================Drag & Drop Module 1===============
         for (let i = 0; i < d_1.length; i++) {
             d_1[i].addEventListener('dragstart', dragStart);
             d_1[i].addEventListener('dragend', dragEnd);
+            //d_2[i].addEventListener('dragstart', dragStart);
+            //d_2[i].addEventListener('dragend', dragEnd);
+        }
+       
+      //when we have for example a {% for item in lectures %} {% endfor%} construction opening 2 or more modals.
+      //And each modal has several {% for file in files %} {% endfor %} constructions. The quantity of <div class='file'
+      //is equal to number of modals multiplied by number of file in each modal
+        for (let i = 0; i < d_2.length; i++) {
+            d_2[i].addEventListener('dragstart', dragStart);
+            d_2[i].addEventListener('dragend', dragEnd);
         }
 
-        
+     
+        console.log(collection)
+        console.log(d_2)
+
         function dragStart() {
             setTimeout(()=> {
             this.classList.add('d-1-hidden');
@@ -515,6 +538,15 @@
         i_1.addEventListener('dragleave', dragLeave)
         i_1.addEventListener('drop', dragDrop)
 
+
+
+        for (let i = 0; i < titles.length; i++) {
+            i_2[i].addEventListener('dragover', dragOver)
+            i_2[i].addEventListener('dragenter', dragEnter)
+            i_2[i].addEventListener('dragleave', dragLeave)
+            i_2[i].addEventListener('drop', dragDrop)
+            }
+        
        
         function dragOver (e) {
             e.preventDefault();
@@ -530,7 +562,14 @@
             data= document.querySelector('.d-1-hidden').innerText;
             this.value=data;
         };
-        
+
+        //function dragDrop() {
+        //    data = document.querySelector('.d-1-hidden').innerText;
+        //    for (let i = 0; i < titles.length; i++) {
+        //        i_2[i].value=data;
+        //        };
+        //    };
+
 
         //for (let i = 0; i < video_lib.length; i++) {
         //    b_1[i].addEventListener('click', e => {
