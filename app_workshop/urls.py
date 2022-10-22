@@ -32,5 +32,6 @@ urlpatterns = [
     path('answer/<int:subject_id>/<int:question_id>', views.answer, name="answer"),
     path('upload_multiple_files/<int:subject_id>/<section_id>', views.upload_multiple_files, name="upload_multiple_files"),
     path('lecture_update/<int:subject_id>/<section_id>', views.lecture_update, name="lecture_update"),
+    path('delete_enumerator/<int:subject_id>/<int:section_id>/<int:lecture_id>', views.delete_enumerator, name="delete_enumerator"),
    
 ]

@@ -244,7 +244,7 @@
                 {% for lecture in lectures %}
                 {% if lecture.section == section %}
                 <div class="row ml-4">
-                    <div style="font-style:italic"> Лекция {{lecture.enumerator}}. {{lecture.title}}</div>
+                  <div style="font-style:italic"> {{lecture.enumerator}}. УИН: {{lecture.id}}; Название: {{lecture.title}}</div> 
                 </div>
                 {% endif %}
                 {%endfor%}
