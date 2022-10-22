@@ -230,6 +230,9 @@
         </div>
         <div class="col-8"><div class="file_title">{{item.video_file}}</div></div>
         <div class="col-1">
+            <div class="alert">
+                Нажатие на кнопку приведет к удалению видеофайла и соответствующей лекции, если видеофайл уже был использован для создания лекции.
+            </div>
             <a href="{% url 'delete_lecture' item.id %}" style="text-decoration: none">
                 <!-- <input type="button" value="Удалить" class='btn btn-sm btn-block btn-outline-dark'><div class="col-1"> -->
                 <button type="button" class="btn-close delete_cross" aria-label="Close"></button>
@@ -453,6 +456,7 @@
     const titles = document.querySelectorAll('#lecture_title');
     const buttons = document.querySelectorAll('.cross_button');
     const hint = document.querySelectorAll('.hint');
+    const alert = document.querySelectorAll('.alert');
     const btn_close = document.querySelectorAll('.delete_cross');
     const create_lecture = document.querySelector('.create_lecture');
     const lecture_note = document.querySelector('.lecture_note');
@@ -493,10 +497,17 @@
      
         for (let i = 0; i < btn_close.length; i++) {
             btn_close[i].addEventListener('mouseover', (e) => {
-                confirm('Данное действие приедет к удалению видеофайла и соответствующей лекции. Вы действительно хотите это сделать?');
+                alert[i].classList.add('openModal');
             });
         };
      
+        for (let i = 0; i < btn_close.length; i++) {
+                btn_close[i].addEventListener('mouseleave', (e) => {
+                    alert[i].classList.remove('openModal');
+                });
+            };
+
+
         create_lecture.addEventListener('mouseover', (e) => {
             lecture_note.classList.add('openModal');
             }
