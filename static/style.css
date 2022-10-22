@@ -1,7 +1,6 @@
 :root {
   --max-width: 56%;
 }
-
 /* html {
   min-height: 100%;
 } */
@@ -50,7 +49,6 @@ h5 {
   max-height: fit-content;
 }
 
-
 .round_menu {
   display: inline;
   width: min-width;
@@ -97,8 +95,6 @@ iframe {
     display: block;
     width: 98vw;
   }
-
-
 }
 
 .menu_font {
@@ -115,6 +111,261 @@ iframe {
     height: 30px; */
 }
 
+
+
+
+.section_1 {
+  background-color: rgb(245, 244, 244);
+  padding: 10px;
+  border-style: solid;
+  border-width: 0.1rem;
+  border-color: grey;
+}
+
+.section_1:hover {
+  background-color: lightgrey;
+  font-size: 1.1rem;
+
+}
+
+#a_id_section {
+  display: block;
+  color: black;
+}
+
+#a_id_section:hover {
+  text-decoration: none;
+  /* text-decoration: underline; */
+  /* text-decoration: line-through; */
+  color: black;
+  font-weight: 900;
+
+}
+
+#lecture:hover {
+  background-color: lightgrey;
+
+}
+
+#a_id {
+  display: block;
+  color: blue;
+  font-style: italic;
+
+}
+
+#a_id:hover {
+  text-decoration: none;
+  color: blue;
+  /* font-size: 1.1rem; */
+  font-weight: bold;
+
+}
+
+/* #img_fit{ */
+/* height: 10rem; */
+/* object-fit: cover; */
+/* object-fit: none; */
+/* object-fit: scale-down; */
+/* object-fit: contain; */
+/* object-fit: fill; */
+/* } */
+
+.img_scale:hover {
+  /* opacity: 2; */
+  transform: scale(1.1);
+  z-index: 1;
+}
+
+.nav-link {
+  padding: 0%;
+}
+
+#box {
+  padding: 1rem;
+  border-style: dashed;
+  border-color: grey;
+
+}
+
+.lecture_box {
+  padding: 2rem;
+  margin: auto;
+  /* display: block; */
+  position: absolute;
+  top: 3Vh;
+  left: 10vw;
+  border-radius: 0.5%;
+  /* position: absolute; */
+  width: 80vw;
+  height: fit-;
+  background-color: white;
+  /* overflow-y: scroll; */
+  /* overflow-y: auto; */
+}
+
+/* ============================================ */
+#lectureModal {
+  display: none;
+}
+
+#lectureModal.openModal {
+  display: block;
+}
+
+/*=========================================*/
+.hint {
+  display: none;
+}
+
+.hint.openModal {
+  display: block;
+  /*background-color: whitesmoke;*/
+  background-color: blanchedalmond;
+  /* border-width: 3px;
+  border-style:solid;
+  border-color: red; */
+  border: 2px solid blanchedalmond;
+  border-radius: 10px;
+  color: blue;
+  padding: 0.5rem;
+  height: 12vh;
+  width: 20vw;
+  z-index: 1;
+  position: absolute;
+  left: 4rem;
+  bottom: 3rem;
+}
+/*=======================Lecture Note Modal==============================*/
+.create_lecture {
+  display: inline;
+  border: solid 3px blue;
+  border-radius: 10px;
+}
+.create_lecture:hover {
+    background-color: #aaaaaa;
+    color: white;
+}
+
+.lecture_note {
+  display: none;
+}
+
+.lecture_note.openModal {
+  display: block;
+  background-color: blanchedalmond;
+  border: 2px solid blanchedalmond;
+  border-radius: 10px;
+  color: blue;
+  padding: 0.5rem;
+  position: absolute;
+  height: fit-content;
+  width: fit-content;
+  padding: 1rem;
+  left: 12rem;
+  top: -7rem;
+  z-index: 1;
+
+}
+
+/*=====================================*/
+#openSectionModal {
+  display: none;
+}
+
+/* =========================================== */
+#openSectionModal.openModal {
+  border-radius: 5px;
+  border-color: grey;
+  border-width: 2pc;
+  display: block;
+  position: absolute;
+  bottom: 10px;
+  left: 200px;
+  width: 300px;
+  height: 200px;
+  background-color: grey;
+}
+
+#sections {
+  position: relative;
+}
+/*========================================*/
+
+.hide {
+  /* display: block; */
+  /* display: none; */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  /*overflow-y: scroll;*/
+  opacity: 100%;
+  /* visibility: visible;
+  visibility: hidden;*/
+  z-index: 1;
+}
+
+.video_library {
+  background-color: grey;
+  margin-top: 2px;
+  border-radius: 5px;
+  border-color: grey;
+  border-width: 2px;
+}
+
+.d-1 {
+  cursor: all-scroll;
+  border-radius: 10px;
+  border: solid;
+  border-color:blue;
+  min-width: 3rem;
+  width: fit-content;
+  margin: 1px;
+  padding: 2px;
+}
+.d-1:hover {
+  background-color: #aaaaaa;
+  color: white;
+}
+
+.d-1-hidden {
+  display: none
+}
+
+.d-2 {
+  cursor: all-scroll;
+  border-radius: 10px;
+  border: solid;
+  border-color: blue;
+  min-width: 3rem;
+  width: fit-content;
+  margin: 1px;
+  padding: 2px;
+}
+
+.d-2:hover {
+  background-color: #aaaaaa;
+  color: white;
+}
+.hovered {
+  background-color: #d1d8e2;
+  border: solid;
+  border-color: blue;
+}
+
+
+.file_title {
+  overflow-x: auto;
+}
+
+
+
+
+
+/*==========================Rating Stars Module======================*/
 .rating>input {
   display: none;
   /* opacity: 1; */
@@ -161,8 +412,6 @@ iframe {
   opacity: 1;
 }
 
-/*=========================================*/
-
 .stars-outer {
   position: relative;
   display: inline-block;
@@ -193,6 +442,10 @@ iframe {
   color: yellow;
   font-size: 20px;
 }
+
+/*===================End of Rating Stars Module=========================*/
+
+
 
 /* ==========================VideoPlayer=========================== */
 /* :root {
@@ -299,8 +552,6 @@ video_1 {
   position: relative;
   top: 40px;
 }
-
-
 
 /* Left Controls -------------------------- */
 .controls-left {
@@ -522,14 +773,12 @@ select>option {
   cursor: pointer;
 }
 
-
 #video {
   max-width: 80vw;
   min-width: 800px;
   border: 5px solid black;
   border-radius: 10px;
   /* background: black; */
-  */
   /* position: relative; */
   /* cursor: pointer; */
 
@@ -544,145 +793,4 @@ select>option {
   /* overflow: scroll; */
   /* overflow: hidden; */
   /* box-sizing: border-box; */
-}
-
-.section_1 {
-  background-color: rgb(245, 244, 244);
-  padding: 10px;
-  border-style: solid;
-  border-width: 0.1rem;
-  border-color: grey;
-}
-
-.section_1:hover {
-  background-color: lightgrey;
-  font-size: 1.1rem;
-
-}
-
-#a_id_section {
-  display: block;
-  color: black;
-}
-
-#a_id_section:hover {
-  text-decoration: none;
-  /* text-decoration: underline; */
-  /* text-decoration: line-through; */
-  color: black;
-  font-weight: 900;
-
-}
-
-
-#lecture:hover {
-  background-color: lightgrey;
-
-}
-
-#a_id {
-  display: block;
-  color: blue;
-  font-style: italic;
-
-}
-
-#a_id:hover {
-  text-decoration: none;
-  color: blue;
-  /* font-size: 1.1rem; */
-  font-weight: bold;
-
-}
-
-/* #img_fit{ */
-/* height: 10rem; */
-/* object-fit: cover; */
-/* object-fit: none; */
-/* object-fit: scale-down; */
-/* object-fit: contain; */
-/* object-fit: fill; */
-/* } */
-
-.img_scale:hover {
-  /* opacity: 2; */
-  transform: scale(1.1);
-  z-index: 1;
-}
-
-.nav-link {
-  padding: 0%;
-}
-
-#box {
-  padding: 1rem;
-  border-style: dashed;
-  border-color: grey;
-
-}
-
-.lecture_box {
-  padding: 1rem;
-  margin: auto;
-  /* display: block; */
-  position: absolute;
-  top: 20Vh;
-  left: 20vw;
-  border-radius: 0.5%;
-  /* position: absolute; */
-  width: 62rem;
-  height: fit-content;
-  background-color: white;
-  /* overflow-y: scroll; */
-  /* overflow-y: auto; */
-}
-
-/* ============================================ */
-#lectureModal {
-  display: none;
-}
-
-#lectureModal.openModal {
-  display: block;
-}
-
-/*=====================================*/
-#openSectionModal {
-  display: none;
-}
-
-/* =========================================== */
-#openSectionModal.openModal {
-  border-radius: 5px;
-  border-color: grey;
-  border-width: 2px;
-  display: block;
-  position: absolute;
-  bottom: 10px;
-  left: 200px;
-  width: 300px;
-  height: 200px;
-  background-color: grey;
-}
-
-#sections {
-  position: relative;
-}
-
-/*========================================*/
-
-.hide {
-  /* display: block; */
-  /* display: none; */
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  /*overflow-y: scroll;*/
-  opacity: 100%;
-  /* visibility: visible;
-  visibility: hidden;*/
-  z-index: 1;
 }
