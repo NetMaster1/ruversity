@@ -236,6 +236,30 @@ iframe {
   left: 4rem;
   bottom: 3rem;
 }
+
+
+.alert {
+  display: none;
+}
+
+.alert.openModal {
+  display: block;
+  /*background-color: whitesmoke;*/
+  background-color: blanchedalmond;
+  /* border-width: 3px;
+  border-style:solid;
+  border-color: red; */
+  border: 2px solid blanchedalmond;
+  border-radius: 10px;
+  color: blue;
+  padding: 0.5rem;
+  height: fit-content;
+  width: fit-content;
+  z-index: 1;
+  position: absolute;
+  left: 4rem;
+  bottom: 3rem;
+}
 /*=======================Lecture Note Modal==============================*/
 .create_lecture {
   display: inline;
