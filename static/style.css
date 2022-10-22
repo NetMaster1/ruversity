@@ -238,11 +238,11 @@ iframe {
 }
 
 
-.alert {
+.my_alert {
   display: none;
 }
 
-.alert.openModal {
+.my_alert.openModal {
   display: block;
   /*background-color: whitesmoke;*/
   background-color: blanchedalmond;
