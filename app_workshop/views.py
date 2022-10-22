@@ -797,7 +797,7 @@ def agree(request, subject_id):
         subject = MainSubject.objects.get(id=subject_id)
         if Lecture.objects.filter(subject=subject.id).exists():
             badwords=Badword.objects.all()
-            lectures = Lecture.objects.filter(subject=subject)
+            lectures = Lecture.objects.filter(subject=subject, enumerator__isnull=False).order_by('enumerator')
             subject_duration=0
             for lecture in lectures:
                 subject_duration += lecture.length
@@ -825,7 +825,7 @@ def agree(request, subject_id):
                 subject.ready=True
                 subject.save()
             for lecture in lectures:
-                lecture.processing_state = PROCESSING_READY_TO_START
+                lecture.processing_state = PROCESSING_READY_TO_START #sending to CDN
                 lecture.save()
                 if badwords:
                     for word in badwords:
