@@ -230,7 +230,7 @@
         </div>
         <div class="col-8"><div class="file_title">{{item.video_file}}</div></div>
         <div class="col-1">
-            <div class="alert">
+            <div class="my_alert">
                 Нажатие на кнопку приведет к удалению видеофайла и соответствующей лекции, если видеофайл уже был использован для создания лекции.
             </div>
             <a href="{% url 'delete_lecture' item.id %}" style="text-decoration: none">
@@ -456,7 +456,7 @@
     const titles = document.querySelectorAll('#lecture_title');
     const buttons = document.querySelectorAll('.cross_button');
     const hint = document.querySelectorAll('.hint');
-    const alert = document.querySelectorAll('.alert');
+    const my_alert = document.querySelectorAll('.my_alert');
     const btn_close = document.querySelectorAll('.delete_cross');
     const create_lecture = document.querySelector('.create_lecture');
     const lecture_note = document.querySelector('.lecture_note');
@@ -497,13 +497,13 @@
      
         for (let i = 0; i < btn_close.length; i++) {
             btn_close[i].addEventListener('mouseover', (e) => {
-                alert[i].classList.add('openModal');
+                my_alert[i].classList.add('openModal');
             });
         };
      
         for (let i = 0; i < btn_close.length; i++) {
                 btn_close[i].addEventListener('mouseleave', (e) => {
-                    alert[i].classList.remove('openModal');
+                    my_alert[i].classList.remove('openModal');
                 });
             };
 
