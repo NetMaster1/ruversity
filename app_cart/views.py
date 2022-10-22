@@ -68,11 +68,14 @@ def credit_card(request, subject_id):
         if Transaction.objects.filter(buyer=request.user, course=subject).exists():
             transaction=Transaction.objects.get(buyer=request.user, course=subject)
         else:
-           transaction= Transaction.objects.create(
+            transaction= Transaction.objects.create(
                 course=subject,
                 buyer=request.user,
                 author=author,
             )
+            subject.transactions +=1
+            subject.save()
+
         context = {
             'subject': subject,
             'discount_time': discount_time,
@@ -124,10 +127,8 @@ def qiwi_payment_complete (request):
 def payment_cancel(request):
     pass
 
-
 def payment_error(request):
     pass
-
 
 class GeneratePDF_invoice(View):
     # def get(self, request, *args, **kwargs):
