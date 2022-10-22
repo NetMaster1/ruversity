@@ -163,15 +163,15 @@ def create_new_subject(request):
             language_id = request.POST['language']
             description = request.POST['description']
             prerequisite = request.POST['prerequisite']
-            thumbnail = request.FILES['thumbnail_file']
+            additional_file = request.FILES['thumbnail_file']
             lang_fkey = Language.objects.get(id=language_id)
             categ_fkey=Category.objects.get(id=category_id)
             author = request.user
             price = Price.objects.get(id=1)
-            if thumbnail.name.endswith('.jpg') or thumbnail.name.endswith('.png') or thumbnail.name.endswith('.gif') or thumbnail.name.endswith('.bmp') or thumbnail.name.endswith('.jpeg'):
+            if additional_file.name.endswith('.jpg') or additional_file.name.endswith('.png') or additional_file.name.endswith('.gif') or additional_file.name.endswith('.bmp') or additional_file.name.endswith('.jpeg'):
                 new_subject = MainSubject.objects.create(
                     title=title,
-                    thumbnail_file=thumbnail,
+                    thumbnail_file=additional_file,
                     author=author,
                     price=price,
                     description=description,
@@ -222,9 +222,9 @@ def edit_subject(request, subject_id):
                     subject.category=category
                     subject.description = request.POST['description']
                     subject.prerequisite = request.POST['prerequisites']
-                    thumbnail = request.FILES['thumbnail']
-                    if thumbnail.name.endswith('.jpg') or thumbnail.name.endswith('.png') or thumbnail.name.endswith('.gif') or thumbnail.name.endswith('.bmp') or thumbnail.name.endswith('.jpeg'):
-                        temp_image=TempImage.objects.create(temp_thumbnail_file=thumbnail)
+                    additional_file = request.FILES['additional_file']
+                    if additional_file.name.endswith('.jpg') or additional_file.name.endswith('.png') or additional_file.name.endswith('.gif') or additional_file.name.endswith('.bmp') or additional_file.name.endswith('.jpeg'):
+                        temp_image=TempImage.objects.create(temp_thumbnail_file=additional_file)
                         img = cv2.imread(temp_image.temp_thumbnail_file.path, 0)
                         wid = img.shape[1]
                         hgt = img.shape[0]
@@ -236,7 +236,7 @@ def edit_subject(request, subject_id):
                             return redirect('edit_subject', subject_id)
 
                         else:
-                            subject.thumbnail_file = thumbnail
+                            subject.thumbnail_file = additional_file
                             subject.save()
                             languages = Language.objects.all()
                             categories = Category.objects.all()
@@ -400,92 +400,92 @@ def delete_section (request, subject_id, section_id):
     else:
         return redirect('login')
 
-def create_new_lecture(request, subject_id, section_id):
-    # Initial sanity checks
-    if not request.user.is_authenticated:
-        return redirect('login')
+# def create_new_lecture(request, subject_id, section_id):
+#     # Initial sanity checks
+#     if not request.user.is_authenticated:
+#         return redirect('login')
 
-    subject=MainSubject.objects.get(id=subject_id)
-    section = Section.objects.get(id=section_id)
+#     subject=MainSubject.objects.get(id=subject_id)
+#     section = Section.objects.get(id=section_id)
 
-    if request.user != subject.author:
-        logout(request)
-        return redirect('login')
+#     if request.user != subject.author:
+#         logout(request)
+#         return redirect('login')
 
-    if request.method != 'POST':
-        return redirect('edit_section', subject_id, section_id)
+#     if request.method != 'POST':
+#         return redirect('edit_section', subject_id, section_id)
 
-    #
-    # Request parameters check
-    #
+#     #
+#     # Request parameters check
+#     #
 
-    video_file = request.FILES['video_file']
-    video_file_name = video_file.file.name
-    title = request.POST['title']
-    enumerator = request.POST['enumerator']
-    if Lecture.objects.filter(subject=subject, enumerator=enumerator).exists():
-        messages.error(request, 'Лекция с таким порядковым номером уже существует. Поменяйте номер лекции.')
-        return redirect('edit_section', subject_id, section_id)
+#     video_file = request.FILES['video_file']
+#     video_file_name = video_file.file.name
+#     title = request.POST['title']
+#     enumerator = request.POST['enumerator']
+#     if Lecture.objects.filter(subject=subject, enumerator=enumerator).exists():
+#         messages.error(request, 'Лекция с таким порядковым номером уже существует. Поменяйте номер лекции.')
+#         return redirect('edit_section', subject_id, section_id)
 
-    url_link = request.POST.get('url_link', False)
-    additional_file = request.FILES.get('additional_file', False)
-    subtitle_file = request.POST.get('subtitle_file', False)
-    # translation_file = request.FILES['translation_file']
-    author = request.user
-    free_access = False
-    try:
-        if request.POST['free_access']:
-            free_access = True
-    except KeyError:
-        free_access = False
+#     url_link = request.POST.get('url_link', False)
+#     additional_file = request.FILES.get('additional_file', False)
+#     subtitle_file = request.POST.get('subtitle_file', False)
+#     # translation_file = request.FILES['translation_file']
+#     author = request.user
+#     free_access = False
+#     try:
+#         if request.POST['free_access']:
+#             free_access = True
+#     except KeyError:
+#         free_access = False
 
-    if not video_file_name.endswith('.mp4'):
-        messages.error(request, 'Некорректный форма файла. Используйте файл в формате MP4.')
-        return redirect('edit_section', subject_id, section_id)
+#     if not video_file_name.endswith('.mp4'):
+#         messages.error(request, 'Некорректный форма файла. Используйте файл в формате MP4.')
+#         return redirect('edit_section', subject_id, section_id)
 
-    size_bytes = os.path.getsize(video_file_name)
-    size_mbytes = size_bytes/1024/1024
-    if size_mbytes > 200:
-        messages.error(request, 'Размер файла больше 200МБ. Попробуйте использовать файлы меньшего размера.')
-        return redirect('edit_section', subject_id, section_id)
+#     size_bytes = os.path.getsize(video_file_name)
+#     size_mbytes = size_bytes/1024/1024
+#     if size_mbytes > 200:
+#         messages.error(request, 'Размер файла больше 200МБ. Попробуйте использовать файлы меньшего размера.')
+#         return redirect('edit_section', subject_id, section_id)
 
-    clip = VideoFileClip(video_file_name)
-    length = clip.duration / 60
-    size_mb = size_mbytes
+#     clip = VideoFileClip(video_file_name)
+#     length = clip.duration / 60
+#     size_mb = size_mbytes
 
-    lecture = Lecture.objects.create(
-        title=title,
-        video_file=video_file,
-        subtitle_file=subtitle_file,
-        # translation_file=translation_file,
-        author=author,
-        section=section,
-        subject=subject,
-        free=free_access,
-        length=length,
-        size_mb=size_mb,
-        enumerator=enumerator
-    )
+#     lecture = Lecture.objects.create(
+#         title=title,
+#         video_file=video_file,
+#         subtitle_file=subtitle_file,
+#         # translation_file=translation_file,
+#         author=author,
+#         section=section,
+#         subject=subject,
+#         free=free_access,
+#         length=length,
+#         size_mb=size_mb,
+#         enumerator=enumerator
+#     )
 
-    if url_link:
-        AdditionalMaterialLink.objects.create(
-                lecture=lecture,
-                url_link=url_link,
-            )
-    if additional_file:
-        AdditionalMaterialFile.objects.create(
-            lecture=lecture,
-            additional_file=additional_file
-        )
+#     if url_link:
+#         AdditionalMaterialLink.objects.create(
+#                 lecture=lecture,
+#                 url_link=url_link,
+#             )
+#     if additional_file:
+#         AdditionalMaterialFile.objects.create(
+#             lecture=lecture,
+#             additional_file=additional_file
+#         )
 
-    lectures = Lecture.objects.filter(subject=subject)
-    lectures = lectures.filter(section=section)
-    context = {
-        'subject': subject,
-        'section': section,
-        'lectures': lectures,
-    }
-    return redirect('edit_section', subject_id, section_id)
+#     lectures = Lecture.objects.filter(subject=subject)
+#     lectures = lectures.filter(section=section)
+#     context = {
+#         'subject': subject,
+#         'section': section,
+#         'lectures': lectures,
+#     }
+#     return redirect('edit_section', subject_id, section_id)
 
 
 #         logout(request)
@@ -602,11 +602,17 @@ def lecture_update (request, subject_id, section_id):
                         url_link=url_link,
                     )
             if additional_file:
-                AdditionalMaterialFile.objects.create(
-                    lecture=lecture,
-                    additional_file=additional_file
-                )   
-            
+                if additional_file.name.endswith('.doc') or additional_file.name.endswith('.png') or additional_file.name.endswith('.gif') or additional_file.name.endswith('.bmp') or additional_file.name.endswith('.rar') or additional_file.name.endswith('.jpeg') or additional_file.name.endswith('.zip') or additional_file.name.endswith('.pdf') or additional_file.name.endswith('.txt') or additional_file.name.endswith('.jpg'):
+
+                    AdditionalMaterialFile.objects.create(
+                        lecture=lecture,
+                        additional_file=additional_file
+                    )
+                else:
+                    lecture.enumerator = None
+                    lecture.save()
+                    messages.error(request, 'Некорректный формат текстового файла.')
+                    return redirect('edit_section', subject.id, section.id)
             return redirect ('edit_section', subject.id, section.id)
 
     else:
@@ -624,7 +630,7 @@ def edit_lecture(request, lecture_id):
                 return redirect('edit_section', subject.id, section.id)
             else:
                 if request.method == "POST":
-                    lecture_id_new = request.POST.get('lecture_id', False)
+                    lecture_new = request.POST.get('lecture_id', False)
                     title = request.POST['title']
                     enumerator = request.POST['enumerator']
                     additional_file = request.FILES.get('additional_file', False)
@@ -646,14 +652,17 @@ def edit_lecture(request, lecture_id):
                     #        lecture.delete()
                     #        messages.error(request, 'Видео файл слишком большого размера. Лекция удалена. Создайте ее еще раз с файлом меньшего размера.')
                     #        return redirect('edit_section', subject.id, section.id)
-                    #    else:
-                    if lecture_id == lecture_id_new:
+                    #    else: 
+                  
+
+                    if (lecture_id == int(lecture_new)):
                         lecture=Lecture.objects.get(id=lecture_id)
                         lecture.title=title
                         lecture.enumerator = enumerator
                         lecture.save()
                     else:
-                        if Lecture.objects.filter(id=lecture_id_new, subject=subject, section=section, enumerator__isnull= True).exists():
+                        print('no')
+                        if Lecture.objects.filter(id=lecture_new, subject=subject, section=section, enumerator__isnull= True).exists():
                             lecture=Lecture.objects.get(id=lecture_id)
                             lecture.enumerator = None
                             lecture.save()
@@ -668,7 +677,7 @@ def edit_lecture(request, lecture_id):
                             lecture.enumerator = enumerator
                             lecture.save()
                         else:
-                            lecture_ready=Lecture.objects.get(id=lecture_id_new)
+                            lecture_ready=Lecture.objects.get(id=lecture_new)
                             string=f'Данный видеофайл уже используется в лекции {lecture_ready.enumerator}. Для того, чтобы снова использовать данный видеофайл, необходимо предварительно удалить лекцию {lecture_ready.enumerator}. '
                             messages.error(request, string)
                             return redirect('edit_section', subject.id, section.id)
@@ -688,15 +697,19 @@ def edit_lecture(request, lecture_id):
                             item.delete()
                     
                     if additional_file:
-                        if AdditionalMaterialFile.objects.filter(lecture=lecture).exists():
-                            item=AdditionalMaterialFile.objects.get(lecture=lecture)
-                            item.additional_file=additional_file
-                            item.save()
+                        if additional_file.name.endswith('.doc') or additional_file.name.endswith('.png') or additional_file.name.endswith('.gif') or additional_file.name.endswith('.bmp') or additional_file.name.endswith('.rar') or additional_file.name.endswith('.jpeg') or additional_file.name.endswith('.zip') or additional_file.name.endswith('.pdf') or additional_file.name.endswith('.txt') or additional_file.name.endswith('.jpg'):
+                            if AdditionalMaterialFile.objects.filter(lecture=lecture).exists():
+                                item=AdditionalMaterialFile.objects.get(lecture=lecture)
+                                item.additional_file=additional_file
+                                item.save()
+                            else:
+                                AdditionalMaterialFile.objects.create(
+                                    lecture=lecture,
+                                    additional_file=additional_file
+                                )
                         else:
-                            AdditionalMaterialFile.objects.create(
-                                lecture=lecture,
-                                additional_file=additional_file
-                            )
+                            messages.error(request, 'Лекция отредактирована, но дополнитеьный файл не был загружен,так как вы использовали некорректный формат файла..')
+                            return redirect('edit_section', subject.id, section.id)
                     else:
                         if AdditionalMaterialFile.objects.filter(lecture=lecture).exists():
                             item=AdditionalMaterialFile.objects.get(lecture=lecture)

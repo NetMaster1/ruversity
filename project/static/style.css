@@ -193,12 +193,12 @@ iframe {
   margin: auto;
   /* display: block; */
   position: absolute;
-  top: 20Vh;
+  top: 3Vh;
   left: 10vw;
   border-radius: 0.5%;
   /* position: absolute; */
   width: 80vw;
-  height: fit-content;
+  height: fit-;
   background-color: white;
   /* overflow-y: scroll; */
   /* overflow-y: auto; */
