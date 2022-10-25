@@ -151,8 +151,29 @@
                                 <label for="thumbnail"> <strong>Загрузить новую картинку для курса:</strong></label>
                                 <input type="file" class="form-control" id="thumbnail" name='thumbnail' required>
                             </div>
+                            <div class="form-row mt-3">
+                                <div class="col-5">
+                                    <label for="author_price"><strong>Редактировать стоимость, руб.</strong></label>
+                                </div>
+                                <div class="col-7">
+                                    <input type="number" class='form-control' id="author_price" name="author_price" maxlength='10' required><br>
+                                </div>
+                            </div>
+
                         </div>
 
+                    
+                    <div class="form-row mt-2">
+                        <div class="col-3 pl-5">
+                            <input type="checkbox" id='discount_program' class='form-check-input' name='discount_program'
+                                value='discount_program' checked>
+                        </div>
+                        <div class="col-9">
+                            <label for="discount_program">
+                                <strong>Я согласен участвовать в дисконтных программах ruversity.com</strong>
+                            </label>
+                        </div>
+                    </div>
 
                         <div class="row mb-2">
                             <!-- <div class="col"><input type="submit" value="Edit" class="btn btn-info btn-block"></div> -->

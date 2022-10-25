@@ -163,23 +163,24 @@ def create_new_subject(request):
             language_id = request.POST['language']
             description = request.POST['description']
             prerequisite = request.POST['prerequisite']
-            additional_file = request.FILES['thumbnail_file']
+            thumbnail_file = request.FILES['thumbnail_file']
             lang_fkey = Language.objects.get(id=language_id)
             categ_fkey=Category.objects.get(id=category_id)
             author = request.user
+            author_price = request.POST['author_price']
             price = Price.objects.get(id=1)
-            if additional_file.name.endswith('.jpg') or additional_file.name.endswith('.png') or additional_file.name.endswith('.gif') or additional_file.name.endswith('.bmp') or additional_file.name.endswith('.jpeg'):
+            if thumbnail_file.name.endswith('.jpg') or thumbnail_file.name.endswith('.png') or thumbnail_file.name.endswith('.gif') or thumbnail_file.name.endswith('.bmp') or thumbnail_file.name.endswith('.jpeg'):
                 new_subject = MainSubject.objects.create(
                     title=title,
-                    thumbnail_file=additional_file,
+                    thumbnail_file=thumbnail_file,
                     author=author,
                     price=price,
                     description=description,
                     prerequisite=prerequisite,
                     category=categ_fkey,
-                    language=lang_fkey
+                    language=lang_fkey,
+                    author_price=author_price,
                 )
-
                 img = cv2.imread(new_subject.thumbnail_file.path, 0)
                 wid = img.shape[1]
                 hgt = img.shape[0]
@@ -189,8 +190,14 @@ def create_new_subject(request):
                     messages.error(request, 'Некорректное соотношение сторон. Используйте отношение длины изображения к его высоте равное 1.7.')
                     # messages.error(request, 'Image has inproper ratio. Use ration of 1.7 .')
                     return redirect('create_new_subject')
-
                 else:
+                    try:
+                        if request.POST['dicount_program']:
+                            discount_program = True
+                    except KeyError:
+                        discount_program = False
+                    new_subject.discount_program = discount_program
+                    new_subject.save()
                     my_subjects = MainSubject.objects.filter(author=request.user)
                     context = {
                     'my_subjects': my_subjects
@@ -213,8 +220,8 @@ def edit_subject(request, subject_id):
         if subject.ready == False:
             if request.user == subject.author:
                 if request.method == "POST":
-                    subject.title = request.POST['title']
-                    language_id = request.POST['language']
+                    subject.title = request.POST.get('title')
+                    language_id = request.POST.post('language')
                     language = Language.objects.get(id=language_id)
                     subject.language=language
                     category_id = request.POST['category']
@@ -237,6 +244,7 @@ def edit_subject(request, subject_id):
 
                         else:
                             subject.thumbnail_file = additional_file
+
                             subject.save()
                             languages = Language.objects.all()
                             categories = Category.objects.all()
