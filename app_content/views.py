@@ -10,6 +10,9 @@ from django.contrib import messages, auth
 # Create your views here.
 
 def index(request):
+    subjects = MainSubject.objects.filter(ready='True').exclude(blocked='True').order_by('-date_posted')
+    discount_time = DiscountOn.objects.get(id=1)
+
     if request.user.is_authenticated:
         # videos=Paginator (videos, 3)
         # Выводит последине три объекта отсортированные по дате размещения
@@ -25,15 +28,16 @@ def index(request):
         #     }
         # return render(request, 'index.html', context)
 
-        subjects = MainSubject.objects.filter(ready='True').exclude(blocked='True').order_by('-date_posted')
-        paginator = Paginator(subjects, 12)
-        page = request.GET.get('page')
-        paged_subjects = paginator.get_page(page)
+        
+        # paginator = Paginator(subjects, 12)
+        # page = request.GET.get('page')
+        # paged_subjects = paginator.get_page(page)
 
-        context = {
-            'paged_subjects': paged_subjects,
-        }
-        return render(request, 'main_page.html', context)
+        # context = {
+        #     'paged_subjects': paged_subjects,
+        #     'discount_time': discount_time,
+        # }
+        return redirect('main_page')
     else:
         subjects = MainSubject.objects.filter(ready='True').exclude(blocked='True').order_by('-date_posted')[:4]
         paginator = Paginator(subjects, 12)
@@ -41,6 +45,7 @@ def index(request):
         paged_subjects = paginator.get_page(page)
 
         context = {
+            'discount_time': discount_time,
             'paged_subjects': paged_subjects,
         }
         return render (request, 'index.html', context)
@@ -183,7 +188,6 @@ def main_page(request):
     paginator = Paginator(subjects, 12)
     page = request.GET.get('page')
     paged_subjects = paginator.get_page(page)
-
     # ratings = Rating.objects.all()
     context = {
         'paged_subjects': paged_subjects,
