@@ -53,6 +53,7 @@ class MainSubject(models.Model):
     # author = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     author = models.ForeignKey(User, on_delete=models.SET_DEFAULT, null=True, default=1)
     price = models.ForeignKey(Price, on_delete=models.DO_NOTHING)
+    author_price = models.DecimalField(max_digits=10, decimal_places=2, null=True)
     language = models.ForeignKey(Language, on_delete=models.DO_NOTHING)
     percent = models.CharField(max_length=50, default='0%')
     total = models.IntegerField(default=0)  # Общее число баллов
@@ -63,7 +64,7 @@ class MainSubject(models.Model):
     ready = models.BooleanField(default=False)
     checked = models.BooleanField(default=False)
     blocked = models.BooleanField(default=False)
-    discount_programs = models.BooleanField(default=True)
+    discount_programs = models.BooleanField(default=True, null=True)
     length = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
     def __int__(self):
@@ -127,8 +128,6 @@ class AdditionalMaterialFile(models.Model):
 
     def __int__(self):
         return self.id
-
-
 
 class Transaction(models.Model):
     date_created = models.DateField(auto_now_add=True)

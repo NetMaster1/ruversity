@@ -29,12 +29,12 @@
 
     <!-- ======================Sending Course to Server============================== -->
     <div class="row p-3">
-        <div class="card_subject">
+        <div class="col-8">
             <h5>После того, как ваш курс полностью готов для продаж, нажмите на кнопку. После загрузки на сервер ваш
                 курс перестанет быть доступным для редактирования. </h5>
         </div>
 
-        <div class="card_menu">
+        <div class="col-4">
             <a href="{% url 'agreement' subject.id%}" style="text-decoration: none">
                 <input type="submit" value="Загрузить на сервер" class="btn btn-outline-danger btn-block"
                     style="width:min-content">
@@ -74,7 +74,7 @@
 
                     <!-- <div class="collapse show" id='collapse-p'> -->
                     <div class="collapse" id='collapse-p'>
-                        <div class="row" style='height:13.5rem'>
+                        <div class="row" style='height:fit-content'>
                             <div class="col">
                                 {{subject.description}}
                             </div>
@@ -92,7 +92,7 @@
 
 
                     <div class="collapse" id='collapse-pr'>
-                        <div class="row" style='height:13.5rem'>
+                        <div class="row" style='height:fit-content'>
                             <div class="col">
                                 {{subject.prerequisite}}
                             </div>
@@ -117,12 +117,12 @@
                 {% csrf_token %}
                 <div class="form-group">
                     <label for="title"><strong>Редактировать название курса</strong></label>
-                    <input type="text" class='form-control' id="title" name="title" maxlength='50' required
+                    <input type="text" class='form-control' id="title" name="title" maxlength='50'
                         placeholder='Название курса'>
                 </div>
                 <div class="form-group">
                     <label for="language"><strong>Редактировать язык курса</strong></label>
-                    <select name="language" class='form-select' id="language" required>
+                    <select name="language" class='form-select' id="language">
                         {% for item in languages %}
                         <option value="{{item.id}}">{{item.name}}</option>
                         {% endfor %}
@@ -130,7 +130,7 @@
                 </div>
                 <div class="form-group">
                     <label for="description"><strong>Редактировать категорию</strong></label>
-                    <select name="category" class='form-select' id="category" required>
+                    <select name="category" class='form-select' id="category">
                         {% for item in categories %}
                         <option value="{{item.id}}">{{item.name}}</option>
                         {% endfor %}
@@ -139,20 +139,45 @@
                 <div class="form-group">
                     <label for="description"><strong>Редактировать краткое описание курса</strong></label>
                     <textarea class='form-control' id="description" rows='4' minlength='160' maxlength='360'
-                        name="description" required
+                        name="description"
                         placeholder='Введите краткое описание курса. 160-360 символов.'></textarea>
                     <div class="form-group">
                         <label for="prerequisites"> <strong>Редактировать предварительную подготовку</strong></label>
-                        <textarea class='form-control' rows='4' id="prerequisite" minlength='160' maxlength='360'
-                            name="prerequisites" required
+                        <textarea class='form-control' rows='4' id="prerequisites" minlength='160' maxlength='360'
+                            name="prerequisites"
                             placeholder='Введите требования к предварительной подготовке. 160-360 символов.'></textarea>
                     </div>
                             <div class="form-group">
                                 <label for="thumbnail"> <strong>Загрузить новую картинку для курса:</strong></label>
-                                <input type="file" class="form-control" id="thumbnail" name='thumbnail' required>
+                                <input type="file" class="form-control" id="thumbnail" name='thumbnail'>
                             </div>
+                            <div class="form-row mt-3">
+                                <div class="col-5">
+                                    <label for="author_price"><strong>Редактировать стоимость, руб.</strong></label>
+                                </div>
+                                <div class="col-7">
+                                    <input type="number" class='form-control' id="author_price" name="author_price" maxlength='10'><br>
+                                </div>
+                            </div>
+
                         </div>
 
+                    
+                    <div class="form-row mt-2">
+                        <div class="col-3 pl-5">
+                            {% if subject.discount_programs == True %}
+                            <input type="checkbox" id='discount_program' class='form-check-input' name='discount_program'
+                                value='discount_program' checked>
+                            {% else %}
+                            <input type="checkbox" id='discount_program' class='form-check-input' name='discount_program' value='discount_program'>
+                            {% endif %}
+                        </div>
+                        <div class="col-9">
+                            <label for="discount_program">
+                                <strong>Я согласен участвовать в дисконтных программах ruversity.com</strong>
+                            </label>
+                        </div>
+                    </div>
 
                         <div class="row mb-2">
                             <!-- <div class="col"><input type="submit" value="Edit" class="btn btn-info btn-block"></div> -->
