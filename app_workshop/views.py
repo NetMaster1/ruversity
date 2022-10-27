@@ -220,46 +220,55 @@ def edit_subject(request, subject_id):
         if subject.ready == False:
             if request.user == subject.author:
                 if request.method == "POST":
-                    subject.title = request.POST.get('title')
-                    language_id = request.POST.post('language')
-                    language = Language.objects.get(id=language_id)
-                    subject.language=language
-                    category_id = request.POST['category']
-                    category = Category.objects.get(id=category_id)
-                    subject.category=category
-                    subject.description = request.POST['description']
-                    subject.prerequisite = request.POST['prerequisites']
-                    additional_file = request.FILES['additional_file']
-                    if additional_file.name.endswith('.jpg') or additional_file.name.endswith('.png') or additional_file.name.endswith('.gif') or additional_file.name.endswith('.bmp') or additional_file.name.endswith('.jpeg'):
-                        temp_image=TempImage.objects.create(temp_thumbnail_file=additional_file)
-                        img = cv2.imread(temp_image.temp_thumbnail_file.path, 0)
-                        wid = img.shape[1]
-                        hgt = img.shape[0]
-                        ratio = wid / hgt
-                        if ratio < 1.5 or ratio > 1.8:
-                            # messages.error(request, 'Image has inproper ratio. Use ration of 1.7 .')
-                            messages.error(request, 'Некорректное соотношение сторон. Используйте отношение длины изображения к его высоте равное 1.7.')
-                            temp_image.delete()
+                    title = request.POST.get('title')
+                    if title:
+                        subject.title=title
+                    language_id = request.POST.get('language')
+                    if language_id:
+                        language = Language.objects.get(id=language_id)
+                        subject.language=language
+                    category_id = request.POST.get('category')
+                    if category_id:
+                        category = Category.objects.get(id=category_id)
+                        subject.category=category
+                    description = request.POST.get('description')
+                    if description:
+                        subject.description=description
+                        description = request.POST.get('description')
+                    prerequisites = request.POST.get('prerequisites')
+                    if prerequisites:
+                        subject.prerequisite=prerequisites
+                    author_price = request.FILES.get('author_price')
+                    if author_price:
+                        subject.author_price=author_price
+                    additional_file = request.FILES.get('thumbnail')
+                    if additional_file:
+                        if additional_file.name.endswith('.jpg') or additional_file.name.endswith('.png') or additional_file.name.endswith('.gif') or additional_file.name.endswith('.bmp') or additional_file.name.endswith('.jpeg'):
+                            temp_image=TempImage.objects.create(temp_thumbnail_file=additional_file)
+                            img = cv2.imread(temp_image.temp_thumbnail_file.path, 0)
+                            wid = img.shape[1]
+                            hgt = img.shape[0]
+                            ratio = wid / hgt
+                            if ratio < 1.5 or ratio > 1.8:
+                                # messages.error(request, 'Image has inproper ratio. Use ration of 1.7 .')
+                                messages.error(request, 'Некорректное соотношение сторон. Используйте отношение длины изображения к его высоте равное 1.7.')
+                                temp_image.delete()
+                                return redirect('edit_subject', subject_id)
+                            else:
+                                subject.thumbnail_file = additional_file
+                        else:
+                            messages.error(request, 'Некорректный формат файла. Загрузите файл в формате jpg, jpeg, png или bmp')
                             return redirect('edit_subject', subject_id)
 
-                        else:
-                            subject.thumbnail_file = additional_file
-
-                            subject.save()
-                            languages = Language.objects.all()
-                            categories = Category.objects.all()
-
-                            context = {
-                                'subject': subject,
-                                # 'sections': sections,
-                                # 'lectures': lectures,
-                                'languages': languages,
-                                'categories': categories
-                            }
-                            return render(request, 'workshop/edit_subject.html', context)
-                    else:
-                        messages.error(request, 'Некорректный формат файла. Загрузите файл в формате jpg, jpeg, png или bmp')
-                        return redirect('edit_subject', subject_id)
+                    try:
+                        if request.POST['discount_program']:
+                            discount_program = True
+                    except KeyError:
+                        discount_program = False
+                    subject.discount_programs = discount_program
+                    subject.save()
+                    return redirect ('edit_subject', subject.id )
+                    
                 else:
                     if Section.objects.filter(course=subject).exists():
                         sections = Section.objects.filter(course=subject).order_by('enumerator')
