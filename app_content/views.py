@@ -52,6 +52,10 @@ def index(request):
 
 def subject(request, subject_id):
     subject = MainSubject.objects.get(id=subject_id)
+    subject_length=subject.length
+    subject_length_h=subject_length // 60
+    subject_length_min=subject_length % 60
+ 
     lectures = Lecture.objects.filter(subject=subject).order_by('enumerator')
     sections = Section.objects.filter(course=subject).order_by('enumerator')
     reviews = Review.objects.filter(subject=subject_id)
@@ -63,6 +67,9 @@ def subject(request, subject_id):
                 cart = Cart.objects.get(subject=subject, user=request.user)
                 context = {
                     'subject': subject,
+                    #'subject_length': subject_length,
+                    'subject_length_h': subject_length_h,
+                    #'subject_length_min': subject_length_min,
                     'sections': sections,
                     'lectures': lectures,
                     'reviews': reviews,
@@ -74,6 +81,9 @@ def subject(request, subject_id):
             else:
                 context = {
                     'subject': subject,
+                    'subject_length_h': subject_length_h,
+                    'subject_length_min': subject_length_min,
+                    #'subject_length': subject_length,
                     'sections': sections,
                     'lectures': lectures,
                     'reviews': reviews,
@@ -86,6 +96,9 @@ def subject(request, subject_id):
                 cart = Cart.objects.get(subject=subject, user=request.user)
                 context = {
                     'subject': subject,
+                    #'subject_length': subject_length,
+                    'subject_length_h': subject_length_h,
+                     'subject_length_min': subject_length_min,
                     'sections': sections,
                     'lectures': lectures,
                     'reviews': reviews,
@@ -96,6 +109,9 @@ def subject(request, subject_id):
             else:
                 context = {
                     'subject': subject,
+                    #'subject_length': subject_length,
+                    'subject_length_h': subject_length_h,
+                    'subject_length_min': subject_length_min,
                     'sections': sections,
                     'lectures': lectures,
                     'reviews': reviews,
@@ -105,6 +121,9 @@ def subject(request, subject_id):
     else:
         context = {
             'subject': subject,
+            #'subject_length': subject_length,
+            'subject_length_h': subject_length_h,
+            'subject_length_min': subject_length_min,
             'sections': sections,
             'lectures': lectures,
             'reviews': reviews,

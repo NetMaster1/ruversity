@@ -65,14 +65,16 @@ class MainSubject(models.Model):
     checked = models.BooleanField(default=False)
     blocked = models.BooleanField(default=False)
     discount_programs = models.BooleanField(default=True, null=True)
-    length = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    length = models.IntegerField(default=0)#length in minutes
+    length_1 = models.DurationField(null=True)
 
     def __int__(self):
         return self.id
 
 class Section(models.Model):
     course = models.ForeignKey(MainSubject, on_delete=models.CASCADE)
-    length = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    length = models.IntegerField(default=0)
+    length_1 = models.DurationField(null=True)
     title = models.CharField(max_length=100)
     enumerator = models.IntegerField(null=True)
 
@@ -99,7 +101,8 @@ class Lecture(models.Model):
     author = models.ForeignKey(User, on_delete=models.SET_DEFAULT, null=True, default=1)
     blocked = models.BooleanField(default=False)
     free = models.BooleanField(default=False)
-    length = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    length = models.IntegerField(default=0)
+    length_1 = models.DurationField(null=True)
     size_mb = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     enumerator = models.IntegerField(null=True)
 

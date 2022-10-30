@@ -73,8 +73,12 @@
                     </div>
             </div>
             </div>
-        <div class="row"><div class="col"><strong>Длительность: </strong>{{subject.length}} мин. </div></div>
-
+    
+        <div class="row">      
+          
+            <div class="col"><strong>Длительность: </strong>{{ subject.length_1}}</div>
+  
+        </div>
         <div class="row">
             {% if subject.discount_programs == True and discount_time.discount_on == True %}
             <div class="row">
@@ -152,18 +156,19 @@
             <!-- <ul class="list-group list-group-flush"> -->
         
         {% for section in sections %}
+    
         <div class="section_1">
-        <h5 data-bs-toggle="collapse" data-bs-target='#section{{section.id}}'>Раздел {{section.enumerator}}: {{section.title}}. {{section.length}} мин.</h5>
+        <h5 data-bs-toggle="collapse" data-bs-target='#section{{section.id}}'>Раздел {{section.enumerator}}: {{section.title}}. {{section.length_1}}</h5>
         </div>
                 {% for lecture in lectures %}
 
                     {% if lecture.section == section %}
                     <div id="section{{section.id}}" class='collapse'>
                     {% if lecture.free == False %}
-                    <li class="list-group-item">{{lecture.title}} {{lecture.length}} min</li>
+                    <li class="list-group-item">{{lecture.title}} {{lecture.length_1}}</li>
                     {% else %}
                     <li class="list-group-item">
-                        <a href="{% url 'video' subject.id lecture.id %}" target="_blank">{{lecture.title}} {{lecture.length}} мин. </a>
+                        <a href="{% url 'video' subject.id lecture.id %}" target="_blank">{{lecture.title}} {{lecture.length_1}} </a>
                     </li>
                     {% endif %}
                     </div>
