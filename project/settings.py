@@ -50,8 +50,7 @@ INSTALLED_APPS = [
     'app_contacts',
     'storages',
     'background_task',
-    'app_tutorial'
-
+    'app_tutorial',
 
 ]
 

@@ -5,6 +5,7 @@ from datetime import datetime, date
 from . storage import OverwriteStorage
 import uuid
 from app_accounts.models import Author
+from durationwidget.widgets import TimeDurationWidget
 
 # Create your models here.
 class Language(models.Model):
@@ -65,8 +66,8 @@ class MainSubject(models.Model):
     checked = models.BooleanField(default=False)
     blocked = models.BooleanField(default=False)
     discount_programs = models.BooleanField(default=True, null=True)
-    length = models.IntegerField(default=0)#length in minutes
-    length_1 = models.DurationField(null=True)
+    length = models.IntegerField()#length in minutes
+    length_1 = models.DurationField(null=True, default='00:00:00')
 
     def __int__(self):
         return self.id
