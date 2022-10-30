@@ -66,7 +66,7 @@ class MainSubject(models.Model):
     checked = models.BooleanField(default=False)
     blocked = models.BooleanField(default=False)
     discount_programs = models.BooleanField(default=True, null=True)
-    length = models.IntegerField()#length in minutes
+    length = models.IntegerField(default=0)#length in minutes
     length_1 = models.DurationField(null=True, default='00:00:00')
 
     def __int__(self):
