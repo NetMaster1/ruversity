@@ -17,7 +17,7 @@ class LectureAdmin(admin.ModelAdmin):
     ordering = ('-id',)
     list_per_page=100
     list_filter = ('subject', 'section',)
-    list_editable = ('length_1',)
+    list_editable = ('length', 'length_1',)
 
 class TransactionAdmin(admin.ModelAdmin):
     list_display = ('id', 'date_created', 'course', 'author', 'money_paid', 'payment_id', 'date_paid', 'paid_amount', 'buyer', 'money_transfer', 'date_transfer', 'transferred_amount')
