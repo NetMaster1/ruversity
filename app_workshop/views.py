@@ -34,6 +34,7 @@ from django.core.files.temp import NamedTemporaryFile
 from django.shortcuts import get_object_or_404
 from .utils import PROCESSING_READY_TO_START, PROCESSING_FINISHED
 
+import datetime
 # Create your views here.
 
 def studio(request):
@@ -552,10 +553,18 @@ def upload_multiple_files (request, subject_id, section_id):
                 #     messages.error(request, 'Размер файла больше 200МБ. Попробуйте использовать файлы меньшего размера.')
                 #     return redirect('edit_section', subject_id, section_id)
 
+                #=======Module for calculating length of a lecture in two formats=======================
                 clip = VideoFileClip(video_file_name)
-                length = clip.duration // 60
-                # length_sec = (clip.duration % 60)*60
-                # length = str(length_min) + str(length_sec)
+                length=clip.duration # overall duration in seconds
+                length=length // 1
+                length_hours=length // 3600 #hours
+                if length_hours < 1:
+                    length_hours=0
+                length_min = length // 60 #minutes
+                length_sec = length % 60 #seconds
+                duration=datetime.timedelta(hours=length_hours, minutes=length_min, seconds=length_sec)
+                #===================End of Length Module==============================
+
                 size_mb = size_mbytes
                 lecture = Lecture.objects.create(
                     #title=title,
@@ -567,6 +576,7 @@ def upload_multiple_files (request, subject_id, section_id):
                     subject=subject,
                     #free=free_access,
                     length=length,
+                    length_1=duration,
                     size_mb=size_mb,
                     #enumerator=enumerator
                 )
@@ -817,17 +827,38 @@ def agree(request, subject_id):
             lectures = Lecture.objects.filter(subject=subject, enumerator__isnull=False).order_by('enumerator')
             subject_duration=0
             for lecture in lectures:
-                subject_duration += lecture.length
+                subject_duration += lecture.length #in seconds
+            
+            #========Length Module for Subject================================
+            length_hours=subject_duration // 3600 #hours
+            if length_hours < 1:
+                length_hours=0
+            remainder=subject_duration-length_hours*3600
+            length_min = remainder // 60 #minutes
+            length_sec = remainder % 60 #seconds
+            duration=datetime.timedelta(hours=length_hours, minutes=length_min, seconds=length_sec)
             subject.length = subject_duration
+            subject.length_1=duration
             subject.save()
+            #==============End of Length Module for Subject
             sections = Section.objects.filter(course=subject)
             for section in sections:
-                lectures_sec=lectures.filter(section=section)
+                lectures_length=lectures.filter(section=section)
                 section_length=0
-                for lecture_sec in lectures_sec:
-                    section_length += lecture_sec.length
-                section.length=section_length
-                section.save()
+                for lecture_length in lectures_length:
+                    section_length += lecture_length.length
+
+                length_hours=section_length // 3600 #hours
+                if length_hours < 1:
+                    length_hours=0
+                remainder=section_length-length_hours*3600
+                length_min = remainder // 60 #minutes
+                length_sec = remainder % 60 #seconds
+                duration=datetime.timedelta(hours=length_hours, minutes=length_min, seconds=length_sec)
+
+            section.length=section_length
+            section.length_1=duration
+            section.save()
             if badwords:
                 for word in badwords:
                     if word.badword in subject.title:
