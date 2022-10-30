@@ -32,7 +32,7 @@ def subject_purchased(request, subject_id):
     if request.user.is_authenticated:
         subject = MainSubject.objects.get(id=subject_id)
         sections = Section.objects.filter(course=subject)
-        lectures = Lecture.objects.filter(subject=subject)
+        lectures = Lecture.objects.filter(subject=subject).order_by('enumerator')
         reviews = Review.objects.filter(subject=subject_id)
         ratings = Rating.objects.filter(subject=subject_id)
         questions = Question.objects.filter(subject=subject_id)

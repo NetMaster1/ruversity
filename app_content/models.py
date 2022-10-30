@@ -96,8 +96,8 @@ class Lecture(models.Model):
     fairplay_url = models.CharField(max_length=512, null=True)#CDN
     fairplay_certificate_url = models.CharField(max_length=512, null=True)#CDN
     processing_state = models.DecimalField(max_digits=1,decimal_places=0,default=0)#CDN
-    subtitle_file = models.FileField(upload_to='uploads', null=True)
-    translation_file = models.FileField(upload_to='uploads', null=True)
+    subtitle_file = models.FileField(upload_to='uploads', null=True, blank =True)
+    translation_file = models.FileField(upload_to='uploads', null=True, blank=True)
     # author = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     author = models.ForeignKey(User, on_delete=models.SET_DEFAULT, null=True, default=1)
     blocked = models.BooleanField(default=False)
