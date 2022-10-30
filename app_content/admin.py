@@ -3,7 +3,7 @@ from . models import MainSubject, Transaction, Price, Category, Language, Rating
 
 
 class MainSubjectAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'percent', 'date_posted', 'author', 'ready')
+    list_display = ('id', 'title', 'percent', 'date_posted', 'author', 'author_price', 'ready')
 
 class SectionAdmin(admin.ModelAdmin):
     list_display = ('id', 'title', 'course')
