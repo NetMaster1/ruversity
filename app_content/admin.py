@@ -6,14 +6,15 @@ class MainSubjectAdmin(admin.ModelAdmin):
     list_display = ('id', 'title', 'percent', 'date_posted', 'author', 'author_price', 'ready', 'discount_programs', 'length_1')
 
 class SectionAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'course')
+    list_display = ('id', 'course', 'enumerator', 'title', 'length', 'length_1')
     list_filter = ('course',)
+    ordering = ('id',)
 
 class LectureAdmin(admin.ModelAdmin):
-    list_display = ('id', 'subject', 'title', 'video_file', 'author', 'date_posted', 'size_mb', 'length', 'length_1')
+    list_display = ('id', 'subject', 'section', 'title', 'video_file', 'author', 'date_posted', 'size_mb', 'length', 'length_1')
     ordering = ('-id',)
     list_per_page=100
-    list_filter = ('subject', 'section')
+    list_filter = ('subject', 'section',)
 
 class TransactionAdmin(admin.ModelAdmin):
     list_display = ('id', 'date_created', 'course', 'author', 'money_paid', 'payment_id', 'date_paid', 'paid_amount', 'buyer', 'money_transfer', 'date_transfer', 'transferred_amount')
