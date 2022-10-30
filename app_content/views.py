@@ -52,11 +52,14 @@ def index(request):
 
 def subject(request, subject_id):
     subject = MainSubject.objects.get(id=subject_id)
+    #I don't use 'subject.length_1' directly since it comes out as '1 day 23:30:00' & I want to get rin of "day"
     subject_length=subject.length
-    subject_length_h=subject_length // 60
-    subject_length_min=subject_length % 60
+    subject_length_hours=subject_length // 3600
+    remainder=subject_length-subject_length_hours * 3600
+    subject_length_min=remainder // 60
+    subject_length_sec=remainder % 60
  
-    lectures = Lecture.objects.filter(subject=subject).order_by('enumerator')
+    lectures = Lecture.objects.filter(subject=subject, enumerator__isnull= False).order_by('enumerator')
     sections = Section.objects.filter(course=subject).order_by('enumerator')
     reviews = Review.objects.filter(subject=subject_id)
     discount_time = DiscountOn.objects.get(id=1)
@@ -67,9 +70,9 @@ def subject(request, subject_id):
                 cart = Cart.objects.get(subject=subject, user=request.user)
                 context = {
                     'subject': subject,
-                    #'subject_length': subject_length,
-                    'subject_length_h': subject_length_h,
-                    #'subject_length_min': subject_length_min,
+                    'subject_length_hours': subject_length_hours,
+                    'subject_length_min': subject_length_min,
+                    'subject_length_sec': subject_length_sec,
                     'sections': sections,
                     'lectures': lectures,
                     'reviews': reviews,
@@ -81,9 +84,9 @@ def subject(request, subject_id):
             else:
                 context = {
                     'subject': subject,
-                    'subject_length_h': subject_length_h,
+                    'subject_length_hours': subject_length_hours,
                     'subject_length_min': subject_length_min,
-                    #'subject_length': subject_length,
+                    'subject_length_sec': subject_length_sec,
                     'sections': sections,
                     'lectures': lectures,
                     'reviews': reviews,
@@ -96,9 +99,9 @@ def subject(request, subject_id):
                 cart = Cart.objects.get(subject=subject, user=request.user)
                 context = {
                     'subject': subject,
-                    #'subject_length': subject_length,
-                    'subject_length_h': subject_length_h,
-                     'subject_length_min': subject_length_min,
+                    'subject_length_hours': subject_length_hours,
+                    'subject_length_min': subject_length_min,
+                    'subject_length_sec': subject_length_sec,
                     'sections': sections,
                     'lectures': lectures,
                     'reviews': reviews,
@@ -109,9 +112,9 @@ def subject(request, subject_id):
             else:
                 context = {
                     'subject': subject,
-                    #'subject_length': subject_length,
-                    'subject_length_h': subject_length_h,
+                    'subject_length_hours': subject_length_hours,
                     'subject_length_min': subject_length_min,
+                    'subject_length_sec': subject_length_sec,
                     'sections': sections,
                     'lectures': lectures,
                     'reviews': reviews,
@@ -121,9 +124,9 @@ def subject(request, subject_id):
     else:
         context = {
             'subject': subject,
-            #'subject_length': subject_length,
-            'subject_length_h': subject_length_h,
+            'subject_length_hours': subject_length_hours,
             'subject_length_min': subject_length_min,
+            'subject_length_sec': subject_length_sec,
             'sections': sections,
             'lectures': lectures,
             'reviews': reviews,

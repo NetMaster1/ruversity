@@ -556,12 +556,13 @@ def upload_multiple_files (request, subject_id, section_id):
                 #=======Module for calculating length of a lecture in two formats=======================
                 clip = VideoFileClip(video_file_name)
                 length=clip.duration # overall duration in seconds
-                length=length // 1
+                length=length // 1#getting rid of microseconds
                 length_hours=length // 3600 #hours
                 if length_hours < 1:
                     length_hours=0
-                length_min = length // 60 #minutes
-                length_sec = length % 60 #seconds
+                remainder=length - length_hours * 3600
+                length_min = remainder // 60 #minutes
+                length_sec = remainder % 60 #seconds
                 duration=datetime.timedelta(hours=length_hours, minutes=length_min, seconds=length_sec)
                 #===================End of Length Module==============================
 
