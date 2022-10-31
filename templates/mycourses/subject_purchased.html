@@ -82,7 +82,7 @@
         </div>
 
         <div class="row">
-            <div class="col"><strong>Автор: </strong>{{subject.author}}</div>
+            <div class="col"><strong>Автор: </strong>{{subject.author.first_name}} {{subject.author.last_name}}</div>
         </div>
         <div class="row">
             <div class="col"><strong>Дата размещения: </strong>{{subject.date_posted}}</div>
@@ -103,8 +103,8 @@
         </div>
 
     {% for section in sections %}
-        <div class="section_1" >
-            <h5 data-bs-toggle="collapse" data-bs-target='#section{{section.id}}'>Раздел{{section.enumerator}}: {{section.title}}. Длительность: {{section.length_1}} </h5>
+      
+        <div class="section_1" data-bs-toggle="collapse" data-bs-target='#section{{section.id}}'> <h5> Раздел{{section.enumerator}}: {{section.title}}. Длительность: {{section.length_1}} </h5>
         </div>
 
             {% for lecture in lectures %}

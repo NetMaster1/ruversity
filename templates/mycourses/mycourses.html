@@ -17,7 +17,7 @@
             {% for course in my_courses %}
 
         <div class="col-sm-3">
-            <div class="card mb-3" style="border-color: transparent;">
+            <div class="card mb-3 img_scale" style="border-color: transparent;">
                 <!-- <div class="p-2"> -->
                 <div class="card-header" style='height:4rem'>
                     <h5>{{course.course.title}}</h5>
@@ -31,7 +31,12 @@
                     </a>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col"><strong>Автор: </strong>{{course.course.author}}</div>
+                            <div class="col"><strong>Автор: </strong>
+                                <a href="{% url 'author_page' course.course.author.id %}">
+                                    {{course.course.author.first_name}}{{course.course.author.last_name}}
+                                </a>
+                            </div>
+                           
                         </div>
                         <div class="row">
                             <div class="col"><strong>Дата: </strong>{{course.course.date_posted}}</div>
