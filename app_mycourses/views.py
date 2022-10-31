@@ -31,12 +31,18 @@ def mycourses(request):
 def subject_purchased(request, subject_id):
     if request.user.is_authenticated:
         subject = MainSubject.objects.get(id=subject_id)
-        sections = Section.objects.filter(course=subject)
-        lectures = Lecture.objects.filter(subject=subject).order_by('enumerator')
+        sections = Section.objects.filter(course=subject).order_by('enumerator')
+        lectures = Lecture.objects.filter(subject=subject, enumerator__isnull= False).order_by('enumerator')
         reviews = Review.objects.filter(subject=subject_id)
         ratings = Rating.objects.filter(subject=subject_id)
         questions = Question.objects.filter(subject=subject_id)
         answers = Answer.objects.filter(subject=subject_id)
+        #I don't use 'subject.length_1' directly since it comes out as '1 day 23:30:00' & I want to get rin of "day"
+        subject_length=subject.length
+        subject_length_hours=subject_length // 3600
+        remainder=subject_length-subject_length_hours * 3600
+        subject_length_min=remainder // 60
+        subject_length_sec=remainder % 60
 
         if Transaction.objects.filter(buyer=request.user, course=subject).exists():
             if Review.objects.filter(subject=subject_id, author=request.user).exists():
@@ -47,6 +53,9 @@ def subject_purchased(request, subject_id):
                         subject=subject, user=request.user)
                     context = {
                         'subject': subject,
+                        'subject_length_hours': subject_length_hours,
+                        'subject_length_min': subject_length_min,
+                        'subject_length_sec': subject_length_sec,
                         'rating': rating,
                         'lectures': lectures,
                         'review': review,
@@ -61,6 +70,9 @@ def subject_purchased(request, subject_id):
                 else:
                     context = {
                         'subject': subject,
+                        'subject_length_hours': subject_length_hours,
+                        'subject_length_min': subject_length_min,
+                        'subject_length_sec': subject_length_sec,
                         'lectures': lectures,
                         'review': review,
                         'sections': sections,
@@ -76,6 +88,9 @@ def subject_purchased(request, subject_id):
                         subject=subject, user=request.user)
                     context = {
                         'subject': subject,
+                        'subject_length_hours': subject_length_hours,
+                        'subject_length_min': subject_length_min,
+                        'subject_length_sec': subject_length_sec,
                         'rating': rating,
                         'lectures': lectures,
                         'sections': sections,
@@ -89,6 +104,9 @@ def subject_purchased(request, subject_id):
                 else:
                     context = {
                         'subject': subject,
+                        'subject_length_hours': subject_length_hours,
+                        'subject_length_min': subject_length_min,
+                        'subject_length_sec': subject_length_sec,
                         'lectures': lectures,
                         'sections': sections,
                         'reviews': reviews,
@@ -102,6 +120,7 @@ def subject_purchased(request, subject_id):
             return redirect('login')
 
     else:
+        logout(request)
         return redirect('login')
 
 

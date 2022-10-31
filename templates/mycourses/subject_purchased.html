@@ -12,8 +12,8 @@
     </div>
     {% endif %}
 
-<div class="row m-2">
-<div class="col-4 mt-1 mr-auto">
+<div class="row">
+<div class="card_subject">
 <div class="card">
             <div class="card-header">
                 <h4>{{subject.title}}</h4>
@@ -71,7 +71,7 @@
                 <div class="stars-outer">
                     <div class="stars-inner" style="width: {{subject.percent}}"></div>
                 </div>
-            </div>
+                </div>
             </div>
             {% endif %}
   
@@ -88,18 +88,15 @@
             <div class="col"><strong>Дата размещения: </strong>{{subject.date_posted}}</div>
         </div>
         <div class="row">
-            <div class="col"><strong>Длительность: </strong>{{subject.length}} min</div>
+            <div class="col"><strong>Длительность: </strong>{{subject_length_hours}}:{{subject_length_min}}:{{subject_length_sec}}</div>
         </div>
-        <div class="row">
-            <div class="col"><strong>Оставьте отзыв</strong></div>
-        </div>
-            .
+            
             <!-- =============================================================== -->
 </div> 
 </div>
 </div>
 
-<div class="col-8 mt-1 ml-auto" id='scroll_col'>
+<div class="card_menu">
     <div class="card" >
         <div class="card-header" >
             <h4>Содержание</h4>
@@ -107,7 +104,7 @@
 
     {% for section in sections %}
         <div class="section_1" >
-            <a id='a_id_section' href='#' <h5 data-bs-toggle="collapse" data-bs-target='#section{{section.id}}'>{{section.enumerator}}. {{section.title}}. Длительность: {{section.length_1}} </h5></a>
+            <h5 data-bs-toggle="collapse" data-bs-target='#section{{section.id}}'>Раздел{{section.enumerator}}: {{section.title}}. Длительность: {{section.length_1}} </h5>
         </div>
 
             {% for lecture in lectures %}
@@ -141,10 +138,10 @@
 </div>
 
 </div>
-</div>
 
 
-<div class="container">
+
+
 <div class="row mt-2 ml-auto">
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item " role="presentation">
