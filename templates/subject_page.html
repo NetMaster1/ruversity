@@ -19,7 +19,7 @@
             </figure>
                
 
-    <div class="card-body">
+<div class="card-body">
         <div class="row">
         <div class="col">
         <strong>Рейтинг: </strong>
@@ -149,19 +149,17 @@
 <!-- ===================================================================== -->
 
 <div class="card_menu">
-    <!-- <div class="col-7 m-1"> -->
-        <div class="card">
-        <div class="card-header"><h4>Содержание</h4></div>
-        <!-- <div class="card-body"> -->
-            <!-- <ul class="list-group list-group-flush"> -->
-        
-        {% for section in sections %}
-    
-        <div class="section_1">
-        <h5 data-bs-toggle="collapse" data-bs-target='#section{{section.id}}'>Раздел {{section.enumerator}}: {{section.title}}. {{section.length_1}}</h5>
+    <div class="card">
+        <div class="card-header">
+            <h4>Содержание</h4>
         </div>
-                {% for lecture in lectures %}
+         
+    {% for section in sections %}
+        <div class="section_1">
+            <h5 data-bs-toggle="collapse" data-bs-target='#section{{section.id}}'>Раздел {{section.enumerator}}: {{section.title}}. Длительность: {{section.length_1}}</h5>
+        </div>
 
+                {% for lecture in lectures %}
                     {% if lecture.section == section %}
                     <div id="section{{section.id}}" class='collapse'>
                     {% if lecture.free == False %}
