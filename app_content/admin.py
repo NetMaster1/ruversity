@@ -9,7 +9,7 @@ class MainSubjectAdmin(admin.ModelAdmin):
 class SectionAdmin(admin.ModelAdmin):
     list_display = ('id', 'course', 'enumerator', 'title', 'length', 'length_1')
     list_filter = ('course',)
-    ordering = ('id',)
+    ordering = ('course', 'enumerator', 'id',)
     list_editable = ('length_1',)
 
 class LectureAdmin(admin.ModelAdmin):
