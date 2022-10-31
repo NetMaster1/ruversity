@@ -9,12 +9,12 @@ class MainSubjectAdmin(admin.ModelAdmin):
 class SectionAdmin(admin.ModelAdmin):
     list_display = ('id', 'course', 'enumerator', 'title', 'length', 'length_1')
     list_filter = ('course',)
-    ordering = ('id',)
+    ordering = ('course', 'enumerator', 'id',)
     list_editable = ('length_1',)
 
 class LectureAdmin(admin.ModelAdmin):
     list_display = ('id', 'subject', 'section', 'title', 'enumerator', 'video_file', 'author', 'date_posted', 'size_mb', 'length', 'length_1')
-    ordering = ('-id',)
+    ordering = ('subject', 'enumerator', 'id',)
     list_per_page=100
     list_filter = ('subject', 'section',)
     list_editable = ('length', 'length_1',)
