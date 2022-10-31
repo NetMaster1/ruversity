@@ -44,7 +44,7 @@ h5 {
 
 .card_menu {
   display: inline-block;
-  width: 35vw;
+  width: 45rem;
   min-height: fit-content;
   max-height: fit-content;
 }
@@ -57,6 +57,7 @@ h5 {
 iframe {
   aspect-ratio: 16/9;
 }
+
 
 @media(max-width: 575px) {
   body {
@@ -111,9 +112,6 @@ iframe {
     height: 30px; */
 }
 
-
-
-
 .section_1 {
   background-color: rgb(245, 244, 244);
   padding: 10px;
@@ -125,6 +123,7 @@ iframe {
 .section_1:hover {
   background-color: lightgrey;
   font-size: 1.1rem;
+  cursor:grab;
 
 }
 
