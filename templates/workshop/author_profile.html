@@ -62,10 +62,12 @@
                     <div class="form-group">
                             <label for="credit_card_type">Тип карты</label>
                             <select class="form-select" name="credit_card_type" id="credit_card_type" required>
+                                <!-- <option selected="true" disabled="disabled">Выберите торговую точку</option> -->
+                                <option value="">Выберите тип карты</option>
                                 {% for item in credit_card_types %}
                                 <option value="{{item.type}}">{{item.type}}</option>
                                 {% endfor %}
-                            </select>    
+                            </select>
                     </div>
             
 
