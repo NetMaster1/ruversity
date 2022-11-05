@@ -158,11 +158,17 @@
         <div class="section_1" data-bs-toggle="collapse" data-bs-target='#section{{section.id}}'> <h5> Раздел {{section.enumerator}}: {{section.title}}. Длительность: {{section.length_1}}</h5>
         </div>
 
-                {% for lecture in lectures %}
+            {% for lecture in lectures %}
                     {% if lecture.section == section %}
                     <div id="section{{section.id}}" class='collapse'>
                     {% if lecture.free == False %}
                     <li class="list-group-item">{{lecture.title}} {{lecture.length_1}}</li>
+                        {% for item in lecture.additionalmaterialfile_set.all%}
+                        {{item.additional_file}}
+                        {% endfor %}
+                        {% for item in lecture.additionalmateriallink_set.all%}
+                        {{item.url_link}}
+                        {% endfor %}
                     {% else %}
                     <li class="list-group-item">
                         <a href="{% url 'video' subject.id lecture.id %}" target="_blank">{{lecture.title}} {{lecture.length_1}} </a>
@@ -170,8 +176,8 @@
                     {% endif %}
                     </div>
                     {% endif %}
-                {% endfor%}               
-            {% endfor %}
+            {% endfor%}               
+    {% endfor %}
            
         </div>
 </div>
