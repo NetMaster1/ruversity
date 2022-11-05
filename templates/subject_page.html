@@ -159,23 +159,41 @@
         </div>
 
             {% for lecture in lectures %}
-                    {% if lecture.section == section %}
+                {% if lecture.section == section %}
                     <div id="section{{section.id}}" class='collapse'>
                     {% if lecture.free == False %}
-                    <li class="list-group-item">{{lecture.title}} {{lecture.length_1}}</li>
+                    <li class="list-group-item"><i class="fa-sharp fa-solid fa-circle-play"></i>&nbsp;&nbsp;&nbsp;{{lecture.title}} {{lecture.length_1}}
                         {% for item in lecture.additionalmaterialfile_set.all%}
-                        <a class="nav-link" href="{{ item.additional_file.url }}" download>Ссылка на файл</a>
+                            {% if item %} <br>
+                            <i class="fa-regular fa-file"></i>&nbsp;&nbsp;&nbsp;Текстовый документ
+                            <!-- <a class="nav-link" href="{{ item.additional_file.url }}" download>Ссылка на файл</a> -->
+                            {% endif %}
                         {% endfor %}
                         {% for item in lecture.additionalmateriallink_set.all%}
-                        {{item.url_link}}
+                            {% if item %} <br>
+                            <i class="fa-solid fa-link"></i>&nbsp;&nbsp;&nbsp;Внешняя ссылка
+                        <!-- <a href="{{item.url_link }}" target="_blank">{{item.url_link}}</a> -->
+                            {% endif %}
                         {% endfor %}
+                    </li>
                     {% else %}
                     <li class="list-group-item">
+                        <i class="fa-sharp fa-solid fa-circle-play"></i>&nbsp;&nbsp;&nbsp;
                         <a href="{% url 'video' subject.id lecture.id %}" target="_blank">{{lecture.title}} {{lecture.length_1}} </a>
+                        {% for item in lecture.additionalmaterialfile_set.all%}
+                            {% if item %}
+                            <i class="fa-regular fa-file"></i>&nbsp;&nbsp;&nbsp;Текстовый документ<a class="nav-link" href="{{ item.additional_file.url }}" download>Ссылка на файл</a>
+                            {% endif %}
+                        {% endfor %}
+                        {% for item in lecture.additionalmateriallink_set.all%}
+                            {% if item %} <br>
+                            <i class="fa-solid fa-link"></i>&nbsp;&nbsp;&nbsp;<a href="{{item.url_link }}" target="_blank">{{item.url_link}}</a>
+                            {% endif %}
+                        {% endfor %}
                     </li>
                     {% endif %}
                     </div>
-                    {% endif %}
+                {% endif %}
             {% endfor%}               
     {% endfor %}
            
