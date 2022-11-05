@@ -399,7 +399,7 @@
                                     </div>
                                 </div>
                                 <div class="row mt-2">
-                                    <div class="col-4"></div>
+                                    <div class="col-4"><input type="button" value="Закрыть" class='btn btn-block btn-outline-dark close_button'></div>
                                     <div class="col-4"><input type="submit" value="Редактировать" class='btn btn-block btn-outline-dark'>
                                     </div>
                               
@@ -455,6 +455,8 @@
     const lectures = document.querySelectorAll('#lectureModal');
     const titles = document.querySelectorAll('#lecture_title');
     const buttons = document.querySelectorAll('.cross_button');
+    const close_buttons = document.querySelectorAll('.close_button');
+
     const hint = document.querySelectorAll('.hint');
     const my_alert = document.querySelectorAll('.my_alert');
     const btn_close = document.querySelectorAll('.delete_cross');
@@ -481,6 +483,13 @@
                 location.reload();
             })
         }
+
+         for (let i = 0; i < close_buttons.length; i++) {
+                close_buttons[i].addEventListener('click', e => {
+                    //lectures[i].classList.remove('openModal')
+                    location.reload();
+                })
+            }
 
         for (let i = 0; i < d_1.length; i++) {
                 d_1[i].addEventListener('mouseover', e=> {
