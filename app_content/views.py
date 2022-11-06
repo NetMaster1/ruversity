@@ -10,7 +10,7 @@ from django.contrib import messages, auth
 # Create your views here.
 
 def index(request):
-    subjects = MainSubject.objects.filter(ready='True').exclude(blocked='True').order_by('-date_posted')
+    subjects = MainSubject.objects.filter(ready='True').exclude(blocked='True').order_by('date_posted')
     discount_time = DiscountOn.objects.get(id=1)
 
     if request.user.is_authenticated:
@@ -204,7 +204,7 @@ def gen_search(request):
 
 def main_page(request):
     # if request.user.is_authenticated:
-    subjects = MainSubject.objects.filter(ready='True').exclude(blocked='True').order_by('-date_posted')
+    subjects = MainSubject.objects.filter(ready='True').exclude(blocked='True').order_by('date_posted')
     discount_time = DiscountOn.objects.get(id=1)
 
     paginator = Paginator(subjects, 12)
