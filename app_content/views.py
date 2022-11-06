@@ -39,7 +39,7 @@ def index(request):
         # }
         return redirect('main_page')
     else:
-        subjects = MainSubject.objects.filter(ready='True').exclude(blocked='True').order_by('-date_posted')[:4]
+        subjects = MainSubject.objects.filter(ready='True').exclude(blocked='True').order_by('-date_posted')[:12]
         paginator = Paginator(subjects, 12)
         page = request.GET.get('page')
         paged_subjects = paginator.get_page(page)
