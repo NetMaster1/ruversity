@@ -56,6 +56,7 @@
     <h3>Лекции</h3>
 </div>
 
+<!-- =============================uploading multiple files module=============================== -->
 <div class="row mt-3">
     <form action="{% url 'upload_multiple_files' subject.id section.id %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
@@ -79,134 +80,174 @@
                 <input type="submit" value="Загрузить" class='btn btn-block btn-outline-dark'>
             </div>
         </div>
-        
-        </form>
-        
+        </form>     
+</div>
+<!-- ======================================End of uploading multiple files module================================== -->
+<div class="col-8">
+    <div class="row m-auto">
+        <div class="lecture_note">Для создания лекции перетащите поле "УИН" из библиотеки загруженных файлов в
+            соответствующее поле в форме. При создании лекции без видеофайла просто оставьте это поле пустым.
         </div>
+        <div class="create_lecture">
+            <h3>Создать новую лекцию</h3>
+        </div>
+    </div>
+    <br>
+</div>
+
+<!-- =============================lecture content choice module========================================== -->
+<div class="row mt-2 ml-auto">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item " role="presentation">
+            <button class="nav-link active pl-1 pr-3" id="home-tab" data-bs-toggle="tab" data-bs-target="#video"
+                type="button" role="tab" aria-controls="home" aria-selected="true">
+                <div class="menu_font">Загрузить видеофайл</div>
+            </button>
+        </li>
+
+        <li class="nav-item " role="presentation">
+            <button class="nav-link pl-1 pr-3" id="profile-tab" data-bs-toggle="tab" data-bs-target="#questions"
+                type="button" role="tab" aria-controls="profile" aria-selected="false">
+                <div class="menu_font">Создать тест</div>
+            </button>
+        </li>
+        <li class="nav-item " role="presentation">
+            <button class="nav-link pl-1 pr-3" id="profile-tab" data-bs-toggle="tab" data-bs-target="#questions" type="button"
+                role="tab" aria-controls="profile" aria-selected="false">
+                <div class="menu_font">Текстовый файл</div>
+            </button>
+        </li>
+    </ul>
+<!-- ====================================Video File Content========================================== -->
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="video" role="tabpanel" aria-labelledby="home-tab">
+
+        <div class="row m-auto border rounded">
+            <form action="{% url 'lecture_update' subject.id section.id %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-row mt-1 mb-1">
+                    <div class="col-5">
+                        <label for="lecture_id">
+                            <strong>Уникальный Идентификационный Номер лекции :</strong>
+                        </label>
+                    </div>
+                    <div class="col-7">
+                        <input class='form-control i-1' type="text" id="lecture_id" name="lecture_id" placeholder="УИН">
+                    </div>
+                </div>
+        
+                <div class="form-row mt-1 mb-1">
+                    <div class="col-5">
+                        <label for="enumerator">
+                            <strong>Порядковый номер лекции :</strong>
+                        </label>
+                    </div>
+        
+                    <div class="col-7">
+                        <input class='form-control' type="number" id="enumerator" name="enumerator"
+                            placeholder="Порядковый номер лекции" required>
+                    </div>
+                </div>
+                <div class="form-row mt-1 mb-1">
+                    <div class="col-5">
+                        <label for="title">
+                            <strong>Название лекции :</strong>
+                        </label>
+                    </div>
+                    <div class="col-7">
+                        <input type="text" class='form-control i-1' id="title" name="title" placeholder="Название лекции"
+                            required>
+                    </div>
+                </div>
+                <!-- <div class="form-row mt-1 mb-1">
+                    <div class="col-5">
+                        <label for="video_file">
+                            <strong><div class="div" style="color: blue">Загрузите видеофайл mp4 размером до 500Mb:</div></strong>
+                        </label>
+                    </div>
+                    <div class="col-4">
+                        <input type="file" class="form-control i-2" name="video_file" required>
+                    </div>
+                </div> -->
+        
+                <div class="form-row mt-1 mb-1">
+                    <div class="col-5">
+                        <label for="url_link">
+                            <strong>Если необходимо, введите ссылку на ресурс:</strong>
+                        </label>
+                    </div>
+                    <div class="col-7">
+                        <input type="url" class="form-control" id="url_link" name="url_link" placeholder="https://">
+                    </div>
+                </div>
+                <div class="form-row mt-1 mb-1">
+                    <div class="col-11">
+                        <label for="additional_file">
+                            <strong>Если необходимо, загрузите текстовый, архивный файл или изображение (txt, doc, jpeg, jpg,
+                                bmp, png,
+                                pdf, rar, zip.):</strong>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-row m-auto">
+                    <div class="col-12">
+                        <input type="file" class="form-control" id="additional_file" name="additional_file">
+                    </div>
+                </div>
+                <!-- <div class="form-row">
+                    <div class="col-3">
+                        <label for="subtitle_file">
+                            <strong>Загрузить субтитры:</strong>
+                        </label>
+                    </div>
+                    <div class="col-4">
+                        <input type="file" class="form-control" id="subtitle_file" name="subtitle_file">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-3">
+                        <label for="subtitle_file">
+                            <strong>Загрузить перевод:</strong>
+                        </label>
+                    </div>
+                    <div class="col-4">
+                        <input type="file" class="form-control" id="translation_file" name="translation_file">
+                    </div> -->
+        
+                <div class="form-row mt-2">
+                    <div class="col-5 pl-4">
+                        <input type="checkbox" id='free_access' class='form-check-input' name='free_access' value='free_access'>
+                    </div>
+                    <div class="col-4">
+                        <label for="free_access">
+                            <strong>Отметьте, если это бесплатная лекция</strong>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-row mb-3">
+                    <div class="col-5"></div>
+                    <div class="col-4">
+                        <input type="submit" value="Создать" class='btn btn-block btn-outline-dark'>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="tab-pane fade" id="questions" role="tabpanel" aria-labelledby="profile-tab">
+        Создать тест
+          
+    </div>
+
+    </div>
+</div>
+
 
 
 
 <!-- =============Create New Lecture Box============================================ -->   
-<div class="row">
-    <div class="col-8">    
-    <div class="row m-auto">
-        <div class="lecture_note">Для создания лекции перетащите поле "УИН" из библиотеки загруженных файлов в соответствующее поле в форме. При создании лекции без видеофайла просто оставьте это поле пустым.
-        </div>
-        <div class="create_lecture">
-        <h3>Создать новую лекцию</h3>
-        </div>
-    </div>
-
-<div class="row m-auto border rounded">
-  
-    <form action="{% url 'lecture_update' subject.id section.id %}" method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        <div class="form-row mt-1 mb-1">
-            <div class="col-5">
-                <label for="lecture_id">
-                    <strong>Уникальный Идентификационный Номер лекции :</strong>
-                </label>
-            </div>
-            <div class="col-7">
-                <input class='form-control i-1' type="text" id="lecture_id" name="lecture_id" placeholder="УИН">
-            </div>
-        </div>
-
-        <div class="form-row mt-1 mb-1">
-            <div class="col-5">
-                <label for="enumerator">
-                    <strong>Порядковый номер лекции :</strong>
-                </label>
-            </div>
-        
-            <div class="col-7">
-                <input class='form-control' type="number" id="enumerator" name="enumerator" placeholder="Порядковый номер лекции"required>
-            </div>
-        </div>
-        <div class="form-row mt-1 mb-1">
-            <div class="col-5">
-                <label for="title">
-                    <strong>Название лекции :</strong>
-                </label>
-            </div>
-            <div class="col-7">
-                    <input type="text" class='form-control i-1'  id="title" name="title" placeholder="Название лекции" required>
-            </div>
-        </div>
-        <!-- <div class="form-row mt-1 mb-1">
-            <div class="col-5">
-                <label for="video_file">
-                    <strong><div class="div" style="color: blue">Загрузите видеофайл mp4 размером до 500Mb:</div></strong>
-                </label>
-            </div>
-            <div class="col-4">
-                <input type="file" class="form-control i-2" name="video_file" required>
-            </div>
-        </div> -->
-     
-        <div class="form-row mt-1 mb-1">
-            <div class="col-5">
-                <label for="url_link">
-                    <strong>Если необходимо, введите ссылку на ресурс:</strong>
-                </label>
-            </div>
-            <div class="col-7">
-                <input type="url" class="form-control" id="url_link" name="url_link" placeholder="https://">
-            </div>
-        </div>
-        <div class="form-row mt-1 mb-1">
-            <div class="col-11">
-                <label for="additional_file">
-                    <strong>Если необходимо, загрузите текстовый, архивный файл или изображение (txt, doc, jpeg, jpg, bmp, png,
-                        pdf, rar, zip.):</strong>
-                </label>
-            </div>
-        </div>
-        <div class="form-row m-auto">
-            <div class="col-12">
-                <input type="file" class="form-control" id="additional_file" name="additional_file">
-            </div>
-        </div>
-        <!-- <div class="form-row">
-            <div class="col-3">
-                <label for="subtitle_file">
-                    <strong>Загрузить субтитры:</strong>
-                </label>
-            </div>
-            <div class="col-4">
-                <input type="file" class="form-control" id="subtitle_file" name="subtitle_file">
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="col-3">
-                <label for="subtitle_file">
-                    <strong>Загрузить перевод:</strong>
-                </label>
-            </div>
-            <div class="col-4">
-                <input type="file" class="form-control" id="translation_file" name="translation_file">
-            </div> -->
-       
-        <div class="form-row mt-2">
-            <div class="col-5 pl-4">
-            <input type="checkbox" id='free_access' class='form-check-input' name='free_access' value='free_access'>
-            </div>
-            <div class="col-4">
-                <label for="free_access">
-                    <strong>Отметьте, если это бесплатная лекция</strong>
-                </label>
-            </div>
-        </div>
-        <div class="form-row mb-3">
-            <div class="col-5"></div>
-            <div class="col-4">
-                <input type="submit" value="Создать" class='btn btn-block btn-outline-dark'>
-            </div>
-        </div>                               
-    </form>
-</div>
-    <br>
-    </div>
+<!-- <div class="row">
+ 
 <div class="col-4">
     <div class="row m-auto">
         <h3>Библиотека загруженных видеофайлов.</h3>
@@ -234,14 +275,12 @@
                 Нажатие на кнопку приведет к удалению видеофайла и соответствующей лекции, если видеофайл уже был использован для создания лекции.
             </div>
             <a href="{% url 'delete_lecture' item.id %}" style="text-decoration: none">
-                <!-- <input type="button" value="Удалить" class='btn btn-sm btn-block btn-outline-dark'><div class="col-1"> -->
-                <button type="button" class="btn-close delete_cross" aria-label="Close"></button>
+                <input type="button" value="Удалить" class='btn btn-sm btn-block btn-outline-dark'><div class="col-1"> -->
+                <!-- <button type="button" class="btn-close delete_cross" aria-label="Close"></button>
             </a>
         </div>
     </div>
-   
-
-    {% endfor %}
+    {% endfor %} -->
 
 </div>
 
@@ -249,24 +288,44 @@
 <!-- ==============End of Create New Lecture Box================================        -->
 
 <!-- ====================Edit Lecture Box========================================== -->
+
+
+<br><br>
     <h3>Подготовленные лекции</h3>
+
+
+
+<ol class="draggable-list" id="draggable-list">
+
+    <form action="{% url 'bulk_lecture_enumerator_update' subject.id %}" method="POST" id='save_button'>
+        {% csrf_token %}
+
 {% for lecture in lectures %}
 {% if lecture.section == section %}
-
+<li>
     <div class="row mt-2 collection">
-        <div class="col-8">
-        <strong>{{lecture.enumerator}}. УИН: {{lecture.id}}; Название: {{lecture.title}};. Дл.: {{lecture.length_1}} Размер:  {{lecture.size_mb}} Mb</strong>
+        <div class="box ml-3 draggable" draggable="true">
+            <div class="row">
+                <div class="col-2">
+                    <label for="lecture_id">Лекция</label>
+                </div>
+                <div class="col-2">
+                    <input type="text" class='form-control' id="lecture_id" name="lecture_id" value='{{lecture.id}}' readonly>
+                </div>
+                <div class="col-8">
+                    <strong>{{lecture.enumerator}} УИН: {{lecture.id}}; Название: {{lecture.title}};. Дл.: {{lecture.length_1}} Размер:
+                        {{lecture.size_mb}} Mb</strong>
+                </div>
+            </div>
         </div>
-        <div class="col-2">
-            <input type="button" value="Редактировать" id="lecture_title" class="btn btn-sm btn-block btn-outline-dark">
-        </div>
-        <div class="col-2">
+       
+            <!-- <input type="button" value="Редактировать" id="lecture_title" class="btn btn-sm btn-block btn-outline-dark">
+       
             <a href="{% url 'delete_enumerator' subject.id section.id lecture.id %}" style="text-decoration: none">
                 <input type="button" value="Удалить" class='btn btn-sm btn-block btn-outline-dark'>
-            </a>
-        </div>
+            </a> -->
     </div>
-   
+</li>
     <!-- ==============================Lecture Edit Modal=================================== -->
         <div id="lectureModal">
             <div class="hide">
@@ -437,10 +496,16 @@
                     </div>
                 </div>
             </div>
-        </div>       
+
+
+</div>   
     <!-- ==============================================End of Lectue Edit Modal=========================== -->
+
     {% endif %}
     {% endfor %}
+
+    </form>
+</ol>
 
     </div>
     </div>
@@ -589,6 +654,9 @@
             this.value=data;
         };
 
+        function dragDrop1() {
+                ol_id.appendChild('box')
+            };
         //function dragDrop() {
         //    data = document.querySelector('.d-1-hidden').innerText;
         //    for (let i = 0; i < titles.length; i++) {
@@ -609,7 +677,60 @@
         //        document.querySelector('.i-1').value = data;
         //    })
 
-   
+    //Drag & drop module version 2
+        const draggable_list = document.getElementById('draggable-list')
+        const dragListItems = document.querySelectorAll('.draggable-list li');
+        const draggables = document.querySelectorAll('.draggable');
+        const listItems = [];
+        let dragStartIndex;
+
+         dragListItems.forEach((item, index) => {
+                item.setAttribute('data-index', index);
+                listItems.push(item)
+            })
+        console.log(listItems)
+
+        draggables.forEach(draggable => {
+                draggable.addEventListener('dragstart', dragStart_1);
+            })
+
+        dragListItems.forEach(item => {
+            item.addEventListener('dragover', dragOver);
+            item.addEventListener('drop', dragDrop_1);
+            item.addEventListener('dragenter', dragEnter);
+            item.addEventListener('dragleave', dragLeave);
+        })
+      
+        function dragStart_1() {
+                dragStartIndex = +this.closest('li').getAttribute('data-index')
+         
+            }
+        function dragDrop_1() {
+                const dragEndIndex = +this.getAttribute('data-index');
+                swapItems(dragStartIndex, dragEndIndex);
+                this.classList.remove('over')
+        }
+
+        function swapItems(fromIndex, toIndex) {
+            const itemOne = listItems[fromIndex].querySelector('.draggable');
+            const itemTwo = listItems[toIndex].querySelector('.draggable');
+
+                //listItems[fromIndex].appendChild(itemTwo);
+                listItems[toIndex].appendChild(itemOne);
+                //draglistItems[toIndex].appendChild(itemOne);
+
+                if (fromIndex < toIndex) {
+                    for (let i = fromIndex; i < toIndex; i++) {
+                        listItems[i].appendChild(listItems[i + 1].querySelector('.draggable'))
+                    }
+                }
+                else {
+                    for (let i = toIndex; i < fromIndex; i++) {
+                        listItems[i + 1].appendChild(listItems[i].querySelector('.draggable'))
+                    }
+                }
+            }
+
     console.log('end OK')
 </script>
 

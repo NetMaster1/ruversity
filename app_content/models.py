@@ -133,6 +133,30 @@ class AdditionalMaterialFile(models.Model):
     def __int__(self):
         return self.id
 
+class Quiz (models.Model):
+    quiz_title = models.CharField(max_length=100, null=True)
+    subject = models.ForeignKey(MainSubject, on_delete=models.CASCADE, null=True)
+    section = models.ForeignKey(Section, on_delete=models.CASCADE, null=True)
+    lecture = models.ForeignKey(Lecture, on_delete=models.CASCADE, null=True)
+
+    def __int__(self):
+        return self.id
+
+class QuizQuestion (models.Model):
+    question = models.CharField(max_length=100, null=True)
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, null=True)
+
+    def __int__(self):
+        return self.id
+
+class QuizAnswer (models.Model):
+    answer = models.CharField(max_length=100, null=True)
+    question = models.ForeignKey(QuizQuestion, on_delete=models.CASCADE, null=True)
+    correct = models.BooleanField(default=False)
+
+    def __int__(self):
+        return self.id
+
 class Transaction(models.Model):
     date_created = models.DateField(auto_now_add=True)
     money_paid = models.BooleanField(default=False)#check if money have been paid

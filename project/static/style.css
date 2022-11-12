@@ -385,7 +385,9 @@ iframe {
 }
 
 
-
+.draggable-list li.over .draggable {
+  background-color: #eaeaea;
+}
 
 
 /*==========================Rating Stars Module======================*/

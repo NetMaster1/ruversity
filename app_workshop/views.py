@@ -775,6 +775,12 @@ def delete_enumerator (request, subject_id, section_id, lecture_id):
         logout(request)
         return redirect('login')
 
+def create_quiz(request,subject_id):
+    pass
+
+def bulk_lecture_enumerator_update (request, subject_id):
+    pass
+
 #====================================================
 
 def video(request, subject_id, lecture_id):
