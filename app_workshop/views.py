@@ -377,6 +377,7 @@ def create_new_section(request, subject_id):
 def edit_section (request, subject_id, section_id):
     if request.user.is_authenticated:
         subject = MainSubject.objects.get(id=subject_id)
+        sections=Section.objects.filter(course=subject)
         section=Section.objects.get(id=section_id)
         if request.user == subject.author:
             if request.method == 'POST':
@@ -395,6 +396,7 @@ def edit_section (request, subject_id, section_id):
                 lectures=Lecture.objects.filter(subject=subject, section=section, enumerator__isnull= False).order_by('enumerator')
                 context = {
                     'subject': subject,
+                    'sections': sections,
                     'section': section,
                     'v_files': v_files,
                     'lectures': lectures,
@@ -404,6 +406,18 @@ def edit_section (request, subject_id, section_id):
             logout(request)
             return redirect('login')
     return redirect('login')
+
+def edit_all (request, subject_id):
+    subject=MainSubject.objects.get(id=subject_id)
+    sections=Section.objects.filter(course=subject)
+    lectures=Lecture.objects.filter(subject=subject)
+    context = {
+        'subject': subject,
+        'sections': sections,
+        'lectures': lectures,
+    }
+    return render(request, 'workshop/edit_all.html', context)
+
 
 def delete_section (request, subject_id, section_id):
     if request.user.is_authenticated:
@@ -779,7 +793,30 @@ def create_quiz(request,subject_id):
     pass
 
 def bulk_lecture_enumerator_update (request, subject_id):
-    pass
+    subject=MainSubject.objects.get(id=subject_id)
+    sections=Section.objects.filter(course=subject)
+    lectures=Lecture.objects.filter(subject=subject)
+   
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            lecture_ids = request.POST.getlist("lecture_id", None)
+            n = len(lecture_ids)
+            i=1
+            for id in lecture_ids:
+                lecture=Lecture.objects.get(id=id)
+                lecture.enumerator=i
+                lecture.save()
+                i=i+1
+            context = {
+                'subject': subject,
+                'sections': sections,
+                'lectures': lectures,
+            }
+
+        return render(request, 'workshop/edit_all.html', context)
+    else:
+        logout(request)
+        return redirect('login')
 
 #====================================================
 

@@ -374,7 +374,7 @@ iframe {
   color: white;
 }
 .hovered {
-  background-color: #d1d8e2;
+  background-color: grey;
   border: solid;
   border-color: blue;
 }
@@ -388,6 +388,11 @@ iframe {
 .draggable-list li.over .draggable {
   background-color: #eaeaea;
 }
+
+.invisible {
+  cursor: grab;
+}
+
 
 
 /*==========================Rating Stars Module======================*/

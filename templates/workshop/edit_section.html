@@ -295,10 +295,16 @@
 
 
 
-<ol class="draggable-list" id="draggable-list">
+<ul class="draggable-list" id="draggable-list">
 
-    <form action="{% url 'bulk_lecture_enumerator_update' subject.id %}" method="POST" id='save_button'>
+    <form action="{% url 'bulk_lecture_enumerator_update' subject.id%}" method="POST" id='form_no_button'>
         {% csrf_token %}
+
+
+{% for section in sections%}     
+<div class="box">   
+
+ Раздел {{section.enumerator}}{{section.title}}
 
 {% for lecture in lectures %}
 {% if lecture.section == section %}
@@ -307,13 +313,13 @@
         <div class="box ml-3 draggable" draggable="true">
             <div class="row">
                 <div class="col-2">
-                    <label for="lecture_id">Лекция</label>
+                    <label for="lecture_id">Лекция {{lecture.enumerator}}</label>
                 </div>
                 <div class="col-2">
                     <input type="text" class='form-control' id="lecture_id" name="lecture_id" value='{{lecture.id}}' readonly>
                 </div>
                 <div class="col-8">
-                    <strong>{{lecture.enumerator}} УИН: {{lecture.id}}; Название: {{lecture.title}};. Дл.: {{lecture.length_1}} Размер:
+                    <strong>Название: {{lecture.title}};. Дл.: {{lecture.length_1}} Размер:
                         {{lecture.size_mb}} Mb</strong>
                 </div>
             </div>
@@ -326,186 +332,18 @@
             </a> -->
     </div>
 </li>
-    <!-- ==============================Lecture Edit Modal=================================== -->
-        <div id="lectureModal">
-            <div class="hide">
-                    <div class="lecture_box">
-                        <div class="row">
-                            <div class="col-11">
-                                <h4>Лекция: {{lecture.id}}</h4>
-                            </div>
-                            <div class="col-1">
-                                <button type="button" class="btn-close cross_button" aria-label="Close"></button>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-3">
-                                <div class="row">
-                                    <div class="col-6"><strong>Порядковый номер: </strong></div>
-                                    <div class="col-5">{{lecture.enumerator}}</div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-6"><strong>Название: </strong></div>
-                                    <div class="col-5">{{lecture.title}}</div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-6"><strong>Продолжительность: </strong></div>
-                                    <div class="col-5">{{lecture.length}} мин.</div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-6"><strong>Размер: </strong></div>
-                                    <div class="col-5">{{lecture.size_mb}} Mb</div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col-6"><strong>Ccылка на ресурс: </strong></div>
-                                    <div class="col-5">
-                                    {% for item in lecture.additionalmateriallink_set.all %}
-                                        {% if item.url_link == None %}
-                                            Ссылка отсутствует
-                                        {% else %}
-                                            <a href="{{item.url_link }}" target="_blank">{{item.url_link}}</a>
-                                        {% endif %}   
-                                    {% endfor %}
-                                    </div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col-6"><strong>Дополнительный файл:</strong></div>
-                                    <div class="col-5">
-                                        {% for item in lecture.additionalmaterialfile_set.all %}
-                                            {% if item.additional_file == None %}
-                                                Файл не задан
-                                            {% else %}
-                                                <a class="nav-link" href="{{ item.additional_file.url }}" download >Ссылка на файл</a>
-                                            {% endif %}
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                            {% if lecture.video_file %}
-                                <div class="row mt-1">
-                                    <div class="col-5>
-                                            <a class="nav-link" href="{{ lecture.video_file.url }}" target='_blank'>
-                                        <a>
-                                            <video oncontextmenu="return false;" width="320" height="240" controls
-                                                controlsList="nodownload">
-                                                 video width="320" height="240" controls controlsList="nodownload">
-                                                <source src="{{lecture.video_file.url}}" type="video/mp4">
-                                            </video>
-                                        </a>
-                                    </div>
-                                </div>
-                              
-                                {% else %}
-                                <div class="row">
-                                <div class="col-5">
-                                Видеофайл отсутствует.
-                                </div>
-                                </div>
-                            {% endif %}
-                            </div>
-        
-                        <div class="col-5">
-                            <form action="{% url 'edit_lecture' lecture.id %}" method="POST" enctype="multipart/form-data">
-                                {% csrf_token %}
-                                <div class="form-row">
-                                    <div class="col-4">
-                                        <label for="lecture_id">
-                                            <strong>Уникальный идентификатор лекции:</strong>
-                                        </label>
-                                    </div>
-                                    <div class="col-8">
-                                        <input class='form-control i-2' type="text" id="lecture_id" name="lecture_id" value="{{lecture.id}}" required>
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="col-4"><label for="enumerator"> <strong>Редактировать порядковый номер: </strong></label>
-                                    </div>
-                                    <div class="col-8"><input class='form-control' type="number" id="enumerator" name="enumerator"
-                                            value={{lecture.enumerator}} required></div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="col-4"><label for="title"> <strong>Редактировать название: </strong></label>
-                                    </div>
-                                    <div class="col-8">
-                                        <input class='form-control' type="text" id="title" name="title" value='{{lecture.title}}' required>
-                                    </div>
-                                </div>
-                                <!-- <div class="form-row">
-                                    <div class="col-4"><label for="video_file"> <strong>Загрузите видеофайл: </strong></label>
-                                    </div>
-                                    <div class="col-8">
-                                        <input type="file" class="form-control" id="video_file" name="video_file" required>
-                                    </div>
-                                </div>-->
-                                <div class="form-row mt-4">
-                                    <div class="col-4">
-                                        <label for="url_link">
-                                            <strong>Введите ссылку на ресурс:</strong>
-                                        </label>
-                                    </div>
-                                    <div class="col-8">
-                                        <input type="url" class="form-control" id="url_link" name="url_link"
-                                            placeholder="{{lecture.url_link}}.">
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="col-12"><label for="additional_file"> <strong>Если необходимо, загрузите текстовый, архивный файл или изображение (txt, doc, jpeg, jpg, bmp, png, pdf, rar, zip.):</strong></label>
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="col-12">
-                                        <input type="file" class="form-control" id="additional_file" name="additional_file">
-                                    </div>
-                                </div>
-                                <div class="row mt-2">
-                                    <div class="col-4"><input type="button" value="Закрыть" class='btn btn-block btn-outline-dark close_button'></div>
-                                    <div class="col-4"><input type="submit" value="Редактировать" class='btn btn-block btn-outline-dark'>
-                                    </div>
-                              
-                        
-                            </form>
-                        
-                            <div class="col-4">
-                                <a href="{% url 'delete_enumerator' subject.id section.id lecture.id %}" style="text-decoration: none">
-                                    <input type="button" value="Удалить" class='btn btn-block btn-outline-dark'>
-                                </a>
-                            </div>
-                        </div>
-                         
-                        </div>
 
-
-
-
-                            <div class="col-4">
-                                <div class="row"><h4>Библиотека загруженных видеофайлов</h4></div>
-                                {% for item in v_files%}
-                                <div class="row">
-                                    <div class="col-2">
-                                        <div class="d-2" draggable="true">{{item.id}}</div>
-                                    </div>
-                                    {% if item.video_file %}
-                                    <div class="col-9">{{item.video_file}}</div>
-                                    {% else %}
-                                    <div class="col-9">Видеофайл отсутствует</div>
-                                    {% endif %}
-                               
-                                </div>
-                                {% endfor %}
-                            </div>
-                    </div>
-                </div>
-            </div>
-
-
-</div>   
-    <!-- ==============================================End of Lectue Edit Modal=========================== -->
 
     {% endif %}
     {% endfor %}
 
-    </form>
-</ol>
+</div>
+{% endfor %}
+
+</form>
+</ul>
+
+
 
     </div>
     </div>
@@ -535,6 +373,7 @@
     const i_2 = document.querySelectorAll('.i-2');
     const collection = document.querySelectorAll('.collection')
     //const d_2 = document.querySelectorAll('.collection').getElementsByClassName('.d-2')
+  
     
         for (let i = 0; i < titles.length; i++) {
             titles[i].addEventListener('click', e => {
@@ -678,17 +517,18 @@
         //    })
 
     //Drag & drop module version 2
-        const draggable_list = document.getElementById('draggable-list')
+        //const draggable_list = document.getElementById('draggable-list')
         const dragListItems = document.querySelectorAll('.draggable-list li');
         const draggables = document.querySelectorAll('.draggable');
         const listItems = [];
         let dragStartIndex;
+        const formNoButton = document.querySelector('#form_no_button')
 
          dragListItems.forEach((item, index) => {
                 item.setAttribute('data-index', index);
                 listItems.push(item)
             })
-        console.log(listItems)
+      
 
         draggables.forEach(draggable => {
                 draggable.addEventListener('dragstart', dragStart_1);
@@ -709,6 +549,7 @@
                 const dragEndIndex = +this.getAttribute('data-index');
                 swapItems(dragStartIndex, dragEndIndex);
                 this.classList.remove('over')
+                //formNoButton.submit();
         }
 
         function swapItems(fromIndex, toIndex) {
@@ -729,6 +570,7 @@
                         listItems[i + 1].appendChild(listItems[i].querySelector('.draggable'))
                     }
                 }
+                //setTimeout(() => { form.submit(); }, 100);
             }
 
     console.log('end OK')

@@ -35,5 +35,6 @@ urlpatterns = [
     path('delete_enumerator/<int:subject_id>/<int:section_id>/<int:lecture_id>', views.delete_enumerator, name="delete_enumerator"),
     path('create_quiz/<int:subject_id>', views.create_quiz, name="create_quiz"),
     path('bulk_lecture_enumerator_update/<int:subject_id>', views.bulk_lecture_enumerator_update, name="bulk_lecture_enumerator_update"),
+    path('edit_all/<int:subject_id>', views.edit_all, name="edit_all"),
    
 ]
