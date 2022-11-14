@@ -72,6 +72,17 @@ class MainSubject(models.Model):
     def __int__(self):
         return self.id
 
+class Library(models.Model):
+    author = models.ForeignKey(User, on_delete=models.SET_DEFAULT, null=True, default=1)
+    subject = models.ForeignKey(MainSubject, on_delete=models.CASCADE, null=True)
+    video_file = models.FileField(upload_to='uploads', null=True)
+    length = models.IntegerField(default=0)
+    length_1 = models.DurationField(null=True)
+    size_mb = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    
+    def __it__(self):
+        return self.id
+
 class Section(models.Model):
     course = models.ForeignKey(MainSubject, on_delete=models.CASCADE)
     length = models.IntegerField(default=0)

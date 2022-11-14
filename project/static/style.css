@@ -184,7 +184,29 @@ iframe {
   padding: 1rem;
   border-style: dashed;
   border-color: grey;
+}
+.box {
+  border: 1px grey;
+  background-color: blue;
+}
 
+.box.dragging {
+  background-color: yellow;
+}
+
+.draggable_lecture.dragging {
+  background-color:blanchedalmond;
+}
+
+.draggable_section.dragging {
+  background-color: aquamarine;
+}
+
+.section_box {
+  border: 1px;
+  border-radius: 0.6;
+  border-color: black;
+  background-color: red;
 }
 
 .lecture_box {
@@ -262,13 +284,13 @@ iframe {
 /*=======================Lecture Note Modal==============================*/
 .create_lecture {
   display: inline;
-  border: solid 3px blue;
+  border: solid 3px lightgrey;
   border-radius: 10px;
 }
-.create_lecture:hover {
+/*.create_lecture:hover {
     background-color: #aaaaaa;
     color: white;
-}
+}*/
 
 .lecture_note {
   display: none;
@@ -288,15 +310,86 @@ iframe {
   left: 12rem;
   top: -7rem;
   z-index: 1;
-
 }
 
+.lib_box {
+    display: block;
+    position: absolute;
+    border: 1px solid;
+    border-color: #aaaaaa;
+    border-radius: 1%;
+    top: 30vh;
+    left: 35rem;
+    background-color: whitesmoke;
+    height: fit-content;
+    width: 40rem;
+}
+
+/*============================================*/
+.fileUploadModule {
+  display: none;
+}
+
+.fileUploadModule.openModal {
+  display: block;
+  background-color: whitesmoke;
+  border: 1px solid lightgrey;
+  border-radius: 10px;
+  padding: 0.5rem;
+  position: absolute;
+  height: fit-content;
+  width: fit-content;
+  padding: 1rem;
+  left: 12rem;
+  top: 10rem;
+  z-index: 1;
+  opacity: 1;
+}
+
+/*=======================================*/
+
+.fileLibUploadModule {
+  display: none;
+}
+.fileLibUploadModule.openModal {
+    display: block;
+    background-color: whitesmoke;
+    border: 1px solid lightgrey;
+    border-radius: 10px;
+    padding: 0.5rem;
+    position: absolute;
+    height: fit-content;
+    width: fit-content;
+    padding: 1rem;
+    left: 12rem;
+    top: 10rem;
+    z-index: 1;
+    opacity: 1;
+}
 /*=====================================*/
+.videoFileModule {
+  display: none;
+}
+.videoFileModule.openModal {
+  display: block;
+}
+.file_box {
+  display: block;
+  position: absolute;
+  border: 1px solid;
+  border-color: #aaaaaa;
+  border-radius: 1%;
+  top: 30vh;
+  left: 35rem;
+  background-color: whitesmoke;
+  height: fit-content;
+  width: fit-content;
+}
+
 #openSectionModal {
   display: none;
 }
 
-/* =========================================== */
 #openSectionModal.openModal {
   border-radius: 5px;
   border-color: grey;
@@ -314,6 +407,13 @@ iframe {
   position: relative;
 }
 /*========================================*/
+.lecture_string {
+  display: inline;
+  border: solid 3px lightgrey;
+  border-radius: 10px;
+}
+
+
 
 .hide {
   /* display: block; */
@@ -392,6 +492,7 @@ iframe {
 .invisible {
   cursor: grab;
 }
+
 
 
 
@@ -806,8 +907,8 @@ select>option {
 #video {
   max-width: 80vw;
   min-width: 800px;
-  border: 5px solid black;
-  border-radius: 10px;
+  border: 1px solid lightgray;
+  border-radius: 3px;
   /* background: black; */
   /* position: relative; */
   /* cursor: pointer; */

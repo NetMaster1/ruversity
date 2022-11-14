@@ -9,58 +9,64 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'studio' %}">Творческая студия</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'edit_subject' subject.id %}">Редактирование курса</a></li>
-             
+
                 <li class="breadcrumb-item active" aria-current="page">Лекции</li>
             </ol>
         </nav>
     </div>
-  
-       
 
-<h3>Подготовленные лекции</h3>
-<ol class="draggable-list" id="draggable-list">
 
-    <form action="{% url 'bulk_lecture_enumerator_update' subject.id%}" method="POST" id='form_no_button'>
-        {% csrf_token %}
+    <div class="draggable-list" id="draggable-list">
 
-        {% for section in sections%}
-        <li class="li_section mb-3">
-        <div class="box p-5 draggable_section">
-          
-            Раздел {{section.enumerator}}{{section.title}}
-            <ol class="section-box" id="section_box">
-            {% for lecture in lectures %}
-            {% if lecture.section == section %}
-            <li class="li_lecture">
-                <div class="row mt-2 collection">
-                    <div class="box ml-3 draggable_lecture" draggable="true">
-                        <div class="row">
-                            <div class="col-2">
-                                <label for="lecture_id">Лекция {{lecture.enumerator}}</label>
-                            </div>
-                            <div class="col-2">
-                                <input type="text" class='form-control' id="lecture_id" name="lecture_id"
-                                    value='{{lecture.id}}' readonly>
-                            </div>
-                            <div class="col-8">
-                                <strong>Название: {{lecture.title}};. Дл.: {{lecture.length_1}} Размер:
-                                    {{lecture.size_mb}} Mb</strong>
-                            </div>
+        <form action="{% url 'bulk_lecture_enumerator_update' subject.id%}" method="POST" id='form_no_button'>
+            {% csrf_token %}
+
+            {% for section in sections%}
+            <!-- <li class="li_section mb-3"> -->
+                <div class="section_box p-5 draggable_section mb-5" draggable="true">
+                    <div class="row">
+                        <div class="col-2">
+                            <label for="section_id">Раздел {{section.enumerator}} {{section.title}}</label>
                         </div>
+                        <div class="col-2">
+                            <input type="text" class='form-control' id="section_id" name="section_id" value='{{section.id}}' readonly>
+                        </div>
+                        
                     </div>
+                  
+
+              
+                        {% for lecture in lectures %}
+                        {% if lecture.section == section %}
+                        <!-- <li class="li_lecture"> -->
+                            <!-- <div class="row mt-2 collection"> -->
+                                <div class="box ml-3 draggable_lecture" draggable="true">
+                                    <div class="row">
+                                        <div class="col-2">
+                                            <label for="lecture_id">Лекция {{lecture.enumerator}}</label>
+                                        </div>
+                                        <div class="col-2">
+                                            <input type="text" class='form-control' id="lecture_id" name="lecture_id"
+                                                value='{{lecture.id}}' readonly>
+                                        </div>
+                                        <div class="col-8">
+                                            <strong>Название: {{lecture.title}};. Дл.: {{lecture.length_1}} Размер:
+                                                {{lecture.size_mb}} Mb</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            <!-- </div> -->
+                        <!-- </li> -->
+                        {% endif %}
+                        {% endfor %}
+                
+
                 </div>
-            </li>
-            {% endif %}
+            <!-- </li> -->
             {% endfor %}
-            </ol>
 
-       
-        </div>
-        </li>
-        {% endfor %}
-
-    </form>
-</ol>
+        </form>
+    </div>
 
 </div>
 
@@ -69,147 +75,78 @@
 <script>
     console.log('start OK')
  
-    //Drag & Drop API
-    const draggable_list = document.getElementById('draggable-list')
-        //const sectionItems = document.querySelectorAll('.draggable-list li');//li items for sections
-        const sectionItems = document.querySelectorAll('li.li_section');//li items for sections
-        const draggableSections = document.querySelectorAll('.draggable_section');
-        const listSectionItems = [];
-        let dragStartSIndexSection;
+    const sectionContainer = document.querySelectorAll('.draggable_list');//container for sections
+    const sectionItems = document.querySelectorAll('.draggable_section');//li draggable sections
 
-
-        sectionItems.forEach((item, index) => {
-            item.setAttribute('data-section', index);
-            listSectionItems.push(item)
-            console.log(item.getAttribute('data-section'))
+   /* sectionItems.forEach(item => {
+        item.addEventListener('dragstart', () => {
+            item.classList.add('dragging')
         })
-     
-        draggableSections.forEach(draggable => {
-            draggable.addEventListener('dragstart', dragStartSection);
+        item.addEventListener('dragend', () => {
+            item.classList.remove('dragging')
         })
+    })
 
-        sectionItems.forEach(item => {
-            item.addEventListener('dragover', dragOver);
-            item.addEventListener('drop', dragDropSection);
-            item.addEventListener('dragenter', dragEnterSection);
-            item.addEventListener('dragleave', dragLeaveSection);
+    sectionContainer.addEventListener('dragover', e => {
+        e.preventDefault()
+        const draggable = document.querySelector('.dragging')
+        sectionContainer.appendChild(draggable)
+    })*/
+
+    //==============================================
+    const draggableLectures = document.querySelectorAll('.draggable_lecture')//draggable lectures
+    const draggableSections = document.querySelectorAll('.draggable_section')//containers for lectures
+    const formNoButton = document.querySelector('#form_no_button')//containers for lectures
+
+    draggableLectures.forEach(lecture => {
+        lecture.addEventListener('dragstart', () => {
+            lecture.classList.add('dragging')
         })
-         function dragEnterSection() {
-                this.classList.add('hovered');
-            };
-        function dragLeaveSection() {
-            this.classList.remove('hovered');
-        };
+        lecture.addEventListener('dragend', () => {
+            lecture.classList.remove('dragging')
+        })
+    })
 
-        function dragOver(e) {
-            e.preventDefault();
-        };
 
-        function dragStartSection() {
-                dragStartIndexSection = +this.closest('li.li_section').getAttribute('data-section')
-                //setTimeout(() => (this.className = 'invisible'), 0);
-                
-            }
 
-        function dragDropSection() {
-            const dragEndIndexSection = +this.getAttribute('data-section');
-            swapSectionItems(dragStartIndexSection, dragEndIndexSection);
-            this.classList.remove('hovered')
-            //formNoButton.submit();
-        }
-
-        function swapSectionItems(fromIndex, toIndex) {
-            const itemOne = listSectionItems[fromIndex].querySelector('.draggable_section');
-            const itemTwo = listSectionItems[toIndex].querySelector('.draggable_section');
-
-            //listItems[fromIndex].appendChild(itemTwo);
-            listSectionItems[toIndex].appendChild(itemOne);
-            //draglistItems[toIndex].appendChild(itemOne);
-
-            if (fromIndex < toIndex) {
-                for (let i = fromIndex; i < toIndex; i++) {
-                    listSectionItems[i].appendChild(listSectionItems[i + 1].querySelector('.draggable_section'))
-                }
+    draggableSections.forEach(section => {
+        section.addEventListener('dragover', e => {
+            e.preventDefault()
+            const afterElement = getDragAfterElement(section, e.clientY)
+            const draggable = document.querySelector('.dragging')
+            if (afterElement == null) {
+                section.appendChild(draggable)
             }
             else {
-                for (let i = toIndex; i < fromIndex; i++) {
-                    listSectionItems[i + 1].appendChild(listSectionItems[i].querySelector('.draggable_section'))
+                section.insertBefore(draggable, afterElement)
+            }     
+        })   
+    })
+
+    draggableSections.forEach(section => {
+        section.addEventListener('drop', e => {
+            formNoButton.submit();
+        }
+        )
+    })
+    
+
+    function getDragAfterElement(section, y) {
+            const draggableElements = [...section.querySelectorAll('.draggable_lecture:not(.dragging)')]
+
+            return draggableElements.reduce((closest, child) => {
+                const box = child.getBoundingClientRect()
+                const offset = y - box.top - box.height / 2
+                if (offset < 0 && offset > closest.offset) {
+                    return { offset: offset, element: child }
                 }
-            }
-            //setTimeout(() => { formNoButton.submit(); }, 100);
-        }
-
-    //============================
-     
-        const lectureItems = document.querySelectorAll('li.li_lecture');//li items for lectures
-        const draggableLectures = document.querySelectorAll('.draggable_lecture');
-        const listItems = [];
-        let dragStartIndex;
-        const formNoButton = document.querySelector('#form_no_button')
-
-        lectureItems.forEach((item, index) => {
-            item.setAttribute('data-index', index);
-            listItems.push(item)
-            console.log(item.getAttribute('data-index'))
-        })
-
-
-        draggableLectures.forEach(draggable => {
-            draggable.addEventListener('dragstart', dragStart);
-        })
-
-        lectureItems.forEach(item => {
-            item.addEventListener('dragover', dragOver);
-            item.addEventListener('drop', dragDrop);
-            item.addEventListener('dragenter', dragEnter);
-            item.addEventListener('dragleave', dragLeave);
-        })
-
-        function dragOver(e) {
-            e.preventDefault();
-        };
-        function dragEnter() {
-            this.classList.add('hovered');
-        };
-        function dragLeave() {
-            this.classList.remove('hovered');
-        };
-
-        function dragStart() {
-            dragStartIndex = +this.closest('li').getAttribute('data-index')
-        }
-
-        function dragDrop() {
-            const dragEndIndex = +this.getAttribute('data-index');
-            swapItems(dragStartIndex, dragEndIndex);
-            this.classList.remove('over')
-            //formNoButton.submit();
-        }
-
-        function swapItems(fromIndex, toIndex) {
-            const itemOne = listItems[fromIndex].querySelector('.draggable_lecture');
-            const itemTwo = listItems[toIndex].querySelector('.draggable_lecture');
-
-            //listItems[fromIndex].appendChild(itemTwo);
-            listItems[toIndex].appendChild(itemOne);
-            //draglistItems[toIndex].appendChild(itemOne);
-
-            if (fromIndex < toIndex) {
-                for (let i = fromIndex; i < toIndex; i++) {
-                    listItems[i].appendChild(listItems[i + 1].querySelector('.draggable_lecture'))
+                else {
+                    return closest
                 }
-            }
-            else {
-                for (let i = toIndex; i < fromIndex; i++) {
-                    listItems[i + 1].appendChild(listItems[i].querySelector('.draggable_lecture'))
-                    console.log('okkkkk')
-                }
-            }
-            //setTimeout(() => { form.submit(); }, 100);
-        }
-   
 
-  
+            }, { offset: Number.NEGATIVE_INFINITY }).element
+        }
+
     console.log('end OK')
 </script>
 

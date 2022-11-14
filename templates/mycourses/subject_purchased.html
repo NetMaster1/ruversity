@@ -104,7 +104,8 @@
 
     {% for section in sections %}
       
-        <div class="section_1" data-bs-toggle="collapse" data-bs-target='#section{{section.id}}'> <h5> Раздел{{section.enumerator}}: {{section.title}}. Длительность: {{section.length_1}} </h5>
+        <div class="section_1" data-bs-toggle="collapse" data-bs-target='#section{{section.id}}'> 
+            <h5> Раздел{{section.enumerator}}: {{section.title}}. Длительность: {{section.length_1}} </h5>
         </div>
 
             {% for lecture in lectures %}
