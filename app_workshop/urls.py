@@ -34,6 +34,7 @@ urlpatterns = [
     path('lecture_update/<int:subject_id>/<int:section_id>/<lecture_id>', views.lecture_update, name="lecture_update"),
     path('delete_enumerator/<int:subject_id>/<int:section_id>/<int:lecture_id>', views.delete_enumerator, name="delete_enumerator"),
     path('create_quiz/<int:subject_id>', views.create_quiz, name="create_quiz"),
+    path('bulk_lecture_enumerator_update_ver_1/<int:subject_id>/<section_id>', views.bulk_lecture_enumerator_update_ver_1, name="bulk_lecture_enumerator_update_ver_1"),
     path('bulk_lecture_enumerator_update/<int:subject_id>', views.bulk_lecture_enumerator_update, name="bulk_lecture_enumerator_update"),
     path('edit_all/<int:subject_id>', views.edit_all, name="edit_all"),
     path('lecture_update_from_lib/<int:subject_id>/<int:section_id>/<int:lecture_id>/<int:v_file_id>', views.lecture_update_from_lib, name="lecture_update_from_lib"),

@@ -18,52 +18,52 @@
 
     <div class="draggable-list" id="draggable-list">
 
-        <form action="{% url 'bulk_lecture_enumerator_update' subject.id%}" method="POST" id='form_no_button'>
+        <form action="{% url 'bulk_lecture_enumerator_update' subject.id %}" method="POST" id='form_no_button'>
             {% csrf_token %}
 
-            {% for section in sections%}
+            {% for section in sections %}
             <!-- <li class="li_section mb-3"> -->
-                <div class="section_box p-5 draggable_section mb-5" draggable="true">
-                    <div class="row">
-                        <div class="col-2">
-                            <label for="section_id">Раздел {{section.enumerator}} {{section.title}}</label>
-                        </div>
-                        <div class="col-2">
-                            <input type="text" class='form-control' id="section_id" name="section_id" value='{{section.id}}' readonly>
-                        </div>
-                        
-                    </div>
+                <div class="section_box p-5 draggable_section mb-5" draggable="true" >
+                    {{section.enumerator}} {{section.title}}
+                       
+                            <!-- <label for="section_id">Раздел {{section.enumerator}} {{section.title}}</label> -->
+                     
+                      
+                            <input type="text" class='form-control' id="section_id" name="section_id" value='{{section.id}}' readonly draggable="true">
+                    
+                
                   
-
-              
-                        {% for lecture in lectures %}
-                        {% if lecture.section == section %}
-                        <!-- <li class="li_lecture"> -->
-                            <!-- <div class="row mt-2 collection"> -->
-                                <div class="box ml-3 draggable_lecture" draggable="true">
-                                    <div class="row">
-                                        <div class="col-2">
-                                            <label for="lecture_id">Лекция {{lecture.enumerator}}</label>
-                                        </div>
-                                        <div class="col-2">
-                                            <input type="text" class='form-control' id="lecture_id" name="lecture_id"
-                                                value='{{lecture.id}}' readonly>
-                                        </div>
-                                        <div class="col-8">
-                                            <strong>Название: {{lecture.title}};. Дл.: {{lecture.length_1}} Размер:
-                                                {{lecture.size_mb}} Mb</strong>
-                                        </div>
-                                    </div>
-                                </div>
-                            <!-- </div> -->
-                        <!-- </li> -->
-                        {% endif %}
-                        {% endfor %}
+                {% for lecture in lectures %}
+                {% if lecture.section == section %}
+                <!-- <li class="li_lecture"> -->
+                    <!-- <div class="row mt-2 collection"> -->
+                        <!-- <div class="box ml-3 draggable_lecture" draggable="true" nodeValue="{{lecture.id}}">
+                            <div class="row">
+                                <div class="col-2">
+                                    <label for="lecture_id">Лекция {{lecture.enumerator}}</label>
+                                </div> 
+                                <div class="col-2"> -->
+                                    <input type="text" class='form-control box ml-3 draggable_lecture' id="lecture_id" name="sec_lec_id"
+                                        value='{{section.id}}/{{lecture.id}}' readonly draggable="true">
+                               <!-- </div>
+                                <div class="col-8">
+                                    <strong>Название: {{lecture.title}};. Дл.: {{lecture.length_1}} Размер:
+                                        {{lecture.size_mb}} Mb</strong>
+                                </div> -->
+                            <!-- </div>
+                        </div> -->
+                    <!-- </div> -->
+                <!-- </li> -->
+                {% endif %}
+                {% endfor %}
                 
 
                 </div>
             <!-- </li> -->
             {% endfor %}
+
+
+<!-- <input type="submit" value="Загрузить" class='btn btn-block btn-outline-dark'> -->
 
         </form>
     </div>
@@ -75,39 +75,53 @@
 <script>
     console.log('start OK')
  
-    const sectionContainer = document.querySelectorAll('.draggable_list');//container for sections
-    const sectionItems = document.querySelectorAll('.draggable_section');//li draggable sections
-
-   /* sectionItems.forEach(item => {
-        item.addEventListener('dragstart', () => {
-            item.classList.add('dragging')
-        })
-        item.addEventListener('dragend', () => {
-            item.classList.remove('dragging')
-        })
-    })
-
-    sectionContainer.addEventListener('dragover', e => {
-        e.preventDefault()
-        const draggable = document.querySelector('.dragging')
-        sectionContainer.appendChild(draggable)
-    })*/
-
-    //==============================================
-    const draggableLectures = document.querySelectorAll('.draggable_lecture')//draggable lectures
+    const sectionContainer = document.querySelector('.draggable-list');//container for sections
     const draggableSections = document.querySelectorAll('.draggable_section')//containers for lectures
-    const formNoButton = document.querySelector('#form_no_button')//containers for lectures
+    const draggableLectures = document.querySelectorAll('.draggable_lecture')//draggable lectures
+    const formNoButton = document.querySelector('#form_no_button')//var for submitting form witout pushing button
 
-    draggableLectures.forEach(lecture => {
-        lecture.addEventListener('dragstart', () => {
-            lecture.classList.add('dragging')
+  
+    draggableSections.forEach(section => {
+        section.addEventListener('dragstart', (e) => {
+            if (e.target.className != 'draggableLecture') {
+                section.classList.add('draggingSection')
+            }
+            else {
+                console.log('dragLecture')
+            }
         })
-        lecture.addEventListener('dragend', () => {
-            lecture.classList.remove('dragging')
-        })
+        section.addEventListener('dragend', (e) => {
+              if (e.target.className != 'draggable_lecture') {
+                section.classList.remove('draggingSection')
+            }
+        });
+      
+    })
+
+    sectionContainer.addEventListener('dragover', (e) => {
+        e.preventDefault()
+        if (e.target.className != 'draggable_lecture') {
+        //const afterElement = getDragAfterElement(section, e.clientY)
+        const draggable = document.querySelector('.draggingSection')
+        sectionContainer.appendChild(draggable)
+    }
+     
     })
 
 
+//===========================Drag & Drop Lecture Module===============================    
+//function dragLecture (){
+    draggableLectures.forEach(lecture => {
+        lecture.addEventListener('dragstart', (e) => {
+            lecture.classList.add('dragging')
+            e.stopPropagation()
+        })
+        lecture.addEventListener('dragend', (e) => {
+            lecture.classList.remove('dragging')
+            e.stopPropagation()
+        });  
+    })
+//}
 
     draggableSections.forEach(section => {
         section.addEventListener('dragover', e => {
@@ -115,21 +129,13 @@
             const afterElement = getDragAfterElement(section, e.clientY)
             const draggable = document.querySelector('.dragging')
             if (afterElement == null) {
-                section.appendChild(draggable)
+                section.appendChild(draggable)   
             }
             else {
                 section.insertBefore(draggable, afterElement)
-            }     
-        })   
+            }    
+        })    
     })
-
-    draggableSections.forEach(section => {
-        section.addEventListener('drop', e => {
-            formNoButton.submit();
-        }
-        )
-    })
-    
 
     function getDragAfterElement(section, y) {
             const draggableElements = [...section.querySelectorAll('.draggable_lecture:not(.dragging)')]
@@ -146,6 +152,16 @@
 
             }, { offset: Number.NEGATIVE_INFINITY }).element
         }
+
+    draggableSections.forEach(section => {
+        section.addEventListener('drop', e => {
+            const draggable = document.querySelector('.dragging')
+            let len=draggable.value.indexOf("/");
+            draggable.value = section.children[0].value + draggable.value.slice(len)
+            formNoButton.submit();
+        })
+    })
+    
 
     console.log('end OK')
 </script>

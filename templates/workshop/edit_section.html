@@ -164,10 +164,11 @@
     <h3>Подготовленные лекции. Раздел {{section.enumerator}}: {{section.title}}</h3>
 
 <!-- <ul class="draggable-list" id="draggable-list"> -->
-
-<form action="{% url 'bulk_lecture_enumerator_update' subject.id%}" method="POST" id='form_no_button'>
+<!-- <div class="form_wrapper"> -->
+<form action="{% url 'bulk_lecture_enumerator_update_ver_1' subject.id section.id %}" method="POST" id='form_no_button'>
     {% csrf_token %}
- 
+    
+<!-- </div> -->
 <div class="connex">   
 
 {% for lecture in lectures %}
@@ -182,7 +183,7 @@
                             <label for="lecture_id">Лекция {{lecture.enumerator}}</label>
                         </div>
                         <div class="col-2">
-                            <input type="text" class='form-control' id="lecture_id" name="lecture_id" value='{{lecture.id}}' readonly>
+                            <input type="text" class='form-control' id="lecture_id" name="lecture_id" value='{{lecture.id}}' readonly form="form_no_button">
                         </div>
                         <div class="col-8">
                             <strong>Название: {{lecture.title}};. Дл.: {{lecture.length_1}} Размер:
@@ -228,7 +229,7 @@
                 <div class="file_box">
                   {{lecture.enumerator}}
               
-                        <form action="{% url 'lecture_update' subject.id section.id lecture.id %}" method="POST" enctype="multipart/form-data">
+                        <form action="{% url 'lecture_update' subject.id section.id lecture.id %}" method="POST" enctype="multipart/form-data" id="myForm">
                             {% csrf_token %}
                         
                             <div class="form-row mt-1 mb-1">
@@ -240,10 +241,10 @@
                                     </label>
                                 </div>
                                 <div class="col-4">
-                                    <input type="file" class="form-control" id="file" name="file" required>
+                                    <input type="file" class="form-control" id="file" name="file" required form="myForm">
                                 </div>
                                 <div class="col-2">
-                                    <input type="submit" value="Загрузить" class='btn btn-block btn-outline-dark'>
+                                    <input type="submit" value="Загрузить" class='btn btn-block btn-outline-dark btnFileSave' form="myForm">
                                 </div>
                             </div>
                         </form>
@@ -271,8 +272,6 @@
             </a>
             </div>
         </div>
-       
-       
         {% endfor %}
                  </div>
                
@@ -280,16 +279,13 @@
 </div>
     </div>
 
-    <!-- ==================================End of Video File Module======================================================== -->
-
-
-          
+<!-- ==========================End of Video File Module======================================================== -->
+ 
 {% endif %}
 {% endfor %}
 </div>
-
-
 </form>
+
 <!-- </ul> -->
 
 </div>
@@ -304,6 +300,11 @@
     const fileUploadButton = document.querySelectorAll('.fileUploadButton');
     const fileLibButton = document.querySelector('.fileLibButton');
     const fileLibUploadModule = document.querySelector('.fileLibUploadModule');
+    const formWrapper = document.querySelector('.form_wrapper');
+    const btnFileSave = document.querySelector('.btnFileSave');
+    const formNoButton = document.querySelector('#form_no_button')
+    const myForm = document.querySelector('#myForm')
+
     //const FileUploadModule = document.querySelectorAll('.FileUploadModule');
 
     // videoFileButton.forEach('item', e => {
@@ -314,8 +315,20 @@
     //    });
 
     for (let i = 0; i < videoFileButton.length; i++) {
-        videoFileButton[i].addEventListener('click', e => {
+        videoFileButton[i].addEventListener('click', () => {
             videoFileModule[i].classList.add('openModal')
+            //formWrapper.remove()
+            //formWrapper.classList.add('hidden')
+            console.log('safsdas')
+        })
+    }
+    for (let i = 0; i < btnFileSave.length; i++) {
+        btnFileSave[i].addEventListener('click', (e) => {
+            console.log('sdfsfdfs')
+               // e.preventDefault();
+               //formNoButton.remove()
+              // myForm.submit()
+
         })
     }
   
@@ -325,13 +338,13 @@
     //        })
     //    }
 
-    fileLibButton.addEventListener('click', e => {
-        fileLibUploadModule.classList.add('openModal')
-    })
+    //fileLibButton.addEventListener('click', e => {
+    //    fileLibUploadModule.classList.add('openModal')
+    //})
 
-    fileUploadButton.addEventListener('click', e => {
-            fileUploadModule.classList.add('openModal')
-        })
+    //fileUploadButton.addEventListener('click', e => {
+    //        fileUploadModule.classList.add('openModal')
+    //    })
 
     const lectures = document.querySelectorAll('#lectureModal');
     const titles = document.querySelectorAll('#lecture_title');
@@ -500,7 +513,7 @@
         const draggables = document.querySelectorAll('.draggable');
         const listItems = [];
         let dragStartIndex;
-        const formNoButton = document.querySelector('#form_no_button')
+        
 
          dragListItems.forEach((item, index) => {
                 item.setAttribute('data-index', index);
@@ -508,9 +521,9 @@
             })
       
 
-        draggables.forEach(draggable => {
-                draggable.addEventListener('dragstart', dragStart_1);
-            })
+        //draggables.forEach(draggable => {
+        //        draggable.addEventListener('dragstart', dragStart_1);
+        //    })
 
         dragListItems.forEach(item => {
             item.addEventListener('dragover', dragOver);
@@ -519,15 +532,15 @@
             item.addEventListener('dragleave', dragLeave);
         })
       
-        function dragStart_1() {
-                dragStartIndex = +this.closest('li').getAttribute('data-index')
-         
-            }
+        //function dragStart_1() {
+        //        dragStartIndex = +this.closest('li').getAttribute('data-index')
+        //    }
+
         function dragDrop_1() {
                 const dragEndIndex = +this.getAttribute('data-index');
                 swapItems(dragStartIndex, dragEndIndex);
                 this.classList.remove('over')
-                //formNoButton.submit();
+                formNoButton.submit();
         }
 
         function swapItems(fromIndex, toIndex) {
@@ -548,7 +561,7 @@
                         listItems[i + 1].appendChild(listItems[i].querySelector('.draggable'))
                     }
                 }
-                //setTimeout(() => { form.submit(); }, 100);
+                //setTimeout(() => { formNoButton.submit(); }, 100);
             }
 
     console.log('end OK')

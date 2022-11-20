@@ -410,8 +410,8 @@ def edit_section (request, subject_id, section_id):
 
 def edit_all (request, subject_id):
     subject=MainSubject.objects.get(id=subject_id)
-    sections=Section.objects.filter(course=subject)
-    lectures=Lecture.objects.filter(subject=subject)
+    sections=Section.objects.filter(course=subject).order_by('enumerator')
+    lectures=Lecture.objects.filter(subject=subject).order_by('enumerator')
     context = {
         'subject': subject,
         'sections': sections,
@@ -826,27 +826,73 @@ def delete_enumerator (request, subject_id, section_id, lecture_id):
 def create_quiz(request,subject_id):
     pass
 
-def bulk_lecture_enumerator_update (request, subject_id):
+def bulk_lecture_enumerator_update_ver_1 (request, subject_id, section_id):
     subject=MainSubject.objects.get(id=subject_id)
-    sections=Section.objects.filter(course=subject)
-    lectures=Lecture.objects.filter(subject=subject)
+    sections=Section.objects.filter(course=subject).order_by('enumerator')
+    lectures=Lecture.objects.filter(subject=subject).order_by('enumerator')
    
     if request.user.is_authenticated:
         if request.method == "POST":
-            lecture_ids = request.POST.getlist("lecture_id", None)
+            sec_lec_ids = request.POST.getlist("sec_lec_id", None)
             section_ids = request.POST.getlist("section_id", None)
-            i=1
+            i_sec=0
+            i=0
             for section_id in section_ids:
-                print (section_id)
                 section=Section.objects.get(id=section_id)
-                for lecture_id in lecture_ids:
-                    lecture =Lecture.objects.get(id=lecture_id)
-                    lecture.section=section
-                    lecture.enumerator=i
-                    lecture.save()
-                    i=i+1
-            
-            
+                section.enumerator=i_sec+1
+                section.save()
+                i_sec=i_sec+1
+                for sec_lec_id in sec_lec_ids:
+                    if section_id in sec_lec_id:
+                        n=sec_lec_id('/')
+                        print(n)
+                        #lecture_id=sec_lec_id.replace('section_id', '')#changin a part of the string for a new one
+                        lecture_id=sec_lec_id[n:]# deleting the number of elements in the string
+
+                        lecture=Lecture.objects.get(id=lecture_id)
+                        lecture.section=section
+                        lecture.enumerator=i+1
+                        lecture.save()
+                        i=i+1
+            return redirect ('edit_all', subject.id)
+        else:
+            context = {
+                'subject': subject,
+                'section': section,
+                'lectures': lectures,
+            }
+            return render(request, 'workshop/edit_section.html', context)
+    else:
+        logout(request)
+        return redirect('login')
+
+def bulk_lecture_enumerator_update (request, subject_id):
+    subject=MainSubject.objects.get(id=subject_id)
+    sections=Section.objects.filter(course=subject).order_by('-enumerator')
+    lectures=Lecture.objects.filter(subject=subject).order_by('-enumerator')
+   
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            sec_lec_ids = request.POST.getlist("sec_lec_id", None)
+            section_ids = request.POST.getlist("section_id", None)
+            i_sec=0
+            i=0
+            for section_id in section_ids:
+                section=Section.objects.get(id=section_id)
+                section.enumerator=i_sec+1
+                section.save()
+                i_sec=i_sec+1
+                for sec_lec_id in sec_lec_ids:
+                    if section_id in sec_lec_id:
+                        n=sec_lec_id.index('/')
+                        #lecture_id=sec_lec_id.replace('section_id', '')#changin a part of the string for a new one
+                        lecture_id=sec_lec_id[n+1:]# deleting the number of elements in the string
+                        lecture=Lecture.objects.get(id=lecture_id)
+                        lecture.section=section
+                        lecture.enumerator=i+1
+                        lecture.save()
+                        i=i+1
+            lecture=Lecture.objects.get(id=268)
             return redirect ('edit_all', subject.id)
         else:
             context = {

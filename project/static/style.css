@@ -198,7 +198,7 @@ iframe {
   background-color:blanchedalmond;
 }
 
-.draggable_section.dragging {
+.draggable_section.draggingSection {
   background-color: aquamarine;
 }
 
@@ -437,6 +437,10 @@ iframe {
   border-radius: 5px;
   border-color: grey;
   border-width: 2px;
+}
+
+form_wrapper.hidden {
+  display: hidden;
 }
 
 .d-1 {
