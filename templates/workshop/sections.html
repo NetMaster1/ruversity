@@ -1,0 +1,195 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<!-- <body oncontextmenu="return false;"> -->
+<div class="container">
+    <div class="row m-auto">
+        <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);"
+            aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'studio' %}">Творческая студия</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'edit_subject' subject.id %}">Редактирование курса</a></li>
+
+                <li class="breadcrumb-item active" aria-current="page">Разделы</li>
+            </ol>
+        </nav>
+    </div>
+    <div class="row">
+        <a href="#">
+            <i class="fa-sharp fa-solid fa-folder-plus icon"></i>
+        </a>
+        
+    </div>
+<!-- ==================================Create Section Module======================= -->
+<div class="createSection">
+    <div class="hide">
+        <div class="createSectionBox">
+            <form action="{% url 'create_new_section' subject.id %}" method="POST" enctype="multipart/form-data" id="myForm">
+                {% csrf_token %}
+
+                <div class="form-row mt-1 mb-1">
+                    <div class="col-5">
+                        <label for="file">
+                            <strong>
+                                Введите название раздела:
+                            </strong>
+                        </label>
+                    </div>
+                    <div class="col-4">
+                        <input type="text" class="form-control" id="title" name="title" required placeholder="Не более 160 знаков">
+                    </div>
+                    <div class="col-2">
+                        <input type="submit" value="Создать" class='btn btn-block btn-outline-dark btnFileSave'
+                            form="myForm">
+                    </div>
+                </div>
+            </form>
+
+
+           
+        </div>
+    </div>
+</div>
+<!-- ==================================End of Create Sectin Module============================== -->
+     
+ 
+
+<h3>Разделы</h3>
+
+<form action="{% url 'bulk_lecture_enumerator_update' subject.id %}" method="POST" id='form_no_button'>
+            {% csrf_token %}
+
+{% for section in sections %}
+
+<div class="section_box draggable_section p-2 mb-2">
+    <!-- <div data-bs-toggle="collapse" data-bs-target='#section{{section.id}}'> -->
+        <div class="row ml-1 mb-2">
+            <div class="col-4">
+                <label for="section_id">
+                    {{section.enumerator}} {{section.title}} 
+                </label>
+                <a href="{% url 'delete_section' subject.id section.id %}">
+                    <i class="fa-solid fa-trash"></i>
+                </a>  
+                <a href="#">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                </a>
+                <a href="{% url 'new_lecture_page' subject.id section.id %}">
+                <i class="fa-solid fa-circle-plus"></i> 
+                </a>
+            </div>
+            <div class="col-1">
+                <input type="text" class='form-control' id="section_id" name="section_id" value='{{section.id}}' readonly hidden>
+            </div>
+        </div>
+    <!-- </div>-->
+    
+<!-- <div class="collapse" id='section{{section.id}}'> -->
+    {% for lecture in lectures %}
+    {% if lecture.section == section %}
+     
+    <div class="box ml-3 draggable_lecture" draggable='true'>
+        <div class="row">
+            <div class="col-2">
+                <label for="lecture_id">Лекция {{lecture.enumerator}}</label>
+            </div> 
+            <div class="col-8">
+                <strong>{{lecture.title}};. Дл.: {{lecture.length_1}} Размер:
+                    {{lecture.size_mb}} Mb</strong>
+            </div>
+            <div class="col-1">
+                <input type="text" class='form-control ml-3' id="lecture_id" name="sec_lec_id"
+                value='{{section.id}}/{{lecture.id}}' readonly hidden>
+            </div>
+           <div class="col-1">
+            <a href="{% url 'delete_lecture' lecture.id %}">
+                <i class="fa-solid fa-trash"></i>
+            </a>
+            <a href="{% url 'edit_lecture' lecture.id%}">
+                <i class="fa-solid fa-pen-to-square"></i>
+            </a>
+            </div>
+            
+           
+        </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+                
+<!-- </div> -->
+
+</div>
+{% endfor %}
+</form>
+   
+</div>
+
+
+<script>
+    console.log('start OK')
+ 
+    const faFolderPlus = document.querySelector('.fa-folder-plus')
+    const createSection = document.querySelector('.createSection')
+    const draggableSections = document.querySelectorAll('.draggable_section')//containers for lectures
+    const draggableLectures = document.querySelectorAll('.draggable_lecture')//draggable lectures
+    const formNoButton = document.querySelector('#form_no_button')//var for submitting form witout pushing button
+
+    faFolderPlus.addEventListener('click', () => {
+        createSection.classList.add('openModal')
+    })
+
+//===========================Drag & Drop Lecture Module===============================    
+    draggableLectures.forEach(lecture => {
+        lecture.addEventListener('dragstart', (e) => {
+            lecture.classList.add('dragging')
+        })
+        lecture.addEventListener('dragend', (e) => {
+            lecture.classList.remove('dragging')
+        });  
+    })
+
+    draggableSections.forEach(section => {
+        section.addEventListener('dragover', (e) => {
+        e.preventDefault()
+        const afterElement = getDragAfterElement(section, e.clientY)
+        const draggable = document.querySelector('.dragging')
+        if (afterElement == null) {
+            section.appendChild(draggable)
+        }
+        else {
+            section.insertBefore(draggable, afterElement)
+        }
+            })      
+        })    
+
+    function getDragAfterElement(section, y) {
+            const draggableElements = [...section.querySelectorAll('.draggable_lecture:not(.dragging)')]
+            return draggableElements.reduce((closest, child) => {
+                const box = child.getBoundingClientRect()
+                const offset = y - box.top - box.height / 2
+                if (offset < 0 && offset > closest.offset) {
+                    return { offset: offset, element: child }
+                }
+                else {
+                    return closest
+                }
+            }, { offset: Number.NEGATIVE_INFINITY }).element
+        }
+
+        draggableSections.forEach(section => {
+                section.addEventListener('drop', e => {
+                    const draggable = document.querySelector('.dragging')
+                    let len = draggable.children[0].children[2].children[0].value.indexOf("/");
+                    draggable.children[0].children[2].children[0].value = section.children[0].children[1].children[0].value + draggable.children[0].children[2].children[0].value.slice(len)
+                    console.log (draggable.value)
+                    formNoButton.submit();
+                })
+               
+            })
+//============================End of Drag & Drop Module===================================
+
+
+    console.log('end OK')
+</script>
+
+{% endblock %}

@@ -186,8 +186,8 @@ iframe {
   border-color: grey;
 }
 .box {
-  border: 1px grey;
-  background-color: blue;
+  border: 1px solid grey;
+  /*background-color: blue;*/
 }
 
 .box.dragging {
@@ -203,10 +203,12 @@ iframe {
 }
 
 .section_box {
-  border: 1px;
-  border-radius: 0.6;
+  border: 1px solid;
+  border-radius:1rem;
   border-color: black;
-  background-color: red;
+  height: fit-content;
+  width: 70rem;
+  /*background-color: red;*/
 }
 
 .lecture_box {
@@ -224,6 +226,33 @@ iframe {
   /* overflow-y: scroll; */
   /* overflow-y: auto; */
 }
+
+/* ============================================== */
+.createSection {
+  display: none;
+}
+
+.createSection.openModal {
+  display: block;
+}
+
+.createSectionBox {
+
+  display: block;
+  position: absolute;
+  border: 1px solid;
+  border-color: #aaaaaa;
+  border-radius: 1%;
+  top: 30vh;
+  left: 35rem;
+  background-color: whitesmoke;
+  height: 30rem;
+  width: 50rem;
+  padding: 1rem;
+
+
+}
+
 
 /* ============================================ */
 #lectureModal {
@@ -378,12 +407,13 @@ iframe {
   position: absolute;
   border: 1px solid;
   border-color: #aaaaaa;
-  border-radius: 1%;
+  border-radius: 1rem;
   top: 30vh;
   left: 35rem;
   background-color: whitesmoke;
-  height: fit-content;
-  width: fit-content;
+  height: 30rem;
+  width: 50rem;
+  padding: 2rem;
 }
 
 #openSectionModal {

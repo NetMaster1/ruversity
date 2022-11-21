@@ -366,13 +366,24 @@ def create_new_section(request, subject_id):
                     course=subject,
                     enumerator=numberOfSections + 1
                 )
-                return redirect ('edit_subject', subject.id)      
+                return redirect ('sections', subject.id)      
         else:
             logout(request)
             return redirect('login')
     else:
         logout(request)
         return redirect('login')
+
+def sections (request, subject_id):
+    subject=MainSubject.objects.get(id=subject_id)
+    sections=Section.objects.filter(course=subject).order_by('enumerator')
+    lectures=Lecture.objects.filter(subject=subject).order_by('enumerator')
+    context = {
+        'subject': subject,
+        'sections': sections,
+        'lectures': lectures,
+    }
+    return render(request, 'workshop/sections.html', context)
 
 def edit_section (request, subject_id, section_id):
     if request.user.is_authenticated:
@@ -425,102 +436,12 @@ def delete_section (request, subject_id, section_id):
         if request.user == subject.author:
             section = Section.objects.get(id=section_id)
             section.delete()
-            return redirect ('edit_subject', subject_id)
+            return redirect ('sections', subject_id)
         else:
             logout(request)
             return redirect('login')
     else:
         return redirect('login')
-
-def create_new_lecture(request, subject_id, section_id):
-    # Initial sanity checks
-    if not request.user.is_authenticated:
-        return redirect('login')
-
-    subject=MainSubject.objects.get(id=subject_id)
-    section = Section.objects.get(id=section_id)
-
-    if request.user != subject.author:
-        logout(request)
-        return redirect('login')
-
-    if request.method != 'POST':
-        return redirect('edit_section', subject_id, section_id)
-
-    #
-    # Request parameters check
-    #
-
-    #video_file = request.FILES['video_file']
-    #video_file_name = video_file.file.name
-    title = request.POST['title']
-    #enumerator = request.POST['enumerator']
-    numberOfLectures=Lecture.objects.filter(section=section).count()
-
-
-    #url_link = request.POST.get('url_link', False)
-    #additional_file = request.FILES.get('additional_file', False)
-    #subtitle_file = request.POST.get('subtitle_file', False)
-    # translation_file = request.FILES['translation_file']
-    author = request.user
-    free_access = False
-    try:
-        if request.POST['free_access']:
-            free_access = True
-    except KeyError:
-        free_access = False
-
-    # if not video_file_name.endswith('.mp4'):
-    #     messages.error(request, 'Некорректный форма файла. Используйте файл в формате MP4.')
-    #     return redirect('edit_section', subject_id, section_id)
-
-    # size_bytes = os.path.getsize(video_file_name)
-    # size_mbytes = size_bytes/1024/1024
-    # if size_mbytes > 200:
-    #     messages.error(request, 'Размер файла больше 200МБ. Попробуйте использовать файлы меньшего размера.')
-    #     return redirect('edit_section', subject_id, section_id)
-
-    # clip = VideoFileClip(video_file_name)
-    # length = clip.duration / 60
-    # size_mb = size_mbytes
-
-    lecture = Lecture.objects.create(
-        title=title,
-        #video_file=video_file,
-        #subtitle_file=subtitle_file,
-        # translation_file=translation_file,
-        author=author,
-        section=section,
-        subject=subject,
-        free=free_access,
-        #length=length,
-        #size_mb=size_mb,
-        enumerator=numberOfLectures+1
-    )
-
-    # if url_link:
-    #     AdditionalMaterialLink.objects.create(
-    #             lecture=lecture,
-    #             url_link=url_link,
-    #         )
-    # if additional_file:
-    #     AdditionalMaterialFile.objects.create(
-    #         lecture=lecture,
-    #         additional_file=additional_file
-    #     )
-
-    #lectures = Lecture.objects.filter(subject=subject)
-    lectures = Lecture.objects.filter(section=section).order_by('enumerator')
-    context = {
-        'subject': subject,
-        'section': section,
-        'lectures': lectures,
-    }
-    return redirect('edit_section', subject_id, section_id)
-
-
-#         logout(request)
-#         return redirect('login')
 
 def delete_lecture(request, lecture_id):
     if request.user.is_authenticated:
@@ -595,6 +516,106 @@ def upload_multiple_files (request, subject_id, section_id):
             return redirect ('edit_section', subject.id, section.id)
     logout(request)
     return redirect('login')
+
+def new_lecture_page (request, subject_id, section_id):
+    subject=MainSubject.objects.get(id=subject_id)
+    section = Section.objects.get(id=section_id)
+    context = {
+        'subject': subject,
+        'section': section,
+    }
+    return render(request, 'workshop/new_lecture_page.html', context)
+
+def create_new_lecture(request, subject_id, section_id):
+    subject=MainSubject.objects.get(id=subject_id)
+    section = Section.objects.get(id=section_id)
+    if request.user == subject.author:
+        if request.method == 'POST':
+            #video_file = request.FILES['video_file']
+            #video_file_name = video_file.file.name
+            title = request.POST['title']
+            numberOfLectures=Lecture.objects.filter(subject=subject).count()
+
+            lecture=Lecture.objects.create(
+                subject=subject,
+                section=section,
+                title=title,
+                author=subject.author,
+               
+            )
+            lectures=Lecture.objects.filter(subject=subject).order_by('enumerator')
+            sections=Section.objects.filter(course=subject).order_by('enumerator')
+            
+            i=1
+            for section in sections:
+                for lecture in lectures:
+                    if lecture.section==section:
+                        lecture.enumerator=i
+                        lecture.save()
+                        i=i+1
+
+            #url_link = request.POST.get('url_link', False)
+            #additional_file = request.FILES.get('additional_file', False)
+            #subtitle_file = request.POST.get('subtitle_file', False)
+            # translation_file = request.FILES['translation_file']
+            # author = request.user
+            # free_access = False
+            # try:
+            #     if request.POST['free_access']:
+            #         free_access = True
+            # except KeyError:
+            #     free_access = False
+
+            # if not video_file_name.endswith('.mp4'):
+            #     messages.error(request, 'Некорректный форма файла. Используйте файл в формате MP4.')
+            #     return redirect('edit_section', subject_id, section_id)
+
+            # size_bytes = os.path.getsize(video_file_name)
+            # size_mbytes = size_bytes/1024/1024
+            # if size_mbytes > 200:
+            #     messages.error(request, 'Размер файла больше 200МБ. Попробуйте использовать файлы меньшего размера.')
+            #     return redirect('edit_section', subject_id, section_id)
+
+            # clip = VideoFileClip(video_file_name)
+            # length = clip.duration / 60
+            # size_mb = size_mbytes
+
+            # lecture = Lecture.objects.create(
+            #     title=title,
+            #     #video_file=video_file,
+            #     #subtitle_file=subtitle_file,
+            #     # translation_file=translation_file,
+            #     author=author,
+            #     section=section,
+            #     subject=subject,
+            #     free=free_access,
+            #     #length=length,
+            #     #size_mb=size_mb,
+            #     enumerator=numberOfLectures+1
+            # )
+
+            # if url_link:
+            #     AdditionalMaterialLink.objects.create(
+            #             lecture=lecture,
+            #             url_link=url_link,
+            #         )
+            # if additional_file:
+            #     AdditionalMaterialFile.objects.create(
+            #         lecture=lecture,
+            #         additional_file=additional_file
+            #     )
+
+            #lectures = Lecture.objects.filter(subject=subject)
+            lectures = Lecture.objects.filter(section=section).order_by('enumerator')
+            context = {
+                'subject': subject,
+                'section': section,
+                'lectures': lectures,
+            }
+            return redirect('sections', subject_id )
+    else:
+        logout(request)
+        return redirect('login')
 
 def lecture_update (request, subject_id, section_id, lecture_id):
     if request.user.is_authenticated:
@@ -700,6 +721,7 @@ def edit_lecture(request, lecture_id):
         lecture = Lecture.objects.get(id=lecture_id)
         subject = lecture.subject
         section = lecture.section
+        v_files=Library.objects.filter(subject=subject)
         if request.user == subject.author:
             if subject.ready == True:
                 messages.error(request, 'Вы не можете редактировать лекции, загруженные на сервер.')
@@ -803,7 +825,37 @@ def edit_lecture(request, lecture_id):
                     #    messages.error(request, 'Некорректный формат файла. Загрузите файл в формате mp4.')
                     #   return redirect('edit_section', subject.id, section.id)
                 else:
-                    return redirect('edit_section', subject.id, section.id)
+                    context = {
+                        'lecture': lecture,
+                        'subject': subject,
+                        'section': section,
+                        'v_files': v_files,
+                    }
+                    return render(request, 'workshop/edit_lecture_page.html', context)
+        else:
+            logout(request)
+            return redirect('login')
+    else:
+        logout(request)
+        return redirect('login')
+
+def delete_lecture(request, lecture_id):
+    if request.user.is_authenticated:
+        lecture = Lecture.objects.get(id=lecture_id)
+        subject = lecture.subject
+        if request.user == subject.author:
+            if subject.ready == True:
+                messages.error(request, 'Sorry, you can not delete a loaded lecture.')
+                return redirect('sections', subject.id)
+            else:
+                lecture.delete()
+                lectures = Lecture.objects.filter(subject=subject).order_by('enumerator')
+                i=1
+                for lecture in lectures:
+                    lecture.enumerator = i
+                    lecture.save()
+                    i=i+1
+                return redirect('sections', subject.id)
         else:
             logout(request)
             return redirect('login')
@@ -825,46 +877,6 @@ def delete_enumerator (request, subject_id, section_id, lecture_id):
 
 def create_quiz(request,subject_id):
     pass
-
-def bulk_lecture_enumerator_update_ver_1 (request, subject_id, section_id):
-    subject=MainSubject.objects.get(id=subject_id)
-    sections=Section.objects.filter(course=subject).order_by('enumerator')
-    lectures=Lecture.objects.filter(subject=subject).order_by('enumerator')
-   
-    if request.user.is_authenticated:
-        if request.method == "POST":
-            sec_lec_ids = request.POST.getlist("sec_lec_id", None)
-            section_ids = request.POST.getlist("section_id", None)
-            i_sec=0
-            i=0
-            for section_id in section_ids:
-                section=Section.objects.get(id=section_id)
-                section.enumerator=i_sec+1
-                section.save()
-                i_sec=i_sec+1
-                for sec_lec_id in sec_lec_ids:
-                    if section_id in sec_lec_id:
-                        n=sec_lec_id('/')
-                        print(n)
-                        #lecture_id=sec_lec_id.replace('section_id', '')#changin a part of the string for a new one
-                        lecture_id=sec_lec_id[n:]# deleting the number of elements in the string
-
-                        lecture=Lecture.objects.get(id=lecture_id)
-                        lecture.section=section
-                        lecture.enumerator=i+1
-                        lecture.save()
-                        i=i+1
-            return redirect ('edit_all', subject.id)
-        else:
-            context = {
-                'subject': subject,
-                'section': section,
-                'lectures': lectures,
-            }
-            return render(request, 'workshop/edit_section.html', context)
-    else:
-        logout(request)
-        return redirect('login')
 
 def bulk_lecture_enumerator_update (request, subject_id):
     subject=MainSubject.objects.get(id=subject_id)
@@ -892,15 +904,14 @@ def bulk_lecture_enumerator_update (request, subject_id):
                         lecture.enumerator=i+1
                         lecture.save()
                         i=i+1
-            lecture=Lecture.objects.get(id=268)
-            return redirect ('edit_all', subject.id)
+            return redirect ('sections', subject.id)
         else:
             context = {
                 'subject': subject,
                 'sections': sections,
                 'lectures': lectures,
             }
-            return render(request, 'workshop/edit_all.html', context)
+            return render(request, 'workshop/sections.html', context)
     else:
         logout(request)
         return redirect('login')

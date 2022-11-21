@@ -223,63 +223,7 @@
         </div>
     </div>
     </div>
-<!-- ========================================VideoFileModule======================= -->
-    <div class="videoFileModule">
-            <div class="hide">
-                <div class="file_box">
-                  {{lecture.enumerator}}
-              
-                        <form action="{% url 'lecture_update' subject.id section.id lecture.id %}" method="POST" enctype="multipart/form-data" id="myForm">
-                            {% csrf_token %}
-                        
-                            <div class="form-row mt-1 mb-1">
-                                <div class="col-5">
-                                    <label for="file">
-                                        <strong>
-                                            Выберите видеофайл из вашего хранилища:
-                                        </strong>
-                                    </label>
-                                </div>
-                                <div class="col-4">
-                                    <input type="file" class="form-control" id="file" name="file" required form="myForm">
-                                </div>
-                                <div class="col-2">
-                                    <input type="submit" value="Загрузить" class='btn btn-block btn-outline-dark btnFileSave' form="myForm">
-                                </div>
-                            </div>
-                        </form>
-                  
 
-                    <div data-bs-toggle="collapse" data-bs-target='#v_files'>
-                    
-                        <div class="lecture_string ml-3 draggable" draggable="true">
-                            <div class="row">
-                            
-                               Открыть список файлов
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="collapse" id='v_files' style="height:fit-content">
-        {% for v_file in v_files %}
-
-        <div class="row m-1">
-            <div class="col-6">{{v_file.video_file}}</div>
-            <div class="col-2">
-            <a href="{% url 'lecture_update_from_lib' subject.id section.id lecture.id v_file.id  %}" style="text-decoration: none">
-                <!-- <input type="submit" value="Delete" class="btn btn-info btn-block"> -->
-                <input type="button" value="Загрузить из библиотеки" class='btn btn-sm btn-block btn-outline-dark'>
-            </a>
-            </div>
-        </div>
-        {% endfor %}
-                 </div>
-               
-            </div>
-</div>
-    </div>
-
-<!-- ==========================End of Video File Module======================================================== -->
  
 {% endif %}
 {% endfor %}
@@ -295,11 +239,7 @@
     console.log('start OK')
 
 
-    const videoFileButton = document.querySelectorAll('.videoFileButton');
-    const videoFileModule = document.querySelectorAll('.videoFileModule');
-    const fileUploadButton = document.querySelectorAll('.fileUploadButton');
-    const fileLibButton = document.querySelector('.fileLibButton');
-    const fileLibUploadModule = document.querySelector('.fileLibUploadModule');
+    
     const formWrapper = document.querySelector('.form_wrapper');
     const btnFileSave = document.querySelector('.btnFileSave');
     const formNoButton = document.querySelector('#form_no_button')
@@ -314,14 +254,6 @@
     //        });
     //    });
 
-    for (let i = 0; i < videoFileButton.length; i++) {
-        videoFileButton[i].addEventListener('click', () => {
-            videoFileModule[i].classList.add('openModal')
-            //formWrapper.remove()
-            //formWrapper.classList.add('hidden')
-            console.log('safsdas')
-        })
-    }
     for (let i = 0; i < btnFileSave.length; i++) {
         btnFileSave[i].addEventListener('click', (e) => {
             console.log('sdfsfdfs')

@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container">
+    <div class="row m-auto">
+        <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);"
+            aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'studio' %}">Творческая студия</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'edit_subject' subject.id %}">Редактирование курса</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'sections' subject.id %}">Разделы</a></li>
+
+                <li class="breadcrumb-item active" aria-current="page">Лекция</li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="row mt-2 collection mb-2">
+        <div class='section_1'>
+            <div class="row m-auto">
+                Лекция: {{lecture.title}}
+            </div>
+            <hr>
+         
+            <div class="row m-auto">
+                Выберите тип наполнения лекции:
+            </div>
+            <hr>
+            <div class="row m-auto">
+                <div class="col-2">
+                    <input type="button" value="Видеофайл" id="videoFile" class="btn btn-sm btn-block btn-outline-dark videoFileButton">
+                </div>
+                <div class="col-2">
+                    <input type="button" value="Тест" id="test" class="btn btn-sm btn-block btn-outline-dark">
+                </div>
+                <div class="col-2">
+                    <input type="button" value="Статья" id="article" class="btn btn-sm btn-block btn-outline-dark">
+                </div>
+                <div class="col-2">
+                    <input type="button" value="Ссылка на код" id="code" class="btn btn-sm btn-block btn-outline-dark">
+                </div>
+                <div class="col-2">
+                    <input type="button" value="Текстовый файл" id="docFile" class="btn btn-sm btn-block btn-outline-dark">
+                </div>
+
+            </div>
+      
+
+<!-- ========================================VideoFileModule======================= -->
+<div class="videoFileModule">
+    <div class="hide">
+        <div class="file_box">
+            <form action="{% url 'lecture_update' subject.id section.id lecture.id %}" method="POST"
+                enctype="multipart/form-data" id="myForm">
+                {% csrf_token %}
+
+                <div class="form-row m-auto">
+                    <div class="col-4">
+                        <label for="file">
+                            <strong>
+                                Выберите видеофайл из вашего хранилища:
+                            </strong>
+                        </label>
+                    </div>
+                    <div class="col-5">
+                        <input type="file" class="form-control" id="file" name="file" required form="myForm">
+                    </div>
+                    <div class="col-2">
+                        <input type="submit" value="Загрузить" class='btn btn-block btn-outline-dark btnFileSave'
+                            form="myForm">
+                    </div>
+                </div>
+            </form>
+            <div class="row m-auto">
+                ИЛИ
+            </div>
+
+            <div data-bs-toggle="collapse" data-bs-target='#v_files'>
+
+                <div class="lecture_string ml-3 draggable" draggable="true">
+                    <div class="row">
+
+                        Выбрать из ранее загруженных файлов:
+                    </div>
+                </div>
+            </div>
+
+            <div class="collapse" id='v_files' style="height:fit-content">
+                {% for v_file in v_files %}
+
+                <div class="row m-1">
+                    <div class="col-6">{{v_file.video_file}}</div>
+                    <div class="col-2">
+                        <a href="{% url 'lecture_update_from_lib' subject.id section.id lecture.id v_file.id  %}"
+                            style="text-decoration: none">
+                            <!-- <input type="submit" value="Delete" class="btn btn-info btn-block"> -->
+                            <input type="button" value="Загрузить из библиотеки"
+                                class='btn btn-sm btn-block btn-outline-dark'>
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- ==========================End of Video File Module======================================================== -->
+        
+        </div>
+    </div>
+
+</div>
+<script>
+        const videoFileButton = document.querySelector('.videoFileButton');
+        const videoFileModule = document.querySelector('.videoFileModule');
+        const fileUploadButton = document.querySelector('.fileUploadButton');
+        const fileLibButton = document.querySelector('.fileLibButton');
+        const fileLibUploadModule = document.querySelector('.fileLibUploadModule');
+
+        
+         
+                videoFileButton.addEventListener('click', () => {
+                    videoFileModule.classList.add('openModal')
+                    //formWrapper.remove()
+                    //formWrapper.classList.add('hidden')
+                    console.log('safsdas')
+                })
+       
+
+</script>
+
+{% endblock %}

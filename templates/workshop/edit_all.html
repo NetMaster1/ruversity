@@ -21,45 +21,27 @@
         <form action="{% url 'bulk_lecture_enumerator_update' subject.id %}" method="POST" id='form_no_button'>
             {% csrf_token %}
 
-            {% for section in sections %}
-            <!-- <li class="li_section mb-3"> -->
-                <div class="section_box p-5 draggable_section mb-5" draggable="true" >
+    {% for section in sections %}
+        <li class="section_box p-5 draggable_section mb-5" draggable="true" >
                     {{section.enumerator}} {{section.title}}
                        
-                            <!-- <label for="section_id">Раздел {{section.enumerator}} {{section.title}}</label> -->
                      
-                      
-                            <input type="text" class='form-control' id="section_id" name="section_id" value='{{section.id}}' readonly draggable="true">
+            <input type="text" class='form-control' id="section_id" name="section_id" value='{{section.id}}' readonly draggable="true">
                     
                 
                   
                 {% for lecture in lectures %}
                 {% if lecture.section == section %}
-                <!-- <li class="li_lecture"> -->
-                    <!-- <div class="row mt-2 collection"> -->
-                        <!-- <div class="box ml-3 draggable_lecture" draggable="true" nodeValue="{{lecture.id}}">
-                            <div class="row">
-                                <div class="col-2">
-                                    <label for="lecture_id">Лекция {{lecture.enumerator}}</label>
-                                </div> 
-                                <div class="col-2"> -->
-                                    <input type="text" class='form-control box ml-3 draggable_lecture' id="lecture_id" name="sec_lec_id"
-                                        value='{{section.id}}/{{lecture.id}}' readonly draggable="true">
-                               <!-- </div>
-                                <div class="col-8">
-                                    <strong>Название: {{lecture.title}};. Дл.: {{lecture.length_1}} Размер:
-                                        {{lecture.size_mb}} Mb</strong>
-                                </div> -->
-                            <!-- </div>
-                        </div> -->
-                    <!-- </div> -->
-                <!-- </li> -->
+            
+            <input type="text" class='form-control box ml-3 draggable_lecture' id="lecture_id" name="sec_lec_id"
+            value='{{section.id}}/{{lecture.id}}' readonly draggable="true">
+                
                 {% endif %}
                 {% endfor %}
                 
 
-                </div>
-            <!-- </li> -->
+               
+            </li>
             {% endfor %}
 
 
@@ -75,39 +57,53 @@
 <script>
     console.log('start OK')
  
+
     const sectionContainer = document.querySelector('.draggable-list');//container for sections
-    const draggableSections = document.querySelectorAll('.draggable_section')//containers for lectures
+    const draggableSections = document.querySelectorAll('li.draggable_section:not(.draggable_lecture')//containers for lectures
+    //const draggableElements = [...section.querySelectorAll('.draggable_lecture:not(.dragging)')]
     const draggableLectures = document.querySelectorAll('.draggable_lecture')//draggable lectures
     const formNoButton = document.querySelector('#form_no_button')//var for submitting form witout pushing button
-
+    //const dragging = document.querySelector('.draggable_lecture.dragging');
+    listSectionItems =[]
+    let dragStartIndexSection;
+    let dragEndIndexSection;
+    let a
   
+
+//====================Drag & Drop Section Module===============================
+    draggableSections.forEach((item, index) => {
+            item.setAttribute('data-section', index);
+            listSectionItems.push(item)
+            console.log(item.getAttribute('data-section'))
+            })
+            console.log(listSectionItems)
+
+             
     draggableSections.forEach(section => {
         section.addEventListener('dragstart', (e) => {
-            if (e.target.className != 'draggableLecture') {
+            if (e.target.className != 'draggable_lecture') {
                 section.classList.add('draggingSection')
+                dragStartIndexSection = +section.closest('li.draggable_section').getAttribute('data-section')
+                console.log ('dragging section starts')
             }
             else {
-                console.log('dragLecture')
+                //e.stopBubbling()
+                console.log('lecture move')
             }
         })
+
         section.addEventListener('dragend', (e) => {
-              if (e.target.className != 'draggable_lecture') {
+            if (e.target.className != 'draggable_lecture') 
+              {
                 section.classList.remove('draggingSection')
             }
+            else {
+                  //e.stopBubbling()
+                  console.log('lecture move')
+              }
         });
       
     })
-
-    sectionContainer.addEventListener('dragover', (e) => {
-        e.preventDefault()
-        if (e.target.className != 'draggable_lecture') {
-        //const afterElement = getDragAfterElement(section, e.clientY)
-        const draggable = document.querySelector('.draggingSection')
-        sectionContainer.appendChild(draggable)
-    }
-     
-    })
-
 
 //===========================Drag & Drop Lecture Module===============================    
 //function dragLecture (){
@@ -124,22 +120,24 @@
 //}
 
     draggableSections.forEach(section => {
-        section.addEventListener('dragover', e => {
-            e.preventDefault()
+        section.addEventListener('dragover', (e) => {
+        e.preventDefault()
+        if (a=0) {
+        //if (section.contains(dragging)) {
             const afterElement = getDragAfterElement(section, e.clientY)
             const draggable = document.querySelector('.dragging')
             if (afterElement == null) {
-                section.appendChild(draggable)   
+                section.appendChild(draggable)
             }
             else {
                 section.insertBefore(draggable, afterElement)
-            }    
+            }
+        }
+            })      
         })    
-    })
 
     function getDragAfterElement(section, y) {
             const draggableElements = [...section.querySelectorAll('.draggable_lecture:not(.dragging)')]
-
             return draggableElements.reduce((closest, child) => {
                 const box = child.getBoundingClientRect()
                 const offset = y - box.top - box.height / 2
@@ -149,19 +147,37 @@
                 else {
                     return closest
                 }
-
             }, { offset: Number.NEGATIVE_INFINITY }).element
         }
 
-    draggableSections.forEach(section => {
-        section.addEventListener('drop', e => {
-            const draggable = document.querySelector('.dragging')
-            let len=draggable.value.indexOf("/");
-            draggable.value = section.children[0].value + draggable.value.slice(len)
-            formNoButton.submit();
-        })
-    })
-    
+        draggableSections.forEach(section => {
+                section.addEventListener('drop', e => {
+                    const draggable = document.querySelector('.dragging')
+                    let len = draggable.value.indexOf("/");
+                    draggable.value = section.children[0].value + draggable.value.slice(len)
+                    formNoButton.submit();
+                })
+            })
+
+   function swapSectionItems(fromIndexSection, toIndexSection) {
+            const itemOneSection = listSectionItems[fromIndexSection].querySelector('li.draggable_section');
+            const itemTwoSection = listSectionItems[toIndexSection].querySelector('li.draggable_section');
+                //listItems[fromIndex].appendChild(itemTwo);
+                listSectionItems[toIndexSection].appendChild(itemOneSection);
+                //draglistItems[toIndex].appendChild(itemOne);
+
+                if (fromIndexSection < toIndexSection) {
+                    for (let i = fromIndexSection; i < toIndexSection; i++) {
+                        listSectionItems[i].appendChild(listSectionItems[i + 1].querySelector('.draggable_section'))
+                    }
+                }
+                else {
+                    for (let i = toIndexSection; i < fromIndexSection; i++) {
+                        listSectionItems[i + 1].appendChild(listSectionItems[i].querySelector('.draggable_section'))
+                    }
+            }
+        }
+
 
     console.log('end OK')
 </script>

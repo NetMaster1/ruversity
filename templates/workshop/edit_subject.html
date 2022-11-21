@@ -26,8 +26,11 @@
     </div>
 
     {% else %}
-<a href="{% url 'edit_all' subject.id %}" style="text-decoration: none">
+<!-- <a href="{% url 'edit_all' subject.id %}" style="text-decoration: none">
     Edit ALL
+</a> -->
+<a href="{% url 'sections' subject.id %}" style="text-decoration: none">
+    Разделы
 </a>
 
 
