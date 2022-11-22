@@ -31,7 +31,7 @@
                     <input type="button" value="Видеофайл" id="videoFile" class="btn btn-sm btn-block btn-outline-dark videoFileButton">
                 </div>
                 <div class="col-2">
-                    <input type="button" value="Тест" id="test" class="btn btn-sm btn-block btn-outline-dark">
+                    <input type="button" value="Тест" id="test" class="btn btn-sm btn-block btn-outline-dark test_button">
                 </div>
                 <div class="col-2">
                     <input type="button" value="Статья" id="article" class="btn btn-sm btn-block btn-outline-dark">
@@ -51,36 +51,32 @@
     <div class="hide">
         <div class="file_box">
             <form action="{% url 'lecture_update' subject.id section.id lecture.id %}" method="POST"
-                enctype="multipart/form-data" id="myForm">
+                enctype="multipart/form-data">
                 {% csrf_token %}
 
                 <div class="form-row m-auto">
                     <div class="col-4">
                         <label for="file">
-                            <strong>
-                                Выберите видеофайл из вашего хранилища:
-                            </strong>
+                            Выберите видеофайл из вашего хранилища:
                         </label>
                     </div>
                     <div class="col-5">
-                        <input type="file" class="form-control" id="file" name="file" required form="myForm">
+                        <input type="file" class="form-control" id="file" name="file" required>
                     </div>
                     <div class="col-2">
-                        <input type="submit" value="Загрузить" class='btn btn-block btn-outline-dark btnFileSave'
-                            form="myForm">
+                        <input type="submit" value="Загрузить" class='btn btn-block btn-outline-dark'>
                     </div>
                 </div>
             </form>
             <div class="row m-auto">
-                ИЛИ
+                <div class="text-center">ИЛИ</div>
             </div>
 
             <div data-bs-toggle="collapse" data-bs-target='#v_files'>
 
-                <div class="lecture_string ml-3 draggable" draggable="true">
-                    <div class="row">
-
-                        Выбрать из ранее загруженных файлов:
+                <div class="lecture_string ml-3">
+                    <div class="row m-auto">
+                    Выберите из библиотеки ранее загруженных файлов:
                     </div>
                 </div>
             </div>
@@ -90,10 +86,9 @@
 
                 <div class="row m-1">
                     <div class="col-6">{{v_file.video_file}}</div>
-                    <div class="col-2">
-                        <a href="{% url 'lecture_update_from_lib' subject.id section.id lecture.id v_file.id  %}"
+                    <div class="col-4">
+                        <a href="{% url 'lecture_update_from_lib' lecture.id v_file.id%}"
                             style="text-decoration: none">
-                            <!-- <input type="submit" value="Delete" class="btn btn-info btn-block"> -->
                             <input type="button" value="Загрузить из библиотеки"
                                 class='btn btn-sm btn-block btn-outline-dark'>
                         </a>
@@ -105,9 +100,47 @@
         </div>
     </div>
 </div>
-
 <!-- ==========================End of Video File Module======================================================== -->
-        
+
+<!-- ========================================TestModule======================= -->
+<div class="testModule">
+    <div class="hide">
+        <div class="file_box">
+            <form action="{% url 'lecture_update' subject.id section.id lecture.id %}" method="POST"
+                enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="form-row m-auto">
+                    <div class="col-4">
+                        <label for="question">
+                            Сформулируйте вопрос
+                        </label>
+                    </div>
+                    <div class="col-5">
+                        <input type="text" class="form-control" id="question" name="question" required>
+                    </div>
+                </div>
+                <div class="row">
+                    Дайте три возможных ответа на вопрос
+                </div>
+
+
+                    <div class="row">
+                        <div class="col-10"></div>
+                        <div class="col-2">
+                            <input type="submit" value="Загрузить" class='btn btn-block btn-outline-dark'>
+                        </div>
+
+                    </div>
+                  
+                </div>
+            </form>
+           
+            </div>
+
+        </div>
+<!-- ==========================End of TestModule======================================================== -->
+
         </div>
     </div>
 
@@ -118,16 +151,25 @@
         const fileUploadButton = document.querySelector('.fileUploadButton');
         const fileLibButton = document.querySelector('.fileLibButton');
         const fileLibUploadModule = document.querySelector('.fileLibUploadModule');
+        const testButton = document.querySelector('.test_button');
+        const testModule = document.querySelector('.testModule');
 
         
          
-                videoFileButton.addEventListener('click', () => {
-                    videoFileModule.classList.add('openModal')
-                    //formWrapper.remove()
-                    //formWrapper.classList.add('hidden')
-                    console.log('safsdas')
-                })
-       
+        videoFileButton.addEventListener('click', () => {
+            videoFileModule.classList.add('openModal')
+            //formWrapper.remove()
+            //formWrapper.classList.add('hidden')
+            console.log('safsdas')
+        })
+
+        testButton.addEventListener('click', () => {
+            testModule.classList.add('openModal')
+            //formWrapper.remove()
+            //formWrapper.classList.add('hidden')
+            console.log('safsdas')
+        })
+
 
 </script>
 

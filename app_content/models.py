@@ -66,8 +66,8 @@ class MainSubject(models.Model):
     checked = models.BooleanField(default=False)
     blocked = models.BooleanField(default=False)
     discount_programs = models.BooleanField(default=True, null=True)
-    length = models.IntegerField(default=0)#length in minutes
-    length_1 = models.DurationField(null=True, default='00:00:00')
+    length = models.IntegerField(default=0)#length in seconds
+    length_1 = models.DurationField(null=True, default='00:00:00')#length in hours:min:seconds
 
     def __int__(self):
         return self.id
@@ -76,8 +76,8 @@ class Library(models.Model):
     author = models.ForeignKey(User, on_delete=models.SET_DEFAULT, null=True, default=1)
     subject = models.ForeignKey(MainSubject, on_delete=models.CASCADE, null=True)
     video_file = models.FileField(upload_to='uploads', null=True)
-    length = models.IntegerField(default=0)
-    length_1 = models.DurationField(null=True)
+    length = models.IntegerField(default=0)#length in seconds
+    length_1 = models.DurationField(null=True)#length in hours:min:seconds
     size_mb = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     
     def __it__(self):
@@ -113,8 +113,8 @@ class Lecture(models.Model):
     author = models.ForeignKey(User, on_delete=models.SET_DEFAULT, null=True, default=1)
     blocked = models.BooleanField(default=False)
     free = models.BooleanField(default=False)
-    length = models.IntegerField(default=0)
-    length_1 = models.DurationField(null=True)
+    length = models.IntegerField(default=0)#overall length in secs
+    length_1 = models.DurationField(null=True)#duration in hours:min:sec
     size_mb = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     enumerator = models.IntegerField(null=True)
 

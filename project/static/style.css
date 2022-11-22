@@ -415,6 +415,16 @@ iframe {
   width: 50rem;
   padding: 2rem;
 }
+/*===============================================*/
+.testModule {
+  display: none;
+}
+
+.testModule.openModal {
+  display: block;
+}
+/*==========================================================*/
+
 
 #openSectionModal {
   display: none;
