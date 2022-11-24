@@ -104,60 +104,7 @@
 </div>
 <!-- ==========================End of Video File Module======================================================== -->
 
-<!-- ========================================TestModule======================= -->
-<div class="testModule">
-    <div class="hide">
-        <div class="file_box">
-            <form action="{% url 'lecture_update' subject.id section.id lecture.id %}" method="POST"
-                enctype="multipart/form-data">
-                {% csrf_token %}
-            <div class="quiz_box">
-                <div class="form-row m-auto">
-                    <div class="col-4">
-                        <label for="question">
-                            Сформулируйте вопрос
-                        </label>
-                    </div>
-                    <div class="col-5">
-                        <input type="text" class="form-control" id="question" name="question" required>
-                    </div>
-                </div>
-                <div class="row">
-                    Дайте три возможных ответа на вопрос
-                </div>
-                <div class="row">
-                    <input type="text" class="form-control" id="question" name="answer" required>
-                </div>
-                <div class="row">
-                    <input type="text" class="form-control" id="question" name="answer" required>
-                </div>
-                <div class="row">
-                    <input type="text" class="form-control" id="question" name="answer" required>
-                </div>
-            </div>
-                <div class="row">
-                    <div class="col-4">
-                        Добавить вопрос
-                    </div>
-                    <div class="col-2">
-                        <input type="button" value="Добавить" class='btn btn-block btn-outline-dark btnNextQst'>
-                    </div>
-                </div>
-         
 
-                    <div class="row">
-                        <div class="col-4"></div>
-                        <div class="col-2">
-                            <input type="submit" value="Загрузить" class='btn btn-block btn-outline-dark'>
-                        </div>
-                    </div>
-                    </form>
-                </div>
-          
-           
-    </div>
-</div>
-<!-- ==========================End of TestModule======================================================== -->
 
         </div>
     </div>

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from . models import MainSubject, Transaction, Price, Category, Language, Rating, Keyword, Lecture, Section, Badword, Credit_card, Credit_card_type, Paypal, Main_method, Cart, Bank_account, DiscountOn, Question, Answer, AdditionalMaterialLink, AdditionalMaterialFile
+from . models import MainSubject, Transaction, Price, Category, Language, Rating, Keyword, Lecture, Section, Badword, Credit_card, Credit_card_type, Paypal, Main_method, Cart, Bank_account, DiscountOn, Question, Answer, AdditionalMaterialLink, AdditionalMaterialFile, QuizQuestion, QuizAnswer
 
 
 class MainSubjectAdmin(admin.ModelAdmin):
@@ -85,6 +85,12 @@ class AdditionalMaterialLinkAdmin(admin.ModelAdmin):
 class AdditionalMaterialFileAdmin(admin.ModelAdmin):
     list_display = ('id', 'lecture', 'additional_file',)
 
+class QuizQuestionAdmin(admin.ModelAdmin):
+    list_display = ('id', 'lecture', 'question',)
+
+class QuizAnswerAdmin(admin.ModelAdmin):
+    list_display = ('id', 'question', 'answer',)
+
 admin.site.register(MainSubject, MainSubjectAdmin)
 admin.site.register(Transaction, TransactionAdmin)
 admin.site.register(Rating, RatingAdmin)
@@ -104,6 +110,8 @@ admin.site.register(Bank_account, Bank_accountAdmin)
 admin.site.register(DiscountOn, DiscountOnAdmin)
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(Answer, AnswerAdmin)
+admin.site.register(QuizAnswer, QuizAnswerAdmin)
+admin.site.register(QuizQuestion, QuizQuestionAdmin)
 admin.site.register(AdditionalMaterialLink, AdditionalMaterialLinkAdmin)
 admin.site.register(AdditionalMaterialFile, AdditionalMaterialFileAdmin)
 

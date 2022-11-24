@@ -5,16 +5,25 @@
  
 
     <div class="row mt-2 collection mb-2">
-        <div class='section_1'>
+        <div class='section_1 mb-2'>
             <div class="row m-auto">
                 Лекция: {{lecture.title}}
             </div>
-            <hr>
         </div>
+      <div class="row">
+        {% for question in questions %}
+            <strong>{{question.question}}</strong>
+            {% for item in question.quizanswer_set.all%}
+              {{item.answer}} {{item.correct}}
+              <br>
+            {%endfor%}
+        {% endfor%}
+      </div>
+      <br>
 
         
         <div class="quiz_box">
-            <form action="#" method="POST"
+            <form action="{% url 'create_quiz' lecture.id %}" method="POST"
                 enctype="multipart/form-data">
                 {% csrf_token %}      
                     <div class="form-row m-auto">
@@ -28,31 +37,26 @@
                         </div>
                     </div>
                     <div class="row">
-                        Дайте три возможных ответа на вопрос
+                        Дайте три возможных ответа на вопрос и отметьте правильный ответ.
                     </div>
-                    <div class="row">
-                        <input type="text" class="form-control" id="question" name="answer" required>
-                    </div>
-                    <div class="row">
-                        <input type="text" class="form-control" id="question" name="answer" required>
-                    </div>
-                    <div class="row">
-                        <input type="text" class="form-control" id="question" name="answer" required>
-                    </div>
-           
-                <div class="row">
-                    <div class="col-4">
-                        Добавить вопрос
-                    </div>
-                    <div class="col-2">
-                        <input type="button" value="Добавить"
-                            class='btn btn-block btn-outline-dark btnNextQst'>
-                    </div>
-                </div>
+               
+                        
+                        <input type="radio"  id="radioAnswer" name="answer" checked>
+                        <label for="question"><input type="text" class="form-control" name="text_answer" id="text_answer" required></label>
+                        <br>
+               
+                        <input type="radio" id="radioAnswer" name="answer">
+                        <label for="question"><input type="text" class="form-control" name="text_answer" id="text_answer" required></label>
+                        <br>
+                
+                        <input type="radio" id="radioAnswer" name="answer">
+                        <label for="question" contenteditable="true"><input type="text" class="form-control" name="text_answer" id="text_answer" required></label>
+                        <br>
+               
                 <div class="row">
                     <div class="col-4"></div>
                     <div class="col-2">
-                        <input type="submit" value="Загрузить" class='btn btn-block btn-outline-dark'>
+                        <input type="submit" value="Загрузить" class='btn btn-block btn-outline-dark submit_button'>
                     </div>
                 </div>
             </form>
@@ -61,5 +65,22 @@
     </div>
 </div>
 
+<script>
+console.log('Script starts')
+
+const textAnswer=document.querySelectorAll('#text_answer')
+const radioAnswer=document.querySelectorAll('#radioAnswer')
+const submitButton=document.querySelectorAll('submitButton')
+
+for (let i =0; i < radioAnswer.length; i++)
+    radioAnswer[i].addEventListener('change', e => {
+        radioAnswer[i].value=textAnswer[i].value
+        //e.value=textAnswer[i].value
+        console.log(radioAnswer[i].value)
+    })
+
+
+console.log('Script ends')
+</script>
 
 {% endblock %}

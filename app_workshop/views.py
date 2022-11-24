@@ -864,13 +864,18 @@ def delete_enumerator (request, subject_id, section_id, lecture_id):
         return redirect('login')
 
 def quiz_creation (request, lecture_id):
-    # questions=QuizQuestion.objects.filter(lecture=lecture)
-    # answers=QuizAnswer.objects.filter(question=question)
-    # context = {
-    #     'questions': questions,
-    #     'answers': answers
-    # }
-    return render (request, 'workshop/quiz_creation_page.html')
+    answers=[]
+    lecture=Lecture.objects.get(id=lecture_id)
+    questions=QuizQuestion.objects.filter(lecture=lecture)
+    # for question in questions:
+    #     answer=QuizAnswer.objects.filter(question=question)
+    #     answers.append(answer)
+    context = {
+        'questions': questions,
+        #'answers': answers,
+        'lecture': lecture,
+    }
+    return render (request, 'workshop/quiz_creation_page.html', context)
 
 def create_quiz(request, lecture_id):
     if request.user.is_authenticated:
@@ -878,19 +883,24 @@ def create_quiz(request, lecture_id):
         subject=lecture.subject
         if request.method == "POST":
             question = request.POST["question"]
-            answers = request.POST.getlist("answer", None)
+            text_answers = request.POST.getlist("text_answer", None)
+            correct=request.POST['answer']
+            print(correct)
+
             quest=QuizQuestion.objects.create(
                     question=question,
                     lecture=lecture
                 )
-            for answer in answers:
+            for t_answer in text_answers:
                 answ=QuizAnswer.objects.create(
-                    question=question,
-                    answer=answer,
-                    correct=False
+                    question=quest,
+                    answer=t_answer,
                 )
+                if correct == answ.answer:
+                    answ.correct=True
+                    answ.save()
                 
-            return redirect ('quiz_cration')
+            return redirect ('quiz_creation', lecture.id)
 
     else:
         logout(request)

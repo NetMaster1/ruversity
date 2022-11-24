@@ -33,12 +33,12 @@ urlpatterns = [
     path('upload_multiple_files/<int:subject_id>/<section_id>', views.upload_multiple_files, name="upload_multiple_files"),
     path('lecture_update/<int:subject_id>/<int:section_id>/<lecture_id>', views.lecture_update, name="lecture_update"),
     path('delete_enumerator/<int:subject_id>/<int:section_id>/<int:lecture_id>', views.delete_enumerator, name="delete_enumerator"),
-    path('create_quiz/<int:lecture_id>', views.create_quiz, name="create_quiz"),
     path('bulk_lecture_enumerator_update/<int:subject_id>', views.bulk_lecture_enumerator_update, name="bulk_lecture_enumerator_update"),
     path('edit_all/<int:subject_id>', views.edit_all, name="edit_all"),
     path('lecture_update_from_lib/<int:lecture_id>/<int:v_file_id>', views.lecture_update_from_lib, name="lecture_update_from_lib"),
     path('sections/<int:subject_id>', views.sections, name="sections"),
     path('new_lecture_page/<int:subject_id>/<int:section_id>', views.new_lecture_page, name="new_lecture_page"),
     path('quiz_creation/<int:lecture_id>', views.quiz_creation, name="quiz_creation"),
+    path('create_quiz/<int:lecture_id>', views.create_quiz, name="create_quiz"),
    
 ]
