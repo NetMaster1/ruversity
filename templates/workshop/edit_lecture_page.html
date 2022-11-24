@@ -19,7 +19,7 @@
         <div class='section_1'>
             <div class="row m-auto">
                 Лекция: {{lecture.title}}
-            </div>
+            </div>input
             <hr>
          
             <div class="row m-auto">
@@ -30,9 +30,11 @@
                 <div class="col-2">
                     <input type="button" value="Видеофайл" id="videoFile" class="btn btn-sm btn-block btn-outline-dark videoFileButton">
                 </div>
+                <a href="{% url 'quiz_creation' lecture.id%}">
                 <div class="col-2">
-                    <input type="button" value="Тест" id="test" class="btn btn-sm btn-block btn-outline-dark test_button">
+                    <input type="button" value="Тест" id="test" class="btn btn-sm btn-block btn-outline-dark">
                 </div>
+                </a>
                 <div class="col-2">
                     <input type="button" value="Статья" id="article" class="btn btn-sm btn-block btn-outline-dark">
                 </div>
@@ -109,7 +111,7 @@
             <form action="{% url 'lecture_update' subject.id section.id lecture.id %}" method="POST"
                 enctype="multipart/form-data">
                 {% csrf_token %}
-
+            <div class="quiz_box">
                 <div class="form-row m-auto">
                     <div class="col-4">
                         <label for="question">
@@ -123,22 +125,38 @@
                 <div class="row">
                     Дайте три возможных ответа на вопрос
                 </div>
-
+                <div class="row">
+                    <input type="text" class="form-control" id="question" name="answer" required>
+                </div>
+                <div class="row">
+                    <input type="text" class="form-control" id="question" name="answer" required>
+                </div>
+                <div class="row">
+                    <input type="text" class="form-control" id="question" name="answer" required>
+                </div>
+            </div>
+                <div class="row">
+                    <div class="col-4">
+                        Добавить вопрос
+                    </div>
+                    <div class="col-2">
+                        <input type="button" value="Добавить" class='btn btn-block btn-outline-dark btnNextQst'>
+                    </div>
+                </div>
+         
 
                     <div class="row">
-                        <div class="col-10"></div>
+                        <div class="col-4"></div>
                         <div class="col-2">
                             <input type="submit" value="Загрузить" class='btn btn-block btn-outline-dark'>
                         </div>
-
                     </div>
-                  
+                    </form>
                 </div>
-            </form>
+          
            
-            </div>
-
-        </div>
+    </div>
+</div>
 <!-- ==========================End of TestModule======================================================== -->
 
         </div>
@@ -152,22 +170,12 @@
         const fileLibButton = document.querySelector('.fileLibButton');
         const fileLibUploadModule = document.querySelector('.fileLibUploadModule');
         const testButton = document.querySelector('.test_button');
-        const testModule = document.querySelector('.testModule');
-
-        
+      
          
         videoFileButton.addEventListener('click', () => {
             videoFileModule.classList.add('openModal')
             //formWrapper.remove()
             //formWrapper.classList.add('hidden')
-            console.log('safsdas')
-        })
-
-        testButton.addEventListener('click', () => {
-            testModule.classList.add('openModal')
-            //formWrapper.remove()
-            //formWrapper.classList.add('hidden')
-            console.log('safsdas')
         })
 
 

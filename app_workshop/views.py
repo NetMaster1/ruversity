@@ -1,7 +1,7 @@
 from contextlib import nullcontext
 from django.forms import NullBooleanField
 from django.shortcuts import render, redirect
-from app_content.models import MainSubject, Section, Lecture, AdditionalMaterialLink, AdditionalMaterialFile, Price, Category, Language, Transaction, Badword, Credit_card, Credit_card_type, Paypal, Main_method, Bank_account, TempImage, Question, Answer, Library
+from app_content.models import MainSubject, Section, Lecture, AdditionalMaterialLink, AdditionalMaterialFile, Price, Category, Language, Transaction, Badword, Credit_card, Credit_card_type, Paypal, Main_method, Bank_account, TempImage, Question, Answer, Library, QuizQuestion, QuizAnswer
 from .models import Country
 from app_accounts.models import Author
 
@@ -863,8 +863,39 @@ def delete_enumerator (request, subject_id, section_id, lecture_id):
         logout(request)
         return redirect('login')
 
-def create_quiz(request,subject_id):
-    pass
+def quiz_creation (request, lecture_id):
+    # questions=QuizQuestion.objects.filter(lecture=lecture)
+    # answers=QuizAnswer.objects.filter(question=question)
+    # context = {
+    #     'questions': questions,
+    #     'answers': answers
+    # }
+    return render (request, 'workshop/quiz_creation_page.html')
+
+def create_quiz(request, lecture_id):
+    if request.user.is_authenticated:
+        lecture=Lecture.objects.get(id=lecture_id)
+        subject=lecture.subject
+        if request.method == "POST":
+            question = request.POST["question"]
+            answers = request.POST.getlist("answer", None)
+            quest=QuizQuestion.objects.create(
+                    question=question,
+                    lecture=lecture
+                )
+            for answer in answers:
+                answ=QuizAnswer.objects.create(
+                    question=question,
+                    answer=answer,
+                    correct=False
+                )
+                
+            return redirect ('quiz_cration')
+
+    else:
+        logout(request)
+        return redirect('login')
+
 
 def bulk_lecture_enumerator_update (request, subject_id):
     subject=MainSubject.objects.get(id=subject_id)

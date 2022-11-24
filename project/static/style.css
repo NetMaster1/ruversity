@@ -416,12 +416,16 @@ iframe {
   padding: 2rem;
 }
 /*===============================================*/
-.testModule {
-  display: none;
-}
-
-.testModule.openModal {
+.quiz_box {
   display: block;
+  border: 1px solid;
+  border-color: #aaaaaa;
+  border-radius: 1rem;
+  background-color: whitesmoke;
+  height: 30rem;
+  width: 50rem;
+  padding: 2rem;
+
 }
 /*==========================================================*/
 
