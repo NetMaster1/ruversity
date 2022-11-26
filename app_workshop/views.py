@@ -893,6 +893,7 @@ def create_quiz(request, lecture_id):
                 )
             for t_answer in text_answers:
                 answ=QuizAnswer.objects.create(
+                    lecture=lecture,
                     question=quest,
                     answer=t_answer,
                 )

@@ -3,6 +3,9 @@
 
 <div class="container">
  
+<a href="#"> Получить JSON Response</a>
+<a href="{% url 'open_show_quiz_page' lecture.id%}"> Тестировать quiz</a>
+
 
     <div class="row mt-2 collection mb-2">
         <div class='section_1 mb-2'>
@@ -12,6 +15,7 @@
         </div>
       <div class="row">
         {% for question in questions %}
+        {{question.lecture}}
             <strong>{{question.question}}</strong>
             {% for item in question.quizanswer_set.all%}
               {{item.answer}} {{item.correct}}
@@ -41,12 +45,12 @@
                     </div>
                
                         
-                        <input type="radio"  id="radioAnswer" name="answer" checked>
-                        <label for="question"><input type="text" class="form-control" name="text_answer" id="text_answer" required></label>
+                        <input type="radio"  id="radioAnswer" name="answer" required>
+                        <label for="question" contenteditable="true"></label> <input type="text" class="form-control" name="text_answer" id="text_answer" required></label>
                         <br>
                
                         <input type="radio" id="radioAnswer" name="answer">
-                        <label for="question"><input type="text" class="form-control" name="text_answer" id="text_answer" required></label>
+                        <label for="question" contenteditable="true"><input type="text" class="form-control" name="text_answer" id="text_answer" required></label>
                         <br>
                 
                         <input type="radio" id="radioAnswer" name="answer">

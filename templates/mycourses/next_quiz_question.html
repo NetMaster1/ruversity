@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+
+<div class="container">
+    {{lecture.id}}
+
+
+    {% for question in questionsLeft %}
+    <form action="{% url 'reg_answer' quiz.id lecture.id question.id %}" method="POST">
+        {% csrf_token %}
+        <h4>{{question.question}}</h4>
+        {% for answer in answers %}
+        {% if answer.question == question %}
+
+
+        <input type="radio" id="radioAnswer" name="answer" checked value="{{answer.answer}}">
+        <label for="question">{{answer.answer}}</label>
+
+        {% endif %}
+
+        {% endfor %}
+        <div class="row">
+            <div class="col-4"></div>
+            <div class="col-2">
+                <input type="submit" value="Загрузить" class='btn btn-block btn-outline-dark submit_button'>
+            </div>
+        </div>
+    </form>
+    {% endfor%}
+
+
+    {{number_of_questions}} {{number_of_results}}
+    {% if number_of_results == number_of_questions %}
+
+    {{quiz.id}}
+
+    Перейти к лециям
+
+    Кол-во правильных ответов: {{number_of_correct_results}}
+    Процент выполнения {{quality_percent}}%
+
+    {% endif %}
+
+
+</div>
+
+{% endblock %}

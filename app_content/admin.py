@@ -89,7 +89,8 @@ class QuizQuestionAdmin(admin.ModelAdmin):
     list_display = ('id', 'lecture', 'question',)
 
 class QuizAnswerAdmin(admin.ModelAdmin):
-    list_display = ('id', 'question', 'answer',)
+    list_display = ('id', 'lecture', 'question', 'answer',)
+    list_editable = ('lecture',)
 
 admin.site.register(MainSubject, MainSubjectAdmin)
 admin.site.register(Transaction, TransactionAdmin)

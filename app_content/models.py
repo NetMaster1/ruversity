@@ -144,14 +144,9 @@ class AdditionalMaterialFile(models.Model):
     def __int__(self):
         return self.id
 
-# class Quiz (models.Model):
-#     quiz_title = models.CharField(max_length=100, null=True)
-#     subject = models.ForeignKey(MainSubject, on_delete=models.CASCADE, null=True)
-#     section = models.ForeignKey(Section, on_delete=models.CASCADE, null=True)
-#     lecture = models.ForeignKey(Lecture, on_delete=models.CASCADE, null=True)
-
-#     def __int__(self):
-#         return self.id
+class QuizId (models.Model):
+    def __int__(self):
+       return self.id
 
 class QuizQuestion (models.Model):
     question = models.CharField(max_length=100, null=True)
@@ -161,6 +156,7 @@ class QuizQuestion (models.Model):
         return self.id
 
 class QuizAnswer (models.Model):
+    lecture = models.ForeignKey(Lecture, on_delete=models.CASCADE, null=True)
     answer = models.CharField(max_length=100, null=True)
     question = models.ForeignKey(QuizQuestion, on_delete=models.CASCADE, null=True)
     correct = models.BooleanField(default=False)
