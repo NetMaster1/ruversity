@@ -9,6 +9,7 @@ from django.contrib.auth import authenticate, login, logout
 from pathlib import Path
 from moviepy.editor import *
 from django.core.mail import send_mail
+import json, requests
 
 # Create your views here.
 
@@ -151,27 +152,38 @@ def new_question(request, subject_id):
     else:
         return redirect('login')
 
-#JS version of show qui
-# def show_quiz (request, lecture_id):
-#     if request.user.is_authenticated:
-#         lecture=Lecture.objects.get(id=lecture_id)
-#         quiz_questions=QuizQuestion.objects.filter(lecture=lecture)
-#         questions = []
-#         for quiz_question in quiz_questions:
-#             quiz_answers=QuizAnswer.objects.filter(question=quiz_question)
-#             answers = []
-#             for quiz_answer in quiz_answers:
-#                 answers.append(quiz_answer.answer)
-#             questions.append({str(quiz_question.question): answers})
-#             #questions[str(quiz_question.question)]=answers
-#         return JsonResponse ({
-#             'data': questions,
-#             #'time': quiz.time,
-#         })
-#         print(type(questions))
-#     else:
-#         logout(request)
-#         return redirect('login')
+#JSON response
+def quiz_api (request, lecture_id):
+    if request.user.is_authenticated:
+        lecture=Lecture.objects.get(id=lecture_id)
+        quiz_questions=QuizQuestion.objects.filter(lecture=lecture)
+        questions = []
+        #dict ={}
+        for quiz_question in quiz_questions:
+            quiz_answers=QuizAnswer.objects.filter(question=quiz_question)
+            answers = []
+            for quiz_answer in quiz_answers:
+                answers.append(quiz_answer.answer)
+            
+            questions.append({str(quiz_question.question): answers})
+            #dict[quiz_question.question]=answers
+            #questions.append(dict)
+            #questions[quiz_question.question]=answers#ading new entry
+        return JsonResponse ({
+            'data': questions,
+            #'time': quiz.time,
+        })
+        print(type(questions))
+    else:
+        logout(request)
+        return redirect('login')
+
+def quiz_api_page(request, lecture_id):
+    lecture=Lecture.objects.get(id=lecture_id)
+    context = {
+        'lecture': lecture
+    }
+    return render (request, 'mycourses/quiz_api_page.html', context)
 
 def open_show_quiz_page (request, lecture_id):
     quiz=QuizId.objects.create()

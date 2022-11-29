@@ -15,31 +15,28 @@
             </nav>
         </div>
 
-    <div class="row mt-2 collection mb-2">
-        <div class='section_1'>
-       
+<div class="createLectureBox">
     <form action="{% url 'create_new_lecture' subject.id section.id %}" method="POST">
         {% csrf_token %}
-                <div class="lecture_string ml-3">
-                    <div class="row">
-                        <div class="col-3">
-                            <label for="title">Введите название лекции</label>
-                        </div>
-                        <div class="col-7">
-                            <input type="text" class='form-control' id="text" name="title">
-                        </div>
-                        <div class="col-2">
-                            <input type="submit" value="Создать" class="btn btn-sm btn-block btn-outline-dark">
-                        </div>
-                       
-                    </div>
-                </div>    
+            <div class="form-row">
+                <label for="title"><h5>Введите название лекции</h5></label>
+            </div>
+            <div class="form-row mt-1 mb-1 ">
+                <input type="text" class='form-control' id="text" name="title" placeholder="Не более 160 символов">
+            </div>
+            <div class="form-row mt-1 mb-1">
+                    <input type="submit" value="Создать" class="btn btn-block btn-outline-dark">
+            </div>      
     </form>
- 
+       
+            <a href="{% url 'sections' subject.id%}" style="text-decoration: none">
+            <div class="form-row mt-1 mb-1">
+            <input type="button" value="Закрыть" class="btn btn-block btn-outline-dark">
+            </div>
+            </a>
+      
  
         </div>
-    </div>
-
 </div>
 
 

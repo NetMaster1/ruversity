@@ -15,35 +15,34 @@
         </nav>
     </div>
 
-    <div class="row mt-2 collection mb-2">
-        <div class='section_1'>
+    <div class="row m-auto">
+        <div class='editLectureBox'>
             <div class="row m-auto">
-                Лекция: {{lecture.title}}
-            </div>input
+               <h5>Лекция: {{lecture.title}}</h5> 
+            </div>
             <hr>
          
             <div class="row m-auto">
-                Выберите тип наполнения лекции:
+                <h5>Выберите тип наполнения лекции:</h5>
             </div>
             <hr>
-            <div class="row m-auto">
-                <div class="col-2">
+            <div class="row m-auto pb-2">
+                <div class="col-3">
                     <input type="button" value="Видеофайл" id="videoFile" class="btn btn-sm btn-block btn-outline-dark videoFileButton">
                 </div>
-                <a href="{% url 'quiz_creation' lecture.id%}">
-                <div class="col-2">
-                    <input type="button" value="Тест" id="test" class="btn btn-sm btn-block btn-outline-dark">
+                <div class="col-3">
+                    <a href="{% url 'quiz_creation' lecture.id%}" style="text-decoration: none">
+                        <input type="button" value="Тест" id="test" class="btn btn-sm btn-block btn-outline-dark">
+                    </a>
                 </div>
-                </a>
-                <div class="col-2">
-                    <input type="button" value="Статья" id="article" class="btn btn-sm btn-block btn-outline-dark">
-                </div>
-                <div class="col-2">
-                    <input type="button" value="Ссылка на код" id="code" class="btn btn-sm btn-block btn-outline-dark">
-                </div>
-                <div class="col-2">
+                <div class="col-3">
                     <input type="button" value="Текстовый файл" id="docFile" class="btn btn-sm btn-block btn-outline-dark">
                 </div>
+             
+                <div class="col-3">
+                    <input type="button" value="Ссылка на код" id="code" class="btn btn-sm btn-block btn-outline-dark">
+                </div>
+               
 
             </div>
       
@@ -52,12 +51,21 @@
 <div class="videoFileModule">
     <div class="hide">
         <div class="file_box">
+            <div class="row">
+                <div class="col-11"></div>
+                <div class="col-1"><h1 class="closeCross">&times;</h1></div>
+            </div>
+      
+        
+           
             <form action="{% url 'lecture_update' subject.id section.id lecture.id %}" method="POST"
                 enctype="multipart/form-data">
                 {% csrf_token %}
-
+                    
+                    
                 <div class="form-row m-auto">
-                    <div class="col-4">
+                  
+                    <div class="col-5">
                         <label for="file">
                             Выберите видеофайл из вашего хранилища:
                         </label>
@@ -68,26 +76,24 @@
                     <div class="col-2">
                         <input type="submit" value="Загрузить" class='btn btn-block btn-outline-dark'>
                     </div>
+                   
                 </div>
             </form>
             <div class="row m-auto">
-                <div class="text-center">ИЛИ</div>
+                <div class="text-center mb-4 mt-3">ИЛИ</div>
             </div>
 
             <div data-bs-toggle="collapse" data-bs-target='#v_files'>
-
-                <div class="lecture_string ml-3">
-                    <div class="row m-auto">
-                    Выберите из библиотеки ранее загруженных файлов:
-                    </div>
-                </div>
+                    <button class='btn btn-block btn-outline-dark'>
+                        Выберите файл из библиотеки ранее загруженных файлов:
+                    </button>
             </div>
 
-            <div class="collapse" id='v_files' style="height:fit-content">
+            <div class="collapse mt-3" id='v_files' style="height:fit-content">
                 {% for v_file in v_files %}
 
                 <div class="row m-1">
-                    <div class="col-6">{{v_file.video_file}}</div>
+                    <div class="col-8">{{v_file.video_file}}</div>
                     <div class="col-4">
                         <a href="{% url 'lecture_update_from_lib' lecture.id v_file.id%}"
                             style="text-decoration: none">
@@ -117,12 +123,17 @@
         const fileLibButton = document.querySelector('.fileLibButton');
         const fileLibUploadModule = document.querySelector('.fileLibUploadModule');
         const testButton = document.querySelector('.test_button');
+        const closeCross=document.querySelector('.closeCross')
       
          
         videoFileButton.addEventListener('click', () => {
             videoFileModule.classList.add('openModal')
             //formWrapper.remove()
             //formWrapper.classList.add('hidden')
+        })
+
+        closeCross.addEventListener('click', () => {
+            videoFileModule.classList.remove('openModal')
         })
 
 

@@ -3,8 +3,9 @@
 
 <div class="container">
  
-<a href="#"> Получить JSON Response</a>
-<a href="{% url 'open_show_quiz_page' lecture.id%}"> Тестировать quiz</a>
+<a href="{% url 'quiz_api' lecture.id %}"> JSON Response</a>
+<a href="{% url 'quiz_api_page' lecture.id %}"> Страница для обработки JSON</a>
+<a href="{% url 'open_show_quiz_page' lecture.id%}"> QUIZ на django</a>
 
 
     <div class="row mt-2 collection mb-2">

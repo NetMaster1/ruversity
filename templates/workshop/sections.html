@@ -24,29 +24,28 @@
 <div class="createSection">
     <div class="hide">
         <div class="createSectionBox">
-            <form action="{% url 'create_new_section' subject.id %}" method="POST" enctype="multipart/form-data" id="myForm">
+            <form action="{% url 'create_new_section' subject.id %}" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
 
                 <div class="form-row mt-1 mb-1">
-                    <div class="col-5">
                         <label for="file">
                             <strong>
                                 Введите название раздела:
                             </strong>
                         </label>
-                    </div>
-                    <div class="col-4">
+                </div>  
+                <div class="form-row mt-1 mb-1">
                         <input type="text" class="form-control" id="title" name="title" required placeholder="Не более 160 знаков">
-                    </div>
-                    <div class="col-2">
-                        <input type="submit" value="Создать" class='btn btn-block btn-outline-dark btnFileSave'
-                            form="myForm">
-                    </div>
+                
+                </div>
+
+                <div class="form-row mt-1 mb-1">
+                        <input type="submit" value="Создать" class='btn btn-block btn-outline-dark'>   
                 </div>
             </form>
-
-
-           
+            <div class="form-row mt-1">
+                <input type="button" value="Закрыть" class='btn btn-block btn-outline-dark btnClose'>
+            </div>
         </div>
     </div>
 </div>
@@ -133,10 +132,16 @@
     const draggableSections = document.querySelectorAll('.draggable_section')//containers for lectures
     const draggableLectures = document.querySelectorAll('.draggable_lecture')//draggable lectures
     const formNoButton = document.querySelector('#form_no_button')//var for submitting form witout pushing button
+    const btnClose = document.querySelector('.btnClose')//var for submitting form witout pushing button
 
     faFolderPlus.addEventListener('click', () => {
         createSection.classList.add('openModal')
     })
+    
+    btnClose.addEventListener('click', () => {
+        createSection.classList.remove('openModal')
+    })
+    
 
 //===========================Drag & Drop Lecture Module===============================    
     draggableLectures.forEach(lecture => {

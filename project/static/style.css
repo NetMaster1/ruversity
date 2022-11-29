@@ -227,6 +227,36 @@ iframe {
   /* overflow-y: auto; */
 }
 
+.editLectureBox {
+    display: block;
+    /*position: absolute;*/
+    /*border: 1px solid;*/
+    /*border-color: #aaaaaa;*/
+    border-radius: 5px;
+    box-shadow: ;
+    top: 30vh;
+    left: 35rem;
+    /*background-color: whitesmoke;*/
+    height: fit-content;
+    padding: 1rem;
+      box-shadow: 0 0 10px 2px;
+}
+
+.createLectureBox {
+  display: block;
+  /*position: absolute;*/
+  /*border: 1px solid;*/
+  /*border-color: #aaaaaa;*/
+  border-radius: 5px;
+  box-shadow: ;
+  top: 30vh;
+  left: 35rem;
+  /*background-color: whitesmoke;*/
+  height: fit-content;
+  padding: 1rem;
+  box-shadow: 0 0 10px 2px;
+}
+
 /* ============================================== */
 .createSection {
   display: none;
@@ -237,22 +267,19 @@ iframe {
 }
 
 .createSectionBox {
-
   display: block;
   position: absolute;
   border: 1px solid;
   border-color: #aaaaaa;
-  border-radius: 1%;
+  border-radius: 5px;
   top: 30vh;
   left: 35rem;
   background-color: whitesmoke;
-  height: 30rem;
+  height: fit-content;
   width: 50rem;
   padding: 1rem;
 
-
 }
-
 
 /* ============================================ */
 #lectureModal {
@@ -401,19 +428,21 @@ iframe {
 }
 .videoFileModule.openModal {
   display: block;
+
 }
 .file_box {
   display: block;
   position: absolute;
-  border: 1px solid;
-  border-color: #aaaaaa;
+  /*border: 1px solid;*/
+  /*border-color: #aaaaaa;*/
   border-radius: 1rem;
-  top: 30vh;
+  top: 20vh;
   left: 35rem;
   background-color: whitesmoke;
-  height: 30rem;
+  height:fit-content;
   width: 50rem;
-  padding: 2rem;
+  padding: 1rem;
+  box-shadow: 0 0 10px 2px;
 }
 /*===============================================*/
 .quiz_box {
@@ -428,7 +457,17 @@ iframe {
 
 }
 /*==========================================================*/
+.subject_box {
+  /*background-color: #aaaaaa;*/
+  /*border: solid 1px blue;*/
+  border-radius: 5px;
+  height: 40rem;
+  width:20rem;
+  box-shadow: 0 0 10px 2px;
+}
 
+
+/*=====================================================*/
 
 #openSectionModal {
   display: none;
@@ -542,7 +581,16 @@ form_wrapper.hidden {
 }
 
 
+.closeCross:hover {
+  
+  border: solid 1px black;
+  border-radius: 0.5rem;
+  background-color: lightgray;
+  width:fit-content;
+  height:fit-content;
+  cursor:auto;
 
+}
 
 /*==========================Rating Stars Module======================*/
 .rating>input {
