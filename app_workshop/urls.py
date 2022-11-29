@@ -40,5 +40,7 @@ urlpatterns = [
     path('new_lecture_page/<int:subject_id>/<int:section_id>', views.new_lecture_page, name="new_lecture_page"),
     path('quiz_creation/<int:lecture_id>', views.quiz_creation, name="quiz_creation"),
     path('create_quiz/<int:lecture_id>', views.create_quiz, name="create_quiz"),
+    path('delete_quiz_question/<int:lecture_id>/<int:question_id>', views.delete_quiz_question, name="delete_quiz_question"),
+    path('edit_quiz_question/<int:lecture_id>/<int:question_id>', views.edit_quiz_question, name="edit_quiz_question"),
    
 ]

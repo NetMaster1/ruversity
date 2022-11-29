@@ -2,86 +2,161 @@
 {% block content %}
 
 <div class="container">
- 
+<div class="row m-auto">
+    <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);"
+        aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'studio' %}">Творческая студия</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'edit_subject' subject.id %}">Редактирование курса</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'sections' subject.id %}">Разделы</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'edit_lecture' lecture.id %}">Лекция</a></li>
+
+            <li class="breadcrumb-item active" aria-current="page">Тест</li>
+        </ol>
+    </nav>
+</div>
+
+
 <a href="{% url 'quiz_api' lecture.id %}"> JSON Response</a>
 <a href="{% url 'quiz_api_page' lecture.id %}"> Страница для обработки JSON</a>
 <a href="{% url 'open_show_quiz_page' lecture.id%}"> QUIZ на django</a>
 
 
-    <div class="row mt-2 collection mb-2">
-        <div class='section_1 mb-2'>
-            <div class="row m-auto">
-                Лекция: {{lecture.title}}
-            </div>
-        </div>
-      <div class="row">
-        {% for question in questions %}
-        {{question.lecture}}
-            <strong>{{question.question}}</strong>
-            {% for item in question.quizanswer_set.all%}
-              {{item.answer}} {{item.correct}}
-              <br>
-            {%endfor%}
-        {% endfor%}
-      </div>
-      <br>
-
+    <div class="row mt-2 mb-2">
+        Лекция: {{lecture.title}}
+    </div>
         
-        <div class="quiz_box">
-            <form action="{% url 'create_quiz' lecture.id %}" method="POST"
-                enctype="multipart/form-data">
-                {% csrf_token %}      
-                    <div class="form-row m-auto">
-                        <div class="col-4">
+    <div class="row">
+        <div class="col-6">
+            <div class="quiz_box">
+                <form action="{% url 'create_quiz' lecture.id %}" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-row">
                             <label for="question">
                                 Сформулируйте вопрос
                             </label>
-                        </div>
-                        <div class="col-5">
+                    </div>
+
+                    <div class="form-row">
                             <input type="text" class="form-control" id="question" name="question" required>
+                    </div>
+                
+                    <div class="row">
+                        Дайте четыре возможных ответа на вопрос и отметьте правильный.
+                    </div>
+        
+                    <input type="radio" id="radioAnswer" name="answer" required>
+                    <label for="question" contenteditable="true"><input type="text" class="form-control" name="text_answer" id="text_answer" required></label>
+                    <br>
+                    <input type="radio" id="radioAnswer" name="answer">
+                    <label for="question" contenteditable="true"><input type="text" class="form-control" name="text_answer" id="text_answer" required></label>
+                    <br>
+                    <input type="radio" id="radioAnswer" name="answer">
+                    <label for="question" contenteditable="true"><input type="text" class="form-control" name="text_answer" id="text_answer" required></label>
+                    <br>
+                    <input type="radio" id="radioAnswer" name="answer">
+                    <label for="question" contenteditable="true"><input type="text" class="form-control" name="text_answer" id="text_answer" required></label>
+                    <br>
+            
+                    <div class="row">
+                     
+                        <div class="col">
+                            <input type="submit" value="Загрузить" class='btn btn-block btn-outline-dark submit_button'>
                         </div>
                     </div>
-                    <div class="row">
-                        Дайте три возможных ответа на вопрос и отметьте правильный ответ.
-                    </div>
-               
+                </form>
+            </div>
+        </div>
+    
+        <div class="col-6">
+                <div class="quiz_box">
+            <div class="row">
+                <h5>Лекция: {{lecture.id}}</h5>
+            </div>
+        
+      <div class="row">
+        {% for question in questions %}
+
+            <strong> Вопрос: {{question.question}}</strong>
+    <!-- ============================editQuizQuestionModule====================================         -->
+            <div class="editQuizQuestionModule">
+                <div class="hide">
+                    <div class="createSectionBox">
+                        <form action="{% url 'edit_quiz_question' lecture.id question.id %}" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="form-row">
+                                <label for="question">
+                                    Сформулируйте вопрос
+                                </label>
+                            </div>
                         
-                        <input type="radio"  id="radioAnswer" name="answer" required>
-                        <label for="question" contenteditable="true"></label> <input type="text" class="form-control" name="text_answer" id="text_answer" required></label>
-                        <br>
-               
-                        <input type="radio" id="radioAnswer" name="answer">
-                        <label for="question" contenteditable="true"><input type="text" class="form-control" name="text_answer" id="text_answer" required></label>
-                        <br>
-                
-                        <input type="radio" id="radioAnswer" name="answer">
-                        <label for="question" contenteditable="true"><input type="text" class="form-control" name="text_answer" id="text_answer" required></label>
-                        <br>
-               
-                <div class="row">
-                    <div class="col-4"></div>
-                    <div class="col-2">
-                        <input type="submit" value="Загрузить" class='btn btn-block btn-outline-dark submit_button'>
+                            <div class="form-row">
+                                <input type="text" class="form-control" id="question" name="question"  value={{question.question}} required>
+                            </div>
+                    
+                            <div class="row">
+                                Дайте четыре ответа на вопрос и отметьте правильный.
+                            </div>
+                {% for item in question.quizanswer_set.all%}
+                            <input type="radio" id="radioAnswer" name="answer" required >
+                            <label for="question" contenteditable="true"><input type="text" class="form-control" name="text_answer" id="text_answer" required value="{{item.answer}}"></label>
+                            <br>
+                {%endfor%}
+                            <div class="row">
+                        
+                                <div class="col">
+                                    <input type="submit" value="Загрузить" class='btn btn-block btn-outline-dark submit_button'>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="form-row mt-1">
+                            <input type="button" value="Закрыть" class='btn btn-block btn-outline-dark btnClose'>
+                        </div>
                     </div>
                 </div>
-            </form>
-        </div>
-
+            </div>
+        <!-- =============================End Of editQuizQuestionModule================================= -->
+<div class="row">
+    <div class="col">
+        {% for item in question.quizanswer_set.all%}
+        <div>Ответ: {{item.answer}} {{item.correct}}</div>
+        {%endfor%}
     </div>
+    <div class="col"><a href="{% url 'delete_quiz_question' lecture.id question.id%}">
+        <i class="fa-solid fa-trash"></i>
+    </a>
+    <a href="#">
+        <i class="fa-solid fa-pen-to-square"></i>
+    </a>
 </div>
+</div>
+            
+        {% endfor%}
+      </div>
+    </div>
+    </div>
+    </div>
 
+</div>
 <script>
 console.log('Script starts')
 
 const textAnswer=document.querySelectorAll('#text_answer')
 const radioAnswer=document.querySelectorAll('#radioAnswer')
 const submitButton=document.querySelectorAll('submitButton')
+const faPenToSquare=document.querySelectorAll('.fa-pen-to-square')
+const editQuizQuestionModule =document.querySelectorAll('.editQuizQuestionModule')
 
 for (let i =0; i < radioAnswer.length; i++)
     radioAnswer[i].addEventListener('change', e => {
         radioAnswer[i].value=textAnswer[i].value
         //e.value=textAnswer[i].value
         console.log(radioAnswer[i].value)
+    })
+
+for (let i = 0; i < faPenToSquare.length; i++)
+    faPenToSquare[i].addEventListener('click', () => {
+        editQuizQuestionModule[i].classList.add('openModal')
     })
 
 

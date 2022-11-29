@@ -866,14 +866,16 @@ def delete_enumerator (request, subject_id, section_id, lecture_id):
 def quiz_creation (request, lecture_id):
     answers=[]
     lecture=Lecture.objects.get(id=lecture_id)
+    subject=lecture.subject
     questions=QuizQuestion.objects.filter(lecture=lecture)
-    # for question in questions:
-    #     answer=QuizAnswer.objects.filter(question=question)
+    for question in questions:
+        answers=QuizAnswer.objects.filter(question=question)
     #     answers.append(answer)
     context = {
         'questions': questions,
-        #'answers': answers,
+        'answers': answers,
         'lecture': lecture,
+        'subject': subject,
     }
     return render (request, 'workshop/quiz_creation_page.html', context)
 
@@ -885,8 +887,6 @@ def create_quiz(request, lecture_id):
             question = request.POST["question"]
             text_answers = request.POST.getlist("text_answer", None)
             correct=request.POST['answer']
-            print(correct)
-
             quest=QuizQuestion.objects.create(
                     question=question,
                     lecture=lecture
@@ -903,6 +903,45 @@ def create_quiz(request, lecture_id):
                 
             return redirect ('quiz_creation', lecture.id)
 
+    else:
+        logout(request)
+        return redirect('login')
+
+def edit_quiz_question (request, lecture_id, question_id):
+    if request.user.is_authenticated:
+        lecture=Lecture.objects.get(id=lecture_id)
+        if request.method == "POST":
+            question=QuizQuestion.objects.get(id=question_id)
+            question.delete()
+            
+            question = request.POST["question"]
+            text_answers = request.POST.getlist("text_answer", None)
+            correct=request.POST['answer']
+            quest=QuizQuestion.objects.create(
+                    question=question,
+                    lecture=lecture
+                )
+            for t_answer in text_answers:
+                answ=QuizAnswer.objects.create(
+                    lecture=lecture,
+                    question=quest,
+                    answer=t_answer,
+                )
+                if correct == answ.answer:
+                    answ.correct=True
+                    answ.save()
+                    
+            return redirect ('quiz_creation', lecture.id)
+    else:
+        logout(request)
+        return redirect('login')
+
+def delete_quiz_question (request, lecture_id, question_id):
+    if request.user.is_authenticated:
+        lecture=Lecture.objects.get(id=lecture_id)
+        question=QuizQuestion.objects.get(id=question_id)
+        question.delete()
+        return redirect ('quiz_creation', lecture.id)
     else:
         logout(request)
         return redirect('login')
