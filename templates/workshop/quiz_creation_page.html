@@ -191,6 +191,14 @@ for (let i =0; i < radioAnswer.length; i++)
         console.log(radioAnswer[i].value)
     })
 
+for (let i = 0; i < textAnswer.length; i++)
+    textAnswer[i].addEventListener('change', e => {
+        radioAnswer[i].value = textAnswer[i].value
+        //e.value=textAnswer[i].value
+        console.log(radioAnswer[i].value)
+    })
+
+
 for (let i = 0; i < faPenToSquare.length; i++)
     faPenToSquare[i].addEventListener('click', () => {
         editQuizQuestionModule[i].classList.add('openModal')
