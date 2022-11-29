@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
+<div class="hide">
 
 <div class="container">
 <div class="row m-auto">
@@ -41,30 +42,53 @@
                             <input type="text" class="form-control" id="question" name="question" required>
                     </div>
                 
-                    <div class="row">
+                    <div class="row mb-2 mt-2">
                         Дайте четыре возможных ответа на вопрос и отметьте правильный.
                     </div>
-        
-                    <input type="radio" id="radioAnswer" name="answer" required>
-                    <label for="question" contenteditable="true"><input type="text" class="form-control" name="text_answer" id="text_answer" required></label>
-                    <br>
-                    <input type="radio" id="radioAnswer" name="answer">
-                    <label for="question" contenteditable="true"><input type="text" class="form-control" name="text_answer" id="text_answer" required></label>
-                    <br>
-                    <input type="radio" id="radioAnswer" name="answer">
-                    <label for="question" contenteditable="true"><input type="text" class="form-control" name="text_answer" id="text_answer" required></label>
-                    <br>
-                    <input type="radio" id="radioAnswer" name="answer">
-                    <label for="question" contenteditable="true"><input type="text" class="form-control" name="text_answer" id="text_answer" required></label>
-                    <br>
-            
                     <div class="row">
-                     
+                        <div class="col-1"><input type="radio" id="radioAnswer" name="answer" required></div>
+                        <div class="col-11">
+                            <label for="question" contenteditable="true"><input type="text" class="form-control" name="text_answer" id="text_answer" required style="width: 20rem">
+                            </label>
+                        </div>
+                    </div>
+                
+                    <div class="row">
+                        <div class="col-1"><input type="radio" id="radioAnswer" name="answer" required></div>
+                        <div class="col-11">
+                            <label for="question" contenteditable="true"><input type="text" class="form-control" name="text_answer" id="text_answer" required style="width: 20rem" >
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-1"><input type="radio" id="radioAnswer" name="answer" required></div>
+                        <div class="col-11">
+                            <label for="question" contenteditable="true"><input type="text" class="form-control" name="text_answer" id="text_answer" required style="width: 20rem">
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-1"><input type="radio" id="radioAnswer" name="answer" required></div>
+                        <div class="col-11">
+                            <label for="question" contenteditable="true"><input type="text" class="form-control" name="text_answer" id="text_answer" required style="width: 20rem">
+                            </label>
+                        </div>
+                    </div>
+            
+                    <div class="row mt-2 mb-2">
                         <div class="col">
                             <input type="submit" value="Загрузить" class='btn btn-block btn-outline-dark submit_button'>
                         </div>
                     </div>
+                    <div class="row mt-2 mb-2">
+                        <div class="col">
+                            <a href="{% url 'edit_lecture' lecture.id%}" style="text-decoration:none" >
+                            <input type="button" value="Закрыть" class='btn btn-block btn-outline-dark'>
+                            </a>
+                        </div>
+                    </div>
                 </form>
+
             </div>
         </div>
     
@@ -74,14 +98,14 @@
                 <h5>Лекция: {{lecture.id}}</h5>
             </div>
         
-      <div class="row">
+    <div class="row">
         {% for question in questions %}
 
             <strong> Вопрос: {{question.question}}</strong>
     <!-- ============================editQuizQuestionModule====================================         -->
             <div class="editQuizQuestionModule">
-                <div class="hide">
-                    <div class="createSectionBox">
+                <div class="blur">
+                    <div class="quizEditBox">
                         <form action="{% url 'edit_quiz_question' lecture.id question.id %}" method="POST" enctype="multipart/form-data">
                             {% csrf_token %}
                             <div class="form-row">
@@ -98,45 +122,57 @@
                                 Дайте четыре ответа на вопрос и отметьте правильный.
                             </div>
                 {% for item in question.quizanswer_set.all%}
-                            <input type="radio" id="radioAnswer" name="answer" required >
-                            <label for="question" contenteditable="true"><input type="text" class="form-control" name="text_answer" id="text_answer" required value="{{item.answer}}"></label>
-                            <br>
+                    <div class="row">
+                        <div class="col-1">
+                            <input type="radio" id="radioAnswer" name="answer" required>
+                        </div>
+                        <div class="col-11">
+                            <label for="question" contenteditable="true"><input type="text" class="form-control" name="text_answer" id="text_answer" required value="{{item.answer}}" style="width: 30rem"></label>
+                        </div> 
+                            
+                    </div>
                 {%endfor%}
                             <div class="row">
                         
                                 <div class="col">
-                                    <input type="submit" value="Загрузить" class='btn btn-block btn-outline-dark submit_button'>
+                                    <input type="submit" value="Загрузить" class='btn btn-block btn-outline-dark'>
                                 </div>
                             </div>
                         </form>
                         <div class="form-row mt-1">
-                            <input type="button" value="Закрыть" class='btn btn-block btn-outline-dark btnClose'>
+                            <div class="col">
+                            <input type="button" value="Закрыть" class='btn btn-block btn-outline-dark btnClose' >
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         <!-- =============================End Of editQuizQuestionModule================================= -->
-<div class="row">
-    <div class="col">
-        {% for item in question.quizanswer_set.all%}
-        <div>Ответ: {{item.answer}} {{item.correct}}</div>
-        {%endfor%}
-    </div>
-    <div class="col"><a href="{% url 'delete_quiz_question' lecture.id question.id%}">
-        <i class="fa-solid fa-trash"></i>
-    </a>
-    <a href="#">
-        <i class="fa-solid fa-pen-to-square"></i>
-    </a>
-</div>
-</div>
-            
+        <div class="row">
+            <div class="col-8">
+                {% for item in question.quizanswer_set.all%}
+                <div>Ответ: {{item.answer}} {{item.correct}}</div>
+                {%endfor%}
+            </div>
+            <div class="col-2">
+                <a href="{% url 'delete_quiz_question' lecture.id question.id%}">
+                <i class="fa-solid fa-trash"></i>
+                </a>
+                <a href="#">
+                <i class="fa-solid fa-pen-to-square"></i>
+                </a>
+            </div>
+        </div>
         {% endfor%}
+    </div>
+            
+       
       </div>
     </div>
     </div>
     </div>
 
+</div>
 </div>
 <script>
 console.log('Script starts')
@@ -146,6 +182,7 @@ const radioAnswer=document.querySelectorAll('#radioAnswer')
 const submitButton=document.querySelectorAll('submitButton')
 const faPenToSquare=document.querySelectorAll('.fa-pen-to-square')
 const editQuizQuestionModule =document.querySelectorAll('.editQuizQuestionModule')
+const btnClose =document.querySelectorAll('.btnClose')
 
 for (let i =0; i < radioAnswer.length; i++)
     radioAnswer[i].addEventListener('change', e => {
@@ -157,6 +194,13 @@ for (let i =0; i < radioAnswer.length; i++)
 for (let i = 0; i < faPenToSquare.length; i++)
     faPenToSquare[i].addEventListener('click', () => {
         editQuizQuestionModule[i].classList.add('openModal')
+    })
+
+
+  
+for (let i = 0; i < btnClose.length; i++)
+    btnClose[i].addEventListener('click', () => {
+        editQuizQuestionModule[i].classList.remove('openModal')
     })
 
 

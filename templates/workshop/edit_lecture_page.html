@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 
+
 <div class="container">
     <div class="row m-auto">
         <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);"
@@ -15,15 +16,31 @@
         </nav>
     </div>
 
-    <div class="row m-auto">
+ 
         <div class='editLectureBox'>
             <div class="row m-auto">
-               <h5>Лекция: {{lecture.title}}</h5> 
+                <div class="col-11"><h5>Лекция: {{lecture.title}}</h5></div>
+                <div class="col-1">
+                <a href="{%url 'sections' subject.id%}" style="text-decoration: none">
+                <h1 class="closeCross">&times;</h1>
+                </a>
+                </div>
+               
             </div>
             <hr>
          
             <div class="row m-auto">
-                <h5>Выберите тип наполнения лекции:</h5>
+                <h5>Выберите тип наполнения лекции: <i class="fa-solid fa-folder-open"></i> </h5>
+                {% if lecture.video_file%}
+                <div class="row m-auto">
+                Видеофайл: {{lecture.video_file}}
+                </div>
+                {% endif %}
+                    {%  if lecture.quizquestion_set.filter.exists %}
+                    <a href="{% url 'quiz_creation' lecture.id %}">
+                        Тесты
+                    </a>
+                {% endif %}
             </div>
             <hr>
             <div class="row m-auto pb-2">
@@ -53,7 +70,7 @@
         <div class="file_box">
             <div class="row">
                 <div class="col-11"></div>
-                <div class="col-1"><h1 class="closeCross">&times;</h1></div>
+                <div class="col-1"><h1 class="closeCross" id="closeCross">&times;</h1></div>
             </div>
       
         
@@ -113,9 +130,10 @@
 
 
         </div>
-    </div>
+    
 
 </div>
+
 <script>
         const videoFileButton = document.querySelector('.videoFileButton');
         const videoFileModule = document.querySelector('.videoFileModule');
@@ -123,7 +141,7 @@
         const fileLibButton = document.querySelector('.fileLibButton');
         const fileLibUploadModule = document.querySelector('.fileLibUploadModule');
         const testButton = document.querySelector('.test_button');
-        const closeCross=document.querySelector('.closeCross')
+        const closeCross=document.querySelector('#closeCross')
       
          
         videoFileButton.addEventListener('click', () => {

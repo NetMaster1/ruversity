@@ -229,17 +229,16 @@ iframe {
 
 .editLectureBox {
     display: block;
-    /*position: absolute;*/
+    /*position: absolute;
     /*border: 1px solid;*/
     /*border-color: #aaaaaa;*/
-    border-radius: 5px;
-    box-shadow: ;
+    border-radius: 1rem;
     top: 30vh;
     left: 35rem;
-    /*background-color: whitesmoke;*/
+    background-color: white;
     height: fit-content;
     padding: 1rem;
-      box-shadow: 0 0 10px 2px;
+    box-shadow: 0 0 10px 2px;
 }
 
 .createLectureBox {
@@ -269,16 +268,16 @@ iframe {
 .createSectionBox {
   display: block;
   position: absolute;
-  border: 1px solid;
-  border-color: #aaaaaa;
-  border-radius: 5px;
+  /*border: 1px solid;*/
+  /*border-color: #aaaaaa*/;
+  border-radius: 1rem;
   top: 30vh;
   left: 35rem;
-  background-color: whitesmoke;
+  background-color: white;
   height: fit-content;
   width: 50rem;
-  padding: 1rem;
-
+  padding: 2rem;
+  box-shadow: 0 0 10px 2px;
 }
 
 /* ============================================ */
@@ -456,15 +455,29 @@ iframe {
 /*===============================================*/
 .quiz_box {
   display: block;
-  border: 1px solid;
-  border-color: #aaaaaa;
+  /*border: 1px solid;*/
+  /*border-color: #aaaaaa;*/
   border-radius: 1rem;
-  background-color: whitesmoke;
   height: fit-content;
  /* width: fit-content;*/
+  background-color: white;
   padding: 2rem;
-
+  box-shadow: 0 0 10px 2px;
 }
+
+.quizEditBox {
+  display: block;
+  position: absolute;
+  border-radius: 1rem;
+  top: 30vh;
+  left: 35rem;
+  background-color: white;
+  height: fit-content;
+  width: 50rem;
+  padding: 2rem;
+  box-shadow: 0 0 10px 2px;
+}
+
 /*==========================================================*/
 .subject_box {
   /*background-color: #aaaaaa;*/
@@ -521,6 +534,19 @@ iframe {
   /* visibility: visible;
   visibility: hidden;*/
   z-index: 1;
+}
+.blur {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+  /*overflow-y: scroll;*/
+  opacity: 100%;
+  /* visibility: visible;
+  visibility: hidden;*/
+  z-index: 2;
 }
 
 .video_library {
@@ -598,7 +624,7 @@ form_wrapper.hidden {
   width:fit-content;
   height:fit-content;
   cursor:auto;
-  /*box-shadow: 0 0 10px 2px;*/
+  box-shadow: 0 0 10px 2px;
 
 }
 
