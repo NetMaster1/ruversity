@@ -16,12 +16,11 @@
         </nav>
     </div>
 
- 
         <div class='editLectureBox'>
             <div class="row m-auto">
                 <div class="col-11"><h5>Лекция: {{lecture.title}}</h5></div>
                 <div class="col-1">
-                <a href="{%url 'sections' subject.id%}" style="text-decoration: none">
+                <a href="{%url 'sections' subject.id%}" style="text-decoration: none; color: black">
                 <h1 class="closeCross">&times;</h1>
                 </a>
                 </div>
@@ -36,16 +35,30 @@
                 Видеофайл: {{lecture.video_file}}
                 </div>
                 {% endif %}
-                    {%  if lecture.quizquestion_set.filter.exists %}
+                {%  if lecture.quizquestion_set.filter.exists %}
+                <div class="row m-auto">
                     <a href="{% url 'quiz_creation' lecture.id %}">
                         Тесты
                     </a>
+                </div>
+                {% endif %}
+                {% if lecture.additionalmaterialfile_set.filter.exists %}
+               
+                    {% for item in lecture.additionalmaterialfile_set.all%}
+                    <div class="row m-auto">
+                 
+                    Текстовый файл/ы:
+                    <a class="nav-link" href="{{ item.additional_file.url }}" download>
+                        {{item.additional_file}}
+                    </a>
+                    </div>
+                    {% endfor %}
                 {% endif %}
             </div>
             <hr>
             <div class="row m-auto pb-2">
                 <div class="col-3">
-                    <input type="button" value="Видеофайл" id="videoFile" class="btn btn-sm btn-block btn-outline-dark videoFileButton">
+                    <input type="button" value="Видеофайл" class="btn btn-sm btn-block btn-outline-dark videoFileButton">
                 </div>
                 <div class="col-3">
                     <a href="{% url 'quiz_creation' lecture.id%}" style="text-decoration: none">
@@ -53,11 +66,11 @@
                     </a>
                 </div>
                 <div class="col-3">
-                    <input type="button" value="Текстовый файл" id="docFile" class="btn btn-sm btn-block btn-outline-dark">
+                    <input type="button" value="Текстовый файл" id="text" class="btn btn-sm btn-block btn-outline-dark text_button">
                 </div>
              
                 <div class="col-3">
-                    <input type="button" value="Ссылка на код" id="code" class="btn btn-sm btn-block btn-outline-dark">
+                    <input type="button" value="Ссылка на код" id="code" class="btn btn-sm btn-block btn-outline-dark url_button">
                 </div>
                
 
@@ -126,34 +139,113 @@
     </div>
 </div>
 <!-- ==========================End of Video File Module======================================================== -->
-
-
-
-        </div>
     
+<!-- ========================================TextFileModule======================= -->
+<div class="textFileModule">
+    <div class="hide">
+        <div class="file_box">
+            <div class="row">
+                <div class="col-11"></div>
+                <div class="col-1">
+                    <h1 class="closeCross" id="closeCrossTextFile">&times;</h1>
+                </div>
+            </div>
 
+            <form action="{% url 'add_text_file' lecture.id %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+
+                <div class="form-row m-auto">
+
+                    <div class="col-5">
+                        <label for="file">
+                            Выберите файл в тектовом формате:
+                        </label>
+                    </div>
+                    <div class="col-5">
+                        <input type="file" class="form-control" id="file" name="file" required>
+                    </div>
+                    <div class="col-2">
+                        <input type="submit" value="Загрузить" class='btn btn-block btn-outline-dark'>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- ==========================End of Text File Module======================================================== -->
+
+<!-- ========================================UrlModule======================= -->
+<div class="urlModule">
+    <div class="hide">
+        <div class="file_box">
+            <div class="row">
+                <div class="col-11"></div>
+                <div class="col-1">
+                    <h1 class="closeCross" id="closeCrossUrlModule">&times;</h1>
+                </div>
+            </div>
+
+            <form action="{% url 'add_text_file' lecture.id %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+
+                <div class="form-row m-auto">
+
+                    <div class="col-5">
+                        <label for="file">
+                            Введите ссылку на код:
+                        </label>
+                    </div>
+                    <div class="col-5">
+                        <input type="file" class="form-control" id="file" name="file" required>
+                    </div>
+                    <div class="col-2">
+                        <input type="submit" value="Загрузить" class='btn btn-block btn-outline-dark'>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- ==========================End of URL Module======================================================== -->
+
+</div>
 </div>
 
 <script>
         const videoFileButton = document.querySelector('.videoFileButton');
         const videoFileModule = document.querySelector('.videoFileModule');
-        const fileUploadButton = document.querySelector('.fileUploadButton');
-        const fileLibButton = document.querySelector('.fileLibButton');
-        const fileLibUploadModule = document.querySelector('.fileLibUploadModule');
-        const testButton = document.querySelector('.test_button');
-        const closeCross=document.querySelector('#closeCross')
-      
+        const closeCross = document.querySelector('#closeCross')
+        const textButton = document.querySelector('.text_button');
+        const textFileModule = document.querySelector('.textFileModule');
+        const closeCrossTextFile = document.querySelector('#closeCrossTextFile')
+        const urlButton = document.querySelector('.url_button');
+        const urlModule = document.querySelector('.urlModule');
+        const closeCrossUrlModule = document.querySelector('#closeCrossUrlModule')
          
         videoFileButton.addEventListener('click', () => {
             videoFileModule.classList.add('openModal')
-            //formWrapper.remove()
-            //formWrapper.classList.add('hidden')
         })
-
         closeCross.addEventListener('click', () => {
             videoFileModule.classList.remove('openModal')
         })
 
+        textButton.addEventListener('click', () => {
+            textFileModule.classList.add('openModal')
+        })
+
+        closeCrossTextFile.addEventListener('click', () => {
+            textFileModule.classList.remove('openModal')
+        })
+
+        urlButton.addEventListener('click', () => {
+            urlModule.classList.add('openModal')
+        })
+
+        closeCrossUrlModule.addEventListener('click', () => {
+            urlModule.classList.remove('openModal')
+        })
 
 </script>
 

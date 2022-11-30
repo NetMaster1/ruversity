@@ -42,5 +42,6 @@ urlpatterns = [
     path('create_quiz/<int:lecture_id>', views.create_quiz, name="create_quiz"),
     path('delete_quiz_question/<int:lecture_id>/<int:question_id>', views.delete_quiz_question, name="delete_quiz_question"),
     path('edit_quiz_question/<int:lecture_id>/<int:question_id>', views.edit_quiz_question, name="edit_quiz_question"),
+    path('add_text_file/<int:lecture_id>', views.add_text_file, name="add_text_file"),
    
 ]

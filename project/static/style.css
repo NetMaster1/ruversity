@@ -247,7 +247,6 @@ iframe {
   /*border: 1px solid;*/
   /*border-color: #aaaaaa;*/
   border-radius: 5px;
-  box-shadow: ;
   top: 30vh;
   left: 35rem;
   /*background-color: whitesmoke;*/
@@ -452,6 +451,22 @@ iframe {
   padding: 1rem;
   box-shadow: 0 0 10px 2px;
 }
+/*================================*/
+.textFileModule {
+  display: none;
+}
+.textFileModule.openModal {
+  display: block;
+}
+/*===========================================*/
+.urlModule {
+  display: none;
+}
+
+.urlModule.openModal {
+  display: block;
+}
+
 /*===============================================*/
 .quiz_box {
   display: block;

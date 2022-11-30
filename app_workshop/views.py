@@ -673,7 +673,7 @@ def lecture_update (request, subject_id, section_id, lecture_id):
             #             url_link=url_link,
             #         )
             # if additional_file:
-            #     if additional_file.name.endswith('.doc') or additional_file.name.endswith('.png') or additional_file.name.endswith('.gif') or additional_file.name.endswith('.bmp') or additional_file.name.endswith('.rar') or additional_file.name.endswith('.jpeg') or additional_file.name.endswith('.zip') or additional_file.name.endswith('.pdf') or additional_file.name.endswith('.txt') or additional_file.name.endswith('.jpg'):
+            
 
             #         AdditionalMaterialFile.objects.create(
             #             lecture=lecture,
@@ -682,8 +682,7 @@ def lecture_update (request, subject_id, section_id, lecture_id):
             #     else:
             #         lecture.enumerator = None
             #         lecture.save()
-            #         messages.error(request, 'Некорректный формат текстового файла.')
-            #         return redirect('edit_section', subject.id, section.id)
+           
             # return redirect ('edit_section', subject.id, section.id)
     else:
         logout(request)
@@ -946,6 +945,22 @@ def delete_quiz_question (request, lecture_id, question_id):
         logout(request)
         return redirect('login')
 
+def add_text_file (request, lecture_id):
+    if request.user.is_authenticated:
+        lecture=Lecture.objects.get(id=lecture_id)
+        if request.method == "POST":
+            additional_file = request.FILES["file"]
+            if additional_file.name.endswith('.doc') or additional_file.name.endswith('.png') or additional_file.name.endswith('.gif') or additional_file.name.endswith('.bmp') or additional_file.name.endswith('.rar') or additional_file.name.endswith('.jpeg') or additional_file.name.endswith('.zip') or additional_file.name.endswith('.pdf') or additional_file.name.endswith('.txt') or additional_file.name.endswith('.jpg'):
+                textFile=AdditionalMaterialFile.objects.create(
+                    lecture=lecture,
+                    additional_file=additional_file
+                )
+            else:
+                messages.error(request, 'Некорректный формат текстового файла.')
+            return redirect ('edit_lecture', lecture.id)
+    else:
+        logout(request)
+        return redirect('login')
 
 def bulk_lecture_enumerator_update (request, subject_id):
     subject=MainSubject.objects.get(id=subject_id)
