@@ -26,36 +26,106 @@
                 </div>
                
             </div>
-            <hr>
+            <hr style="border-top: 1px solid grey">
          
-            <div class="row m-auto">
+            <div class="row ml-2 mb-2">
                 <h5>Выберите тип наполнения лекции: <i class="fa-solid fa-folder-open"></i> </h5>
+            </div>
+            <hr style="border-top: 1px solid grey">
+
                 {% if lecture.video_file%}
-                <div class="row m-auto">
-                Видеофайл: {{lecture.video_file}}
+                <div class="row ml-2 mb-2">
+                Название видеофайла:  {{lecture.video_file}}
+                </div>
+
+                <div class="row ml-2 mb-2">
+                    <div class="col-4">
+                        <a class="nav-link" href="{{ lecture.video_file.url }}" target='_blank'>
+                            <video oncontextmenu="return false;" width="320" height="240" controls controlsList="nodownload">
+                                video width="320" height="240" controls controlsList="nodownload">
+                                <source src="{{lecture.video_file.url}}" type="video/mp4">
+                            </video>
+                        </a>
+                    </div>
+                    <div class="col-2">
+                        <div class="popUp">
+                            Удалить содержимое.
+                        </div>
+                        <a href="#">
+                            <i class="fa-solid fa-trash"></i>
+                        </a>
+                    </div>
                 </div>
                 {% endif %}
+
                 {%  if lecture.quizquestion_set.filter.exists %}
-                <div class="row m-auto">
-                    <a href="{% url 'quiz_creation' lecture.id %}">
-                        Тесты
-                    </a>
+                <div class="row ml-2 mb-2">
+                    <div class="col-4">
+                        <a href="{% url 'quiz_creation' lecture.id %}">
+                            Тесты
+                        </a>
+                    </div>
+                    <div class="col-2">
+                        <div class="popUp">
+                            Удалить содержимое.
+                        </div>
+                        <a href="{% url 'delete_quiz' lecture.id%}">
+                            <i class="fa-solid fa-trash"></i>
+                        </a>
+                    </div>
+                   
                 </div>
                 {% endif %}
+
+
                 {% if lecture.additionalmaterialfile_set.filter.exists %}
-               
                     {% for item in lecture.additionalmaterialfile_set.all%}
-                    <div class="row m-auto">
-                 
+                    <div class="row ml-2 mb-2">
+                        <div class="col-4">
                     Текстовый файл/ы:
                     <a class="nav-link" href="{{ item.additional_file.url }}" download>
                         {{item.additional_file}}
                     </a>
+                        </div>
+                        <div class="col-2">
+                            <div class="popUp">
+                                Удалить содержимое.
+                            </div>
+                            <a href="{% url 'delete_text_file' lecture.id%}">
+                                <i class="fa-solid fa-trash"></i>
+                            </a>
+                        </div>
                     </div>
                     {% endfor %}
                 {% endif %}
-            </div>
-            <hr>
+
+
+                {% if lecture.additionalmateriallink_set.filter.exists %}
+                {% for item in lecture.additionalmateriallink_set.all%}
+                <div class="row ml-2 mb-2">
+                    <div class="col-4">
+                        Внешняя ссылка: 
+                        <a class="nav-link" href="{{ item.url_link }}" download>
+                            {{item.url_link}}
+                        </a>
+                    </div>
+                    <div class="col-2">
+                        <div class="popUp">
+                            Удалить содержимоe.
+                        </div>
+                        <a href="{% url 'delete_url_link' lecture.id%}">
+                         
+                            <i class="fa-solid fa-trash"></i>
+                        </a>
+                      
+                    </div>
+                   
+                </div>
+                {% endfor %}
+                {% endif %}
+
+         
+            <hr style="border-top: 1px solid grey">
             <div class="row m-auto pb-2">
                 <div class="col-3">
                     <input type="button" value="Видеофайл" class="btn btn-sm btn-block btn-outline-dark videoFileButton">
@@ -138,7 +208,7 @@
         </div>
     </div>
 </div>
-<!-- ==========================End of Video File Module======================================================== -->
+<!-- =======================End of Video File Module======================================================== -->
     
 <!-- ========================================TextFileModule======================= -->
 <div class="textFileModule">
@@ -159,7 +229,7 @@
 
                     <div class="col-5">
                         <label for="file">
-                            Выберите файл в тектовом формате:
+                            Загрузите файл в одном из следующих форматов: txt, doc, jpeg, jpg, bmp, png, pdf, rar, zip.
                         </label>
                     </div>
                     <div class="col-5">
@@ -186,7 +256,7 @@
                 </div>
             </div>
 
-            <form action="{% url 'add_text_file' lecture.id %}" method="POST" enctype="multipart/form-data">
+            <form action="{% url 'add_url_link' lecture.id %}" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
 
 
@@ -198,7 +268,7 @@
                         </label>
                     </div>
                     <div class="col-5">
-                        <input type="file" class="form-control" id="file" name="file" required>
+                        <input type="url" class="form-control" id="url_link" name="url_link">
                     </div>
                     <div class="col-2">
                         <input type="submit" value="Загрузить" class='btn btn-block btn-outline-dark'>
@@ -222,7 +292,35 @@
         const closeCrossTextFile = document.querySelector('#closeCrossTextFile')
         const urlButton = document.querySelector('.url_button');
         const urlModule = document.querySelector('.urlModule');
-        const closeCrossUrlModule = document.querySelector('#closeCrossUrlModule')
+        const closeCrossUrlModule = document.querySelector('#closeCrossUrlModule');
+
+        const faTrash = document.querySelectorAll('.fa-trash');
+        const popUp = document.querySelectorAll('.popUp');
+
+      
+        faTrash.forEach((item, index) => {
+            item.setAttribute('data-index', index)
+        })
+
+        for (i=0; i< faTrash.length; i++ ) {
+            console.log(faTrash[i].getAttribute('data-index'));
+        }
+
+
+        for (i=0; i <faTrash.length; i++) {
+            faTrash[i].addEventListener('mouseover', e => {
+                a = e.target.getAttribute('data-index')
+                popUp[a].classList.add('openModal')
+            })
+        }
+
+        for (i = 0; i < faTrash.length; i++) {
+                faTrash[i].addEventListener('mouseleave', e => {
+                    a = e.target.getAttribute('data-index')
+                    popUp[a].classList.remove('openModal')
+                })
+            }
+
          
         videoFileButton.addEventListener('click', () => {
             videoFileModule.classList.add('openModal')
@@ -246,6 +344,25 @@
         closeCrossUrlModule.addEventListener('click', () => {
             urlModule.classList.remove('openModal')
         })
+
+        /*faTrash.addEventListener('mouseover', () => {
+            popUp.classlist.add('openModal')
+        })
+
+        faTrash.addEventListener('mouseleave', () => {
+                popUp.classlist.add('openModal')
+            })*/
+
+        /*faTrash.forEach(item => {
+            item.addEventListener('mouseover', () => {
+                popUp.classList.add('openModal')
+            })
+            item.addEventListener('mouseleave', () => {
+                popUp.classList.remove('openModal')
+            })
+        }*/
+
+
 
 </script>
 

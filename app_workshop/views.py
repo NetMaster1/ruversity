@@ -945,6 +945,17 @@ def delete_quiz_question (request, lecture_id, question_id):
         logout(request)
         return redirect('login')
 
+def delete_quiz (request, lecture_id):
+    if request.user.is_authenticated:
+        lecture=Lecture.objects.get(id=lecture_id)
+        questions=lecture.quizquestion_set.all()
+        for question in questions:
+            question.delete()
+        return redirect ('edit_lecture', lecture.id)
+    else:
+        logout(request)
+        return redirect('login')
+
 def add_text_file (request, lecture_id):
     if request.user.is_authenticated:
         lecture=Lecture.objects.get(id=lecture_id)
@@ -958,6 +969,42 @@ def add_text_file (request, lecture_id):
             else:
                 messages.error(request, 'Некорректный формат текстового файла.')
             return redirect ('edit_lecture', lecture.id)
+    else:
+        logout(request)
+        return redirect('login')
+
+def delete_text_file (request, lecture_id):
+    if request.user.is_authenticated:
+        lecture=Lecture.objects.get(id=lecture_id)
+        files=lecture.additionalmaterialfile_set.all()
+        for file in files:
+            file.delete()
+        return redirect ('edit_lecture', lecture.id)
+    else:
+        logout(request)
+        return redirect('login')
+
+def add_url_link (request, lecture_id):
+    if request.user.is_authenticated:
+        lecture=Lecture.objects.get(id=lecture_id)
+        if request.method == "POST":
+            url_link = request.POST["url_link"]
+            url_link=AdditionalMaterialLink.objects.create(
+                    lecture=lecture,
+                    url_link=url_link,
+                )
+        return redirect ('edit_lecture', lecture.id)
+    else:
+        logout(request)
+        return redirect('login')
+
+def delete_url_link (request, lecture_id):
+    if request.user.is_authenticated:
+        lecture=Lecture.objects.get(id=lecture_id)
+        links=lecture.additionalmateriallink_set.all()
+        for link in links:
+            link.delete()
+        return redirect ('edit_lecture', lecture.id)
     else:
         logout(request)
         return redirect('login')

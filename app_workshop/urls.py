@@ -42,6 +42,11 @@ urlpatterns = [
     path('create_quiz/<int:lecture_id>', views.create_quiz, name="create_quiz"),
     path('delete_quiz_question/<int:lecture_id>/<int:question_id>', views.delete_quiz_question, name="delete_quiz_question"),
     path('edit_quiz_question/<int:lecture_id>/<int:question_id>', views.edit_quiz_question, name="edit_quiz_question"),
+    path('delete_quiz/<int:lecture_id>', views.delete_quiz, name="delete_quiz"),
+
     path('add_text_file/<int:lecture_id>', views.add_text_file, name="add_text_file"),
+    path('delete_text_file/<int:lecture_id>', views.delete_text_file, name="delete_text_file"),
+    path('add_url_link/<int:lecture_id>', views.add_url_link, name="add_url_link"),
+    path('delete_url_link/<int:lecture_id>', views.delete_url_link, name="delete_url_link"),
    
 ]

@@ -1,6 +1,7 @@
 :root {
   --max-width: 56%;
 }
+
 /* html {
   min-height: 100%;
 } */
@@ -123,7 +124,7 @@ iframe {
 .section_1:hover {
   background-color: lightgrey;
   font-size: 1.1rem;
-  cursor:grab;
+  cursor: grab;
 
 }
 
@@ -185,6 +186,7 @@ iframe {
   border-style: dashed;
   border-color: grey;
 }
+
 .box {
   border: 1px solid grey;
   /*background-color: blue;*/
@@ -194,8 +196,10 @@ iframe {
   background-color: yellow;
 }
 
+
 .draggable_lecture.dragging {
-  background-color:blanchedalmond;
+  background-color: blanchedalmond;
+ 
 }
 
 .draggable_section.draggingSection {
@@ -204,7 +208,7 @@ iframe {
 
 .section_box {
   border: 1px solid;
-  border-radius:1rem;
+  border-radius: 1rem;
   border-color: black;
   height: fit-content;
   width: 70rem;
@@ -228,17 +232,18 @@ iframe {
 }
 
 .editLectureBox {
-    display: block;
-    /*position: absolute;
+  display: block;
+  /*position: absolute;
     /*border: 1px solid;*/
-    /*border-color: #aaaaaa;*/
-    border-radius: 1rem;
-    top: 30vh;
-    left: 35rem;
-    background-color: white;
-    height: fit-content;
-    padding: 1rem;
-    box-shadow: 0 0 10px 2px;
+  /*border-color: #aaaaaa;*/
+  padding: 5rem;;
+  border-radius: 1rem;
+  top: 30vh;
+  left: 35rem;
+  background-color: white;
+  height: fit-content;
+  padding: 1rem;
+  box-shadow: 0 0 10px 2px;
 }
 
 .createLectureBox {
@@ -255,6 +260,64 @@ iframe {
   box-shadow: 0 0 10px 2px;
 }
 
+/*=======================================*/
+.popUp {
+  display: none;
+}
+
+.popUp.openModal {
+  display: block;
+  padding: 0.1rem;
+  position: absolute;
+  left: 2rem;
+  top: -1rem;
+  height: fit-content;
+  width: fit-content;
+  border: solid 1px black;
+  background-color: white;
+  z-index: 1;
+  font-size: small;
+  box-shadow: 0 0 10px 2px;
+}
+
+.popUpSectionPage {
+  display: none;
+}
+
+.popUpSectionPage.openModal {
+  display: block;
+  padding: 0.1rem;
+  position: absolute;
+  top: -1rem;
+  left: 2rem;
+  height: fit-content;
+  width: fit-content;
+  border: solid 1px black;
+  background-color: white;
+  z-index: 1;
+  font-size: small;
+  box-shadow: 0 0 10px 2px;
+}
+
+.popUpDeleteSection {
+  display: none;
+}
+
+.popUpDeleteSection.openModal {
+  display: block;
+  padding: 0.1rem;
+  position: absolute;
+  top: -2rem;
+  left: 9rem;
+  height: fit-content;
+  width: fit-content;
+  border: solid 1px black;
+  background-color: white;
+  z-index: 1;
+  font-size: small;
+  box-shadow: 0 0 10px 2px;
+}
+
 /* ============================================== */
 .createSection {
   display: none;
@@ -268,7 +331,8 @@ iframe {
   display: block;
   position: absolute;
   /*border: 1px solid;*/
-  /*border-color: #aaaaaa*/;
+  /*border-color: #aaaaaa*/
+  ;
   border-radius: 1rem;
   top: 30vh;
   left: 35rem;
@@ -335,12 +399,14 @@ iframe {
   left: 4rem;
   bottom: 3rem;
 }
+
 /*=======================Lecture Note Modal==============================*/
 .create_lecture {
   display: inline;
   border: solid 3px lightgrey;
   border-radius: 10px;
 }
+
 /*.create_lecture:hover {
     background-color: #aaaaaa;
     color: white;
@@ -367,16 +433,16 @@ iframe {
 }
 
 .lib_box {
-    display: block;
-    position: absolute;
-    border: 1px solid;
-    border-color: #aaaaaa;
-    border-radius: 1%;
-    top: 30vh;
-    left: 35rem;
-    background-color: whitesmoke;
-    height: fit-content;
-    width: 40rem;
+  display: block;
+  position: absolute;
+  border: 1px solid;
+  border-color: #aaaaaa;
+  border-radius: 1%;
+  top: 30vh;
+  left: 35rem;
+  background-color: whitesmoke;
+  height: fit-content;
+  width: 40rem;
 }
 
 /*============================================*/
@@ -414,29 +480,33 @@ iframe {
 .fileLibUploadModule {
   display: none;
 }
+
 .fileLibUploadModule.openModal {
-    display: block;
-    background-color: whitesmoke;
-    border: 1px solid lightgrey;
-    border-radius: 10px;
-    padding: 0.5rem;
-    position: absolute;
-    height: fit-content;
-    width: fit-content;
-    padding: 1rem;
-    left: 12rem;
-    top: 10rem;
-    z-index: 1;
-    opacity: 1;
+  display: block;
+  background-color: whitesmoke;
+  border: 1px solid lightgrey;
+  border-radius: 10px;
+  padding: 0.5rem;
+  position: absolute;
+  height: fit-content;
+  width: fit-content;
+  padding: 1rem;
+  left: 12rem;
+  top: 10rem;
+  z-index: 1;
+  opacity: 1;
 }
+
 /*=====================================*/
 .videoFileModule {
   display: none;
 }
+
 .videoFileModule.openModal {
   display: block;
 
 }
+
 .file_box {
   display: block;
   position: absolute;
@@ -446,18 +516,21 @@ iframe {
   top: 20vh;
   left: 35rem;
   background-color: whitesmoke;
-  height:fit-content;
+  height: fit-content;
   width: 50rem;
   padding: 1rem;
   box-shadow: 0 0 10px 2px;
 }
+
 /*================================*/
 .textFileModule {
   display: none;
 }
+
 .textFileModule.openModal {
   display: block;
 }
+
 /*===========================================*/
 .urlModule {
   display: none;
@@ -474,7 +547,7 @@ iframe {
   /*border-color: #aaaaaa;*/
   border-radius: 1rem;
   height: fit-content;
- /* width: fit-content;*/
+  /* width: fit-content;*/
   background-color: white;
   padding: 2rem;
   box-shadow: 0 0 10px 2px;
@@ -499,7 +572,7 @@ iframe {
   /*border: solid 1px blue;*/
   border-radius: 5px;
   height: 40rem;
-  width:20rem;
+  width: 20rem;
   box-shadow: 0 0 10px 2px;
 }
 
@@ -526,6 +599,7 @@ iframe {
 #sections {
   position: relative;
 }
+
 /*========================================*/
 .lecture_string {
   display: inline;
@@ -550,6 +624,7 @@ iframe {
   visibility: hidden;*/
   z-index: 1;
 }
+
 .blur {
   position: fixed;
   top: 0;
@@ -580,12 +655,13 @@ form_wrapper.hidden {
   cursor: all-scroll;
   border-radius: 10px;
   border: solid;
-  border-color:blue;
+  border-color: blue;
   min-width: 3rem;
   width: fit-content;
   margin: 1px;
   padding: 2px;
 }
+
 .d-1:hover {
   background-color: #aaaaaa;
   color: white;
@@ -610,6 +686,7 @@ form_wrapper.hidden {
   background-color: #aaaaaa;
   color: white;
 }
+
 .hovered {
   background-color: grey;
   border: solid;
@@ -632,13 +709,13 @@ form_wrapper.hidden {
 
 
 .closeCross:hover {
-  
+
   border: solid 1px black;
   border-radius: 0.5rem;
   background-color: lightgray;
-  width:fit-content;
-  height:fit-content;
-  cursor:auto;
+  width: fit-content;
+  height: fit-content;
+  cursor: auto;
   box-shadow: 0 0 10px 2px;
 
 }
@@ -944,7 +1021,6 @@ select>option {
   color: blue;
   background-position: right;
   opacity: 1;
-
 }*/
 
 /* Media Query: Large Smartphone (Vertical) */
@@ -1002,12 +1078,10 @@ select>option {
     max-height: 95vh;
     max-width: auto;
   }
-
   video {
     height: 95vh;
     object-fit: cover;
   }
-
   .video-fullscreen {
     height: 97.5vh;
     border-radius: 0;

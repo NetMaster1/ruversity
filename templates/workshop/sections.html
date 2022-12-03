@@ -68,8 +68,10 @@
                 <label for="section_id">
                     {{section.enumerator}} {{section.title}} 
                 </label>
+                <div class="popUpDeleteSection">Удалить содержимое</div>
                 <a href="{% url 'delete_section' subject.id section.id %}">
-                    <i class="fa-solid fa-trash"></i>
+                    <i class="fa-solid fa-trash-arrow-up"></i>
+                       
                 </a>  
                 <a href="#">
                     <i class="fa-solid fa-pen-to-square"></i>
@@ -93,7 +95,7 @@
             <div class="col-2">
                 <label for="lecture_id">Лекция {{lecture.enumerator}}</label>
             </div> 
-            <div class="col-8">
+            <div class="col-7">
                 <strong>Название: {{lecture.title}};. Дл.: {{lecture.length_1}} мин.; Размер:
                     {{lecture.size_mb}} Mb</strong>
             </div>
@@ -101,7 +103,10 @@
                 <input type="text" class='form-control ml-3' id="lecture_id" name="sec_lec_id"
                 value='{{section.id}}/{{lecture.id}}' readonly hidden>
             </div>
-           <div class="col-1">
+           <div class="col-2">
+            <div class="popUpSectionPage">
+                Удалить содержимоe.
+            </div>
             <a href="{% url 'delete_lecture' lecture.id %}">
                 <i class="fa-solid fa-trash"></i>
             </a>
@@ -134,6 +139,59 @@
     const draggableLectures = document.querySelectorAll('.draggable_lecture')//draggable lectures
     const formNoButton = document.querySelector('#form_no_button')//var for submitting form witout pushing button
     const btnClose = document.querySelector('.btnClose')//var for submitting form witout pushing button
+
+    const faTrash = document.querySelectorAll('.fa-trash');
+    const popUp = document.querySelectorAll('.popUpSectionPage');
+
+    const faTrashArrowUp = document.querySelectorAll('.fa-trash-arrow-up');
+    const popUpDeleteSection = document.querySelectorAll('.popUpDeleteSection');
+
+    /*============================Icons PopUp==================================*/
+        faTrash.forEach((item, index) => {
+                item.setAttribute('data-index', index)
+            })
+        
+        faTrashArrowUp.forEach((item, index) => {
+                item.setAttribute('data-index', index)
+            })
+
+            /*for (i = 0; i < faTrash.length; i++) {
+                console.log(faTrash[i].getAttribute('data-index'));
+            }*/
+
+        
+
+
+        for (i = 0; i < faTrash.length; i++) {
+            faTrash[i].addEventListener('mouseover', e => {
+                a = e.target.getAttribute('data-index')
+                popUp[a].classList.add('openModal')
+            })
+        }
+
+        for (i = 0; i < faTrash.length; i++) {
+            faTrash[i].addEventListener('mouseleave', e => {
+                a = e.target.getAttribute('data-index')
+                popUp[a].classList.remove('openModal')
+            })
+        }
+      
+        
+        for (i = 0; i < faTrashArrowUp.length; i++) {
+            faTrashArrowUp[i].addEventListener('mouseover', e => {
+                a = e.target.getAttribute('data-index')
+                popUpDeleteSection[a].classList.add('openModal')
+            })
+        }
+
+            for (i = 0; i < faTrashArrowUp.length; i++) {
+                faTrashArrowUp[i].addEventListener('mouseleave', e => {
+                    a = e.target.getAttribute('data-index')
+                    popUpDeleteSection[a].classList.remove('openModal')
+                })
+            }
+
+/*====================================End of Icons PopUp=============================*/
 
     faFolderPlus.addEventListener('click', () => {
         createSection.classList.add('openModal')
