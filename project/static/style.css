@@ -288,7 +288,7 @@ iframe {
   display: block;
   padding: 0.1rem;
   position: absolute;
-  top: -1rem;
+  top: -1.5rem;
   left: 2rem;
   height: fit-content;
   width: fit-content;
@@ -318,6 +318,80 @@ iframe {
   box-shadow: 0 0 10px 2px;
 }
 
+
+.popUpEditLecture {
+  display: none
+}
+.popUpEditLecture.openModal {
+  display: block;
+  padding: 0.1rem;
+  position: absolute;
+  top: -3rem;
+  left: 3.5rem;
+  height: fit-content;
+  width: fit-content;
+  border: solid 1px black;
+  background-color: white;
+  z-index: 1;
+  font-size: small;
+  box-shadow: 0 0 10px 2px;
+}
+
+.popUpAddLecture {
+  display: none
+}
+.popUpAddLecture.openModal {
+  display: block;
+  padding: 0.1rem;
+  position: absolute;
+  top: -2rem;
+  left: 12rem;
+  height: fit-content;
+  width: fit-content;
+  border: solid 1px black;
+  background-color: white;
+  z-index: 1;
+  font-size: small;
+  box-shadow: 0 0 10px 2px;
+}
+ 
+.popUpCreateSection {
+  display: none;
+}
+.popUpCreateSection.openModal {
+  display: block;
+  padding: 0.1rem;
+  position: absolute;
+  top: 3rem;
+  left: 2.5rem;
+  height: fit-content;
+  width: fit-content;
+  border: solid 1px black;
+  background-color: white;
+  z-index: 1;
+  font-size: small;
+  box-shadow: 0 0 10px 2px;
+}
+
+.popUpEditSection {
+  display: none;
+}
+.popUpEditSection.openModal {
+  display: block;
+  padding: 0.1rem;
+  position: absolute;
+  top: -2rem;
+  left: 12rem;
+  height: fit-content;
+  width: fit-content;
+  border: solid 1px black;
+  background-color: white;
+  z-index: 1;
+  font-size: small;
+  box-shadow: 0 0 10px 2px;
+}
+
+
 /* ============================================== */
 .createSection {
   display: none;
@@ -331,8 +405,7 @@ iframe {
   display: block;
   position: absolute;
   /*border: 1px solid;*/
-  /*border-color: #aaaaaa*/
-  ;
+  /*border-color: #aaaaaa;*/
   border-radius: 1rem;
   top: 30vh;
   left: 35rem;
@@ -341,6 +414,13 @@ iframe {
   width: 50rem;
   padding: 2rem;
   box-shadow: 0 0 10px 2px;
+}
+
+.editSection {
+  display: none;
+}
+.editSection.openModal {
+  display: block;
 }
 
 /* ============================================ */

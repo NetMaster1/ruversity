@@ -360,6 +360,8 @@ def create_new_section(request, subject_id):
                 #enumerator = request.POST['enumerator']
                 if Section.objects.filter(course=subject).exists():
                     numberOfSections=Section.objects.filter(course=subject).count()
+                else:
+                    numberOfSections=0
                    
                 section = Section.objects.create(
                     title=title,

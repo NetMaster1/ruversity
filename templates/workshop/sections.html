@@ -14,8 +14,11 @@
             </ol>
         </nav>
     </div>
-    
+    <div class="popUpCreateSection">
+        Создать раздел.
+    </div>
     <div class="row">
+      
         <a href="#">
             <i class="fa-sharp fa-solid fa-folder-plus icon"></i>
         </a>
@@ -51,8 +54,6 @@
     </div>
 </div>
 <!-- ==================================End of Create Sectin Module============================== -->
-     
- 
 
 <h3>Разделы</h3>
 
@@ -61,6 +62,8 @@
 
 {% for section in sections %}
 
+
+
 <div class="section_box draggable_section p-2 mb-2">
     <!-- <div data-bs-toggle="collapse" data-bs-target='#section{{section.id}}'> -->
         <div class="row ml-1 mb-2">
@@ -68,25 +71,64 @@
                 <label for="section_id">
                     {{section.enumerator}} {{section.title}} 
                 </label>
-                <div class="popUpDeleteSection">Удалить содержимое</div>
+                <div class="popUpDeleteSection">Удалить раздел</div>
                 <a href="{% url 'delete_section' subject.id section.id %}">
-                    <i class="fa-solid fa-trash-arrow-up"></i>
-                       
-                </a>  
+                    <i class="fa-solid fa-trash-arrow-up"></i>  
+                </a> 
+                <div class="popUpEditSection">
+                    Изменить название раздела.
+                </div>
                 <a href="#">
-                    <i class="fa-solid fa-pen-to-square"></i>
+                    <span id="icon_wrapper">
+                    <i class="fa-solid fa-file-pen"></i>
+                    </span>
                 </a>
+                <div class="popUpAddLecture">
+                    Создать лекцию.
+                </div>
                 <a href="{% url 'new_lecture_page' subject.id section.id %}">
                 <i class="fa-solid fa-circle-plus"></i> 
                 </a>
             </div>
+
             <div class="col-1">
                 <input type="text" class='form-control' id="section_id" name="section_id" value='{{section.id}}' readonly hidden>
             </div>
         </div>
-    <!-- </div>-->
-    
-<!-- <div class="collapse" id='section{{section.id}}'> -->
+   
+<!-- ==================================Edit Section Module======================= -->
+<div class="editSection">
+    <div class="hide">
+        <div class="createSectionBox">
+            <form action="#" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="form-row mt-1 mb-1">
+                    <label for="file">
+                        <strong>
+                            Отредактируйте название раздела: {{section.title}}
+                        </strong>
+                    </label>
+                </div>
+                <div class="form-row mt-1 mb-1">
+                    <input type="text" class="form-control" id="title" name="title" required
+                        placeholder="Не более 160 знаков">
+
+                </div>
+
+                <div class="form-row mt-1 mb-1">
+                    <input type="submit" value="Создать" class='btn btn-block btn-outline-dark'>
+                </div>
+            </form>
+            <div class="form-row mt-1">
+                <input type="button" value="Закрыть" class='btn btn-block btn-outline-dark btnCloseSection'>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ==================================End of Edit Section Module============================== -->
+
+
     {% for lecture in lectures %}
     {% if lecture.section == section %}
      
@@ -95,7 +137,7 @@
             <div class="col-2">
                 <label for="lecture_id">Лекция {{lecture.enumerator}}</label>
             </div> 
-            <div class="col-7">
+            <div class="col-6">
                 <strong>Название: {{lecture.title}};. Дл.: {{lecture.length_1}} мин.; Размер:
                     {{lecture.size_mb}} Mb</strong>
             </div>
@@ -104,15 +146,18 @@
                 value='{{section.id}}/{{lecture.id}}' readonly hidden>
             </div>
            <div class="col-2">
-            <div class="popUpSectionPage">
-                Удалить содержимоe.
-            </div>
-            <a href="{% url 'delete_lecture' lecture.id %}">
-                <i class="fa-solid fa-trash"></i>
-            </a>
-            <a href="{% url 'edit_lecture' lecture.id%}">
-                <i class="fa-solid fa-pen-to-square"></i>
-            </a>
+                <div class="popUpSectionPage">
+                    Удалить лекцию.
+                </div>
+                <a href="{% url 'delete_lecture' lecture.id %}">
+                    <i class="fa-solid fa-trash"></i>
+                </a>
+                <div class="popUpEditLecture">
+                    Редактировать лекцию.
+                </div>
+                <a href="{% url 'edit_lecture' lecture.id%}">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                </a>
             </div>
             
            
@@ -121,7 +166,7 @@
     {% endif %}
     {% endfor %}
                 
-<!-- </div> -->
+
 
 </div>
 {% endfor %}
@@ -132,9 +177,6 @@
 
 <script>
     console.log('start OK')
- 
-    const faFolderPlus = document.querySelector('.fa-folder-plus')
-    const createSection = document.querySelector('.createSection')
     const draggableSections = document.querySelectorAll('.draggable_section')//containers for lectures
     const draggableLectures = document.querySelectorAll('.draggable_lecture')//draggable lectures
     const formNoButton = document.querySelector('#form_no_button')//var for submitting form witout pushing button
@@ -146,6 +188,23 @@
     const faTrashArrowUp = document.querySelectorAll('.fa-trash-arrow-up');
     const popUpDeleteSection = document.querySelectorAll('.popUpDeleteSection');
 
+    const faPenToSquare = document.querySelectorAll('.fa-pen-to-square');
+    const popUpEditLecture = document.querySelectorAll('.popUpEditLecture');
+
+    const faCirclePlus = document.querySelectorAll('.fa-circle-plus');
+    const popUpAddLecture = document.querySelectorAll('.popUpAddLecture');
+
+    const faFolderPlus = document.querySelector('.fa-folder-plus')
+    const popUpCreateSection = document.querySelector('.popUpCreateSection');
+    const createSection = document.querySelector('.createSection')
+
+    const faFilePen = document.querySelectorAll('.fa-file-pen');
+    const iconWrapper = document.querySelectorAll('#icon_wrapper');
+    const popUpEditSection = document.querySelectorAll('.popUpEditSection'); 
+    
+    const btnCloseSection = document.querySelectorAll('.btnCloseSection');
+    const editSection = document.querySelectorAll('.editSection');
+
     /*============================Icons PopUp==================================*/
         faTrash.forEach((item, index) => {
                 item.setAttribute('data-index', index)
@@ -155,12 +214,17 @@
                 item.setAttribute('data-index', index)
             })
 
-            /*for (i = 0; i < faTrash.length; i++) {
-                console.log(faTrash[i].getAttribute('data-index'));
-            }*/
+        faPenToSquare.forEach((item, index) => {
+                item.setAttribute('data-index', index)
+            })
 
-        
+        faCirclePlus.forEach((item, index) => {
+                item.setAttribute('data-index', index)
+            })
 
+        faFilePen.forEach((item, index) => {
+                item.setAttribute('data-index', index)
+            })
 
         for (i = 0; i < faTrash.length; i++) {
             faTrash[i].addEventListener('mouseover', e => {
@@ -176,7 +240,6 @@
             })
         }
       
-        
         for (i = 0; i < faTrashArrowUp.length; i++) {
             faTrashArrowUp[i].addEventListener('mouseover', e => {
                 a = e.target.getAttribute('data-index')
@@ -191,17 +254,77 @@
                 })
             }
 
+        for (i = 0; i < faPenToSquare.length; i++) {
+            faPenToSquare[i].addEventListener('mouseover', e => {
+                a = e.target.getAttribute('data-index')
+                popUpEditLecture[a].classList.add('openModal')
+            })
+        }
+
+        for (i = 0; i < faPenToSquare.length; i++) {
+            faPenToSquare[i].addEventListener('mouseleave', e => {
+                a = e.target.getAttribute('data-index')
+                popUpEditLecture[a].classList.remove('openModal')
+            })
+        }
+        for (i = 0; i < faCirclePlus.length; i++) {
+            faCirclePlus[i].addEventListener('mouseover', e => {
+                a = e.target.getAttribute('data-index')
+                popUpAddLecture[a].classList.add('openModal')
+            })
+        }
+        for (i = 0; i < faCirclePlus.length; i++) {
+                faCirclePlus[i].addEventListener('mouseleave', e => {
+                    a = e.target.getAttribute('data-index')
+                    popUpAddLecture[a].classList.remove('openModal')
+                })
+            }
+
+        faFolderPlus.addEventListener('mouseover', () => {
+                popUpCreateSection.classList.add('openModal')
+            })
+        faFolderPlus.addEventListener('mouseleave', () => {
+                popUpCreateSection.classList.remove('openModal')
+            })
+
+
+        for (i = 0; i < faFilePen.length; i++) {
+            faFilePen[i].addEventListener('mouseover', e => {
+                a = e.target.getAttribute('data-index')
+                popUpEditSection[a].classList.add('openModal')
+            })
+        }
+        for (i = 0; i < faFilePen.length; i++) {
+                faFilePen[i].addEventListener('mouseleave', e => {
+                    a = e.target.getAttribute('data-index')
+                    popUpEditSection[a].classList.remove('openModal')
+                })
+            }
+
+/*===================================Edit Section Module =====================*/
+
+        for (i = 0; i < iconWrapper.length; i++) {
+            iconWrapper[i].addEventListener('click', () => {
+                editSection[i].classList.add('openModal')
+            })
+        }   
+
+       for (i = 0; i < btnCloseSection.length; i++) {
+                btnCloseSectin[i].addEventListener('click', () => {
+                    editSection[i].classList.remove('openModal')
+                })
+            }
+
 /*====================================End of Icons PopUp=============================*/
+
 
     faFolderPlus.addEventListener('click', () => {
         createSection.classList.add('openModal')
-    })
-    
+        })
+
     btnClose.addEventListener('click', () => {
         createSection.classList.remove('openModal')
     })
-    
-
 //===========================Drag & Drop Lecture Module===============================    
     draggableLectures.forEach(lecture => {
         lecture.addEventListener('dragstart', (e) => {
