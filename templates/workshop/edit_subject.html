@@ -31,16 +31,85 @@
 
 <div class="row">
     <div class="col-4">
-        <div class="subject_box p-3 m-auto">
+        <div class="subject_box m-auto">
+        
             <a href="{% url 'sections' subject.id %}" style="text-decoration: none">
-                Разделы
+                <div class="subject_box_bar">
+                    <h5 style="margin: auto">Создать/редактировать разделы</h5>
+                </div>
             </a>
-            <br><br>
-            Библиотека загруженных файлов
 
-            <br><br>
+            <a href="#" style="text-decoration: none">
+                <div class="subject_box_bar" id="fileUploadBar">
+                <h5 style="margin: auto">Загрузить все видеофайлы сразу</h5>
+                </div>
+            </a>
+<!-- ==================================File Upload Module======================= -->
+<div class="fileUploadModule">
+    <div class="hide">
+        <div class="createSectionBox">
+            <form action="{% url 'upload_multiple_files' subject.id%}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+            
+                <div class="form-row mt-1 mb-1">
+                    <label for="multiple_files">
+                        <strong>
+                            Загрузите видеофайлы в формате mp4 для данного раздела. Общий размер файлов не должен превышать 1Гб.
+                        </strong>
+                    </label>
+                </div>
+                    
+                    <div class="form-row mb-3">
+                        <input type="file" multiple class="form-control" id="multiple_files" name="multiple_files" required>
+                    </div>
+                
+            
+                <div class="form-row mb-3">
+                    <input type="submit" value="Загрузить" class='btn btn-block btn-outline-dark'>
+                </div>
+            </form>
+           
+            <div class="form-row">
+                <input type="button" value="Закрыть" class='btn btn-block btn-outline-dark btnClose'>
+            </div>
+       
+        </div>
+    </div>
+</div>
+<!-- ==================================End of File Upload Module============================== -->
+
+            <a href="#" style="text-decoration: none">
+                <div class="subject_box_bar" id="fileLibraryBar">
+                    <h5 style="margin: auto">Просмотреть загруженные файлы</h5>
+                </div>
+            </a>
+<!-- ==================================File Library Module======================= -->
+<div class="fileLibraryModule">
+    <div class="hide">
+        <div class="createSectionBox">
+            <div class="row">
+                <div class="col-11"></div>
+                <div class="col-1"><h1 class="closeCross">&times;</h1></div>
+            </div>
+        {% if v_files %}
+            {% for v_file in v_files %}
+                {{v_file.video_file}} <br>
+            {% endfor %}
+        {% else%}
+        <h5>Файлы отстутствуют.</h5>
+        {% endif %}
+
+
+        </div>
+    </div>
+</div>
+<!-- ==================================End of File Library Module============================== -->
+
+        
             <a href="{% url 'agreement' subject.id%}" style="text-decoration: none">
-                <input type="submit" value="Загрузить на сервер" class="btn btn-outline-danger btn-block" style="width:min-content">
+                <div class="subject_box_bar">
+                <h5 style="margin: auto; color: red">Загрузить курс на сервер</h5>
+                </div>
             </a>
         </div>
     </div>
@@ -207,21 +276,27 @@
 
 <script>
     console.log('start OK')
-    const open_sections = document.querySelectorAll('#open_sections');
-    const openSectionModal = document.querySelectorAll('#openSectionModal');
+    const fileUploadBar = document.querySelector('#fileUploadBar');
+    const fileUploadModule = document.querySelector('.fileUploadModule');
+    const btnClose = document.querySelector('.btnClose');
+    fileUploadBar.addEventListener('click', () => {
+        fileUploadModule.classList.add('openModal')
+    })
+    btnClose.addEventListener('click', () => {
+        fileUploadModule.classList.remove('openModal')
+    })
+    
 
-
-    for (let i = 0; i < open_sections.length; i++) {
-        open_sections[i].addEventListener('mouseover', e => {
-            openSectionModal[i].classList.add('openModal')
+    const fileLibraryBar = document.querySelector('#fileLibraryBar');
+    const fileLibraryModule = document.querySelector('.fileLibraryModule');
+    const closeCross = document.querySelector('.closeCross');
+    fileLibraryBar.addEventListener('click', () => {
+            fileLibraryModule.classList.add('openModal')
         })
-    }
-
-    for (let i = 0; i < open_sections.length; i++) {
-        open_sections[i].addEventListener('mouseout', e => {
-            openSectionModal[i].classList.remove('openModal')
+    closeCross.addEventListener('click', () => {
+            fileLibraryModule.classList.remove('openModal')
         })
-    }
+
     console.log('end OK')
 </script>
 

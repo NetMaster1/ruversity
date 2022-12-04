@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+  
+
+    
+    <div class="hide">
+        <div class="createSectionBox">
+            <form action="#" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="form-row mt-1 mb-1">
+                    <label for="file">
+                        <strong>
+                            Измените название раздела:
+                        </strong>
+                    </label>
+                </div>
+                <div class="form-row mt-1 mb-1">
+                    <input type="text" class="form-control" id="title" name="title" required
+                        placeholder="{{section.title}}">
+
+                </div>
+
+                <div class="form-row mt-1 mb-1">
+                    <input type="submit" value="Изменить" class='btn btn-block btn-outline-dark'>
+                </div>
+            </form>
+
+            <a href="{% url 'sections' subject.id%}" style="text-decoration: none">
+                <div class="form-row">
+                    <input type="button" value="Закрыть" class='btn btn-block btn-outline-dark'>
+                </div>
+            </a>
+              
+        </div>
+    </div>
+
+    
+
+
+ 
+</div>
+{% endblock %}

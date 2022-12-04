@@ -545,6 +545,27 @@ iframe {
   z-index: 1;
   opacity: 1;
 }
+/*========================================*/
+.fileLibraryModule {
+  display: none;
+}
+.fileLibraryModule.openModal {
+  display: block;
+  background-color: whitesmoke;
+  border: 1px solid lightgrey;
+  border-radius: 10px;
+  padding: 0.5rem;
+  position: absolute;
+  height: fit-content;
+  width: fit-content;
+  padding: 1rem;
+  left: 12rem;
+  top: 10rem;
+  z-index: 1;
+  opacity: 1;
+}
+
+
 
 /*=======================================*/
 .editQuizQuestionModule {
@@ -656,6 +677,17 @@ iframe {
   box-shadow: 0 0 10px 2px;
 }
 
+.subject_box_bar {
+  display: flex;
+  border-bottom: 1px solid grey;
+  height: 5rem;
+}
+.subject_box_bar:hover {
+  background-color:whitesmoke;
+  border-bottom: 1px solid grey;
+  height: 5rem;
+  box-shadow: 0 0 10px 2px;
+}
 
 /*=====================================================*/
 
@@ -679,6 +711,10 @@ iframe {
 #sections {
   position: relative;
 }
+
+
+
+
 
 /*========================================*/
 .lecture_string {

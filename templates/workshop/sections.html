@@ -19,7 +19,7 @@
     </div>
     <div class="row">
       
-        <a href="#">
+        <a href="#" style="text-decoration: none" >
             <i class="fa-sharp fa-solid fa-folder-plus icon"></i>
         </a>
         
@@ -72,21 +72,19 @@
                     {{section.enumerator}} {{section.title}} 
                 </label>
                 <div class="popUpDeleteSection">Удалить раздел</div>
-                <a href="{% url 'delete_section' subject.id section.id %}">
+                <a href="{% url 'delete_section' subject.id section.id %}" style="text-decoration: none">
                     <i class="fa-solid fa-trash-arrow-up"></i>  
                 </a> 
                 <div class="popUpEditSection">
                     Изменить название раздела.
                 </div>
-                <a href="#">
-                    <span id="icon_wrapper">
+                <a href="{% url 'edit_section_title' section.id %}" style="text-decoration: none">
                     <i class="fa-solid fa-file-pen"></i>
-                    </span>
                 </a>
                 <div class="popUpAddLecture">
                     Создать лекцию.
                 </div>
-                <a href="{% url 'new_lecture_page' subject.id section.id %}">
+                <a href="{% url 'new_lecture_page' subject.id section.id %}" style="text-decoration: none">
                 <i class="fa-solid fa-circle-plus"></i> 
                 </a>
             </div>
@@ -96,38 +94,6 @@
             </div>
         </div>
    
-<!-- ==================================Edit Section Module======================= -->
-<div class="editSection">
-    <div class="hide">
-        <div class="createSectionBox">
-            <form action="#" method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
-
-                <div class="form-row mt-1 mb-1">
-                    <label for="file">
-                        <strong>
-                            Отредактируйте название раздела: {{section.title}}
-                        </strong>
-                    </label>
-                </div>
-                <div class="form-row mt-1 mb-1">
-                    <input type="text" class="form-control" id="title" name="title" required
-                        placeholder="Не более 160 знаков">
-
-                </div>
-
-                <div class="form-row mt-1 mb-1">
-                    <input type="submit" value="Создать" class='btn btn-block btn-outline-dark'>
-                </div>
-            </form>
-            <div class="form-row mt-1">
-                <input type="button" value="Закрыть" class='btn btn-block btn-outline-dark btnCloseSection'>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- ==================================End of Edit Section Module============================== -->
-
 
     {% for lecture in lectures %}
     {% if lecture.section == section %}
@@ -149,13 +115,13 @@
                 <div class="popUpSectionPage">
                     Удалить лекцию.
                 </div>
-                <a href="{% url 'delete_lecture' lecture.id %}">
+                <a href="{% url 'delete_lecture' lecture.id %}" style="text-decoration: none" >
                     <i class="fa-solid fa-trash"></i>
                 </a>
                 <div class="popUpEditLecture">
                     Редактировать лекцию.
                 </div>
-                <a href="{% url 'edit_lecture' lecture.id%}">
+                <a href="{% url 'edit_lecture' lecture.id%}" style="text-decoration: none">
                     <i class="fa-solid fa-pen-to-square"></i>
                 </a>
             </div>
@@ -199,11 +165,9 @@
     const createSection = document.querySelector('.createSection')
 
     const faFilePen = document.querySelectorAll('.fa-file-pen');
-    const iconWrapper = document.querySelectorAll('#icon_wrapper');
     const popUpEditSection = document.querySelectorAll('.popUpEditSection'); 
     
-    const btnCloseSection = document.querySelectorAll('.btnCloseSection');
-    const editSection = document.querySelectorAll('.editSection');
+   
 
     /*============================Icons PopUp==================================*/
         faTrash.forEach((item, index) => {
@@ -298,20 +262,6 @@
                 faFilePen[i].addEventListener('mouseleave', e => {
                     a = e.target.getAttribute('data-index')
                     popUpEditSection[a].classList.remove('openModal')
-                })
-            }
-
-/*===================================Edit Section Module =====================*/
-
-        for (i = 0; i < iconWrapper.length; i++) {
-            iconWrapper[i].addEventListener('click', () => {
-                editSection[i].classList.add('openModal')
-            })
-        }   
-
-       for (i = 0; i < btnCloseSection.length; i++) {
-                btnCloseSectin[i].addEventListener('click', () => {
-                    editSection[i].classList.remove('openModal')
                 })
             }
 

@@ -269,31 +269,16 @@ def edit_subject(request, subject_id):
                     subject.discount_programs = discount_program
                     subject.save()
                     return redirect ('edit_subject', subject.id )
-                    
                 else:
-                    if Section.objects.filter(course=subject).exists():
-                        sections = Section.objects.filter(course=subject).order_by('enumerator')
-                        if Lecture.objects.filter(subject=subject, enumerator__isnull = False).exists:
-                            lectures=Lecture.objects.filter(subject=subject, enumerator__isnull=False).order_by('enumerator')
-                            languages = Language.objects.all()
-                            categories = Category.objects.all()
-                            context = {
-                                'subject': subject,
-                                'sections': sections,
-                                'lectures': lectures,
-                                'languages': languages,
-                                'categories': categories
-                                }
-                            # return redirect('studio')
-                            return render(request, 'workshop/edit_subject.html', context)
-                        else:
-                            languages = Language.objects.all()
-                            categories = Category.objects.all()
-                            context = {
+                    if Library.objects.filter(subject=subject).exists():
+                        v_files=Library.objects.filter(subject=subject)
+                        languages = Language.objects.all()
+                        categories = Category.objects.all()
+                        context = {
+                            'v_files': v_files,
                             'subject': subject,
                             'languages': languages,
-                            'categories': categories,
-                            'sections': sections
+                            'categories': categories
                         }
                         return render(request, 'workshop/edit_subject.html', context)
                     else:
@@ -387,39 +372,24 @@ def sections (request, subject_id):
     }
     return render(request, 'workshop/sections.html', context)
 
-def edit_section (request, subject_id, section_id):
-    if request.user.is_authenticated:
-        subject = MainSubject.objects.get(id=subject_id)
-        sections=Section.objects.filter(course=subject)
-        section=Section.objects.get(id=section_id)
-        v_files=Library.objects.filter(subject=subject)
-        if request.user == subject.author:
-            if request.method == 'POST':
-                title = request.POST['title']
-                #enumerator = request.POST['enumerator']
-                # if Section.objects.filter(course=subject, enumerator=enumerator).exists():
-                #     messages.error(request, 'Раздел с таким порядковым номером уже существует. Измените номер раздела.')
-                #     return redirect('edit_section', subject_id, section_id)
-                # section.enumerator= enumerator
-                section.title = title
-                section.save()
-                return redirect('edit_section', subject_id, section_id)
-               
-            else:
-                #v_files=Lecture.objects.filter(subject=subject, section=section).order_by('id')
-                lectures=Lecture.objects.filter(subject=subject, section=section, enumerator__isnull= False).order_by('enumerator')
-                context = {
-                    'subject': subject,
-                    'sections': sections,
-                    'section': section,
-                    'v_files': v_files,
-                    'lectures': lectures,
-                }
-                return render(request, 'workshop/edit_section.html', context)
+def edit_section_title (request, section_id):
+    section=Section.objects.get(id=section_id)
+    subject=section.course
+    if request.user == subject.author:   
+        if request.method == 'POST':
+            title = request.POST['title']
+            section.title = title
+            section.save()
+            return redirect('sections', subject.id)
         else:
-            logout(request)
-            return redirect('login')
-    return redirect('login')
+            context ={
+                'section': section,
+                'subject': subject,
+            }
+            return render (request, 'workshop/section_title_edit_page.html', context )
+    else:
+        logout(request)
+        return redirect('login')
 
 def edit_all (request, subject_id):
     subject=MainSubject.objects.get(id=subject_id)
@@ -466,11 +436,9 @@ def delete_lecture(request, lecture_id):
         return redirect('login')
 
 #==============================Multiple Files Uploading========================
-def upload_multiple_files (request, subject_id, section_id):
+def upload_multiple_files (request, subject_id):
     if request.user.is_authenticated: 
         subject=MainSubject.objects.get(id=subject_id)
-        section=Section.objects.get(id=section_id)
-        #v_files=Lecture.objects.filter(subject=subject, section=section)
         if request.user != subject.author:
             logout(request)
             return redirect('login')
@@ -482,7 +450,7 @@ def upload_multiple_files (request, subject_id, section_id):
                 if not video_file_name.endswith('.mp4'):
                     string=f'Некорректный формат файла. Файл {video_file_name} и все последующие не загружены. Используйте корректный формат файла.'
                     messages.error(request, string)
-                    return redirect('edit_section', subject_id, section_id)
+                    return redirect('edit_subject', subject_id)
                 size_bytes = os.path.getsize(video_file_name)
                 size_mbytes = size_bytes/1024/1024
                 # if size_mbytes > 200:
@@ -515,9 +483,10 @@ def upload_multiple_files (request, subject_id, section_id):
                     length_1=duration,
                     size_mb=size_mb,
                 )
-            return redirect ('edit_section', subject.id, section.id)
-    logout(request)
-    return redirect('login')
+            return redirect ('edit_subject', subject.id)
+    else:
+        logout(request)
+        return redirect('login')
 
 def new_lecture_page (request, subject_id, section_id):
     subject=MainSubject.objects.get(id=subject_id)
