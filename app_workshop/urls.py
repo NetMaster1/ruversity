@@ -5,13 +5,20 @@ urlpatterns = [
     path('studio', views.studio, name='studio'),
     path('create_new_subject', views.create_new_subject, name='create_new_subject'),
     path('delete_subject/<int:subject_id>', views.delete_subject, name='delete_subject'),
-    path('create_new_lecture/<int:subject_id>/<int:section_id>',views.create_new_lecture, name='create_new_lecture'),
+
     path('edit_subject/<int:subject_id>',views.edit_subject, name='edit_subject'),
     path('create_new_section/<int:subject_id>', views.create_new_section, name='create_new_section'),
     path('edit_section_title/<int:section_id>', views.edit_section_title, name='edit_section_title'),
     path('delete_section/<int:subject_id>/<int:section_id>',views.delete_section, name='delete_section'),
+
+    path('create_new_lecture/<int:subject_id>/<int:section_id>',views.create_new_lecture, name='create_new_lecture'),
     path('edit_lecture/<int:lecture_id>',views.edit_lecture, name='edit_lecture'),
+    path('edit_lecture_title/<int:lecture_id>',views.edit_lecture_title, name='edit_lecture_title'),
     path('delete_lecture/<int:lecture_id>',views.delete_lecture, name='delete_lecture'),
+    path('delete_lecture_videofile/<lecture_id>', views.delete_lecture_videofile, name="delete_lecture_videofile"),
+    path('lecture_update_videofile/<int:subject_id>/<int:section_id>/<lecture_id>', views.lecture_update_videofile, name="lecture_update_videofile"),
+
+
     path('video/<int:subject_id>/<int:lecture_id>', views.video, name='video'),
     path('agreement/<int:subject_id>', views.agreement, name='agreement'),
     path('agree/<int:subject_id>', views.agree, name='agree'),
@@ -30,8 +37,7 @@ urlpatterns = [
 #     path('question_answer', views.question_answer, name="question_answer"),
     path('answer/<int:subject_id>/<int:question_id>', views.answer, name="answer"),
     path('upload_multiple_files/<int:subject_id>', views.upload_multiple_files, name="upload_multiple_files"),
-    path('lecture_update/<int:subject_id>/<int:section_id>/<lecture_id>', views.lecture_update, name="lecture_update"),
-    path('delete_enumerator/<int:subject_id>/<int:section_id>/<int:lecture_id>', views.delete_enumerator, name="delete_enumerator"),
+   
     path('bulk_lecture_enumerator_update/<int:subject_id>', views.bulk_lecture_enumerator_update, name="bulk_lecture_enumerator_update"),
     path('edit_all/<int:subject_id>', views.edit_all, name="edit_all"),
     path('lecture_update_from_lib/<int:lecture_id>/<int:v_file_id>', views.lecture_update_from_lib, name="lecture_update_from_lib"),

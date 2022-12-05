@@ -7,19 +7,19 @@
     
     <div class="hide">
         <div class="createSectionBox">
-            <form action="#" method="POST" enctype="multipart/form-data">
+            <form action="{% url 'edit_section_title' section.id %}" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
 
                 <div class="form-row mt-1 mb-1">
                     <label for="file">
                         <strong>
-                            Измените название раздела:
+                            Измените название раздела (не более 60 символов):
                         </strong>
                     </label>
                 </div>
                 <div class="form-row mt-1 mb-1">
                     <input type="text" class="form-control" id="title" name="title" required
-                        placeholder="{{section.title}}">
+                        placeholder="{{section.title}}" maxlength='60'>
 
                 </div>
 

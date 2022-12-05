@@ -20,11 +20,12 @@
     <div class="row">
       
         <a href="#" style="text-decoration: none" >
-            <i class="fa-sharp fa-solid fa-folder-plus icon"></i>
+            <h4 style="display: inline"> <i class="fa-sharp fa-solid fa-folder-plus icon"></i> </h4>
         </a>
         
     </div>
 <!-- ==================================Create Section Module======================= -->
+
 <div class="createSection">
     <div class="hide">
         <div class="createSectionBox">
@@ -39,7 +40,7 @@
                         </label>
                 </div>  
                 <div class="form-row mt-1 mb-1">
-                        <input type="text" class="form-control" id="title" name="title" required placeholder="Не более 160 знаков">
+                        <input type="text" class="form-control" id="title" name="title" maxlength='60' placeholder="Не более 60 знаков">
                 
                 </div>
 
@@ -53,7 +54,7 @@
         </div>
     </div>
 </div>
-<!-- ==================================End of Create Sectin Module============================== -->
+<!-- ==================================End of Create Sectoin Module============================== -->
 
 <h3>Разделы</h3>
 
@@ -63,29 +64,28 @@
 {% for section in sections %}
 
 
-
 <div class="section_box draggable_section p-2 mb-2">
     <!-- <div data-bs-toggle="collapse" data-bs-target='#section{{section.id}}'> -->
         <div class="row ml-1 mb-2">
-            <div class="col-4">
+            <div class="col-11">
                 <label for="section_id">
                     {{section.enumerator}} {{section.title}} 
                 </label>
                 <div class="popUpDeleteSection">Удалить раздел</div>
                 <a href="{% url 'delete_section' subject.id section.id %}" style="text-decoration: none">
-                    <i class="fa-solid fa-trash-arrow-up"></i>  
+                    <h4 style="display: inline"><i class="fa-solid fa-trash-arrow-up"></i> </h4>
                 </a> 
                 <div class="popUpEditSection">
                     Изменить название раздела.
                 </div>
                 <a href="{% url 'edit_section_title' section.id %}" style="text-decoration: none">
-                    <i class="fa-solid fa-file-pen"></i>
+                    <h4 style="display: inline"><i class="fa-solid fa-file-pen"></i></h4>
                 </a>
                 <div class="popUpAddLecture">
                     Создать лекцию.
                 </div>
                 <a href="{% url 'new_lecture_page' subject.id section.id %}" style="text-decoration: none">
-                <i class="fa-solid fa-circle-plus"></i> 
+                <h4 style="display: inline"><i class="fa-solid fa-circle-plus"></i></h4>
                 </a>
             </div>
 
@@ -100,12 +100,15 @@
      
     <div class="box ml-3 draggable_lecture" draggable='true'>
         <div class="row">
-            <div class="col-2">
-                <label for="lecture_id">Лекция {{lecture.enumerator}}</label>
+            <div class="col-1">
+                <label for="lecture_id">{{lecture.enumerator}}</label>
             </div> 
-            <div class="col-6">
-                <strong>Название: {{lecture.title}};. Дл.: {{lecture.length_1}} мин.; Размер:
-                    {{lecture.size_mb}} Mb</strong>
+            <div class="col-8">
+                <strong>{{lecture.title}};.
+                     <!-- Дл.: {{lecture.length_1}} мин.; 
+                     Размер:
+                    {{lecture.size_mb}} Mb -->
+                </strong>
             </div>
             <div class="col-1">
                 <input type="text" class='form-control ml-3' id="lecture_id" name="sec_lec_id"
@@ -116,13 +119,13 @@
                     Удалить лекцию.
                 </div>
                 <a href="{% url 'delete_lecture' lecture.id %}" style="text-decoration: none" >
-                    <i class="fa-solid fa-trash"></i>
+                    <h4 style="display: inline"><i class="fa-solid fa-trash"></i></h4>
                 </a>
                 <div class="popUpEditLecture">
                     Редактировать лекцию.
                 </div>
                 <a href="{% url 'edit_lecture' lecture.id%}" style="text-decoration: none">
-                    <i class="fa-solid fa-pen-to-square"></i>
+                    <h4 style="display: inline"><i class="fa-solid fa-pen-to-square"></i></h4>
                 </a>
             </div>
             

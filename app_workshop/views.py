@@ -150,6 +150,7 @@ def edit_author_page(request, user_id):
     else:
         return redirect('login')
 
+#=================================Subject Operations===================================
 def create_new_subject(request):
     if request.user.is_authenticated:
         languages = Language.objects.all()
@@ -318,7 +319,6 @@ def edit_subject(request, subject_id):
     else:
         return redirect('login')
 
-#==================Creation Lectures One BY One==================================
 def delete_subject(request, subject_id):
     if request.user.is_authenticated:
         subject = MainSubject.objects.get(id=subject_id)
@@ -335,6 +335,8 @@ def delete_subject(request, subject_id):
     else:
         logout(request)
         return redirect('login')
+
+#===============================Sections======================================
 
 def create_new_section(request, subject_id):
     if request.user.is_authenticated:
@@ -391,17 +393,6 @@ def edit_section_title (request, section_id):
         logout(request)
         return redirect('login')
 
-def edit_all (request, subject_id):
-    subject=MainSubject.objects.get(id=subject_id)
-    sections=Section.objects.filter(course=subject).order_by('enumerator')
-    lectures=Lecture.objects.filter(subject=subject).order_by('enumerator')
-    context = {
-        'subject': subject,
-        'sections': sections,
-        'lectures': lectures,
-    }
-    return render(request, 'workshop/edit_all.html', context)
-
 def delete_section (request, subject_id, section_id):
     if request.user.is_authenticated:
         subject=MainSubject.objects.get(id=subject_id)
@@ -415,79 +406,7 @@ def delete_section (request, subject_id, section_id):
     else:
         return redirect('login')
 
-def delete_lecture(request, lecture_id):
-    if request.user.is_authenticated:
-        lecture = Lecture.objects.get(id=lecture_id)
-        subject = lecture.subject
-        section=lecture.section
-        if request.user == subject.author:
-            if subject.ready == True:
-                messages.error(request, 'Sorry, you can not delete a loaded lecture.')
-                return redirect('edit_section', subject_id, section_id)
-            else:
-                lecture.delete()
-                lectures = Lecture.objects.filter(subject=subject)
-                return redirect('edit_section', subject.id, section.id)
-        else:
-            logout(request)
-            return redirect('login')
-    else:
-        logout(request)
-        return redirect('login')
-
-#==============================Multiple Files Uploading========================
-def upload_multiple_files (request, subject_id):
-    if request.user.is_authenticated: 
-        subject=MainSubject.objects.get(id=subject_id)
-        if request.user != subject.author:
-            logout(request)
-            return redirect('login')
-        if request.method == "POST":
-            author = request.user
-            v_files= request.FILES.getlist ('multiple_files')
-            for v_file in v_files:
-                video_file_name = v_file.file.name
-                if not video_file_name.endswith('.mp4'):
-                    string=f'Некорректный формат файла. Файл {video_file_name} и все последующие не загружены. Используйте корректный формат файла.'
-                    messages.error(request, string)
-                    return redirect('edit_subject', subject_id)
-                size_bytes = os.path.getsize(video_file_name)
-                size_mbytes = size_bytes/1024/1024
-                # if size_mbytes > 200:
-                #     messages.error(request, 'Размер файла больше 200МБ. Попробуйте использовать файлы меньшего размера.')
-                #     return redirect('edit_section', subject_id, section_id)
-
-                #=======Module for calculating length of a lecture in two formats=======================
-                clip = VideoFileClip(video_file_name)
-                length=clip.duration # overall duration in seconds
-                length=length // 1#getting rid of microseconds
-                length_hours=length // 3600 #hours
-                if length_hours < 1:
-                    length_hours=0
-                remainder=length - length_hours * 3600
-                length_min = remainder // 60 #minutes
-                length_sec = remainder % 60 #seconds
-                duration=datetime.timedelta(hours=length_hours, minutes=length_min, seconds=length_sec)
-                #===================End of Length Module==============================
-
-                size_mb = size_mbytes
-                v_file = Library.objects.create(
-                    video_file=v_file,
-                    #subtitle_file=subtitle_file,
-                    # translation_file=translation_file,
-                    author=author,
-                    #section=section,
-                    subject=subject,
-                    #free=free_access,
-                    length=length,
-                    length_1=duration,
-                    size_mb=size_mb,
-                )
-            return redirect ('edit_subject', subject.id)
-    else:
-        logout(request)
-        return redirect('login')
-
+#===================================Lectures Operations=============================
 def new_lecture_page (request, subject_id, section_id):
     subject=MainSubject.objects.get(id=subject_id)
     section = Section.objects.get(id=section_id)
@@ -588,7 +507,57 @@ def create_new_lecture(request, subject_id, section_id):
         logout(request)
         return redirect('login')
 
-def lecture_update (request, subject_id, section_id, lecture_id):
+def delete_lecture(request, lecture_id):
+    if request.user.is_authenticated:
+        lecture = Lecture.objects.get(id=lecture_id)
+        subject = lecture.subject
+        section=lecture.section
+        if request.user == subject.author:
+            if subject.ready == True:
+                messages.error(request, 'Sorry, you can not delete a loaded lecture.')
+                return redirect('edit_section', subject_id, section_id)
+            else:
+                lecture.delete()
+                lectures = Lecture.objects.filter(subject=subject)
+                return redirect('edit_section', subject.id, section.id)
+        else:
+            logout(request)
+            return redirect('login')
+    else:
+        logout(request)
+        return redirect('login')
+
+def delete_lecture_videofile (request, lecture_id):
+    if request.user.is_authenticated:
+        lecture = Lecture.objects.get(id=lecture_id)
+        subject=lecture.subject
+        if request.user != subject.author:
+            logout(request)
+            return redirect('login')
+        lecture.video_file.delete()
+        lecture.save()
+        return redirect ('edit_lecture', lecture.id)
+
+    else:
+        logout(request)
+        return redirect('login')
+
+def lecture_update_from_lib (request, lecture_id, v_file_id):
+    if request.user.is_authenticated:
+        lecture=Lecture.objects.get(id=lecture_id)
+        subject=lecture.subject
+        vfile=Library.objects.get(id=v_file_id)
+        lecture.video_file=vfile.video_file
+        lecture.length=vfile.length
+        lecture.length_1=vfile.length_1
+        lecture.size_mb=vfile.size_mb
+        lecture.save()
+        return redirect ('sections', subject.id)
+    else:
+        logout(request)
+        return redirect('login')
+
+def lecture_update_videofile (request, subject_id, section_id, lecture_id):
     if request.user.is_authenticated:
         subject=MainSubject.objects.get(id=subject_id)
         section=Section.objects.get(id=section_id)
@@ -617,62 +586,90 @@ def lecture_update (request, subject_id, section_id, lecture_id):
         length_sec = remainder % 60 #seconds
         duration=datetime.timedelta(hours=length_hours, minutes=length_min, seconds=length_sec)
         #===================End of Length Module==============================
-
         size_mb = size_mbytes
         lecture.video_file=video_file
         lecture.length=length
         lecture.length_1=duration
         lecture.size_mb=size_mb
         lecture.save()
-         #url_link = request.POST.get('url_link', False)
-            #additional_file = request.FILES.get('additional_file', False)
-            #subtitle_file = request.POST.get('subtitle_file', False)
-            #subtitle_file=subtitle_file,
-            # translation_file=translation_file,
+        #subtitle_file = request.POST.get('subtitle_file', False)
+        #subtitle_file=subtitle_file,
+        # translation_file=translation_file,
         return redirect ('sections', subject.id,)
-
-            # else:
-            #     lecture=Lecture.objects.create(
-            #         subject=subject,
-            #         section=section,
-            #         title=title,
-            #         enumerator=enumerator
-            #     )
-            # if url_link:
-            #     AdditionalMaterialLink.objects.create(
-            #             lecture=lecture,
-            #             url_link=url_link,
-            #         )
-            # if additional_file:
-            
-
-            #         AdditionalMaterialFile.objects.create(
-            #             lecture=lecture,
-            #             additional_file=additional_file
-            #         )
-            #     else:
-            #         lecture.enumerator = None
-            #         lecture.save()
-           
-            # return redirect ('edit_section', subject.id, section.id)
     else:
         logout(request)
         return redirect('login')
 
-def lecture_update_from_lib (request, lecture_id, v_file_id):
+def edit_lecture_title (request, lecture_id):
     if request.user.is_authenticated:
-        lecture=Lecture.objects.get(id=lecture_id)
+        lecture = Lecture.objects.get(id=lecture_id)
         subject=lecture.subject
-        vfile=Library.objects.get(id=v_file_id)
-        lecture.video_file=vfile.video_file
-        lecture.length=vfile.length
-        lecture.length_1=vfile.length_1
-        lecture.size_mb=vfile.size_mb
-        lecture.save()
-        return redirect ('sections', subject.id)
+        if request.user != subject.author:
+            logout(request)
+            return redirect('login')
+        if request.method == "POST":
+            title=request.POST['title']
+            lecture.title = title
+            lecture.save()
+            return redirect ('edit_lecture', lecture.id)
     else:
         logout(request)
         return redirect('login')
+
+#==============================Multiple Files Uploading========================
+def upload_multiple_files (request, subject_id):
+    if request.user.is_authenticated: 
+        subject=MainSubject.objects.get(id=subject_id)
+        if request.user != subject.author:
+            logout(request)
+            return redirect('login')
+        if request.method == "POST":
+            author = request.user
+            v_files= request.FILES.getlist ('multiple_files')
+            for v_file in v_files:
+                video_file_name = v_file.file.name
+                if not video_file_name.endswith('.mp4'):
+                    string=f'Некорректный формат файла. Файл {video_file_name} и все последующие не загружены. Используйте корректный формат файла.'
+                    messages.error(request, string)
+                    return redirect('edit_subject', subject_id)
+                size_bytes = os.path.getsize(video_file_name)
+                size_mbytes = size_bytes/1024/1024
+                # if size_mbytes > 200:
+                #     messages.error(request, 'Размер файла больше 200МБ. Попробуйте использовать файлы меньшего размера.')
+                #     return redirect('edit_section', subject_id, section_id)
+
+                #=======Module for calculating length of a lecture in two formats=======================
+                clip = VideoFileClip(video_file_name)
+                length=clip.duration # overall duration in seconds
+                length=length // 1#getting rid of microseconds
+                length_hours=length // 3600 #hours
+                if length_hours < 1:
+                    length_hours=0
+                remainder=length - length_hours * 3600
+                length_min = remainder // 60 #minutes
+                length_sec = remainder % 60 #seconds
+                duration=datetime.timedelta(hours=length_hours, minutes=length_min, seconds=length_sec)
+                #===================End of Length Module==============================
+
+                size_mb = size_mbytes
+                v_file = Library.objects.create(
+                    video_file=v_file,
+                    #subtitle_file=subtitle_file,
+                    # translation_file=translation_file,
+                    author=author,
+                    #section=section,
+                    subject=subject,
+                    #free=free_access,
+                    length=length,
+                    length_1=duration,
+                    size_mb=size_mb,
+                )
+            return redirect ('edit_subject', subject.id)
+    else:
+        logout(request)
+        return redirect('login')
+
+
 
 def edit_lecture(request, lecture_id):
     if request.user.is_authenticated:
@@ -821,17 +818,8 @@ def delete_lecture(request, lecture_id):
         logout(request)
         return redirect('login')
 
-def delete_enumerator (request, subject_id, section_id, lecture_id):
-    if request.user.is_authenticated:
-        subject=MainSubject.objects.get(id=subject_id)
-        section=Section.objects.get(id=section_id)
-        lecture=Lecture.objects.get(id=lecture_id)
-        lecture.enumerator = None
-        lecture.save()
-        return redirect ('edit_section', subject.id, section.id)
-    else:
-        logout(request)
-        return redirect('login')
+
+
 
 def quiz_creation (request, lecture_id):
     answers=[]
@@ -1019,7 +1007,18 @@ def bulk_lecture_enumerator_update (request, subject_id):
         return redirect('login')
 
 #====================================================
+def edit_all (request, subject_id):
+    subject=MainSubject.objects.get(id=subject_id)
+    sections=Section.objects.filter(course=subject).order_by('enumerator')
+    lectures=Lecture.objects.filter(subject=subject).order_by('enumerator')
+    context = {
+        'subject': subject,
+        'sections': sections,
+        'lectures': lectures,
+    }
+    return render(request, 'workshop/edit_all.html', context)
 
+#===============================================================
 def video(request, subject_id, lecture_id):
     # if not request.user.is_authenticated:
     #     return redirect('login')
