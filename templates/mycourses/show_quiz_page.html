@@ -1,11 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
+<div class="hide">
 
 
 
 <div class="container">
 {{lecture.id}}/{{quiz.id}}
 
+<div class="show_quiz_box">
 
 {% for question in questions %}
 <form action="{% url 'reg_answer' quiz.id lecture.id question.id %}" method="POST" id='form_no_button'>
@@ -33,8 +35,8 @@
 
 </div>
 
-
-
+</div>
+</div>
 <script>
     console.log('Script starts')
     const testInput=document.querySelector('#test_input')

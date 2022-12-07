@@ -582,7 +582,25 @@ iframe {
 }
 
 /*=======================================*/
+.show_quiz_box {
+  display: block;
+  position: absolute;
+  /*border: 1px solid;*/
+  /*border-color: #aaaaaa;*/
+  border-radius: 1rem;
+  top: 20vh;
+  left: 35rem;
+  background-color: whitesmoke;
+  height: fit-content;
+  width: 50rem;
+  padding: 1rem;
+  box-shadow: 0 0 10px 2px;
+  z-index: 1;
+  opacity: 1;
+}
 
+
+/*=============================================*/
 .fileLibUploadModule {
   display: none;
 }
