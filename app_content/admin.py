@@ -1,5 +1,5 @@
 from django.contrib import admin
-from . models import MainSubject, Transaction, Price, Category, Language, Rating, Keyword, Lecture, Section, Badword, Credit_card, Credit_card_type, Paypal, Main_method, Cart, Bank_account, DiscountOn, Question, Answer, AdditionalMaterialLink, AdditionalMaterialFile, QuizQuestion, QuizAnswer
+from . models import MainSubject, Transaction, Price, Category, Language, Rating, Keyword, Lecture, Section, Badword, Credit_card, Credit_card_type, Paypal, Main_method, Cart, Bank_account, DiscountOn, Question, Answer, AdditionalMaterialLink, AdditionalMaterialFile, QuizQuestion, QuizAnswer, Library
 
 
 class MainSubjectAdmin(admin.ModelAdmin):
@@ -13,8 +13,8 @@ class SectionAdmin(admin.ModelAdmin):
     list_editable = ('length_1',)
 
 class LectureAdmin(admin.ModelAdmin):
-    list_display = ('id', 'enumerator', 'subject', 'section', 'title', 'enumerator', 'video_file', 'author', 'date_posted', 'size_mb', 'length', 'length_1')
-    ordering = ('subject', 'enumerator', 'id',)
+    list_display = ('id', 'subject', 'section', 'title', 'video_file', 'author', 'date_posted', 'size_mb', 'length', 'length_1')
+    ordering = ('enumerator', 'subject', 'enumerator', 'id',)
     list_per_page=100
     list_filter = ('subject', 'section',)
     list_editable = ('length', 'length_1',)
@@ -92,6 +92,10 @@ class QuizAnswerAdmin(admin.ModelAdmin):
     list_display = ('id', 'lecture', 'question', 'answer',)
     list_editable = ('lecture',)
 
+class LibraryAdmin(admin.ModelAdmin):
+    list_display = ('id', 'subject', 'author', 'video_file',)
+
+
 admin.site.register(MainSubject, MainSubjectAdmin)
 admin.site.register(Transaction, TransactionAdmin)
 admin.site.register(Rating, RatingAdmin)
@@ -115,4 +119,5 @@ admin.site.register(QuizAnswer, QuizAnswerAdmin)
 admin.site.register(QuizQuestion, QuizQuestionAdmin)
 admin.site.register(AdditionalMaterialLink, AdditionalMaterialLinkAdmin)
 admin.site.register(AdditionalMaterialFile, AdditionalMaterialFileAdmin)
+admin.site.register(Library, LibraryAdmin)
 

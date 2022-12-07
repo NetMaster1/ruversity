@@ -20,5 +20,6 @@ urlpatterns = [
     path('cart/', views.cart, name='cart'),
     path('delete_from_cart/<int:subject_id>', views.delete_from_cart, name='delete_from_cart'),
     # path('detailed_search/', views.detailed_search, name='detailed_search'),
+   
 
 ]
