@@ -27,28 +27,93 @@
 
     {% else %}
 
-    <!-- ======================Sending Course to Server============================== -->
-    <div class="row p-3">
-        <div class="col-8">
-            <h5>После того, как ваш курс полностью готов для продаж, нажмите на кнопку. После загрузки на сервер ваш
-                курс перестанет быть доступным для редактирования. </h5>
-        </div>
 
-        <div class="col-4">
+
+<div class="row">
+    <div class="col-4">
+        <div class="subject_box m-auto">
+        
+            <a href="{% url 'sections' subject.id %}" style="text-decoration: none">
+                <div class="subject_box_bar">
+                    <h5 style="margin: auto">Создать/редактировать разделы</h5>
+                </div>
+            </a>
+
+            <a href="#" style="text-decoration: none">
+                <div class="subject_box_bar" id="fileUploadBar">
+                <h5 style="margin: auto">Загрузить все видеофайлы сразу</h5>
+                </div>
+            </a>
+<!-- ==================================File Upload Module======================= -->
+<div class="fileUploadModule">
+    <div class="hide">
+        <div class="createSectionBox">
+            <form action="{% url 'upload_multiple_files' subject.id%}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+            
+                <div class="form-row mt-1 mb-1">
+                    <label for="multiple_files">
+                        <strong>
+                            Загрузите видеофайлы в формате mp4 для данного раздела. Общий размер файлов не должен превышать 1Гб.
+                        </strong>
+                    </label>
+                </div>
+                    
+                    <div class="form-row mb-3">
+                        <input type="file" multiple class="form-control" id="multiple_files" name="multiple_files" required>
+                    </div>
+                
+            
+                <div class="form-row mb-3">
+                    <input type="submit" value="Загрузить" class='btn btn-block btn-outline-dark'>
+                </div>
+            </form>
+           
+            <div class="form-row">
+                <input type="button" value="Закрыть" class='btn btn-block btn-outline-dark btnClose'>
+            </div>
+       
+        </div>
+    </div>
+</div>
+<!-- ==================================End of File Upload Module============================== -->
+
+            <a href="#" style="text-decoration: none">
+                <div class="subject_box_bar" id="fileLibraryBar">
+                    <h5 style="margin: auto">Просмотреть загруженные файлы</h5>
+                </div>
+            </a>
+<!-- ==================================File Library Module======================= -->
+<div class="fileLibraryModule">
+    <div class="hide">
+        <div class="createSectionBox">
+            <div class="row">
+                <div class="col-11"></div>
+                <div class="col-1"><h1 class="closeCross">&times;</h1></div>
+            </div>
+        {% if v_files %}
+            {% for v_file in v_files %}
+                {{v_file.video_file}} <br>
+            {% endfor %}
+        {% else%}
+        <h5>Файлы отстутствуют.</h5>
+        {% endif %}
+
+
+        </div>
+    </div>
+</div>
+<!-- ==================================End of File Library Module============================== -->
+
+        
             <a href="{% url 'agreement' subject.id%}" style="text-decoration: none">
-                <input type="submit" value="Загрузить на сервер" class="btn btn-outline-danger btn-block"
-                    style="width:min-content">
+                <div class="subject_box_bar">
+                <h5 style="margin: auto; color: red">Загрузить курс на сервер</h5>
+                </div>
             </a>
         </div>
-
     </div>
-
-
-<!-- ====================================================== -->
-
-    <div class="row m-auto border rounded bg-light text-center">
-        <h3>Редактировать курс</h3>
-    </div>
+  <div class="col-8">
 
     <div class="row mt-2">
         <div class="col-4">
@@ -198,99 +263,9 @@
         </div>
     </div>
     <br>
-
-
-
-<!-- ===================Create New Section Box============================== -->
-<div class="row m-auto border rounded bg-light text-center">
-    <h3>Разделы</h3>
-</div>
-
-<div class="row m-auto">
-    <h3>Создать новый раздел</h3>
-</div>
-
-<div class="row m-auto>">
-
-    <form action="{% url 'create_new_section' subject.id %}" method="POST">
-        {% csrf_token %}
-
-        <div class="form-row mt-2">
-            <div class="col-3">
-                <input class='form-control' type="number" id="enumerator" name="enumerator"
-                    placeholder="Порядковый номер раздела" required>
-            </div>
-            <div class="col-3">
-                <input class='form-control' type="text" id="title" name="title" placeholder="Название раздела" required>
-            </div>
-
-            <div class="col-2 align-self-end">
-                <!-- <button type='submit' value="Create" class="btn btn-info btn-block"> -->
-                <!-- <input type="submit" value="Create" class="btn btn-info btn-block "> -->
-                <input type="submit" value="Создать" class='btn btn-block btn-outline-dark' style="width:fit-content">
-            </div>
-        </div>
-    </form>
-</div>
-
-<!-- =====================Sections============================================== -->
-<div class="row m-auto pt-2">
-    <h3>Редактирование разделов</h3>
-</div>
-
-{% for section in sections %}
-<!-- <div class="row m-auto pt-2" id="sections"> -->
-<!-- <div class="col-6"> -->
-<!-- <h5><span id="open_sections">Раздел {{section.enumerator}}: {{section.title}}.</span></h5> -->
-<!-- <h5>Раздел {{section.enumerator}}: {{section.title}}.</h5>
-        </div> -->
-
-<div class="row m-auto pt-2">
-    <div class="col-6">
-        <a id='a_id_section' href='#' <h5 data-bs-toggle="collapse"
-            data-bs-target='#section{{section.id}}'>{{section.enumerator}} {{section.title}} </h5></a>
-    </div>
-    <div class="col-2 align-self-end">
-        <a href="{% url 'edit_section' subject.id section.id %}" style="text-decoration: none">
-            <input type="button" value="Редактировать" class='btn btn-sm btn-block btn-outline-dark'>
-        </a>
-    </div>
-
-    <div class="col-2 align-self-end">
-        <a href="{% url 'delete_section' subject.id section.id %}" style="text-decoration: none">
-            <!-- <input type="submit" value="Delete" class="btn btn-info btn-block"> -->
-            <input type="button" value="Удалить" class='btn btn-sm btn-block btn-outline-dark'>
-        </a>
-    </div>
-
-    <div class="collapse" id='section{{section.id}}'>
-        <div class="row" style='min-height:fit-content'>
-            <div class="col">
-                {% for lecture in lectures %}
-                {% if lecture.section == section %}
-                <div class="row ml-4">
-                  <div style="font-style:italic"> {{lecture.enumerator}}. УИН: {{lecture.id}}; Название: {{lecture.title}}</div> 
-                </div>
-                {% endif %}
-                {%endfor%}
-            </div>
-        </div>
     </div>
 </div>
 
-
-<div id="openSectionModal">
-    {% for lecture in lectures %}
-    {% if lecture.section == section %}
-    <div class="row m-auto">
-        {{lecture.title}}
-    </div>
-    {% endif %}
-    {%endfor%}
-</div>
-
-{% endfor %}
-<!-- ======================End of Section Box=========================== -->
 </div>
 
 
@@ -301,21 +276,27 @@
 
 <script>
     console.log('start OK')
-    const open_sections = document.querySelectorAll('#open_sections');
-    const openSectionModal = document.querySelectorAll('#openSectionModal');
+    const fileUploadBar = document.querySelector('#fileUploadBar');
+    const fileUploadModule = document.querySelector('.fileUploadModule');
+    const btnClose = document.querySelector('.btnClose');
+    fileUploadBar.addEventListener('click', () => {
+        fileUploadModule.classList.add('openModal')
+    })
+    btnClose.addEventListener('click', () => {
+        fileUploadModule.classList.remove('openModal')
+    })
+    
 
-
-    for (let i = 0; i < open_sections.length; i++) {
-        open_sections[i].addEventListener('mouseover', e => {
-            openSectionModal[i].classList.add('openModal')
+    const fileLibraryBar = document.querySelector('#fileLibraryBar');
+    const fileLibraryModule = document.querySelector('.fileLibraryModule');
+    const closeCross = document.querySelector('.closeCross');
+    fileLibraryBar.addEventListener('click', () => {
+            fileLibraryModule.classList.add('openModal')
         })
-    }
-
-    for (let i = 0; i < open_sections.length; i++) {
-        open_sections[i].addEventListener('mouseout', e => {
-            openSectionModal[i].classList.remove('openModal')
+    closeCross.addEventListener('click', () => {
+            fileLibraryModule.classList.remove('openModal')
         })
-    }
+
     console.log('end OK')
 </script>
 

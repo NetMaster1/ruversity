@@ -1,13 +1,15 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from app_content.models import MainSubject, Transaction, Lecture, Rating, Section, Question, Answer
+from app_content.models import MainSubject, Transaction, Lecture, Rating, Section, Question, Answer, QuizAnswer, QuizQuestion, QuizId
 from app_reviews.models import Review
-from django.http import HttpResponseRedirect
+from app_mycourses.models import QuizResult
+from django.http import HttpResponseRedirect, JsonResponse
 from django.contrib.auth.models import User
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.contrib.auth import authenticate, login, logout
 from pathlib import Path
 from moviepy.editor import *
 from django.core.mail import send_mail
+import json, requests
 
 # Create your views here.
 
@@ -26,7 +28,6 @@ def mycourses(request):
         return render(request, 'mycourses/mycourses.html', context)
     else:
         return redirect('login')
-
 
 def subject_purchased(request, subject_id):
     if request.user.is_authenticated:
@@ -123,7 +124,6 @@ def subject_purchased(request, subject_id):
         logout(request)
         return redirect('login')
 
-
 def new_question(request, subject_id):
     if request.user.is_authenticated:
         subject = MainSubject.objects.get(id=subject_id)
@@ -151,3 +151,101 @@ def new_question(request, subject_id):
             return redirect('subject_purchased', subject_id)
     else:
         return redirect('login')
+
+#JSON response
+def quiz_api (request, lecture_id):
+    if request.user.is_authenticated:
+        lecture=Lecture.objects.get(id=lecture_id)
+        quiz_questions=QuizQuestion.objects.filter(lecture=lecture)
+        questions = []
+        #dict ={}
+        for quiz_question in quiz_questions:
+            quiz_answers=QuizAnswer.objects.filter(question=quiz_question)
+            answers = []
+            for quiz_answer in quiz_answers:
+                answers.append(quiz_answer.answer)
+            
+            questions.append({str(quiz_question.question): answers})
+            #dict[quiz_question.question]=answers
+            #questions.append(dict)
+            #questions[quiz_question.question]=answers#ading new entry
+        return JsonResponse ({
+            'data': questions,
+            #'time': quiz.time,
+        })
+        print(type(questions))
+    else:
+        logout(request)
+        return redirect('login')
+
+def quiz_api_page(request, lecture_id):
+    lecture=Lecture.objects.get(id=lecture_id)
+    context = {
+        'lecture': lecture
+    }
+    return render (request, 'mycourses/quiz_api_page.html', context)
+
+def open_show_quiz_page (request, lecture_id):
+    quiz=QuizId.objects.create()
+    lecture=Lecture.objects.get(id=lecture_id)
+    questions=QuizQuestion.objects.filter(lecture=lecture)
+    answers=QuizAnswer.objects.filter(lecture=lecture)
+    
+    context = {
+        'lecture': lecture,
+        'questions': questions,
+        'answers': answers,
+        'quiz': quiz,
+    }
+    return render (request, 'mycourses/show_quiz_page.html', context)
+
+def reg_answer (request, quiz_id, lecture_id, question_id):
+    if request.user.is_authenticated:
+        lecture=Lecture.objects.get(id=lecture_id)
+        question=QuizQuestion.objects.get(id=question_id)
+        quiz=QuizId.objects.get(id=quiz_id)
+        correct_answer=QuizAnswer.objects.get(question=question, correct = True)
+        if request.method=='POST':
+            result=QuizResult.objects.create(
+                quiz=quiz,
+                question=question,
+                person=request.user,
+                lecture=lecture
+            )
+            answer=request.POST['answer']
+            if answer == correct_answer.answer:
+                result.correct=True
+                result.save()
+            print(result.quiz.id)
+        return redirect ('next_quiz_question', quiz.id, lecture.id)
+    else:
+        logout(request)
+        return redirect('login')
+
+def next_quiz_question (request, quiz_id, lecture_id):
+    quiz=QuizId.objects.get(id=quiz_id)
+    results=QuizResult.objects.filter(quiz=quiz)
+    lecture=Lecture.objects.get(id=lecture_id)
+    questions=QuizQuestion.objects.filter(lecture=lecture)
+    number_of_questions=QuizQuestion.objects.filter(lecture=lecture).count()
+    number_of_results=QuizResult.objects.filter(quiz=quiz).count()
+    number_of_correct_results=QuizResult.objects.filter(quiz=quiz, correct=True).count()
+    quality_percent=number_of_correct_results / number_of_questions * 100
+
+    answers=QuizAnswer.objects.filter(lecture=lecture)
+    questionsLeft =[]
+    for question in questions:
+        if not results.filter(question=question).exists():
+            questionsLeft.append(question)
+
+    context ={
+        'questionsLeft': questionsLeft,
+        'answers': answers,
+        'quiz': quiz,
+        'lecture': lecture,
+        'number_of_questions': number_of_questions,
+        'number_of_results': number_of_results,
+        'number_of_correct_results': number_of_correct_results,
+        'quality_percent': quality_percent
+    }
+    return render (request, 'mycourses/next_quiz_question.html', context)

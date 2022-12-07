@@ -1,0 +1,335 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<!-- <body oncontextmenu="return false;"> -->
+<div class="container">
+    <div class="row m-auto">
+        <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);"
+            aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'studio' %}">Творческая студия</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'edit_subject' subject.id %}">Редактирование курса</a></li>
+
+                <li class="breadcrumb-item active" aria-current="page">Разделы</li>
+            </ol>
+        </nav>
+    </div>
+    <div class="popUpCreateSection">
+        Создать раздел.
+    </div>
+    <div class="row">
+      
+        <a href="#" style="text-decoration: none" >
+            <h4 style="display: inline"> <i class="fa-sharp fa-solid fa-folder-plus icon"></i> </h4>
+        </a>
+        
+    </div>
+<!-- ==================================Create Section Module======================= -->
+
+<div class="createSection">
+    <div class="hide">
+        <div class="createSectionBox">
+            <form action="{% url 'create_new_section' subject.id %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="form-row mt-1 mb-1">
+                        <label for="file">
+                            <strong>
+                                Введите название раздела:
+                            </strong>
+                        </label>
+                </div>  
+                <div class="form-row mt-1 mb-1">
+                        <input type="text" class="form-control" id="title" name="title" maxlength='60' placeholder="Не более 60 знаков">
+                
+                </div>
+
+                <div class="form-row mt-1 mb-1">
+                        <input type="submit" value="Создать" class='btn btn-block btn-outline-dark'>   
+                </div>
+            </form>
+            <div class="form-row mt-1">
+                <input type="button" value="Закрыть" class='btn btn-block btn-outline-dark btnClose'>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ==================================End of Create Sectoin Module============================== -->
+
+<h3>Разделы</h3>
+
+<form action="{% url 'bulk_lecture_enumerator_update' subject.id %}" method="POST" id='form_no_button'>
+            {% csrf_token %}
+
+{% for section in sections %}
+
+
+<div class="section_box draggable_section p-2 mb-2">
+    <!-- <div data-bs-toggle="collapse" data-bs-target='#section{{section.id}}'> -->
+        <div class="row ml-1 mb-2">
+            <div class="col-11">
+                <label for="section_id">
+                    {{section.enumerator}} {{section.title}} 
+                </label>
+                <div class="popUpDeleteSection">Удалить раздел</div>
+                <a href="{% url 'delete_section' subject.id section.id %}" style="text-decoration: none">
+                    <h4 style="display: inline"><i class="fa-solid fa-trash-arrow-up"></i> </h4>
+                </a> 
+                <div class="popUpEditSection">
+                    Изменить название раздела.
+                </div>
+                <a href="{% url 'edit_section_title' section.id %}" style="text-decoration: none">
+                    <h4 style="display: inline"><i class="fa-solid fa-file-pen"></i></h4>
+                </a>
+                <div class="popUpAddLecture">
+                    Создать лекцию.
+                </div>
+                <a href="{% url 'new_lecture_page' subject.id section.id %}" style="text-decoration: none">
+                <h4 style="display: inline"><i class="fa-solid fa-circle-plus"></i></h4>
+                </a>
+            </div>
+
+            <div class="col-1">
+                <input type="text" class='form-control' id="section_id" name="section_id" value='{{section.id}}' readonly hidden>
+            </div>
+        </div>
+   
+
+    {% for lecture in lectures %}
+    {% if lecture.section == section %}
+     
+    <div class="box ml-3 draggable_lecture" draggable='true'>
+        <div class="row">
+            <div class="col-1">
+                <label for="lecture_id">{{lecture.enumerator}}</label>
+            </div> 
+            <div class="col-8">
+                <strong>{{lecture.title}};.
+                     <!-- Дл.: {{lecture.length_1}} мин.; 
+                     Размер:
+                    {{lecture.size_mb}} Mb -->
+                </strong>
+            </div>
+            <div class="col-1">
+                <input type="text" class='form-control ml-3' id="lecture_id" name="sec_lec_id"
+                value='{{section.id}}/{{lecture.id}}' readonly hidden>
+            </div>
+           <div class="col-2">
+                <div class="popUpSectionPage">
+                    Удалить лекцию.
+                </div>
+                <a href="{% url 'delete_lecture' lecture.id %}" style="text-decoration: none" >
+                    <h4 style="display: inline"><i class="fa-solid fa-trash"></i></h4>
+                </a>
+                <div class="popUpEditLecture">
+                    Редактировать лекцию.
+                </div>
+                <a href="{% url 'edit_lecture' lecture.id%}" style="text-decoration: none">
+                    <h4 style="display: inline"><i class="fa-solid fa-pen-to-square"></i></h4>
+                </a>
+            </div>
+            
+           
+        </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+                
+
+
+</div>
+{% endfor %}
+</form>
+   
+</div>
+
+
+<script>
+    console.log('start OK')
+    const draggableSections = document.querySelectorAll('.draggable_section')//containers for lectures
+    const draggableLectures = document.querySelectorAll('.draggable_lecture')//draggable lectures
+    const formNoButton = document.querySelector('#form_no_button')//var for submitting form witout pushing button
+    const btnClose = document.querySelector('.btnClose')//var for submitting form witout pushing button
+
+    const faTrash = document.querySelectorAll('.fa-trash');
+    const popUp = document.querySelectorAll('.popUpSectionPage');
+
+    const faTrashArrowUp = document.querySelectorAll('.fa-trash-arrow-up');
+    const popUpDeleteSection = document.querySelectorAll('.popUpDeleteSection');
+
+    const faPenToSquare = document.querySelectorAll('.fa-pen-to-square');
+    const popUpEditLecture = document.querySelectorAll('.popUpEditLecture');
+
+    const faCirclePlus = document.querySelectorAll('.fa-circle-plus');
+    const popUpAddLecture = document.querySelectorAll('.popUpAddLecture');
+
+    const faFolderPlus = document.querySelector('.fa-folder-plus')
+    const popUpCreateSection = document.querySelector('.popUpCreateSection');
+    const createSection = document.querySelector('.createSection')
+
+    const faFilePen = document.querySelectorAll('.fa-file-pen');
+    const popUpEditSection = document.querySelectorAll('.popUpEditSection'); 
+    
+   
+
+    /*============================Icons PopUp==================================*/
+        faTrash.forEach((item, index) => {
+                item.setAttribute('data-index', index)
+            })
+        
+        faTrashArrowUp.forEach((item, index) => {
+                item.setAttribute('data-index', index)
+            })
+
+        faPenToSquare.forEach((item, index) => {
+                item.setAttribute('data-index', index)
+            })
+
+        faCirclePlus.forEach((item, index) => {
+                item.setAttribute('data-index', index)
+            })
+
+        faFilePen.forEach((item, index) => {
+                item.setAttribute('data-index', index)
+            })
+
+        for (i = 0; i < faTrash.length; i++) {
+            faTrash[i].addEventListener('mouseover', e => {
+                a = e.target.getAttribute('data-index')
+                popUp[a].classList.add('openModal')
+            })
+        }
+
+        for (i = 0; i < faTrash.length; i++) {
+            faTrash[i].addEventListener('mouseleave', e => {
+                a = e.target.getAttribute('data-index')
+                popUp[a].classList.remove('openModal')
+            })
+        }
+      
+        for (i = 0; i < faTrashArrowUp.length; i++) {
+            faTrashArrowUp[i].addEventListener('mouseover', e => {
+                a = e.target.getAttribute('data-index')
+                popUpDeleteSection[a].classList.add('openModal')
+            })
+        }
+
+            for (i = 0; i < faTrashArrowUp.length; i++) {
+                faTrashArrowUp[i].addEventListener('mouseleave', e => {
+                    a = e.target.getAttribute('data-index')
+                    popUpDeleteSection[a].classList.remove('openModal')
+                })
+            }
+
+        for (i = 0; i < faPenToSquare.length; i++) {
+            faPenToSquare[i].addEventListener('mouseover', e => {
+                a = e.target.getAttribute('data-index')
+                popUpEditLecture[a].classList.add('openModal')
+            })
+        }
+
+        for (i = 0; i < faPenToSquare.length; i++) {
+            faPenToSquare[i].addEventListener('mouseleave', e => {
+                a = e.target.getAttribute('data-index')
+                popUpEditLecture[a].classList.remove('openModal')
+            })
+        }
+        for (i = 0; i < faCirclePlus.length; i++) {
+            faCirclePlus[i].addEventListener('mouseover', e => {
+                a = e.target.getAttribute('data-index')
+                popUpAddLecture[a].classList.add('openModal')
+            })
+        }
+        for (i = 0; i < faCirclePlus.length; i++) {
+                faCirclePlus[i].addEventListener('mouseleave', e => {
+                    a = e.target.getAttribute('data-index')
+                    popUpAddLecture[a].classList.remove('openModal')
+                })
+            }
+
+        faFolderPlus.addEventListener('mouseover', () => {
+                popUpCreateSection.classList.add('openModal')
+            })
+        faFolderPlus.addEventListener('mouseleave', () => {
+                popUpCreateSection.classList.remove('openModal')
+            })
+
+
+        for (i = 0; i < faFilePen.length; i++) {
+            faFilePen[i].addEventListener('mouseover', e => {
+                a = e.target.getAttribute('data-index')
+                popUpEditSection[a].classList.add('openModal')
+            })
+        }
+        for (i = 0; i < faFilePen.length; i++) {
+                faFilePen[i].addEventListener('mouseleave', e => {
+                    a = e.target.getAttribute('data-index')
+                    popUpEditSection[a].classList.remove('openModal')
+                })
+            }
+
+/*====================================End of Icons PopUp=============================*/
+
+
+    faFolderPlus.addEventListener('click', () => {
+        createSection.classList.add('openModal')
+        })
+
+    btnClose.addEventListener('click', () => {
+        createSection.classList.remove('openModal')
+    })
+//===========================Drag & Drop Lecture Module===============================    
+    draggableLectures.forEach(lecture => {
+        lecture.addEventListener('dragstart', (e) => {
+            lecture.classList.add('dragging')
+        })
+        lecture.addEventListener('dragend', (e) => {
+            lecture.classList.remove('dragging')
+        });  
+    })
+
+    draggableSections.forEach(section => {
+        section.addEventListener('dragover', (e) => {
+        e.preventDefault()
+        const afterElement = getDragAfterElement(section, e.clientY)
+        const draggable = document.querySelector('.dragging')
+        if (afterElement == null) {
+            section.appendChild(draggable)
+        }
+        else {
+            section.insertBefore(draggable, afterElement)
+        }
+            })      
+        })    
+
+    function getDragAfterElement(section, y) {
+            const draggableElements = [...section.querySelectorAll('.draggable_lecture:not(.dragging)')]
+            return draggableElements.reduce((closest, child) => {
+                const box = child.getBoundingClientRect()
+                const offset = y - box.top - box.height / 2
+                if (offset < 0 && offset > closest.offset) {
+                    return { offset: offset, element: child }
+                }
+                else {
+                    return closest
+                }
+            }, { offset: Number.NEGATIVE_INFINITY }).element
+        }
+
+        draggableSections.forEach(section => {
+                section.addEventListener('drop', e => {
+                    const draggable = document.querySelector('.dragging')
+                    let len = draggable.children[0].children[2].children[0].value.indexOf("/");
+                    draggable.children[0].children[2].children[0].value = section.children[0].children[1].children[0].value + draggable.children[0].children[2].children[0].value.slice(len)
+                    console.log (draggable.value)
+                    formNoButton.submit();
+                })
+               
+            })
+//============================End of Drag & Drop Module===================================
+
+
+    console.log('end OK')
+</script>
+
+{% endblock %}

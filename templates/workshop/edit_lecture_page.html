@@ -1,0 +1,440 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+<div class="container">
+    <div class="row m-auto">
+        <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);"
+            aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'studio' %}">Творческая студия</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'edit_subject' subject.id %}">Редактирование курса</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'sections' subject.id %}">Разделы</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Лекция</li>
+            </ol>
+        </nav>
+    </div>
+
+        <div class='editLectureBox'>
+            <div class="row m-auto" >
+                <div class="col-11">
+                    <strong>
+                        Лекция: {{lecture.title}} &nbsp
+                        </strong>
+                                <div class="popUpLecture">
+                                    Изменить название лекции.
+                                </div>
+                            <a href="#" style="text-decoration: none" >
+                                <h4 style="display: inline">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                                </h4>
+                            </a>
+                    </div>
+
+<!-- ============================Edit Section Title Module============================== -->
+<div class="editSectionTitle">
+<div class="hide">
+    <div class="createSectionBox">
+        <form action="{% url 'edit_lecture_title' lecture.id %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="form-row mt-1 mb-1">
+                <label for="file">
+                    <strong>
+                        Измените название лекции (не более 60 символов): 
+                    </strong>
+                </label>
+            </div>
+            <div class="form-row mt-1 mb-1">
+                <input type="text" class="form-control" id="title" name="title" required
+                    placeholder="{{lecture.title}}" maxlength="60">
+
+            </div>
+
+            <div class="form-row mt-1 mb-1">
+                <input type="submit" value="Изменить" class='btn btn-block btn-outline-dark'>
+            </div>
+        </form>
+
+            <div class="form-row">
+                <input type="button" value="Закрыть" class='btn btn-block btn-outline-dark btnClose'>
+            </div>
+  
+
+    </div>
+</div>
+</div>
+<!-- ============================End of Edit Section Title Module============================== -->
+
+
+               
+                <div class="col-1">
+                <a href="{% url 'sections' subject.id%}" style="text-decoration: none; color: black">
+                  <h1 class="closeCross">&times;</h1>
+                </a>
+                </div>
+            </div>
+         
+            <div class="row ml-2 mb-2">
+                <h5 style="display: inline">Выберите тип наполнения лекции:
+                <!-- <i class="fa-solid fa-folder-open"></i> -->
+                </h5>
+
+            </div>
+                {% if lecture.video_file%}
+                <div class="box">
+                <div class="row ml-2 mb-2">
+                Название видеофайла:  {{lecture.video_file}}
+                </div>
+
+                <div class="row ml-2 mb-2">
+                    <div class="col-4">
+                        <a class="nav-link" href="{{ lecture.video_file.url }}" target='_blank'>
+                            <video oncontextmenu="return false;" width="320" height="240" controls controlsList="nodownload">
+                                video width="320" height="240" controls controlsList="nodownload">
+                                <source src="{{lecture.video_file.url}}" type="video/mp4">
+                            </video>
+                        </a>
+                    </div>
+                    <div class="col-2">
+                        <div class="popUp">
+                            Удалить содержимое.
+                        </div>
+                        <a href="{% url 'delete_lecture_videofile' lecture.id%}">
+                          <h4><i class="fa-solid fa-trash"></i></h4>
+                        </a>
+                    </div>
+                </div>
+                </div>
+                {% endif %}
+  
+                {%  if lecture.quizquestion_set.filter.exists %}
+                <div class="box">
+                <div class="row ml-2 mb-2">
+                    <div class="col-4">
+                        <a href="{% url 'quiz_creation' lecture.id %}">
+                            Тесты
+                        </a>
+                    </div>
+                    <div class="col-2">
+                        <div class="popUp">
+                            Удалить содержимое.
+                        </div>
+                        <a href="{% url 'delete_quiz' lecture.id%}">
+                            <h4><i class="fa-solid fa-trash"></i></h4>
+                        </a>
+                    </div>
+                </div>
+                </div>
+                {% endif %}
+
+
+
+                {% if lecture.additionalmaterialfile_set.filter.exists %}
+                    {% for item in lecture.additionalmaterialfile_set.all%}
+                    <div class="box">
+                    <div class="row ml-2 mb-2">
+                        <div class="col-4">
+                    Текстовый файл/ы:
+                    <a class="nav-link" href="{{ item.additional_file.url }}" download>
+                        {{item.additional_file}}
+                    </a>
+                        </div>
+                        <div class="col-2">
+                            <div class="popUp">
+                                Удалить содержимое.
+                            </div>
+                            <a href="{% url 'delete_text_file' lecture.id%}">
+                                <h4><i class="fa-solid fa-trash"></i></h4>
+                            </a>
+                        </div>
+                    </div>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+
+                {% if lecture.additionalmateriallink_set.filter.exists %}
+                {% for item in lecture.additionalmateriallink_set.all%}
+                <div class="box">
+                <div class="row ml-2 mb-2">
+                    <div class="col-4">
+                        Внешняя ссылка: 
+                        <a class="nav-link" href="{{ item.url_link }}" download>
+                            {{item.url_link}}
+                        </a>
+                    </div>
+                    <div class="col-2">
+                        <div class="popUp">
+                            Удалить содержимоe.
+                        </div>
+                        <a href="{% url 'delete_url_link' lecture.id%}">
+                         
+                            <h4><i class="fa-solid fa-trash"></i></h4>
+                        </a>
+                      
+                    </div>
+                </div>
+                </div>
+                {% endfor %}
+                {% endif %}
+
+         
+            <hr style="border-top: 1px solid grey">
+            <div class="row m-auto pb-2">
+                <div class="col-3">
+                    <input type="button" value="Видеофайл" class="btn btn-sm btn-block btn-outline-dark videoFileButton">
+                </div>
+                <div class="col-3">
+                    <a href="{% url 'quiz_creation' lecture.id%}" style="text-decoration: none">
+                        <input type="button" value="Тест" id="test" class="btn btn-sm btn-block btn-outline-dark">
+                    </a>
+                </div>
+                <div class="col-3">
+                    <input type="button" value="Текстовый файл" id="text" class="btn btn-sm btn-block btn-outline-dark text_button">
+                </div>
+             
+                <div class="col-3">
+                    <input type="button" value="Ссылка на код" id="code" class="btn btn-sm btn-block btn-outline-dark url_button">
+                </div>
+               
+
+            </div>
+      
+
+<!-- ========================================VideoFileModule======================= -->
+<div class="videoFileModule">
+    <div class="hide">
+        <div class="file_box">
+            <div class="row">
+                <div class="col-11"></div>
+                <div class="col-1"><h1 class="closeCross" id="closeCross">&times;</h1></div>
+            </div>
+      
+        
+           
+            <form action="{% url 'lecture_update_videofile' subject.id section.id lecture.id %}" method="POST"
+                enctype="multipart/form-data">
+                {% csrf_token %}
+                    
+                    
+                <div class="form-row m-auto">
+                  
+                    <div class="col-5">
+                        <label for="file">
+                            Выберите видеофайл из вашего хранилища:
+                        </label>
+                    </div>
+                    <div class="col-5">
+                        <input type="file" class="form-control" id="file" name="file" required>
+                    </div>
+                    <div class="col-2">
+                        <input type="submit" value="Загрузить" class='btn btn-block btn-outline-dark'>
+                    </div>
+                   
+                </div>
+            </form>
+            <div class="row m-auto">
+                <div class="text-center mb-4 mt-3">ИЛИ</div>
+            </div>
+
+            <div data-bs-toggle="collapse" data-bs-target='#v_files'>
+                    <button class='btn btn-block btn-outline-dark'>
+                        Выберите файл из библиотеки ранее загруженных файлов:
+                    </button>
+            </div>
+
+            <div class="collapse mt-3" id='v_files' style="height:fit-content">
+                {% for v_file in v_files %}
+
+                <div class="row m-1">
+                    <div class="col-8">{{v_file.video_file}}</div>
+                    <div class="col-4">
+                        <a href="{% url 'lecture_update_from_lib' lecture.id v_file.id%}"
+                            style="text-decoration: none">
+                            <input type="button" value="Загрузить из библиотеки"
+                                class='btn btn-sm btn-block btn-outline-dark'>
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- =======================End of Video File Module======================================================== -->
+    
+<!-- ========================================TextFileModule======================= -->
+<div class="textFileModule">
+    <div class="hide">
+        <div class="file_box">
+            <div class="row">
+                <div class="col-11"></div>
+                <div class="col-1">
+                    <h1 class="closeCross" id="closeCrossTextFile">&times;</h1>
+                </div>
+            </div>
+
+            <form action="{% url 'add_text_file' lecture.id %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+
+                <div class="form-row m-auto">
+
+                    <div class="col-5">
+                        <label for="file">
+                            Загрузите файл в одном из следующих форматов: txt, doc, jpeg, jpg, bmp, png, pdf, rar, zip.
+                        </label>
+                    </div>
+                    <div class="col-5">
+                        <input type="file" class="form-control" id="file" name="file" required>
+                    </div>
+                    <div class="col-2">
+                        <input type="submit" value="Загрузить" class='btn btn-block btn-outline-dark'>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- ==========================End of Text File Module======================================================== -->
+
+<!-- ========================================UrlModule======================= -->
+<div class="urlModule">
+    <div class="hide">
+        <div class="file_box">
+            <div class="row">
+                <div class="col-11"></div>
+                <div class="col-1">
+                    <h1 class="closeCross" id="closeCrossUrlModule">&times;</h1>
+                </div>
+            </div>
+
+            <form action="{% url 'add_url_link' lecture.id %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+
+                <div class="form-row m-auto">
+
+                    <div class="col-5">
+                        <label for="file">
+                            Введите ссылку на код:
+                        </label>
+                    </div>
+                    <div class="col-5">
+                        <input type="url" class="form-control" id="url_link" name="url_link">
+                    </div>
+                    <div class="col-2">
+                        <input type="submit" value="Загрузить" class='btn btn-block btn-outline-dark'>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- ==========================End of URL Module======================================================== -->
+
+</div>
+</div>
+
+<script>
+        const videoFileButton = document.querySelector('.videoFileButton');
+        const videoFileModule = document.querySelector('.videoFileModule');
+        const closeCross = document.querySelector('#closeCross')
+        const textButton = document.querySelector('.text_button');
+        const textFileModule = document.querySelector('.textFileModule');
+        const closeCrossTextFile = document.querySelector('#closeCrossTextFile')
+        const urlButton = document.querySelector('.url_button');
+        const urlModule = document.querySelector('.urlModule');
+        const closeCrossUrlModule = document.querySelector('#closeCrossUrlModule');
+
+        const faTrash = document.querySelectorAll('.fa-trash');
+        const popUp = document.querySelectorAll('.popUp');
+
+      
+        faTrash.forEach((item, index) => {
+            item.setAttribute('data-index', index)
+        })
+
+        for (i=0; i< faTrash.length; i++ ) {
+            console.log(faTrash[i].getAttribute('data-index'));
+        }
+
+
+        for (i=0; i <faTrash.length; i++) {
+            faTrash[i].addEventListener('mouseover', e => {
+                a = e.target.getAttribute('data-index')
+                popUp[a].classList.add('openModal')
+            })
+        }
+
+        for (i = 0; i < faTrash.length; i++) {
+                faTrash[i].addEventListener('mouseleave', e => {
+                    a = e.target.getAttribute('data-index')
+                    popUp[a].classList.remove('openModal')
+                })
+            }
+
+         
+        videoFileButton.addEventListener('click', () => {
+            videoFileModule.classList.add('openModal')
+        })
+        closeCross.addEventListener('click', () => {
+            videoFileModule.classList.remove('openModal')
+        })
+
+        textButton.addEventListener('click', () => {
+            textFileModule.classList.add('openModal')
+        })
+
+        closeCrossTextFile.addEventListener('click', () => {
+            textFileModule.classList.remove('openModal')
+        })
+
+        urlButton.addEventListener('click', () => {
+            urlModule.classList.add('openModal')
+        })
+
+        closeCrossUrlModule.addEventListener('click', () => {
+            urlModule.classList.remove('openModal')
+        })
+
+        /*faTrash.addEventListener('mouseover', () => {
+            popUp.classlist.add('openModal')
+        })
+
+        faTrash.addEventListener('mouseleave', () => {
+                popUp.classlist.add('openModal')
+            })*/
+
+        /*faTrash.forEach(item => {
+            item.addEventListener('mouseover', () => {
+                popUp.classList.add('openModal')
+            })
+            item.addEventListener('mouseleave', () => {
+                popUp.classList.remove('openModal')
+            })
+        }*/
+
+        const popUpLecture = document.querySelector('.popUpLecture');
+        const faPenToSquare = document.querySelector('.fa-pen-to-square');
+        const editSectionTitle = document.querySelector('.editSectionTitle');
+        const btnClose = document.querySelector('.btnClose');
+
+        faPenToSquare.addEventListener('mouseover', () => {
+            popUpLecture.classList.add('openModal')
+        })
+        faPenToSquare.addEventListener('mouseleave', () => {
+            popUpLecture.classList.remove('openModal')
+        })
+        faPenToSquare.addEventListener('click', () => {
+                editSectionTitle.classList.add('openModal')
+            })
+        btnClose.addEventListener('click', () => {
+                editSectionTitle.classList.remove('openModal')
+            })
+
+
+</script>
+
+{% endblock %}

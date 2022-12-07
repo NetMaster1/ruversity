@@ -66,10 +66,21 @@ class MainSubject(models.Model):
     checked = models.BooleanField(default=False)
     blocked = models.BooleanField(default=False)
     discount_programs = models.BooleanField(default=True, null=True)
-    length = models.IntegerField(default=0)#length in minutes
-    length_1 = models.DurationField(null=True, default='00:00:00')
+    length = models.IntegerField(default=0)#length in seconds
+    length_1 = models.DurationField(null=True, default='00:00:00')#length in hours:min:seconds
 
     def __int__(self):
+        return self.id
+
+class Library(models.Model):
+    author = models.ForeignKey(User, on_delete=models.SET_DEFAULT, null=True, default=1)
+    subject = models.ForeignKey(MainSubject, on_delete=models.CASCADE, null=True)
+    video_file = models.FileField(upload_to='uploads', null=True)
+    length = models.IntegerField(default=0)#length in seconds
+    length_1 = models.DurationField(null=True)#length in hours:min:seconds
+    size_mb = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    
+    def __it__(self):
         return self.id
 
 class Section(models.Model):
@@ -102,8 +113,8 @@ class Lecture(models.Model):
     author = models.ForeignKey(User, on_delete=models.SET_DEFAULT, null=True, default=1)
     blocked = models.BooleanField(default=False)
     free = models.BooleanField(default=False)
-    length = models.IntegerField(default=0)
-    length_1 = models.DurationField(null=True)
+    length = models.IntegerField(default=0)#overall length in secs
+    length_1 = models.DurationField(null=True)#duration in hours:min:sec
     size_mb = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     enumerator = models.IntegerField(null=True)
 
@@ -129,6 +140,26 @@ class AdditionalMaterialFile(models.Model):
 
     # def get_absolute_file_upload_url(self):
     #     return MEDIA_URL + self.file_upload.url
+
+    def __int__(self):
+        return self.id
+
+class QuizId (models.Model):
+    def __int__(self):
+       return self.id
+
+class QuizQuestion (models.Model):
+    question = models.CharField(max_length=100, null=True)
+    lecture = models.ForeignKey(Lecture, on_delete=models.CASCADE, null=True)
+
+    def __int__(self):
+        return self.id
+
+class QuizAnswer (models.Model):
+    lecture = models.ForeignKey(Lecture, on_delete=models.CASCADE, null=True)
+    answer = models.CharField(max_length=100, null=True)
+    question = models.ForeignKey(QuizQuestion, on_delete=models.CASCADE, null=True)
+    correct = models.BooleanField(default=False)
 
     def __int__(self):
         return self.id
