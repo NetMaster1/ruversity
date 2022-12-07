@@ -154,48 +154,76 @@
             <h4>Содержание</h4>
         </div>
          
-    {% for section in sections %}
+{% for section in sections %}
         <div class="section_1" data-bs-toggle="collapse" data-bs-target='#section{{section.id}}'> <h5> Раздел {{section.enumerator}}: {{section.title}}. Длительность: {{section.length_1}}</h5>
         </div>
 
-            {% for lecture in lectures %}
-                {% if lecture.section == section %}
-                    <div id="section{{section.id}}" class='collapse'>
-                    {% if lecture.free == False %}
-                    <li class="list-group-item"><i class="fa-sharp fa-solid fa-circle-play"></i>&nbsp;&nbsp;&nbsp;{{lecture.title}} {{lecture.length_1}}
-                        {% for item in lecture.additionalmaterialfile_set.all%}
-                            {% if item %} <br>
-                            <i class="fa-regular fa-file"></i>&nbsp;&nbsp;&nbsp;Текстовый документ
-                            <!-- <a class="nav-link" href="{{ item.additional_file.url }}" download>Ссылка на файл</a> -->
+    {% for lecture in lectures %}
+        {% if lecture.section == section %}
+            <div id="section{{section.id}}" class='collapse'>
+            {% if lecture.free == False %}
+                <li class="list-group-item">
+                    <h5>{{lecture.enumerator}}.&nbsp; {{lecture.title}}</h5>
+
+                        {% if lecture.video_file%}
+                        <i class="fa-sharp fa-solid fa-circle-play ml-4"></i>&nbsp;
+                            Видеофайл. Время: {{lecture.length_1}} <br>
+                        {% endif %}
+                                  
+                            {% if lecture.quizquestion_set.filter.exists %}
+                            <i class="fa-solid fa-list-ul ml-4"></i>&nbsp;&nbsp;
+                            Tест <br>
                             {% endif %}
-                        {% endfor %}
-                        {% for item in lecture.additionalmateriallink_set.all%}
-                            {% if item %} <br>
-                            <i class="fa-solid fa-link"></i>&nbsp;&nbsp;&nbsp;Внешняя ссылка
-                        <!-- <a href="{{item.url_link }}" target="_blank">{{item.url_link}}</a> -->
-                            {% endif %}
-                        {% endfor %}
-                    </li>
-                    {% else %}
+                           
+                                {% for item in lecture.additionalmaterialfile_set.all%}
+                                {% if item %}
+                                <i class="fa-regular fa-file ml-4"></i>&nbsp;&nbsp;&nbsp;Текстовый документ <br>
+                                <!-- <a class="nav-link" href="{{ item.additional_file.url }}" download>Ссылка на файл</a> -->
+                                {% endif %}
+                                {% endfor %}
+                           
+                           
+                                {% for item in lecture.additionalmateriallink_set.all%}
+                                {% if item %}
+                                <i class="fa-solid fa-link ml-4"></i>&nbsp;&nbsp;Внешняя ссылка
+                                <!-- <a href="{{item.url_link }}" target="_blank">{{item.url_link}}</a> -->
+                                {% endif %}
+                                {% endfor %}
+                </li>
+         
+              
+            {% else %}
                     <li class="list-group-item">
-                        <i class="fa-sharp fa-solid fa-circle-play"></i>&nbsp;&nbsp;&nbsp;
-                        <a href="{% url 'video' subject.id lecture.id %}" target="_blank">{{lecture.title}} {{lecture.length_1}} </a>
-                        {% for item in lecture.additionalmaterialfile_set.all%}
-                            {% if item %}
-                            <i class="fa-regular fa-file"></i>&nbsp;&nbsp;&nbsp;Текстовый документ<a class="nav-link" href="{{ item.additional_file.url }}" download>Ссылка на файл</a>
-                            {% endif %}
-                        {% endfor %}
-                        {% for item in lecture.additionalmateriallink_set.all%}
-                            {% if item %} <br>
-                            <i class="fa-solid fa-link"></i>&nbsp;&nbsp;&nbsp;<a href="{{item.url_link }}" target="_blank">{{item.url_link}}</a>
-                            {% endif %}
-                        {% endfor %}
-                    </li>
+                    <h5 style="display: inline ">{{lecture.enumerator}}.&nbsp;</h5>
+                    <i class="fa-sharp fa-solid fa-circle-play"></i>&nbsp;&nbsp;
+                    <a href="{% url 'video' subject.id lecture.id %}" target="_blank">{{lecture.title}} {{lecture.length_1}} </a> <br>
+
+                    {% if lecture.quizquestion_set.filter.exists %}
+                    <i class="fa-solid fa-list-ul ml-4"></i>&nbsp;&nbsp;
+                    Tест <br>
                     {% endif %}
-                    </div>
-                {% endif %}
-            {% endfor%}               
-    {% endfor %}
+
+                    {% for item in lecture.additionalmaterialfile_set.all%}
+                    {% if item %}
+                    <i class="fa-regular fa-file ml-4"></i>&nbsp;&nbsp;&nbsp;Текстовый документ <br>
+                    <!-- <a class="nav-link" href="{{ item.additional_file.url }}" download>Ссылка на файл</a> -->
+                    {% endif %}
+                    {% endfor %}
+
+
+                    {% for item in lecture.additionalmateriallink_set.all%}
+                    {% if item %}
+                    <i class="fa-solid fa-link ml-4"></i>&nbsp;&nbsp;Внешняя ссылка
+                    <!-- <a href="{{item.url_link }}" target="_blank">{{item.url_link}}</a> -->
+                    {% endif %}
+                    {% endfor %}
+                    </li>
+
+            {% endif %}
+            </div>
+        {% endif %}
+    {% endfor%}               
+{% endfor %}
            
         </div>
 </div>

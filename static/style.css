@@ -1,6 +1,7 @@
 :root {
   --max-width: 56%;
 }
+
 /* html {
   min-height: 100%;
 } */
@@ -123,7 +124,7 @@ iframe {
 .section_1:hover {
   background-color: lightgrey;
   font-size: 1.1rem;
-  cursor:grab;
+  cursor: grab;
 
 }
 
@@ -186,6 +187,38 @@ iframe {
   border-color: grey;
 }
 
+.box {
+  border: 1px solid grey;
+  /*background-color: blue;*/
+}
+
+.box.dragging {
+  background-color: yellow;
+}
+
+.draggable_lecture:hover {
+  cursor:grab;
+  background-color: blanchedalmond;
+  box-shadow: 0 0 10px 2px;
+}
+
+.draggable_lecture.dragging {
+  background-color: blanchedalmond;
+  box-shadow: 0 0 10px 2px;
+}
+
+.draggable_section.draggingSection {
+  background-color: aquamarine;
+}
+
+.section_box {
+  border: 1px solid;
+  border-radius: 1rem;
+  border-color: black;
+  height: fit-content;
+  width: 70rem;
+  /*background-color: red;*/
+}
 
 .lecture_box {
   padding: 2rem;
@@ -201,6 +234,198 @@ iframe {
   background-color: white;
   /* overflow-y: scroll; */
   /* overflow-y: auto; */
+}
+
+.editLectureBox {
+  display: block;
+  /*position: absolute;
+    /*border: 1px solid;*/
+  /*border-color: #aaaaaa;*/
+  padding: 5rem;;
+  border-radius: 1rem;
+  top: 30vh;
+  left: 35rem;
+  background-color: white;
+  height: fit-content;
+  padding: 1rem;
+  box-shadow: 0 0 10px 2px;
+}
+
+.createLectureBox {
+  display: block;
+  /*position: absolute;*/
+  /*border: 1px solid;*/
+  /*border-color: #aaaaaa;*/
+  border-radius: 5px;
+  top: 30vh;
+  left: 35rem;
+  /*background-color: whitesmoke;*/
+  height: fit-content;
+  padding: 1rem;
+  box-shadow: 0 0 10px 2px;
+}
+
+/*=======================================*/
+.popUp {
+  display: none;
+}
+
+.popUp.openModal {
+  display: block;
+  padding: 0.1rem;
+  position: absolute;
+  left: 2rem;
+  top: -1rem;
+  height: fit-content;
+  width: fit-content;
+  border: solid 1px black;
+  background-color: white;
+  z-index: 1;
+  font-size: small;
+  box-shadow: 0 0 10px 2px;
+}
+
+.popUpSectionPage {
+  display: none;
+}
+
+.popUpSectionPage.openModal {
+  display: block;
+  padding: 0.1rem;
+  position: absolute;
+  top: -1.5rem;
+  left: 2rem;
+  height: fit-content;
+  width: fit-content;
+  border: solid 1px black;
+  background-color: white;
+  z-index: 1;
+  font-size: small;
+  box-shadow: 0 0 10px 2px;
+}
+
+.popUpDeleteSection {
+  display: none;
+}
+
+.popUpDeleteSection.openModal {
+  display: block;
+  padding: 0.1rem;
+  position: absolute;
+  top: -2rem;
+  left: 9rem;
+  height: fit-content;
+  width: fit-content;
+  border: solid 1px black;
+  background-color: white;
+  z-index: 1;
+  font-size: small;
+  box-shadow: 0 0 10px 2px;
+}
+
+
+.popUpEditLecture {
+  display: none
+}
+.popUpEditLecture.openModal {
+  display: block;
+  padding: 0.1rem;
+  position: absolute;
+  top: -3rem;
+  left: 3.5rem;
+  height: fit-content;
+  width: fit-content;
+  border: solid 1px black;
+  background-color: white;
+  z-index: 1;
+  font-size: small;
+  box-shadow: 0 0 10px 2px;
+}
+
+.popUpAddLecture {
+  display: none
+}
+.popUpAddLecture.openModal {
+  display: block;
+  padding: 0.1rem;
+  position: absolute;
+  top: -2rem;
+  left: 12rem;
+  height: fit-content;
+  width: fit-content;
+  border: solid 1px black;
+  background-color: white;
+  z-index: 1;
+  font-size: small;
+  box-shadow: 0 0 10px 2px;
+}
+ 
+.popUpCreateSection {
+  display: none;
+}
+.popUpCreateSection.openModal {
+  display: block;
+  padding: 0.1rem;
+  position: absolute;
+  top: 3rem;
+  left: 2.5rem;
+  height: fit-content;
+  width: fit-content;
+  border: solid 1px black;
+  background-color: white;
+  z-index: 1;
+  font-size: small;
+  box-shadow: 0 0 10px 2px;
+}
+
+.popUpEditSection {
+  display: none;
+}
+.popUpEditSection.openModal {
+  display: block;
+  padding: 0.1rem;
+  position: absolute;
+  top: -2rem;
+  left: 12rem;
+  height: fit-content;
+  width: fit-content;
+  border: solid 1px black;
+  background-color: white;
+  z-index: 1;
+  font-size: small;
+  box-shadow: 0 0 10px 2px;
+}
+
+
+/* ============================================== */
+.createSection {
+  display: none;
+}
+
+.createSection.openModal {
+  display: block;
+}
+
+.createSectionBox {
+  display: block;
+  position: absolute;
+  /*border: 1px solid;*/
+  /*border-color: #aaaaaa;*/
+  border-radius: 1rem;
+  top: 30vh;
+  left: 35rem;
+  background-color: white;
+  height: fit-content;
+  width: 50rem;
+  padding: 2rem;
+  box-shadow: 0 0 10px 2px;
+}
+
+.editSection {
+  display: none;
+}
+.editSection.openModal {
+  display: block;
 }
 
 /* ============================================ */
@@ -259,16 +484,18 @@ iframe {
   left: 4rem;
   bottom: 3rem;
 }
+
 /*=======================Lecture Note Modal==============================*/
 .create_lecture {
   display: inline;
-  border: solid 3px blue;
+  border: solid 3px lightgrey;
   border-radius: 10px;
 }
-.create_lecture:hover {
+
+/*.create_lecture:hover {
     background-color: #aaaaaa;
     color: white;
-}
+}*/
 
 .lecture_note {
   display: none;
@@ -288,15 +515,218 @@ iframe {
   left: 12rem;
   top: -7rem;
   z-index: 1;
+}
 
+.lib_box {
+  display: block;
+  position: absolute;
+  border: 1px solid;
+  border-color: #aaaaaa;
+  border-radius: 1%;
+  top: 30vh;
+  left: 35rem;
+  background-color: whitesmoke;
+  height: fit-content;
+  width: 40rem;
+}
+
+/*============================================*/
+.fileUploadModule {
+  display: none;
+}
+
+.fileUploadModule.openModal {
+  display: block;
+  background-color: whitesmoke;
+  border: 1px solid lightgrey;
+  border-radius: 10px;
+  padding: 0.5rem;
+  position: absolute;
+  height: fit-content;
+  width: fit-content;
+  padding: 1rem;
+  left: 12rem;
+  top: 10rem;
+  z-index: 1;
+  opacity: 1;
+}
+/*========================================*/
+.fileLibraryModule {
+  display: none;
+}
+.fileLibraryModule.openModal {
+  display: block;
+  background-color: whitesmoke;
+  border: 1px solid lightgrey;
+  border-radius: 10px;
+  padding: 0.5rem;
+  position: absolute;
+  height: fit-content;
+  width: fit-content;
+  padding: 1rem;
+  left: 12rem;
+  top: 10rem;
+  z-index: 1;
+  opacity: 1;
+}
+
+
+
+/*=======================================*/
+.editQuizQuestionModule {
+  display: none;
+}
+
+.editQuizQuestionModule.openModal {
+  display: block;
+}
+
+/*=======================================*/
+
+.fileLibUploadModule {
+  display: none;
+}
+
+.fileLibUploadModule.openModal {
+  display: block;
+  background-color: whitesmoke;
+  border: 1px solid lightgrey;
+  border-radius: 10px;
+  padding: 0.5rem;
+  position: absolute;
+  height: fit-content;
+  width: fit-content;
+  padding: 1rem;
+  left: 12rem;
+  top: 10rem;
+  z-index: 1;
+  opacity: 1;
 }
 
 /*=====================================*/
+.videoFileModule {
+  display: none;
+}
+
+.videoFileModule.openModal {
+  display: block;
+
+}
+
+.file_box {
+  display: block;
+  position: absolute;
+  /*border: 1px solid;*/
+  /*border-color: #aaaaaa;*/
+  border-radius: 1rem;
+  top: 20vh;
+  left: 35rem;
+  background-color: whitesmoke;
+  height: fit-content;
+  width: 50rem;
+  padding: 1rem;
+  box-shadow: 0 0 10px 2px;
+}
+/*========================================*/
+.popUpLecture {
+  display: none;
+}
+.popUpLecture.openModal {
+  display: block;
+    padding: 0.1rem;
+    position: absolute;
+    left: 2rem;
+    top: -1rem;
+    height: fit-content;
+    width: fit-content;
+    border: solid 1px black;
+    background-color: white;
+    z-index: 1;
+    font-size: small;
+    box-shadow: 0 0 10px 2px;
+  }
+
+/*=====================================*/
+.editSectionTitle {
+  display: none;
+}
+.editSectionTitle.openModal {
+  display: block;
+}
+
+
+/*================================*/
+.textFileModule {
+  display: none;
+}
+
+.textFileModule.openModal {
+  display: block;
+}
+
+/*===========================================*/
+.urlModule {
+  display: none;
+}
+
+.urlModule.openModal {
+  display: block;
+}
+
+/*===============================================*/
+.quiz_box {
+  display: block;
+  /*border: 1px solid;*/
+  /*border-color: #aaaaaa;*/
+  border-radius: 1rem;
+  height: fit-content;
+  /* width: fit-content;*/
+  background-color: white;
+  padding: 2rem;
+  box-shadow: 0 0 10px 2px;
+}
+
+.quizEditBox {
+  display: block;
+  position: absolute;
+  border-radius: 1rem;
+  top: 30vh;
+  left: 35rem;
+  background-color: white;
+  height: fit-content;
+  width: 50rem;
+  padding: 2rem;
+  box-shadow: 0 0 10px 2px;
+}
+
+/*==========================================================*/
+.subject_box {
+  /*background-color: #aaaaaa;*/
+  /*border: solid 1px blue;*/
+  border-radius: 5px;
+  height: fit-content;
+  width: 20rem;
+  box-shadow: 0 0 10px 2px;
+}
+
+.subject_box_bar {
+  display: flex;
+  border-bottom: 1px solid grey;
+  height: 5rem;
+}
+.subject_box_bar:hover {
+  background-color:whitesmoke;
+  border-bottom: 1px solid grey;
+  height: 5rem;
+  box-shadow: 0 0 10px 2px;
+}
+
+/*=====================================================*/
+
 #openSectionModal {
   display: none;
 }
 
-/* =========================================== */
 #openSectionModal.openModal {
   border-radius: 5px;
   border-color: grey;
@@ -313,7 +743,20 @@ iframe {
 #sections {
   position: relative;
 }
+
+
+/*===========================================*/
+
+
+
 /*========================================*/
+.lecture_string {
+  display: inline;
+  border: solid 3px lightgrey;
+  border-radius: 10px;
+}
+
+
 
 .hide {
   /* display: block; */
@@ -331,6 +774,20 @@ iframe {
   z-index: 1;
 }
 
+.blur {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+  /*overflow-y: scroll;*/
+  opacity: 100%;
+  /* visibility: visible;
+  visibility: hidden;*/
+  z-index: 2;
+}
+
 .video_library {
   background-color: grey;
   margin-top: 2px;
@@ -339,16 +796,21 @@ iframe {
   border-width: 2px;
 }
 
+form_wrapper.hidden {
+  display: hidden;
+}
+
 .d-1 {
   cursor: all-scroll;
   border-radius: 10px;
   border: solid;
-  border-color:blue;
+  border-color: blue;
   min-width: 3rem;
   width: fit-content;
   margin: 1px;
   padding: 2px;
 }
+
 .d-1:hover {
   background-color: #aaaaaa;
   color: white;
@@ -373,8 +835,9 @@ iframe {
   background-color: #aaaaaa;
   color: white;
 }
+
 .hovered {
-  background-color: #d1d8e2;
+  background-color: grey;
   border: solid;
   border-color: blue;
 }
@@ -385,8 +848,26 @@ iframe {
 }
 
 
+.draggable-list li.over .draggable {
+  background-color: #eaeaea;
+}
+
+.invisible {
+  cursor: grab;
+}
 
 
+.closeCross:hover {
+
+  border: solid 1px black;
+  border-radius: 0.5rem;
+  background-color: lightgray;
+  width: fit-content;
+  height: fit-content;
+  cursor: auto;
+  box-shadow: 0 0 10px 2px;
+
+}
 
 /*==========================Rating Stars Module======================*/
 .rating>input {
@@ -689,7 +1170,6 @@ select>option {
   color: blue;
   background-position: right;
   opacity: 1;
-
 }*/
 
 /* Media Query: Large Smartphone (Vertical) */
@@ -747,12 +1227,10 @@ select>option {
     max-height: 95vh;
     max-width: auto;
   }
-
   video {
     height: 95vh;
     object-fit: cover;
   }
-
   .video-fullscreen {
     height: 97.5vh;
     border-radius: 0;
@@ -799,8 +1277,8 @@ select>option {
 #video {
   max-width: 80vw;
   min-width: 800px;
-  border: 5px solid black;
-  border-radius: 10px;
+  border: 1px solid lightgray;
+  border-radius: 3px;
   /* background: black; */
   /* position: relative; */
   /* cursor: pointer; */

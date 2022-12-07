@@ -34,12 +34,11 @@ urlpatterns = [
     path('bank_account', views.bank_account, name='bank_account'),
     path('transactions', views.transactions, name='transactions'),
     path('GeneratePDF', views.GeneratePDF.as_view(), name="GeneratePDF"),
-#     path('question_answer', views.question_answer, name="question_answer"),
+    #path('question_answer', views.question_answer, name="question_answer"),
     path('answer/<int:subject_id>/<int:question_id>', views.answer, name="answer"),
     path('upload_multiple_files/<int:subject_id>', views.upload_multiple_files, name="upload_multiple_files"),
    
     path('bulk_lecture_enumerator_update/<int:subject_id>', views.bulk_lecture_enumerator_update, name="bulk_lecture_enumerator_update"),
-    path('edit_all/<int:subject_id>', views.edit_all, name="edit_all"),
     path('lecture_update_from_lib/<int:lecture_id>/<int:v_file_id>', views.lecture_update_from_lib, name="lecture_update_from_lib"),
     path('sections/<int:subject_id>', views.sections, name="sections"),
     path('new_lecture_page/<int:subject_id>/<int:section_id>', views.new_lecture_page, name="new_lecture_page"),

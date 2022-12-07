@@ -13,7 +13,7 @@ class SectionAdmin(admin.ModelAdmin):
     list_editable = ('length_1',)
 
 class LectureAdmin(admin.ModelAdmin):
-    list_display = ('id', 'subject', 'section', 'title', 'enumerator', 'video_file', 'author', 'date_posted', 'size_mb', 'length', 'length_1')
+    list_display = ('id', 'enumerator', 'subject', 'section', 'title', 'enumerator', 'video_file', 'author', 'date_posted', 'size_mb', 'length', 'length_1')
     ordering = ('subject', 'enumerator', 'id',)
     list_per_page=100
     list_filter = ('subject', 'section',)
