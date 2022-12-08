@@ -121,7 +121,7 @@
 
                         {% if lecture.quizquestion_set.filter.exists %}
                         <i class="fa-solid fa-list-ul ml-4"></i>&nbsp;&nbsp;
-                        <a href="{% url 'open_show_quiz_page' lecture.id%}">Пройдите тест</a> <br>
+                        <a href="{% url 'open_show_quiz_page' lecture.id%}" target="_blank">Пройдите тест</a> <br>
                         {% endif %}
                         
                         {% for item in lecture.additionalmaterialfile_set.all%}

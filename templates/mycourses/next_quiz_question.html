@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
-
-
+<div class="hide">
 
 <div class="container">
     {{lecture.id}}
 
+<div class="show_quiz_box">
 
     {% for question in questionsLeft %}
     <form action="{% url 'reg_answer' quiz.id lecture.id question.id %}" method="POST">
@@ -14,36 +14,56 @@
         {% for answer in answers %}
         {% if answer.question == question %}
 
-
-        <input type="radio" id="radioAnswer" name="answer" checked value="{{answer.answer}}">
-        <label for="question">{{answer.answer}}</label>
+        <input type="radio" id="radioAnswer" name="answer" value="{{answer.answer}}" required>
+        <label for="question">{{answer.answer}}</label><br>
 
         {% endif %}
-
         {% endfor %}
+
         <div class="row">
-            <div class="col-4"></div>
+     
             <div class="col-2">
-                <input type="submit" value="Загрузить" class='btn btn-block btn-outline-dark submit_button'>
+                <input type="submit" value="Ответить" class='btn btn-sm btn-block btn-outline-dark'>
             </div>
         </div>
     </form>
-    {% endfor%}
+{% endfor%}
 
 
-    {{number_of_questions}} {{number_of_results}}
+    <!-- {{number_of_questions}} {{number_of_results}} -->
     {% if number_of_results == number_of_questions %}
-
-    {{quiz.id}}
-
-    Перейти к лециям
-
-    Кол-во правильных ответов: {{number_of_correct_results}}
-    Процент выполнения {{quality_percent}}%
-
+    <div class="row">
+        <h4> Кол-во правильных ответов: {{number_of_correct_results}} </h4>
+    </div>
+    <div class="row">
+        <h4> Процент выполнения: {{quality_percent}}%</h4>
+    </div>
+    
+    <div class="row">
+        <div class="col">
+            <a href="{% url 'open_show_quiz_page' lecture.id %}" target="_blank" style="text-decoration:none">
+                <input type="button" value="Повторить тест" class="btn btn-lg btn-block btn-outline-dark btnClose">
+            </a>
+        </div>
+        <div class="col">
+            <input type="button" value="Закрыть" class="btn btn-lg btn-block btn-outline-dark btnClose">
+        </div>
+    </div>
     {% endif %}
 
-
 </div>
+</div>
+</div>
+<script>
+    console.log('Script starts')
+    const btnClose = document.querySelectorAll('.btnClose')
+   
 
+    for (i=0; i<btnClose.length; i++) {
+    btnClose[i].addEventListener('click',() => {
+        window.close()
+    })
+    }
+     console.log('Script ends')
+</script>
 {% endblock %}

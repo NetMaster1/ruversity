@@ -2,8 +2,6 @@
 {% block content %}
 <div class="hide">
 
-
-
 <div class="container">
 {{lecture.id}}/{{quiz.id}}
 
@@ -16,19 +14,18 @@
 {% for answer in answers %}
     {% if answer.question == question %}
 
-
-        <input type="radio" id="radioAnswer" name="answer" checked value="{{answer.answer}}">
-        <label for="question">{{answer.answer}}</label>
+        <input type="radio" id="radioAnswer" name="answer" value="{{answer.answer}}" required>
+        <label for="question">{{answer.answer}}</label> <br>
         
     {% endif %}
-    
 {% endfor %}
+
 <div class="row">
-    <div class="col-4"></div>
     <div class="col-2">
-        <input type="submit" value="Загрузить" class='btn btn-block btn-outline-dark submit_button'>
+        <input type="submit" value="Ответить" class='btn btn-sm btn-block btn-outline-dark submit_button'>
     </div>
 </div>
+<br>
 </form>
 {% endfor%}
 
@@ -42,46 +39,11 @@
     const testInput=document.querySelector('#test_input')
     console.log(testInput.value)
 
-    /*const getQuiz = (callback) => {
-        const request = new XMLHttpRequest();
-        request.addEventListener('readystatechange', () => {
-            if (request.readyState === 4 && request.status === 200) {
-                const data = JSON.parse(request.responseText)
-                callback(undefined, data);
-            }
-            else if (request.readyState === 4) {
-                callback('Could not fetch data', undefined);
-            }
-        });
-        request.open('GET', 'http://127.0.0.1:8000/mycourses/show_quiz/' + testInput.value);
-        request.send();
-    };
-
-    getQuiz((err, data) => {
-        if(err){
-            console.log(err);
-        }
-        else {
-            console.log(data)
-        }
-    });*/
-    
-
-    /*fetch ('http://127.0.0.1:8000/mycourses/show_quiz/' + testInput.value)
-        .then(response => response.json())
-        .then(json => console.log(json))*/
-
-
-
-    
-        
-
    const getQuiz = async () => {
         const response = await fetch ('http://127.0.0.1:8000/mycourses/show_quiz/' + testInput.value);
         const data = await response.json();
         return data;
     }
-
 
    getQuiz().then(data => {
         console.log (data)
@@ -95,9 +57,6 @@
         } 
     })
     
-  
-
-
     console.log('Script ends')
 </script>
 

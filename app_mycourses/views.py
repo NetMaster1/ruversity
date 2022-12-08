@@ -178,7 +178,7 @@ def quiz_api (request, lecture_id):
         logout(request)
         return redirect('login')
 
-def quiz_api_page(request, lecture_id):
+# def quiz_api_page(request, lecture_id):
     lecture=Lecture.objects.get(id=lecture_id)
     context = {
         'lecture': lecture
@@ -216,7 +216,6 @@ def reg_answer (request, quiz_id, lecture_id, question_id):
             if answer == correct_answer.answer:
                 result.correct=True
                 result.save()
-            print(result.quiz.id)
         return redirect ('next_quiz_question', quiz.id, lecture.id)
     else:
         logout(request)
