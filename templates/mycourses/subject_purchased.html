@@ -27,8 +27,8 @@
 <div class="card-body">
         {% if rating.user != request.user and rating.subject != subject %}
             <!-- ======================Rate the Course============================= -->
-            <div class="row">
-                <div class="col">
+
+   
                     <div class="row">
                         <div class="col">
                     <h5>Пожалуйста, оцените курс</h5>
@@ -39,7 +39,7 @@
                 <div class="col pt-3">
                     <form action="{% url 'rating' subject.id %}">
                         {% csrf_token %}
-                        <div class='rating'>
+                        <div class='rating' style="left: 2rem;">
                             <input type="radio" name="rating" value=5 id="rating1">
                             <label for='rating1'></label>
                             <input type="radio" name="rating" value=4 id="rating2">
@@ -58,10 +58,10 @@
                         </div>
                         </div>
                     </form>
-                    </div>
                 </div>
             </div>
-            </div>
+      
+
     <!-- ========================Display Rating================================= -->
             {% else %}
             <div class="row">
