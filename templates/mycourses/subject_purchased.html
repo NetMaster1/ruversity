@@ -127,7 +127,8 @@
                         {% for item in lecture.additionalmaterialfile_set.all%}
                         {% if item %}
                     <i class="fa-regular fa-file ml-4"></i>&nbsp;&nbsp;
-                    <a class="nav-link" href="{{ item.additional_file.url }}" download>Текстовый документ</a>
+                    <a href="{{ item.additional_file.url }}" download>Текстовый документ</a>
+                    <br>
                         {% endif %}
                         {% endfor %}
 
