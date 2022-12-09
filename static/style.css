@@ -874,9 +874,7 @@ form_wrapper.hidden {
   cursor: grab;
 }
 
-
 .closeCross:hover {
-
   border: solid 1px black;
   border-radius: 0.5rem;
   background-color: lightgray;
@@ -884,7 +882,6 @@ form_wrapper.hidden {
   height: fit-content;
   cursor: auto;
   box-shadow: 0 0 10px 2px;
-
 }
 
 /*==========================Rating Stars Module======================*/
@@ -894,11 +891,13 @@ form_wrapper.hidden {
 }
 
 .rating label {
-  /* display: inline; */
+  /*display: inline;*/
   cursor: pointer;
   width: 30px;
-  padding-left: 1px;
-  /* background: #ccc; */
+  padding-left: 1rem;
+  position: relative;
+  right: 4rem;
+  /*background: #ccc;*/
 }
 
 .rating label::before {
@@ -907,7 +906,7 @@ form_wrapper.hidden {
   /* font-weight: 900; */
   position: relative;
   /* position: absolute; */
-
+ 
   /* display: block; */
   font-size: 20px;
   color: grey;
