@@ -519,8 +519,8 @@ def delete_lecture(request, lecture_id):
         lecture = Lecture.objects.get(id=lecture_id)
         subject = lecture.subject
         if request.user == subject.author:
-            if subject.ready == True:
-                messages.error(request, 'Sorry, you can not delete a loaded lecture.')
+            if subject.ready == True and subject.being_edited == False:
+                messages.error(request, 'Вы не можете удалить лекцию, загруженную на сервер.')
                 return redirect('sections', subject.id)
             else:
                 lecture.delete()
@@ -606,7 +606,7 @@ def lecture_update_videofile (request, subject_id, section_id, lecture_id):
         #subtitle_file = request.POST.get('subtitle_file', False)
         #subtitle_file=subtitle_file,
         # translation_file=translation_file,
-        return redirect ('sections', subject.id,)
+        return redirect ('edit_lecture', lecture.id)
     else:
         logout(request)
         return redirect('login')
@@ -634,9 +634,9 @@ def edit_lecture(request, lecture_id):
         section = lecture.section
         v_files=Library.objects.filter(subject=subject)
         if request.user == subject.author:
-            if subject.ready == True:
+            if subject.ready == True and subject.being_edited == False:
                 messages.error(request, 'Вы не можете редактировать лекции, загруженные на сервер.')
-                return redirect('edit_section', subject.id, section.id)
+                return redirect('sections', subject.id)
             else:
                 if request.method == "POST":
                     lecture_new = request.POST.get('lecture_id', False)
@@ -845,20 +845,24 @@ def bulk_lecture_enumerator_update (request, subject_id):
 
 #========================================================================
 def quiz_creation (request, lecture_id):
-    answers=[]
-    lecture=Lecture.objects.get(id=lecture_id)
-    subject=lecture.subject
-    questions=QuizQuestion.objects.filter(lecture=lecture)
-    for question in questions:
-        answers=QuizAnswer.objects.filter(question=question)
-    #     answers.append(answer)
-    context = {
-        'questions': questions,
-        'answers': answers,
-        'lecture': lecture,
-        'subject': subject,
-    }
-    return render (request, 'workshop/quiz_creation_page.html', context)
+    if request.user.is_authenticated:
+        answers=[]
+        lecture=Lecture.objects.get(id=lecture_id)
+        subject=lecture.subject
+        questions=QuizQuestion.objects.filter(lecture=lecture)
+        for question in questions:
+            answers=QuizAnswer.objects.filter(question=question)
+        #     answers.append(answer)
+        context = {
+            'questions': questions,
+            'answers': answers,
+            'lecture': lecture,
+            'subject': subject,
+        }
+        return render (request, 'workshop/quiz_creation_page.html', context)
+    else:
+        logout(request)
+        return redirect('login') 
 
 def create_quiz(request, lecture_id):
     if request.user.is_authenticated:
@@ -1109,6 +1113,7 @@ def agree(request, subject_id):
             messages.error(request, 'В курсе отсутствуют лекции. Пожалуйста, создайте лекции.')
             return redirect('edit_subject', subject_id)
     else:
+        logout(request)
         return redirect('login')
 
 def author_profile(request):

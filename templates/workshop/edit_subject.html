@@ -13,7 +13,7 @@
         </nav>
     </div>
 
-    {% if subject.ready == True %}
+    {% if subject.ready == True and subject.being_edited == False%}
     <div class="row p-3 mt-3">
         <div class="col-12">
             Ваш курс был загружен на сервер для продажи. Так как ruversity.com предоставляет неограниченный срок
@@ -23,6 +23,7 @@
 
             <!-- Your course has been uploaded to ruversisty.com & is ready for sale. Since ruversity.com provides life-time access for the buyers, you are no longer able neither to delete it nor edit. In order to make changes in the course you have to apply to us via email. -->
         </div>
+    </div>
     </div>
 
     {% else %}
@@ -105,12 +106,14 @@
 </div>
 <!-- ==================================End of File Library Module============================== -->
 
-        
+        {% if subject.being_edited == False %}
             <a href="{% url 'agreement' subject.id%}" style="text-decoration: none">
                 <div class="subject_box_bar">
                 <h5 style="margin: auto; color: red">Загрузить курс на сервер</h5>
                 </div>
-            </a> 
+            </a>
+        {% endif %}
+
         </div>
     </div>
   <div class="col-8">

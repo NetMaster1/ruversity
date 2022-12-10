@@ -18,18 +18,13 @@
 </div>
 
 
-<a href="{% url 'quiz_api' lecture.id %}"> JSON Response</a>
-<a href="{% url 'quiz_api_page' lecture.id %}"> Страница для обработки JSON</a>
-<a href="{% url 'open_show_quiz_page' lecture.id%}"> QUIZ на django</a>
-
-
     <div class="row mt-2 mb-2">
         Лекция: {{lecture.title}}
     </div>
         
     <div class="row">
         <div class="col-6">
-            <div class="quiz_box">
+            <div class="quiz_box mt-5">
                 <form action="{% url 'create_quiz' lecture.id %}" method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="form-row">
@@ -93,15 +88,29 @@
         </div>
     
         <div class="col-6">
-                <div class="quiz_box">
+                <div class="quiz_box mt-5">
             <div class="row">
-                <h5>Лекция: {{lecture.id}}</h5>
+                <h5>Лекция: {{lecture.title}}</h5>
             </div>
         
     <div class="row">
         {% for question in questions %}
+            <div class="row">
+                <div class="col-10">
+                    <strong> Вопрос: {{question.question}}</strong>
+                </div>
+                <div class="col-2">
+                    <a href="{% url 'delete_quiz_question' lecture.id question.id%}">
+                        <i class="fa-solid fa-trash"></i>
+                    </a>
+                    <a href="#">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </a>
+                </div>
+            </div>
 
-            <strong> Вопрос: {{question.question}}</strong>
+          
+                
     <!-- ============================editQuizQuestionModule====================================         -->
             <div class="editQuizQuestionModule">
                 <div class="blur">
@@ -153,15 +162,7 @@
                 {% for item in question.quizanswer_set.all%}
                 <div>Ответ: {{item.answer}} {{item.correct}}</div>
                 {%endfor%}
-            </div>
-            <div class="col-2">
-                <a href="{% url 'delete_quiz_question' lecture.id question.id%}">
-                <i class="fa-solid fa-trash"></i>
-                </a>
-                <a href="#">
-                <i class="fa-solid fa-pen-to-square"></i>
-                </a>
-            </div>
+            </div> 
         </div>
         {% endfor%}
     </div>

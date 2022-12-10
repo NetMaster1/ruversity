@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+
+<div class="container">
+    {{lecture.id}}
+ <input type="text" id="testInput" value="{{lecture.id}}">
+ <div id="identity"></div>
+
+</div>
+
+
+
+<script>
+    console.log('Script starts')
+    const testInput=document.querySelector('#testInput')
+    quiz = []
+ 
+
+    /*const getQuiz = (callback) => {
+        const request = new XMLHttpRequest();
+        request.addEventListener('readystatechange', () => {
+            if (request.readyState === 4 && request.status === 200) {
+                const data = JSON.parse(request.responseText)
+                callback(undefined, data);
+            }
+            else if (request.readyState === 4) {
+                callback('Could not fetch data', undefined);
+            }
+        });
+        request.open('GET', 'http://127.0.0.1:8000/mycourses/show_quiz/' + testInput.value);
+        request.send();
+    };
+
+    getQuiz((err, data) => {
+        if(err){
+            console.log(err);
+        }
+        else {
+            console.log(data)
+        }
+    });*/
+
+    /*fetch ('http://127.0.0.1:8000/mycourses/quiz_api/' + testInput.value).then((response) => {
+            return response.json()
+    })
+    .then(data =>{
+        console.log(data)
+    })
+    .catch((err) => {
+        console.log('rejected', err)
+    });*/
+
+    /*fetch ('http://127.0.0.1:8000/mycourses/quiz_api/' + testInput.value)
+        .then(response => response.json())
+        .then(obj => 
+                    //console.log(obj)
+                    document.getElementById('identity').innerHTML=JSON.stringify(obj)         
+            )*/
+
+      fetch('http://127.0.0.1:8000/mycourses/quiz_api/' + testInput.value)
+            .then(function(resp) {return resp.json()})
+            .then(function (data) {
+                console.log(data);
+                console.log(data['data'].length)
+
+
+            
+                let a = Object.keys(data['data'][0]);
+                //let values = Object.values(data['data'][0]);
+                let b = data['data'][0]
+
+                //console.log (Object.keys(b)[0])
+                console.log(data['data'][0])
+                console.log(Object.keys(data['data'][0])[0])
+
+                for (i=0; i < data['data'].length; i++)
+                    quiz[i]={question: data['data'][i][key]}
+                
+            })
+            .catch(function () {
+                //catch any errors
+            });
+    
+        
+         
+ 
+    
+    //let url = 'http://127.0.0.1:8000/mycourses/quiz_api/' + testInput.value;
+    //let response = await fetch(url);
+    //let data = await response.json(); // читаем ответ в формате JSON
+    //console.log(data)
+    
+      
+
+
+
+     /*data.forEach(el => {
+            for (const [question, answers] of Object.entries(el)) { console.log(question + ':' + answers) }
+        })*/
+   
+
+
+  /* const getQuiz = async () => {
+        const response = await fetch('http://127.0.0.1:8000/mycourses/quiz_api/' + testInput.value);
+        const data = await response.json();
+        return data;
+    }
+     
+    //объект data одним объектом первого уровня 'data: []''
+    getQuiz().then(data => {
+        console.log(data)
+        console.log(data['data'][0]['sfsdfsdfds'][0])
+        arr.push(data['data'][0]['sfsdfsdfds'][0])
+        console.log(arr[0])
+  
+        print(arr.length)
+
+        //quiz.push(data['data'][0]['sfsdfsdfds'][0])
+        //quiz.push(data['data'][0]['sfsdfsdfds'][1])
+        //let keys = Object.keys(data);
+        //for (let i = 0; i < keys.length; i++) {
+        //    console.log(data[keys[i]])
+        //}
+        //let values = Object.values(data);
+        //for (const val of Object.values(data)) {
+        //    console.log(val)
+        //}
+    })*/
+
+
+    console.log(quiz)
+    
+
+    console.log('Script ends')
+</script>
+
+{% endblock %}

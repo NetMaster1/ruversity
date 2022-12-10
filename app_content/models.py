@@ -65,6 +65,7 @@ class MainSubject(models.Model):
     ready = models.BooleanField(default=False)
     checked = models.BooleanField(default=False)
     blocked = models.BooleanField(default=False)
+    being_edited = models.BooleanField(default=False)
     discount_programs = models.BooleanField(default=True, null=True)
     length = models.IntegerField(default=0)#length in seconds
     length_1 = models.DurationField(null=True, default='00:00:00')#length in hours:min:seconds

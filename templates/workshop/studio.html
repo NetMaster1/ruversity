@@ -65,7 +65,7 @@
     
     <div class="row">
         {% for subject in subjects %}
-        {% if subject.ready == False %}
+        {% if subject.ready == False or subject.being_edited == True %}
         
         <div class="col-sm-3">
             <div class="card mb-3" style="border-color: transparent;">
