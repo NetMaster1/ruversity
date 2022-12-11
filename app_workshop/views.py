@@ -1045,73 +1045,96 @@ def disagree(request, subject_id):
 #saving subject & section length in min & checking for badwords
 def agree(request, subject_id):
     if request.user.is_authenticated:
-        subject = MainSubject.objects.get(id=subject_id)
-        if Lecture.objects.filter(subject=subject.id).exists():
-            badwords=Badword.objects.all()
-            lectures = Lecture.objects.filter(subject=subject).order_by('enumerator')
-            # lectures = Lecture.objects.filter(subject=subject, enumerator__isnull=False).order_by.('enumerator')
-            subject_duration=0
-            for lecture in lectures:
-                subject_duration += lecture.length #in seconds
-            
-            #========Length Module for Subject================================
-            length_hours=subject_duration // 3600 #hours
-            if length_hours < 1:
-                length_hours=0
-            remainder=subject_duration-length_hours*3600
-            length_min = remainder // 60 #minutes
-            length_sec = remainder % 60 #seconds
-            duration=datetime.timedelta(hours=length_hours, minutes=length_min, seconds=length_sec)
-            subject.length = subject_duration
-            subject.length_1=duration
-            subject.save()
-            #==============End of Length Module for Subject
-            sections = Section.objects.filter(course=subject)
-            for section in sections:
-                lectures_length=lectures.filter(section=section)
-                section_length=0
-                for lecture_length in lectures_length:
-                    section_length += lecture_length.length
-
-                length_hours=section_length // 3600 #hours
+        if subject.ready == False:
+            subject = MainSubject.objects.get(id=subject_id)
+            if Lecture.objects.filter(subject=subject.id).exists():
+                badwords=Badword.objects.all()
+                lectures = Lecture.objects.filter(subject=subject).order_by('enumerator')
+                # lectures = Lecture.objects.filter(subject=subject, enumerator__isnull=False).order_by.('enumerator')
+                subject_duration=0
+                for lecture in lectures:
+                    subject_duration += lecture.length #in seconds
+                
+                #========Length Module for Subject================================
+                length_hours=subject_duration // 3600 #hours
                 if length_hours < 1:
                     length_hours=0
-                remainder=section_length-length_hours*3600
+                remainder=subject_duration-length_hours*3600
                 length_min = remainder // 60 #minutes
                 length_sec = remainder % 60 #seconds
                 duration=datetime.timedelta(hours=length_hours, minutes=length_min, seconds=length_sec)
+                subject.length = subject_duration
+                subject.length_1=duration
+                subject.save()
+                #==============End of Length Module for Subject
+                #=================Length Module for section==========================
+                sections = Section.objects.filter(course=subject)
+                for section in sections:
+                    lectures_length=lectures.filter(section=section)
+                    section_length=0
+                    for lecture_length in lectures_length:
+                        section_length += lecture_length.length
 
-            section.length=section_length
-            section.length_1=duration
-            section.save()
-            if badwords:
-                for word in badwords:
-                    if word.badword in subject.title:
-                        subject.blocked = True
-                        subject.save()
-                    else:
-                        subject.checked = True
-                        subject.ready=True
-                        subject.save()
-            else:
+                    length_hours=section_length // 3600 #hours
+                    if length_hours < 1:
+                        length_hours=0
+                    remainder=section_length-length_hours*3600
+                    length_min = remainder // 60 #minutes
+                    length_sec = remainder % 60 #seconds
+                    duration=datetime.timedelta(hours=length_hours, minutes=length_min, seconds=length_sec)
+                section.length=section_length
+                section.length_1=duration
+                section.save()
+                #=====================End of Length Module for Section=======================
+                if badwords:
+                    for word in badwords:
+                        if word.badword in subject.title:
+                            subject.blocked = True
+                            subject.save()
+                            messages.error(request, 'Курс не был загружен. Измените название курса.')
+                            return redirect('edit_subject', subject.id)     
+                        for section in sections:
+                            if word.badword in section.title:
+                                section.blocked = True
+                                section.save()
+                                subject.blocked = True
+                                subject.save()
+                                messages.error(request, 'Курс не был загружен. Измените название одного из разделов.')
+                                return redirect('edit_subject', subject.id)
+                        for lecture in lectures:
+                            if word.badword in lecture.title:
+                                lecture.blocked = True
+                                lecture.save()
+                                subject.blocked = True
+                                subject.save()
+                                messages.error(request, 'Курс не был загружен. Измените название одной из лекций.')
+                                return redirect('edit_subject', subject.id)
                 subject.checked = True
                 subject.ready=True
                 subject.save()
-            for lecture in lectures:
-                lecture.processing_state = PROCESSING_READY_TO_START #sending to CDN
-                lecture.save()
-                if badwords:
-                    for word in badwords:
-                        if word.badword in lecture.title:
-                            lecture.blocked = True
-                            lecture.save()
-                            subject.blocked = True
-                            subject.save()
-            return redirect('main_page')
+                #===============sending lectures to CDN=========================
+                for lecture in lectures:
+                    if lecture.video_file:
+                        lecture.processing_state = PROCESSING_READY_TO_START
+                        lecture.save()
+                #==========================================================
+                       
+            else:
+                subject_id=subject.id
+                messages.error(request, 'В курсе отсутствуют лекции. Пожалуйста, создайте лекции.')
+                return redirect('edit_subject', subject_id)
+        #=========Editing previously loaded subject===========================
         else:
-            subject_id=subject.id
-            messages.error(request, 'В курсе отсутствуют лекции. Пожалуйста, создайте лекции.')
-            return redirect('edit_subject', subject_id)
+            if Lecture.objects.filter(subject=subject.id).exists():
+                lectures=Lecture.objects.filter(subject=subject.id)
+                for lecture in lectures:
+                    #process a new lecture which has been added
+                    if lecture.date_modified != subject.date_modified:
+                        if lecture.video_file:
+                            lecture.processing_state = PROCESSING_READY_TO_START
+                            lecture.save()
+            return redirect('studio')
+
     else:
         logout(request)
         return redirect('login')

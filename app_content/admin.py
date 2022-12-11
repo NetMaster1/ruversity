@@ -3,7 +3,7 @@ from . models import MainSubject, Transaction, Price, Category, Language, Rating
 
 
 class MainSubjectAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'percent', 'date_posted', 'author', 'author_price', 'ready', 'discount_programs', 'length_1', 'being_edited')
+    list_display = ('id', 'title', 'date_modified', 'percent', 'date_posted', 'author', 'author_price', 'ready', 'discount_programs', 'length_1', 'being_edited')
     list_editable = ('length_1',)
 
 class SectionAdmin(admin.ModelAdmin):
@@ -13,7 +13,7 @@ class SectionAdmin(admin.ModelAdmin):
     list_editable = ('length_1',)
 
 class LectureAdmin(admin.ModelAdmin):
-    list_display = ('id', 'subject', 'section', 'title', 'video_file', 'author', 'date_posted', 'size_mb', 'length', 'length_1')
+    list_display = ('id', 'subject', 'date_modified', 'section', 'title', 'video_file', 'author', 'date_posted', 'size_mb', 'length', 'length_1')
     ordering = ('enumerator', 'subject', 'enumerator', 'id',)
     list_per_page=100
     list_filter = ('subject', 'section',)

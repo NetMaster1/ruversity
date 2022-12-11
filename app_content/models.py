@@ -46,7 +46,9 @@ class MainSubject(models.Model):
     prerequisite = models.TextField(null=True)
     # date_posted = models.DateField(default=date.today)
     # date_posted = models.DateTimeField(auto_now_add=True)
-    date_posted = models.DateField(auto_now_add=True)
+    date_posted = models.DateField(auto_now_add=True)#first created
+    # displays last saving of the subject subject.save() when 'ready' is set to True
+    date_modified = models.DateTimeField(auto_now=True)
     thumbnail_file = models.FileField(upload_to='uploads')
     # thumbnail_file = models.ImageField(upload_to='uploads', width_field='width_field', height_field='height_field')
     # width_field=models.IntegerField(default=750)
@@ -90,6 +92,7 @@ class Section(models.Model):
     length_1 = models.DurationField(null=True)
     title = models.CharField(max_length=100)
     enumerator = models.IntegerField(null=True)
+    blocked = models.BooleanField(default=False)
 
     def __int__(self):
         return self.id
@@ -97,6 +100,7 @@ class Section(models.Model):
 class Lecture(models.Model):
     title = models.CharField(max_length=100, null=True)
     date_posted = models.DateTimeField(auto_now_add=True)
+    date_modified = models.DateTimeField(auto_now=True)
     subject = models.ForeignKey(MainSubject, on_delete=models.CASCADE)
     section = models.ForeignKey(Section, on_delete=models.CASCADE, null=True)
     video_file = models.FileField(upload_to='uploads', null=True)
