@@ -1045,8 +1045,8 @@ def disagree(request, subject_id):
 #saving subject & section length in min & checking for badwords
 def agree(request, subject_id):
     if request.user.is_authenticated:
+        subject = MainSubject.objects.get(id=subject_id)
         if subject.ready == False:
-            subject = MainSubject.objects.get(id=subject_id)
             if Lecture.objects.filter(subject=subject.id).exists():
                 badwords=Badword.objects.all()
                 lectures = Lecture.objects.filter(subject=subject).order_by('enumerator')
@@ -1086,6 +1086,7 @@ def agree(request, subject_id):
                 section.length_1=duration
                 section.save()
                 #=====================End of Length Module for Section=======================
+                #============Check for Badwords Module=================================
                 if badwords:
                     for word in badwords:
                         if word.badword in subject.title:
@@ -1112,11 +1113,14 @@ def agree(request, subject_id):
                 subject.checked = True
                 subject.ready=True
                 subject.save()
+                #================End of Check for Badwords Module===========================
                 #===============sending lectures to CDN=========================
                 for lecture in lectures:
+                    #lecture.ready = True
                     if lecture.video_file:
+                        lecture.ready = True
                         lecture.processing_state = PROCESSING_READY_TO_START
-                        lecture.save()
+                    lecture.save()
                 #==========================================================
                        
             else:
@@ -1129,12 +1133,13 @@ def agree(request, subject_id):
                 lectures=Lecture.objects.filter(subject=subject.id)
                 for lecture in lectures:
                     #process a new lecture which has been added
-                    if lecture.date_modified != subject.date_modified:
+                    if lecture.ready == False:
+                        #lecture.ready=True
                         if lecture.video_file:
+                            lecture.ready=True
                             lecture.processing_state = PROCESSING_READY_TO_START
-                            lecture.save()
+                        lecture.save()
             return redirect('studio')
-
     else:
         logout(request)
         return redirect('login')

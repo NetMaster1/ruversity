@@ -15,7 +15,7 @@
         </nav>
     </div>
 
-        <div class='editLectureBox'>
+<div class='editLectureBox'>
             <div class="row m-auto" >
                 <div class="col-11">
                     <strong>
@@ -96,6 +96,7 @@
                             </video>
                         </a>
                     </div>
+                    {% if lecture.ready == False %}
                     <div class="col-2">
                         <div class="popUp">
                             Удалить содержимое.
@@ -104,6 +105,7 @@
                           <h4><i class="fa-solid fa-trash"></i></h4>
                         </a>
                     </div>
+                    {% endif %}
                 </div>
                 </div>
                 {% endif %}
@@ -112,17 +114,25 @@
                 <div class="box">
                 <div class="row ml-2 mb-2">
                     <div class="col-4">
-                        <a href="{% url 'quiz_creation' lecture.id %}">
-                            Тесты
-                        </a>
+                        Тесты
                     </div>
                     <div class="col-2">
+                        <div class="popUpEditQuiz">
+                            Редактировать тест.
+                        </div>
+                        <a href="{% url 'quiz_creation' lecture.id %}" style="text-decoration: none">
+                            <h4 style="display: inline "> <i class="fa-solid fa-file-pen"></i> </h4>
+                        </a>
+                            
+                        {% if lecture.ready == False %}
                         <div class="popUp">
                             Удалить содержимое.
                         </div>
                         <a href="{% url 'delete_quiz' lecture.id%}">
-                            <h4><i class="fa-solid fa-trash"></i></h4>
+                            <h4 style="display: inline "><i class="fa-solid fa-trash"></i></h4>
                         </a>
+                        {% endif %}
+                    
                     </div>
                 </div>
                 </div>
@@ -177,13 +187,18 @@
                 </div>
                 {% endfor %}
                 {% endif %}
-
+     
          
             <hr style="border-top: 1px solid grey">
             <div class="row m-auto pb-2">
+                {% if lecture.ready == True and lecture.video_file %}
+                <col-3></col-3>
+                {% else %}
                 <div class="col-3">
                     <input type="button" value="Видеофайл" class="btn btn-sm btn-block btn-outline-dark videoFileButton">
                 </div>
+                {% endif %}
+
                 <div class="col-3">
                     <a href="{% url 'quiz_creation' lecture.id%}" style="text-decoration: none">
                         <input type="button" value="Тест" id="test" class="btn btn-sm btn-block btn-outline-dark">
@@ -196,8 +211,6 @@
                 <div class="col-3">
                     <input type="button" value="Ссылка на код" id="code" class="btn btn-sm btn-block btn-outline-dark url_button">
                 </div>
-               
-
             </div>
       
 
@@ -338,6 +351,7 @@
 </div>
 
 <script>
+    console.log('script starts')
         const videoFileButton = document.querySelector('.videoFileButton');
         const videoFileModule = document.querySelector('.videoFileModule');
         const closeCross = document.querySelector('#closeCross')
@@ -350,7 +364,19 @@
 
         const faTrash = document.querySelectorAll('.fa-trash');
         const popUp = document.querySelectorAll('.popUp');
+        const popUpEditQuiz = document.querySelector('.popUpEditQuiz');
+        const faFilePen = document.querySelector('.fa-file-pen');
 
+        if (faFilePen) {
+        faFilePen.addEventListener('mouseover', () => {
+            popUpEditQuiz.classList.add('openModal')
+        })
+        } 
+        if (faFilePen) {    
+        faFilePen.addEventListener('mouseleave', () => {
+            popUpEditQuiz.classList.remove('openModal')
+        })
+        }
       
         faTrash.forEach((item, index) => {
             item.setAttribute('data-index', index)
@@ -375,10 +401,11 @@
                 })
             }
 
-         
+        if (videoFileButton) {
         videoFileButton.addEventListener('click', () => {
             videoFileModule.classList.add('openModal')
         })
+    }
         closeCross.addEventListener('click', () => {
             videoFileModule.classList.remove('openModal')
         })
@@ -434,7 +461,7 @@
                 editSectionTitle.classList.remove('openModal')
             })
 
-
+    console.log('script ends')
 </script>
 
 {% endblock %}

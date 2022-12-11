@@ -16,9 +16,7 @@
     {% if subject.ready == True and subject.being_edited == False%}
     <div class="row p-3 mt-3">
         <div class="col-12">
-            Ваш курс был загружен на сервер для продажи. Так как ruversity.com предоставляет неограниченный срок
-            использования приобретенного курса, мы вынуждены ограничить вас в вашем праве удалить или редактировать
-            данный курс.
+            Ваш курс был загружен на сервер для продажи. Так как ruversity.com предоставляет неограниченный срокиспользования приобретенного курса, мы вынуждены ограничить вас в вашем праве удалить или редактироватьданный курс.
             Для внесения изменений в курс свяжитесь с нами по электронной почте.
 
             <!-- Your course has been uploaded to ruversisty.com & is ready for sale. Since ruversity.com provides life-time access for the buyers, you are no longer able neither to delete it nor edit. In order to make changes in the course you have to apply to us via email. -->
@@ -260,7 +258,7 @@
                             </div>
                         </div>
             </form>
-
+            {% if subject.ready == False %}
             <div class="row mt-3">
                 <div class="col">
                     <a href="{% url 'delete_subject' subject.id %}" style="text-decoration: none">
@@ -269,6 +267,7 @@
                     </a>
                 </div>
             </div>
+            {% endif %}
         </div>
     </div>
     <br>

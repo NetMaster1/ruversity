@@ -117,6 +117,7 @@ class Lecture(models.Model):
     # author = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     author = models.ForeignKey(User, on_delete=models.SET_DEFAULT, null=True, default=1)
     blocked = models.BooleanField(default=False)
+    ready = models.BooleanField(default=False)#loaded to server
     free = models.BooleanField(default=False)
     length = models.IntegerField(default=0)#overall length in secs
     length_1 = models.DurationField(null=True)#duration in hours:min:sec

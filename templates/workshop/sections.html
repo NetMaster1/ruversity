@@ -70,11 +70,13 @@
             <div class="col-11">
                 <label for="section_id">
                     {{section.enumerator}} {{section.title}} 
-                </label>
+                </label>&nbsp;&nbsp;
+                {% if subject.ready == False %}
                 <div class="popUpDeleteSection">Удалить раздел</div>
                 <a href="{% url 'delete_section' subject.id section.id %}" style="text-decoration: none">
                     <h4 style="display: inline"><i class="fa-solid fa-trash-arrow-up"></i> </h4>
-                </a> 
+                </a>
+                {% endif %}
                 <div class="popUpEditSection">
                     Изменить название раздела.
                 </div>
@@ -115,12 +117,14 @@
                 value='{{section.id}}/{{lecture.id}}' readonly hidden>
             </div>
            <div class="col-2">
+            {% if subject.ready == False %}
                 <div class="popUpSectionPage">
                     Удалить лекцию.
                 </div>
                 <a href="{% url 'delete_lecture' lecture.id %}" style="text-decoration: none" >
                     <h4 style="display: inline"><i class="fa-solid fa-trash"></i></h4>
                 </a>
+                {% endif %}
                 <div class="popUpEditLecture">
                     Редактировать лекцию.
                 </div>
