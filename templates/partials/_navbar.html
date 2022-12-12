@@ -106,6 +106,9 @@
             <a href="{% url 'transactions' %}" class="dropdown-item">Мои сделки</a>
             <a href="{% url 'studio' %}" class="dropdown-item">Творческая студия</a>
             <a href="{% url 'tutorial' %}" class="dropdown-item">Инструкции по созданию курса</a>
+            {% if request.user.username == '79200711112@yandex.ru' %}
+            <a href="{% url 'admin_page' %}" class="dropdown-item">Вход для администратора</a>
+            {% endif %}
            
           </div>
     </div>

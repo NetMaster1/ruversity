@@ -28,5 +28,6 @@ urlpatterns = [
     path('contacts/', include('app_contacts.urls')),
     path('reviews/', include('app_reviews.urls')),
     path('tutorial/', include('app_tutorial.urls')),
+    path('service/', include('app_service.urls')),
     # path('stripe/', include('app_stripe.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

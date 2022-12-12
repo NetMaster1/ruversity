@@ -52,5 +52,6 @@ urlpatterns = [
     path('delete_text_file/<int:lecture_id>', views.delete_text_file, name="delete_text_file"),
     path('add_url_link/<int:lecture_id>', views.add_url_link, name="add_url_link"),
     path('delete_url_link/<int:lecture_id>', views.delete_url_link, name="delete_url_link"),
+    path('send_lecture/<int:lecture_id>/', views.send_lecture, name='send_lecture'),
    
 ]

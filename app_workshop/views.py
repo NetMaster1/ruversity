@@ -148,6 +148,7 @@ def edit_author_page(request, user_id):
             logout(request)
             return redirect('login')
     else:
+        logout(request)
         return redirect('login')
 
 #=================================Subject Operations===================================
@@ -1418,3 +1419,14 @@ def answer(request, subject_id, question_id):
     else:
         return redirect('login')
 
+def send_lecture (request, lecture_id):
+    lecture=Lecture.objects.get(id=lecture_id)
+    subject=lecture.subject
+    lectures=Lecture.objects.filter(subject=subject).order_by('enumerator')
+    lecture.processing_state = PROCESSING_READY_TO_START
+    lecture.save()
+    context = {
+        'subject': subject,
+        'lectures': lectures,
+    }
+    return render (request, 'service/admin_page.html', context)
