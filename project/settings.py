@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'storages',
     'background_task',
     'app_tutorial',
+    'app_service',
 
 ]
 
