@@ -18,6 +18,10 @@ logger = getLogger(__name__)
 def process_videos():
     non_processed_videos = Lecture.objects.filter(processing_state=PROCESSING_READY_TO_START)
     for entry in non_processed_videos:
+        if not (entry.video_file and hasattr(entry.video_file, 'path')):
+            logger.error('Failed to upload video {}: associated file not found'.format(entry.video_file))
+            continue
+        
         if not os.path.exists(entry.video_file.path):
             logger.error('Failed to upload video {}: file does not exist'.format(entry.video_file.path))
             continue
