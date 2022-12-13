@@ -53,7 +53,6 @@ def get_jwt_token():
         if r.status_code != 200:
             return None
     except:
-        global logger
         logger.error('Failed to get JWT token from {}: {}'.format(settings.CDN_JWT_URL, traceback.format_exc()))
         return None
 
@@ -74,7 +73,6 @@ def get_upload_link():
         if r.status_code != 200:
             return None
     except:
-        global logger
         logger.error('Failed to get upload link from {}: {}'.format(settings.CDN_RECEIVE_UPLOAD_LINK_URL, traceback.format_exc()))
         return None
 
@@ -95,7 +93,6 @@ def get_full_video_info(video_uuid):
         if r.status_code != 200:
             return None
     except:
-        global logger
         logger.error('Failed to get full video info from {}: {}'.format(settings.CDN_VIDEO_INFO_URL.format(video_uuid), traceback.format_exc()))
         return None
 
