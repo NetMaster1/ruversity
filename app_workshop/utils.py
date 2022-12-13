@@ -7,13 +7,18 @@ from django.http import HttpResponse
 from django.conf import settings
 import os.path
 
+from logging import getLogger
+
 import json
 import requests
+import traceback
 
 PROCESSING_NOT_STARTED = 0
 PROCESSING_READY_TO_START = 1
 PROCESSING_IN_PROGRESS = 2
 PROCESSING_FINISHED = 3
+
+logger = getLogger(__name__)
 
 def fetch_pdf_resources(uri, rel):
     import os.path
@@ -40,11 +45,16 @@ def render_to_pdf(template_src, context_dict={}):
 #
 
 def get_jwt_token():
-    r = requests.get(settings.CDN_JWT_URL,
-                     timeout=settings.CDN_TIMEOUT_SECONDS,
-                     headers={"X-AUTH-TOKEN": settings.CDN_API_TOKEN})
+    try:
+        r = requests.get(settings.CDN_JWT_URL,
+                         timeout=settings.CDN_TIMEOUT_SECONDS,
+                         headers={"X-AUTH-TOKEN": settings.CDN_API_TOKEN})
 
-    if r.status_code != 200:
+        if r.status_code != 200:
+            return None
+    except:
+        global logger
+        logger.error('Failed to get JWT token from {}: {}'.format(settings.CDN_JWT_URL, traceback.format_exc()))
         return None
 
     result = None
@@ -57,10 +67,15 @@ def get_jwt_token():
     return result
 
 def get_upload_link():
-    r = requests.get(settings.CDN_RECEIVE_UPLOAD_LINK_URL,
-                     **settings.CDN_REQUESTS_COMMON_PARAMS)
+    try:
+        r = requests.get(settings.CDN_RECEIVE_UPLOAD_LINK_URL,
+                         **settings.CDN_REQUESTS_COMMON_PARAMS)
 
-    if r.status_code != 200:
+        if r.status_code != 200:
+            return None
+    except:
+        global logger
+        logger.error('Failed to get upload link from {}: {}'.format(settings.CDN_RECEIVE_UPLOAD_LINK_URL, traceback.format_exc()))
         return None
 
     result = None
@@ -73,10 +88,15 @@ def get_upload_link():
     return result
 
 def get_full_video_info(video_uuid):
-    r = requests.get(settings.CDN_VIDEO_INFO_URL.format(video_uuid),
-                     **settings.CDN_REQUESTS_COMMON_PARAMS)
+    try:
+        r = requests.get(settings.CDN_VIDEO_INFO_URL.format(video_uuid),
+                         **settings.CDN_REQUESTS_COMMON_PARAMS)
 
-    if r.status_code != 200:
+        if r.status_code != 200:
+            return None
+    except:
+        global logger
+        logger.error('Failed to get full video info from {}: {}'.format(settings.CDN_VIDEO_INFO_URL.format(video_uuid), traceback.format_exc()))
         return None
 
     result = None
@@ -116,8 +136,13 @@ def upload_to_cdn(upload_link, jwt_token, video_file):
     request_params.update({'timeout': settings.CDN_FILE_UPLOAD_TIMEOUT_SECONDS})
     request_params.update({'params': {'add': 1, 'run': 1}})
 
-    r = requests.post(upload_link, **request_params)
-    if r.status_code != 200:
+    try:
+        r = requests.post(upload_link, **request_params)
+        if r.status_code != 200:
+            return None
+    except:
+        global logger
+        logger.error('Failed to upload video to {}: {}'.format(upload_link, traceback.format_exc()))
         return None
 
     response_json = None
@@ -137,7 +162,14 @@ def upload_to_cdn(upload_link, jwt_token, video_file):
     if len(response_json[fileName]) == 0:
         return None
 
-    file_name_entry = response_json[fileName].pop()
+    file_name_entry = None
+    try:
+        file_name_entry = response_json[fileName].pop()
+    except:
+        global logger
+        logger.error('Failed to read uploaded video info from {}: {}'.format(upload_link, traceback.format_exc()))
+        return None
+        
     if 'video_uuid' not in file_name_entry:
         return None
 
