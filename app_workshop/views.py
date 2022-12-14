@@ -1187,18 +1187,15 @@ def agree(request, subject_id):
         return redirect('login')
 
 def send_lecture (request, lecture_id):
+    lecture=Lecture.objects.get(id=lecture_id)
+    subject=lecture.subject
     users=Group.objects.get(name='admin').user_set.all()
-    if request.user in users:
-        lecture=Lecture.objects.get(id=lecture_id)
+    if request.user in users:   
         subject=lecture.subject
         lectures=Lecture.objects.filter(subject=subject).order_by('enumerator')
         lecture.processing_state = PROCESSING_READY_TO_START
         lecture.save()
-        context = {
-            'subject': subject,
-            'lectures': lectures,
-        }
-        return render (request, 'service/admin_page.html', context)
+        return redirect ('sections', subject.id)
     else:
         logout(request)
         return redirect('login')
