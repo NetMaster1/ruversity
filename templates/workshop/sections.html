@@ -18,11 +18,9 @@
         Создать раздел.
     </div>
     <div class="row">
-      
         <a href="#" style="text-decoration: none" >
             <h4 style="display: inline"> <i class="fa-sharp fa-solid fa-folder-plus icon"></i> </h4>
         </a>
-        
     </div>
 <!-- ==================================Create Section Module======================= -->
 
@@ -63,7 +61,6 @@
 
 {% for section in sections %}
 
-
 <div class="section_box draggable_section p-2 mb-2">
     <!-- <div data-bs-toggle="collapse" data-bs-target='#section{{section.id}}'> -->
         <div class="row ml-1 mb-2">
@@ -71,7 +68,7 @@
                 <label for="section_id">
                     {{section.enumerator}} {{section.title}} 
                 </label>&nbsp;&nbsp;
-                {% if subject.ready == False %}
+                {% if subject.ready == False or request.user in users %}
                 <div class="popUpDeleteSection">Удалить раздел</div>
                 <a href="{% url 'delete_section' subject.id section.id %}" style="text-decoration: none">
                     <h4 style="display: inline"><i class="fa-solid fa-trash-arrow-up"></i> </h4>
@@ -96,35 +93,47 @@
             </div>
         </div>
    
-
     {% for lecture in lectures %}
     {% if lecture.section == section %}
      
     <div class="box ml-3 draggable_lecture" draggable='true'>
         <div class="row">
             <div class="col-1">
-                <label for="lecture_id">{{lecture.enumerator}}</label>
+                <label for="lecture_id">{{lecture.enumerator}}.</label>
             </div> 
-            <div class="col-8">
-                <strong>{{lecture.title}};.
-                     <!-- Дл.: {{lecture.length_1}} мин.; 
-                     Размер:
-                    {{lecture.size_mb}} Mb -->
-                </strong>
+            <div class="col-4">
+<!-- =====draggable_lecture.children[0].children[1].children[0]==================== -->
+<!-- ===========the value of input field is taken for dragging purposes ====================== -->
+                <input type="text" class='form-control ml-3' id="lecture_id" name="sec_lec_id" value='{{section.id}}/{{lecture.id}}' readonly hidden>
+    <!-- ============================================================================ -->
+                <strong>{{lecture.title}}.</strong>
             </div>
-            <div class="col-1">
-                <input type="text" class='form-control ml-3' id="lecture_id" name="sec_lec_id"
-                value='{{section.id}}/{{lecture.id}}' readonly hidden>
+          
+
+    {% if lecture.video_file%}
+            <div class="col-3">
+                <a href="{% url 'video' subject.id lecture.id %}" target="_blank"> {{lecture.video_file}} </a>
             </div>
+                
+            <div class="col-2">
+                <a href="{% url 'send_lecture' lecture.id %}" style="text-decoration: none">
+                    <!-- <input type="submit" value="Delete" class="btn btn-info btn-block"> -->
+                    <input type="button" value="Отправить" class='btn btn-sm btn-block btn-outline-dark'>
+                </a>
+            </div> 
+    {% endif %}
+        
+           
+
            <div class="col-2">
-            {% if subject.ready == False %}
+    {% if subject.ready == False or request.user in users %}
                 <div class="popUpSectionPage">
                     Удалить лекцию.
                 </div>
                 <a href="{% url 'delete_lecture' lecture.id %}" style="text-decoration: none" >
                     <h4 style="display: inline"><i class="fa-solid fa-trash"></i></h4>
                 </a>
-                {% endif %}
+    {% endif %}
                 <div class="popUpEditLecture">
                     Редактировать лекцию.
                 </div>
@@ -132,18 +141,16 @@
                     <h4 style="display: inline"><i class="fa-solid fa-pen-to-square"></i></h4>
                 </a>
             </div>
-            
-           
         </div>
     </div>
+
     {% endif %}
     {% endfor %}
-                
+    </div>
 
-
-</div>
 {% endfor %}
 </form>
+</div>
    
 </div>
 
@@ -175,63 +182,52 @@
     const popUpEditSection = document.querySelectorAll('.popUpEditSection'); 
     
    
-
     /*============================Icons PopUp==================================*/
         faTrash.forEach((item, index) => {
                 item.setAttribute('data-index', index)
-            })
-        
+            })   
         faTrashArrowUp.forEach((item, index) => {
                 item.setAttribute('data-index', index)
             })
-
         faPenToSquare.forEach((item, index) => {
                 item.setAttribute('data-index', index)
             })
-
         faCirclePlus.forEach((item, index) => {
                 item.setAttribute('data-index', index)
             })
-
         faFilePen.forEach((item, index) => {
                 item.setAttribute('data-index', index)
             })
-
         for (i = 0; i < faTrash.length; i++) {
             faTrash[i].addEventListener('mouseover', e => {
                 a = e.target.getAttribute('data-index')
                 popUp[a].classList.add('openModal')
             })
         }
-
         for (i = 0; i < faTrash.length; i++) {
             faTrash[i].addEventListener('mouseleave', e => {
                 a = e.target.getAttribute('data-index')
                 popUp[a].classList.remove('openModal')
             })
-        }
-      
+        }     
         for (i = 0; i < faTrashArrowUp.length; i++) {
             faTrashArrowUp[i].addEventListener('mouseover', e => {
                 a = e.target.getAttribute('data-index')
                 popUpDeleteSection[a].classList.add('openModal')
             })
         }
-
             for (i = 0; i < faTrashArrowUp.length; i++) {
                 faTrashArrowUp[i].addEventListener('mouseleave', e => {
                     a = e.target.getAttribute('data-index')
                     popUpDeleteSection[a].classList.remove('openModal')
                 })
             }
-
         for (i = 0; i < faPenToSquare.length; i++) {
             faPenToSquare[i].addEventListener('mouseover', e => {
                 a = e.target.getAttribute('data-index')
                 popUpEditLecture[a].classList.add('openModal')
             })
         }
-
         for (i = 0; i < faPenToSquare.length; i++) {
             faPenToSquare[i].addEventListener('mouseleave', e => {
                 a = e.target.getAttribute('data-index')
@@ -250,15 +246,12 @@
                     popUpAddLecture[a].classList.remove('openModal')
                 })
             }
-
         faFolderPlus.addEventListener('mouseover', () => {
                 popUpCreateSection.classList.add('openModal')
             })
         faFolderPlus.addEventListener('mouseleave', () => {
                 popUpCreateSection.classList.remove('openModal')
             })
-
-
         for (i = 0; i < faFilePen.length; i++) {
             faFilePen[i].addEventListener('mouseover', e => {
                 a = e.target.getAttribute('data-index')
@@ -271,9 +264,7 @@
                     popUpEditSection[a].classList.remove('openModal')
                 })
             }
-
 /*====================================End of Icons PopUp=============================*/
-
 
     faFolderPlus.addEventListener('click', () => {
         createSection.classList.add('openModal')
@@ -323,8 +314,8 @@
         draggableSections.forEach(section => {
                 section.addEventListener('drop', e => {
                     const draggable = document.querySelector('.dragging')
-                    let len = draggable.children[0].children[2].children[0].value.indexOf("/");
-                    draggable.children[0].children[2].children[0].value = section.children[0].children[1].children[0].value + draggable.children[0].children[2].children[0].value.slice(len)
+                    let len = draggable.children[0].children[1].children[0].value.indexOf("/");
+                    draggable.children[0].children[1].children[0].value = section.children[0].children[1].children[0].value + draggable.children[0].children[1].children[0].value.slice(len)
                     console.log (draggable.value)
                     formNoButton.submit();
                 })

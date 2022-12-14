@@ -4,7 +4,7 @@
 <!-- <body oncontextmenu="return false;"> -->
 <div class="container">
 
-{%if not subject %}
+
 <form action="{% url 'admin_page' %}" method="POST">
     {% csrf_token %}
 
@@ -19,54 +19,8 @@
         </div>
     </div>
 </form>
-{% endif %}
-
-
-{% for lecture in lectures %}
-<div class="box">
-<div class="row">
-    {{lecture.title}}
-</div>
-{% if lecture.video_file%}
-<div class="row">
-    <div class="col-6">
-<i class="fa-sharp fa-solid fa-circle-play ml-4"></i>&nbsp;&nbsp;
-<a href="{% url 'video' subject.id lecture.id %}" target="_blank"> Видеофайл. Время: {{lecture.length_1}} </a><br>
-    </div>
-
-        <div class="col-3">
-            <a href="{% url 'send_lecture' lecture.id %}" style="text-decoration: none">
-                <!-- <input type="submit" value="Delete" class="btn btn-info btn-block"> -->
-                <input type="button" value="Отправить на сервер" class='btn btn-sm btn-block btn-outline-dark'>
-            </a>
-        </div>
-  
-</div>
-
-{% endif %}
-
-{% if lecture.quizquestion_set.filter.exists %}
-<i class="fa-solid fa-list-ul ml-4"></i>&nbsp;&nbsp;
-<a href="{% url 'open_show_quiz_page' lecture.id%}" target="_blank">Пройдите тест</a> <br>
-{% endif %}
-
-{% for item in lecture.additionalmaterialfile_set.all%}
-{% if item %}
-<i class="fa-regular fa-file ml-4"></i>&nbsp;&nbsp;
-<a href="{{ item.additional_file.url }}" download>Текстовый документ</a>
-<br>
-{% endif %}
-{% endfor %}
-
-{% for item in lecture.additionalmateriallink_set.all%}
-{% if item %}
-<i class="fa-solid fa-link ml-4"></i>&nbsp;&nbsp;
-<a href="{{item.url_link }}" target="_blank">Внешняя ссылка</a>
-{% endif %}
-{% endfor %}
-</div>
-{% endfor %}
 
 
 </div>
+
 {% endblock %}
