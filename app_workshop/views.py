@@ -1145,6 +1145,18 @@ def agree(request, subject_id):
         logout(request)
         return redirect('login')
 
+def send_lecture (request, lecture_id):
+    lecture=Lecture.objects.get(id=lecture_id)
+    subject=lecture.subject
+    lectures=Lecture.objects.filter(subject=subject).order_by('enumerator')
+    lecture.processing_state = PROCESSING_READY_TO_START
+    lecture.save()
+    context = {
+        'subject': subject,
+        'lectures': lectures,
+    }
+    return render (request, 'service/admin_page.html', context)
+
 def author_profile(request):
     if request.user.is_authenticated:
         countries=Country.objects.all()
@@ -1419,14 +1431,3 @@ def answer(request, subject_id, question_id):
     else:
         return redirect('login')
 
-def send_lecture (request, lecture_id):
-    lecture=Lecture.objects.get(id=lecture_id)
-    subject=lecture.subject
-    lectures=Lecture.objects.filter(subject=subject).order_by('enumerator')
-    lecture.processing_state = PROCESSING_READY_TO_START
-    lecture.save()
-    context = {
-        'subject': subject,
-        'lectures': lectures,
-    }
-    return render (request, 'service/admin_page.html', context)
