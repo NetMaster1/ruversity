@@ -39,8 +39,8 @@ def index(request):
         # }
         return redirect('main_page')
     else:
-        subjects = MainSubject.objects.filter(ready='True').exclude(blocked='True').order_by('-date_posted')[:12]
-        paginator = Paginator(subjects, 12)
+        subjects = MainSubject.objects.filter(ready='True').exclude(blocked='True').order_by('-date_posted')[:16]
+        paginator = Paginator(subjects, 16)
         page = request.GET.get('page')
         paged_subjects = paginator.get_page(page)
 
@@ -207,7 +207,7 @@ def main_page(request):
     subjects = MainSubject.objects.filter(ready='True').exclude(blocked='True').order_by('-date_posted')
     discount_time = DiscountOn.objects.get(id=1)
 
-    paginator = Paginator(subjects, 12)
+    paginator = Paginator(subjects, 16)
     page = request.GET.get('page')
     paged_subjects = paginator.get_page(page)
     # ratings = Rating.objects.all()
