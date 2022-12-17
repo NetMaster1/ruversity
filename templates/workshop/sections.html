@@ -19,7 +19,7 @@
     </div>
     <div class="row">
         <a href="#" style="text-decoration: none" >
-            <h4 style="display: inline"> <i class="fa-sharp fa-solid fa-folder-plus icon"></i> </h4>
+            <h4 style="display: inline"> <i class="fa-sharp fa-solid fa-folder-plus icon img_scale"></i> </h4>
         </a>
     </div>
 <!-- ==================================Create Section Module======================= -->
@@ -63,28 +63,30 @@
 
 <div class="section_box draggable_section p-2 mb-2">
     <!-- <div data-bs-toggle="collapse" data-bs-target='#section{{section.id}}'> -->
-        <div class="row ml-1 mb-2">
-            <div class="col-11">
+        <div class="row ml-1 mb-2 mt-2">
+            <div class="col-9">
                 <label for="section_id">
-                    {{section.enumerator}} {{section.title}} 
-                </label>&nbsp;&nbsp;
+                    <h5>{{section.enumerator}}.&nbsp {{section.title}}</h5>
+                </label>
+            </div>
+            <div class="col-2">
                 {% if subject.ready == False or request.user in users %}
                 <div class="popUpDeleteSection">Удалить раздел</div>
                 <a href="{% url 'delete_section' subject.id section.id %}" style="text-decoration: none">
-                    <h4 style="display: inline"><i class="fa-solid fa-trash-arrow-up"></i> </h4>
+                    <h4 style="display: inline"><i class="fa-solid fa-trash-arrow-up img_scale"></i> </h4>
                 </a>
                 {% endif %}
                 <div class="popUpEditSection">
                     Изменить название раздела.
                 </div>
                 <a href="{% url 'edit_section_title' section.id %}" style="text-decoration: none">
-                    <h4 style="display: inline"><i class="fa-solid fa-file-pen"></i></h4>
+                    <h4 style="display: inline"><i class="fa-solid fa-file-pen img_scale"></i></h4>
                 </a>
                 <div class="popUpAddLecture">
                     Создать лекцию.
                 </div>
                 <a href="{% url 'new_lecture_page' subject.id section.id %}" style="text-decoration: none">
-                <h4 style="display: inline"><i class="fa-solid fa-circle-plus"></i></h4>
+                <h4 style="display: inline"><i class="fa-solid fa-circle-plus img_scale"></i></h4>
                 </a>
             </div>
 
@@ -109,20 +111,21 @@
                 <strong>{{lecture.title}}.</strong>
             </div>
           
-
-    {% if lecture.video_file%}
             <div class="col-3">
+                {% if lecture.video_file%}
                 <a href="{% url 'video' subject.id lecture.id %}" target="_blank"> {{lecture.video_file}} </a>
+                {% endif %}
             </div>
-                
+               
             <div class="col-2">
+                {% if subject.ready == True and subject.being_edited == True or request.user in users %}
                 <a href="{% url 'send_lecture' lecture.id %}" style="text-decoration: none">
                     <!-- <input type="submit" value="Delete" class="btn btn-info btn-block"> -->
                     <input type="button" value="Отправить" class='btn btn-sm btn-block btn-outline-dark'>
                 </a>
-            </div> 
-    {% endif %}
-        
+                {% endif %}
+
+            </div>
            
 
            <div class="col-2">
@@ -131,14 +134,14 @@
                     Удалить лекцию.
                 </div>
                 <a href="{% url 'delete_lecture' lecture.id %}" style="text-decoration: none" >
-                    <h4 style="display: inline"><i class="fa-solid fa-trash"></i></h4>
+                    <h4 style="display: inline"><i class="fa-solid fa-trash img_scale"></i></h4>
                 </a>
     {% endif %}
                 <div class="popUpEditLecture">
                     Редактировать лекцию.
                 </div>
                 <a href="{% url 'edit_lecture' lecture.id%}" style="text-decoration: none">
-                    <h4 style="display: inline"><i class="fa-solid fa-pen-to-square"></i></h4>
+                    <h4 style="display: inline"><i class="fa-solid fa-pen-to-square img_scale"></i></h4>
                 </a>
             </div>
         </div>
@@ -315,7 +318,7 @@
                 section.addEventListener('drop', e => {
                     const draggable = document.querySelector('.dragging')
                     let len = draggable.children[0].children[1].children[0].value.indexOf("/");
-                    draggable.children[0].children[1].children[0].value = section.children[0].children[1].children[0].value + draggable.children[0].children[1].children[0].value.slice(len)
+                    draggable.children[0].children[1].children[0].value = section.children[0].children[2].children[0].value + draggable.children[0].children[1].children[0].value.slice(len)
                     console.log (draggable.value)
                     formNoButton.submit();
                 })

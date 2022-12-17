@@ -27,14 +27,14 @@
 
 {% for subject in paged_subjects %}
         <div class="col-sm-3">
-            <div class="card mb-3 " style="border-color: transparent;">
+            <div class="card mb-3" style="border-color: transparent;">
                 <!-- <div class="p-2"> -->
                     <div class="card-header" style='height:5rem' ><h5>{{subject.title}}</h5></div>
 
                     <a href="{% url 'subject' subject.id %}">
                         <!-- <figure class="image is-4by3"> -->
                         <figure class="image is-16by9">
-                            <img src="{{subject.thumbnail_file.url}}" alt="Placeholder image" class='rounded-2 img-fluid' img_scale>
+                            <img src="{{subject.thumbnail_file.url}}" alt="Placeholder image" class='rounded-2 img-fluid img_scale'>
                             <!-- <img src="{{subject.thumbnail_file.url}}" alt="Placeholder image"  class='card-image-top' style='width:18rem; height: 10rem;'> -->
                         </figure>
                     </a>
