@@ -217,7 +217,7 @@ iframe {
   border-color: black;
   height: fit-content;
   width: 70rem;
-  /*background-color: red;*/
+  box-shadow: 0 0 10px 2px;
 }
 
 .lecture_box {
