@@ -44,7 +44,7 @@ h5 {
 }
 
 .card_menu {
-  display: inline-block;
+  /*display: inline-block;*/
   width: 45rem;
   min-height: fit-content;
   max-height: fit-content;
