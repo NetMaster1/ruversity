@@ -113,7 +113,8 @@
           
             <div class="col-3">
                 {% if lecture.video_file%}
-                <a href="{% url 'video' subject.id lecture.id %}" target="_blank"> {{lecture.video_file}} </a>
+                <a href="{{ lecture.video_file.url }}" target="_blank"> {{lecture.video_file}} </a>
+              
                 {% endif %}
             </div>
                
