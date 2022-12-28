@@ -568,8 +568,8 @@ def lecture_update_videofile (request, subject_id, section_id, lecture_id):
 
         size_bytes = os.path.getsize(video_file_name)
         size_mbytes = size_bytes/1024/1024
-        if size_mbytes > 500:
-            messages.error(request, 'Размер файла больше 500МБ. Попробуйте использовать файлы меньшего размера.')
+        if size_mbytes > 950:
+            messages.error(request, 'Размер файла больше 950МБ. Попробуйте использовать файлы меньшего размера.')
             return redirect('edit_lecture', lecture.id)
         #=======Module for calculating length of a lecture in two formats=======================
         clip = VideoFileClip(video_file_name)
