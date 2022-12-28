@@ -197,7 +197,7 @@ iframe {
 }
 
 .draggable_lecture:hover {
-  cursor: grab;
+  cursor:grab;
   background-color: blanchedalmond;
   box-shadow: 0 0 10px 2px;
 }
@@ -241,8 +241,7 @@ iframe {
   /*position: absolute;
     /*border: 1px solid;*/
   /*border-color: #aaaaaa;*/
-  padding: 5rem;
-  ;
+  padding: 5rem;;
   border-radius: 1rem;
   top: 30vh;
   left: 35rem;
@@ -285,7 +284,6 @@ iframe {
   font-size: small;
   box-shadow: 0 0 10px 2px;
 }
-
 /*===============================================*/
 
 
@@ -336,7 +334,7 @@ iframe {
   padding: 0.1rem;
   position: absolute;
   top: -2rem;
-  left: 9rem;
+  left: 1rem;
   height: fit-content;
   width: fit-content;
   border: solid 1px black;
@@ -350,7 +348,6 @@ iframe {
 .popUpEditLecture {
   display: none
 }
-
 .popUpEditLecture.openModal {
   display: block;
   padding: 0.1rem;
@@ -369,13 +366,12 @@ iframe {
 .popUpAddLecture {
   display: none
 }
-
 .popUpAddLecture.openModal {
   display: block;
   padding: 0.1rem;
   position: absolute;
-  top: -2rem;
-  left: 12rem;
+  top: -3rem;
+  left: 6rem;
   height: fit-content;
   width: fit-content;
   border: solid 1px black;
@@ -384,11 +380,10 @@ iframe {
   font-size: small;
   box-shadow: 0 0 10px 2px;
 }
-
+ 
 .popUpCreateSection {
   display: none;
 }
-
 .popUpCreateSection.openModal {
   display: block;
   padding: 0.1rem;
@@ -407,13 +402,12 @@ iframe {
 .popUpEditSection {
   display: none;
 }
-
 .popUpEditSection.openModal {
   display: block;
   padding: 0.1rem;
   position: absolute;
-  top: -2rem;
-  left: 12rem;
+  top: -3rem;
+  left: 3rem;
   height: fit-content;
   width: fit-content;
   border: solid 1px black;
@@ -451,7 +445,6 @@ iframe {
 .editSection {
   display: none;
 }
-
 .editSection.openModal {
   display: block;
 }
@@ -578,12 +571,10 @@ iframe {
   z-index: 1;
   opacity: 1;
 }
-
 /*========================================*/
 .fileLibraryModule {
   display: none;
 }
-
 .fileLibraryModule.openModal {
   display: block;
   background-color: whitesmoke;
@@ -675,32 +666,29 @@ iframe {
   padding: 1rem;
   box-shadow: 0 0 10px 2px;
 }
-
 /*========================================*/
 .popUpLecture {
   display: none;
 }
-
 .popUpLecture.openModal {
   display: block;
-  padding: 0.1rem;
-  position: absolute;
-  left: 2rem;
-  top: -1rem;
-  height: fit-content;
-  width: fit-content;
-  border: solid 1px black;
-  background-color: white;
-  z-index: 1;
-  font-size: small;
-  box-shadow: 0 0 10px 2px;
-}
+    padding: 0.1rem;
+    position: absolute;
+    left: 2rem;
+    top: -1rem;
+    height: fit-content;
+    width: fit-content;
+    border: solid 1px black;
+    background-color: white;
+    z-index: 1;
+    font-size: small;
+    box-shadow: 0 0 10px 2px;
+  }
 
 /*=====================================*/
 .editSectionTitle {
   display: none;
 }
-
 .editSectionTitle.openModal {
   display: block;
 }
@@ -765,9 +753,8 @@ iframe {
   border-bottom: 1px solid grey;
   height: 5rem;
 }
-
 .subject_box_bar:hover {
-  background-color: whitesmoke;
+  background-color:whitesmoke;
   border-bottom: 1px solid grey;
   height: 5rem;
   box-shadow: 0 0 10px 2px;
@@ -940,7 +927,7 @@ form_wrapper.hidden {
   /* font-weight: 900; */
   position: relative;
   /* position: absolute; */
-
+ 
   /* display: block; */
   font-size: 20px;
   color: grey;
