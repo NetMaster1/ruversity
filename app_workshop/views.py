@@ -1160,7 +1160,7 @@ def agree(request, subject_id):
                         lecture.processing_state = PROCESSING_READY_TO_START
                     lecture.save()
                 #==========================================================
-                       
+                return redirect('studio')      
             else:
                 subject_id=subject.id
                 messages.error(request, 'В курсе отсутствуют лекции. Пожалуйста, создайте лекции.')
