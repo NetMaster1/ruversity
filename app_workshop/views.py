@@ -249,12 +249,12 @@ def edit_subject(request, subject_id):
                     subject.author_price=author_price
                 additional_file = request.FILES.get('thumbnail')
                 #if additional_file:
-                thumbnail_file = request.FILES['thumbnail']
+                additional_file = request.FILES['thumbnail']
                 if additional_file.name.endswith('.jpg') or additional_file.name.endswith('.png') or additional_file.name.endswith('.gif') or additional_file.name.endswith('.bmp') or additional_file.name.endswith('.jpeg'):
                     image=TempImage.objects.create(
-                        thumbnail=additional_file
+                        temp_thumbnail_file=additional_file
                     )
-                    img = cv2.imread(temp_image.temp_thumbnail_file.path, 0)
+                    img = cv2.imread(image.temp_thumbnail_file.path, 0)
                     wid = img.shape[1]
                     hgt = img.shape[0]
                     ratio = wid / hgt
@@ -264,15 +264,15 @@ def edit_subject(request, subject_id):
                         image.delete()
                         return redirect('edit_subject', subject_id)
                     else:
-                            subject.thumbnail_file = additional_file
-                            try:
-                                if request.POST['discount_program']:
-                                    discount_program = True
-                            except KeyError:
-                                discount_program = False
-                            subject.discount_programs = discount_program
-                            subject.save()
-                            return redirect ('edit_subject', subject.id )
+                        subject.thumbnail_file = additional_file
+                        try:
+                            if request.POST['discount_program']:
+                                discount_program = True
+                        except KeyError:
+                            discount_program = False
+                        subject.discount_programs = discount_program
+                        subject.save()
+                        return redirect ('edit_subject', subject.id )
                 else:
                     messages.error(request, 'Некорректный формат файла. Загрузите файл в формате jpg, jpeg, png или bmp')
                     return redirect('edit_subject', subject_id)
