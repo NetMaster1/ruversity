@@ -248,21 +248,22 @@ def edit_subject(request, subject_id):
                 if author_price:
                     subject.author_price=author_price
                 additional_file = request.FILES.get('thumbnail')
-                if additional_file:
-                    if additional_file.name.endswith('.jpg') or additional_file.name.endswith('.png') or additional_file.name.endswith('.gif') or additional_file.name.endswith('.bmp') or additional_file.name.endswith('.jpeg'):
-                        temp_image=TempImage.objects.create(
-                            temp_thumbnail_file=additional_file
-                        )
-                        img = cv2.imread(temp_image.temp_thumbnail_file.path, 0)
-                        wid = img.shape[1]
-                        hgt = img.shape[0]
-                        ratio = wid / hgt
-                        if ratio < 1.5 or ratio > 1.8:
-                            # messages.error(request, 'Image has inproper ratio. Use ration of 1.7 .')
-                            messages.error(request, 'Некорректное соотношение сторон. Используйте отношение длины изображения к его высоте равное 1.7.')
-                            temp_image.delete()
-                            return redirect('edit_subject', subject_id)
-                        else:
+                #if additional_file:
+                thumbnail_file = request.FILES['thumbnail']
+                if additional_file.name.endswith('.jpg') or additional_file.name.endswith('.png') or additional_file.name.endswith('.gif') or additional_file.name.endswith('.bmp') or additional_file.name.endswith('.jpeg'):
+                    image=TempImage.objects.create(
+                        thumbnail=additional_file
+                    )
+                    img = cv2.imread(temp_image.temp_thumbnail_file.path, 0)
+                    wid = img.shape[1]
+                    hgt = img.shape[0]
+                    ratio = wid / hgt
+                    if ratio < 1.5 or ratio > 1.8:
+                        # messages.error(request, 'Image has inproper ratio. Use ration of 1.7 .')
+                        messages.error(request, 'Некорректное соотношение сторон. Используйте отношение длины изображения к его высоте равное 1.7.')
+                        image.delete()
+                        return redirect('edit_subject', subject_id)
+                    else:
                             subject.thumbnail_file = additional_file
                             try:
                                 if request.POST['discount_program']:
@@ -272,9 +273,9 @@ def edit_subject(request, subject_id):
                             subject.discount_programs = discount_program
                             subject.save()
                             return redirect ('edit_subject', subject.id )
-                    else:
-                        messages.error(request, 'Некорректный формат файла. Загрузите файл в формате jpg, jpeg, png или bmp')
-                        return redirect('edit_subject', subject_id)
+                else:
+                    messages.error(request, 'Некорректный формат файла. Загрузите файл в формате jpg, jpeg, png или bmp')
+                    return redirect('edit_subject', subject_id)
 
                 
             else:
