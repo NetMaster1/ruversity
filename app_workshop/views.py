@@ -250,7 +250,9 @@ def edit_subject(request, subject_id):
                 additional_file = request.FILES.get('thumbnail')
                 if additional_file:
                     if additional_file.name.endswith('.jpg') or additional_file.name.endswith('.png') or additional_file.name.endswith('.gif') or additional_file.name.endswith('.bmp') or additional_file.name.endswith('.jpeg'):
-                        temp_image=TempImage.objects.create(temp_thumbnail_file=additional_file)
+                        temp_image=TempImage.objects.create(
+                            temp_thumbnail_file=additional_file
+                        )
                         img = cv2.imread(temp_image.temp_thumbnail_file.path, 0)
                         wid = img.shape[1]
                         hgt = img.shape[0]
