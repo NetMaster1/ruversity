@@ -190,7 +190,7 @@
                 <div class="form-group">
                     <label for="title"><strong>Редактировать название курса</strong></label>
                     <input type="text" class='form-control' id="title" name="title" maxlength='60'
-                        placeholder='Название курса. Не более 60 символов.'>
+                        placeholder='Название курса. Не более 60 символов.' required>
                 </div>
                 <div class="form-group">
                     <label for="language"><strong>Редактировать язык курса</strong></label>
@@ -212,23 +212,23 @@
                     <label for="description"><strong>Редактировать краткое описание курса (160-1000 символов) </strong></label>
                     <textarea class='form-control' id="description" rows='4' minlength='160' maxlength='1000'
                         name="description"
-                        placeholder='Введите краткое описание курса. 160-1000 символов.'></textarea>
+                        placeholder='Введите краткое описание курса. 160-1000 символов.' required></textarea>
                     <div class="form-group">
                         <label for="prerequisites"> <strong>Редактировать предварительную подготовку (160-1000 символов)</strong></label>
                         <textarea class='form-control' rows='4' id="prerequisites" minlength='160' maxlength='1000'
                             name="prerequisites"
-                            placeholder='Введите требования к предварительной подготовке. 160-1000 символов.'></textarea>
+                            placeholder='Введите требования к предварительной подготовке. 160-1000 символов.' required></textarea>
                     </div>
                             <div class="form-group">
                                 <label for="thumbnail"> <strong>Загрузить новую картинку для курса:</strong></label>
-                                <input type="file" class="form-control" id="thumbnail" name='thumbnail'>
+                                <input type="file" class="form-control" id="thumbnail" name='thumbnail' required>
                             </div>
                             <div class="form-row mt-3">
                                 <div class="col-5">
                                     <label for="author_price"><strong>Редактировать стоимость, руб.</strong></label>
                                 </div>
                                 <div class="col-7">
-                                    <input type="number" class='form-control' id="author_price" name="author_price" maxlength='10'><br>
+                                    <input type="number" class='form-control' id="author_price" name="author_price" maxlength='10' required><br>
                                 </div>
                             </div>
 
