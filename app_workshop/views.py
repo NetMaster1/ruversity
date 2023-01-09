@@ -262,18 +262,19 @@ def edit_subject(request, subject_id):
                             return redirect('edit_subject', subject_id)
                         else:
                             subject.thumbnail_file = additional_file
+                            try:
+                                if request.POST['discount_program']:
+                                    discount_program = True
+                            except KeyError:
+                                discount_program = False
+                            subject.discount_programs = discount_program
+                            subject.save()
+                            return redirect ('edit_subject', subject.id )
                     else:
                         messages.error(request, 'Некорректный формат файла. Загрузите файл в формате jpg, jpeg, png или bmp')
                         return redirect('edit_subject', subject_id)
 
-                try:
-                    if request.POST['discount_program']:
-                        discount_program = True
-                except KeyError:
-                    discount_program = False
-                subject.discount_programs = discount_program
-                subject.save()
-                return redirect ('edit_subject', subject.id )
+                
             else:
                 if Library.objects.filter(subject=subject).exists():
                     v_files=Library.objects.filter(subject=subject)
