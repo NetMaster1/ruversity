@@ -357,8 +357,8 @@ def list_fitness(request):
     else:
         return redirect('login')
 
-def list_skills(request):
-    category = Category.objects.get(name='Домашние навыки')
+def list_exam(request):
+    category = Category.objects.get(name='Подготовка к ЕГЭ')
     query = MainSubject.objects.filter(
         category=category, ready='True').exclude(blocked='True').order_by('-av_rating')
     if query.count()==0:
@@ -458,7 +458,7 @@ def list_arts(request):
     else:
         return redirect('login')
 
-def list_buisness(request):
+def list_business(request):
     category = Category.objects.get(name='Бизнес')
     query = MainSubject.objects.filter(category=category, ready='True').exclude(blocked='True').order_by('av_rating')
     if query.count()==0:
