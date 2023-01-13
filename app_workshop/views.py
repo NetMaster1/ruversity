@@ -272,6 +272,7 @@ def edit_subject(request, subject_id):
                             discount_program = False
                         subject.discount_programs = discount_program
                         subject.save()
+                        image.save()
                         return redirect ('edit_subject', subject.id )
                 else:
                     messages.error(request, 'Некорректный формат файла. Загрузите файл в формате jpg, jpeg, png или bmp')
