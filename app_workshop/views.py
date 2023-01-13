@@ -1041,17 +1041,16 @@ def delete_url_link (request, lecture_id):
 
 #===============================================================
 def video(request, subject_id, lecture_id):
-    # if not request.user.is_authenticated:
-    #     return redirect('login')
+    if not request.user.is_authenticated:
+        return redirect('login')
+    users=Group.objects.get(name='admin').user_set.all()
 
     subject = get_object_or_404(MainSubject, id=subject_id)
     the_video = get_object_or_404(Lecture, id=lecture_id)
 
-    # if not (Transaction.objects.filter(buyer=request.user, course=subject).exists()
-    #         or request.user == subject.author
-    #         or the_video.free == True):
-    #     messages.error(request, 'Для просмотра видео вам необходимо приобрести данный курс.')
-    #     return redirect('login')
+    if not (Transaction.objects.filter(buyer=request.user, course=subject).exists() or request.user == subject.author or the_video.free == True or request.user in users ):
+        messages.error(request, 'Для просмотра видео вам необходимо приобрести данный курс.')
+        return redirect('login')
 
     context = {'the_video': the_video}
     template_name = 'video.html'
