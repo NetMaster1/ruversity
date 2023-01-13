@@ -170,7 +170,10 @@ CDN_VIDEO_INFO_URL = 'https://api.cdnnow.ru/api/v3/vod/projects/bef2861b-5668-49
 CDN_REQUESTS_COMMON_PARAMS = {'timeout': CDN_TIMEOUT_SECONDS,
                               'headers': {"X-AUTH-TOKEN": CDN_API_TOKEN}}
 
-FILE_UPLOAD_HANDLERS = ["django.core.files.uploadhandler.TemporaryFileUploadHandler"]
+#FILE_UPLOAD_HANDLERS = ["django.core.files.uploadhandler.TemporaryFileUploadHandler"]
+
+FILE_UPLOAD_HANDLERS = ["django.core.files.uploadhandler.MemoryFileUploadHandler",
+ "django.core.files.uploadhandler.TemporaryFileUploadHandler"]
 
 
 PAYPAL_RECEIVER_EMAIL = '79200711112@yandex.ru'
