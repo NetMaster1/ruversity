@@ -59,34 +59,9 @@ def payment_complete(request):
         return JsonResponse('Payment completed!', safe=False)
         # return redirect ('mycourses')
 
-def credit_card(request, subject_id):
-    if request.user.is_authenticated:
-        subject = MainSubject.objects.get(id=subject_id)
-        user=subject.author
-        author = Author.objects.get(user=user)
-        discount_time = DiscountOn.objects.get(id=1)
-        if Transaction.objects.filter(buyer=request.user, course=subject).exists():
-            transaction=Transaction.objects.get(buyer=request.user, course=subject)
-        else:
-            transaction= Transaction.objects.create(
-                course=subject,
-                buyer=request.user,
-                author=author,
-            )
-            subject.transactions +=1
-            subject.save()
 
-        context = {
-            'subject': subject,
-            'discount_time': discount_time,
-            'transaction':transaction,
-        }
-        return render(request, 'cart/credit_card.html', context)
-    else:
-        messages.error(request, ('Покупка курсов доступна только зарегистрированным пользователям. Зарегистрируйтесь, пожалуйста.'))
-        return redirect ('login')
 
-@csrf_exempt
+@csrf_exempt #disables csrf protection
 def qiwi_payment_complete (request):
     if request.method == 'POST':
         id = request.POST.get('id')#unique payment id
